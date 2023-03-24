@@ -1,12 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getContacts, getCompanies, getDeals, getLeads, addNewContact, updateContact, deleteContact, addNewCompanies, updateCompanies, deleteCompanies, addNewLead, updateLead, deleteLead } from './thunk';
+import {
+  getContacts,
+  getCompanies,
+  getDeals,
+  getLeads,
+  addNewContact,
+  updateContact,
+  deleteContact,
+  addNewCompanies,
+  updateCompanies,
+  deleteCompanies,
+  addNewLead,
+  updateLead,
+  deleteLead,
+} from "./thunk";
 
 export const initialState = {
   crmcontacts: [],
   companies: [],
   deals: [],
   leads: [],
-  error: {}
+  error: {},
 };
 
 const crmSlice = createSlice({
@@ -40,7 +54,7 @@ const crmSlice = createSlice({
     });
 
     builder.addCase(updateContact.fulfilled, (state, action) => {
-      state.crmcontacts = state.crmcontacts.map(contact =>
+      state.crmcontacts = state.crmcontacts.map((contact) =>
         contact._id.toString() === action.payload.data._id.toString()
           ? { ...contact, ...action.payload.data }
           : contact
@@ -57,7 +71,10 @@ const crmSlice = createSlice({
     });
 
     builder.addCase(deleteContact.fulfilled, (state, action) => {
-      state.crmcontacts = (state.crmcontacts || []).filter((contact) => contact._id.toString() !== action.payload.contact.toString());
+      state.crmcontacts = (state.crmcontacts || []).filter(
+        (contact) =>
+          contact._id.toString() !== action.payload.contact.toString()
+      );
       state.isContactDelete = true;
       state.isContactDeleteFail = false;
     });
@@ -92,10 +109,12 @@ const crmSlice = createSlice({
       state.isCompaniesSuccess = false;
     });
 
-
     builder.addCase(updateCompanies.fulfilled, (state, action) => {
-      state.companies = state.companies.map(company =>
-        company._id.toString() === action.payload.data._id.toString() ? { ...company, ...action.payload.data } : company);
+      state.companies = state.companies.map((company) =>
+        company._id.toString() === action.payload.data._id.toString()
+          ? { ...company, ...action.payload.data }
+          : company
+      );
       state.isCompaniesUpdate = true;
       state.isCompaniesUpdateFail = false;
     });
@@ -108,7 +127,9 @@ const crmSlice = createSlice({
 
     builder.addCase(deleteCompanies.fulfilled, (state, action) => {
       state.companies = state.companies.filter(
-        company => company._id.toString() !== action.payload.companies.toString());
+        (company) =>
+          company._id.toString() !== action.payload.companies.toString()
+      );
       state.isCompaniesDelete = true;
       state.isCompaniesDeleteFail = false;
     });
@@ -153,10 +174,11 @@ const crmSlice = createSlice({
     });
 
     builder.addCase(updateLead.fulfilled, (state, action) => {
-      state.leads = state.leads.map(lead =>
+      state.leads = state.leads.map((lead) =>
         lead._id.toString() === action.payload.data._id.toString()
           ? { ...lead, ...action.payload.data }
-          : lead);
+          : lead
+      );
       state.isLeadsUpdate = true;
       state.isLeadsUpdateFail = false;
     });
@@ -169,7 +191,7 @@ const crmSlice = createSlice({
 
     builder.addCase(deleteLead.fulfilled, (state, action) => {
       state.leads = state.leads.filter(
-        lead => lead._id.toString() !== action.payload.leads.toString()
+        (lead) => lead._id.toString() !== action.payload.leads.toString()
       );
       state.isLeadsDelete = true;
       state.isLeadsDeleteFail = false;

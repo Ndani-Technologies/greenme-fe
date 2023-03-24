@@ -1,5 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getFolders, addNewFolder, updateFolder, deleteFolder, getFiles, addNewFile, updateFile, deleteFile } from './thunk';
+import {
+  getFolders,
+  addNewFolder,
+  updateFolder,
+  deleteFolder,
+  getFiles,
+  addNewFile,
+  updateFile,
+  deleteFile,
+} from "./thunk";
 export const initialState = {
   folders: [],
   files: [],
@@ -7,7 +16,7 @@ export const initialState = {
 };
 
 const FileManagerSlice = createSlice({
-  name: 'FileManagerSlice',
+  name: "FileManagerSlice",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -26,7 +35,7 @@ const FileManagerSlice = createSlice({
     });
 
     builder.addCase(updateFolder.fulfilled, (state, action) => {
-      state.folders = state.folders.map(folder =>
+      state.folders = state.folders.map((folder) =>
         folder.id.toString() === action.payload.id.toString()
           ? { ...folder, ...action.payload }
           : folder
@@ -39,7 +48,7 @@ const FileManagerSlice = createSlice({
 
     builder.addCase(deleteFolder.fulfilled, (state, action) => {
       state.folders = state.folders.filter(
-        folder => folder.id.toString() !== action.payload.id.toString()
+        (folder) => folder.id.toString() !== action.payload.id.toString()
       );
     });
     builder.addCase(deleteFolder.rejected, (state, action) => {
@@ -62,7 +71,7 @@ const FileManagerSlice = createSlice({
     });
 
     builder.addCase(updateFile.fulfilled, (state, action) => {
-      state.files = state.folders.map(folder =>
+      state.files = state.folders.map((folder) =>
         folder.id.toString() === action.payload.id.toString()
           ? { ...folder, ...action.payload }
           : folder
@@ -75,13 +84,13 @@ const FileManagerSlice = createSlice({
 
     builder.addCase(deleteFile.fulfilled, (state, action) => {
       state.files = state.files.filter(
-        file => file.id.toString() !== action.payload.id.toString()
+        (file) => file.id.toString() !== action.payload.id.toString()
       );
     });
     builder.addCase(deleteFile.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default FileManagerSlice.reducer;

@@ -1,15 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getBalanceChartsData, getDialChartsData, getSalesChartsData } from './thunk';
+import {
+  getBalanceChartsData,
+  getDialChartsData,
+  getSalesChartsData,
+} from "./thunk";
 export const initialState = {
   balanceOverviewData: [],
   dialTypeData: [],
   salesForecastData: [],
-  error: {}
+  error: {},
 };
 
-
 const DashboardCRMSlice = createSlice({
-  name: 'DashboardCRM',
+  name: "DashboardCRM",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -33,8 +36,7 @@ const DashboardCRMSlice = createSlice({
     builder.addCase(getSalesChartsData.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-
-  }
+  },
 });
 
 export default DashboardCRMSlice.reducer;

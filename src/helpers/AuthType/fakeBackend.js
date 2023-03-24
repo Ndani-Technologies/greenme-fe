@@ -73,7 +73,7 @@ import {
   todoTaskList,
   todoCollapse,
   jobApplication,
-  apiKey
+  apiKey,
 } from "../../common/data";
 
 let users = [
@@ -90,7 +90,7 @@ const fakeBackend = () => {
   // This sets the mock adapter on the default instance
   const mock = new MockAdapter(axios, { onNoMatch: "passthrough" });
 
-  mock.onPost("/post-jwt-register").reply(config => {
+  mock.onPost("/post-jwt-register").reply((config) => {
     const user = JSON.parse(config["data"]);
     users.push(user);
 
@@ -101,10 +101,10 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost("/post-jwt-login").reply(config => {
+  mock.onPost("/post-jwt-login").reply((config) => {
     const user = JSON.parse(config["data"]);
     const validUser = users.filter(
-      usr => usr.email === user.email && usr.password === user.password
+      (usr) => usr.email === user.email && usr.password === user.password
     );
 
     return new Promise((resolve, reject) => {
@@ -128,14 +128,14 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost("/post-jwt-profile").reply(config => {
+  mock.onPost("/post-jwt-profile").reply((config) => {
     const user = JSON.parse(config["data"]);
 
     const one = config.headers;
 
     let finalToken = one.Authorization;
 
-    const validUser = users.filter(usr => usr.uid === user.idx);
+    const validUser = users.filter((usr) => usr.uid === user.idx);
 
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -145,7 +145,7 @@ const fakeBackend = () => {
             let objIndex;
 
             //Find index of specific object using findIndex method.
-            objIndex = users.findIndex(obj => obj.uid === user.idx);
+            objIndex = users.findIndex((obj) => obj.uid === user.idx);
 
             //Update object's name property.
             users[objIndex].username = user.username;
@@ -165,10 +165,9 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost("/social-login").reply(config => {
+  mock.onPost("/social-login").reply((config) => {
     const user = JSON.parse(config["data"]);
     return new Promise((resolve, reject) => {
-
       setTimeout(() => {
         if (user && user.token) {
           // You have to generate AccessToken by jwt. but this is fakeBackend so, right now its dummy
@@ -179,7 +178,10 @@ const fakeBackend = () => {
 
           // JWT AccessToken
           const tokenObj = { accessToken: token, first_name: first_name }; // Token Obj
-          const validUserObj = { token: nodeapiToken, "data": { ...tokenObj, ...user } }; // validUser Obj
+          const validUserObj = {
+            token: nodeapiToken,
+            data: { ...tokenObj, ...user },
+          }; // validUser Obj
           resolve([200, validUserObj]);
         } else {
           reject([
@@ -284,14 +286,14 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onGet(new RegExp(`${url.GET_MESSAGES}/*`)).reply(config => {
+  mock.onGet(new RegExp(`${url.GET_MESSAGES}/*`)).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (messages) {
           // Passing fake JSON data as response
           const { params } = config;
           const filteredMessages = messages.filter(
-            msg => msg.roomId === params.roomId
+            (msg) => msg.roomId === params.roomId
           );
 
           resolve([200, filteredMessages]);
@@ -302,7 +304,7 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onPost(url.ADD_MESSAGE).reply(config => {
+  mock.onPost(url.ADD_MESSAGE).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config.data) {
@@ -315,7 +317,7 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onDelete(url.DELETE_MESSAGE).reply(config => {
+  mock.onDelete(url.DELETE_MESSAGE).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -369,7 +371,7 @@ const fakeBackend = () => {
     });
   });
 
-  mock.onDelete(url.DELETE_MAIL).reply(config => {
+  mock.onDelete(url.DELETE_MAIL).reply((config) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (config && config.headers) {
@@ -1427,7 +1429,6 @@ const fakeBackend = () => {
       });
     });
   });
-
 };
 
 export default fakeBackend;

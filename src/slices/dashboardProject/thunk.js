@@ -8,47 +8,53 @@ import {
   getAllProjectStatusData as getAllProjectStatusDataApi,
   getWeekProjectStatusData as getWeekProjectStatusDataApi,
   getMonthProjectStatusData as getMonthProjectStatusDataApi,
-  getQuarterProjectStatusData as getQuarterProjectStatusDataApi
+  getQuarterProjectStatusData as getQuarterProjectStatusDataApi,
 } from "../../helpers/fakebackend_helper";
 
-export const getProjectChartsData = createAsyncThunk("dashboardProject/getProjectChartsData", async (data) => {
-  try {
-    var response;
-    if (data === "all") {
-      response = getAllProjectDataApi(data);
+export const getProjectChartsData = createAsyncThunk(
+  "dashboardProject/getProjectChartsData",
+  async (data) => {
+    try {
+      var response;
+      if (data === "all") {
+        response = getAllProjectDataApi(data);
+      }
+      if (data === "month") {
+        response = getMonthProjectDataApi(data);
+      }
+      if (data === "halfyear") {
+        response = gethalfYearProjectDataApi(data);
+      }
+      if (data === "year") {
+        response = getYearProjectDataApi(data);
+      }
+      return response;
+    } catch (error) {
+      return error;
     }
-    if (data === "month") {
-      response = getMonthProjectDataApi(data);
-    }
-    if (data === "halfyear") {
-      response = gethalfYearProjectDataApi(data);
-    }
-    if (data === "year") {
-      response = getYearProjectDataApi(data);
-    }
-    return response;
-  } catch (error) {
-    return error;
   }
-});
+);
 
-export const getProjectStatusChartsData = createAsyncThunk("dashboardProject/getProjectStatusChartsData", async (data) => {
-  try {
-    var response;
-    if (data === "all") {
-      response = getAllProjectStatusDataApi(data);
+export const getProjectStatusChartsData = createAsyncThunk(
+  "dashboardProject/getProjectStatusChartsData",
+  async (data) => {
+    try {
+      var response;
+      if (data === "all") {
+        response = getAllProjectStatusDataApi(data);
+      }
+      if (data === "week") {
+        response = getWeekProjectStatusDataApi(data);
+      }
+      if (data === "month") {
+        response = getMonthProjectStatusDataApi(data);
+      }
+      if (data === "quarter") {
+        response = getQuarterProjectStatusDataApi(data);
+      }
+      return response;
+    } catch (error) {
+      return error;
     }
-    if (data === "week") {
-      response = getWeekProjectStatusDataApi(data);
-    }
-    if (data === "month") {
-      response = getMonthProjectStatusDataApi(data);
-    }
-    if (data === "quarter") {
-      response = getQuarterProjectStatusDataApi(data);
-    }
-    return response;
-  } catch (error) {
-    return error;
   }
-});
+);

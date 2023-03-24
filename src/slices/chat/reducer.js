@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getDirectContact, getChannels, getMessages, addMessage, deleteMessage } from './thunk';
+import {
+  getDirectContact,
+  getChannels,
+  getMessages,
+  addMessage,
+  deleteMessage,
+} from "./thunk";
 
 export const initialState = {
   chats: [],
@@ -12,7 +18,7 @@ const chatSlice = createSlice({
   name: "chat",
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(getDirectContact.fulfilled, (state, action) => {
       state.chats = action.payload;
     });
@@ -42,12 +48,13 @@ const chatSlice = createSlice({
     });
 
     builder.addCase(deleteMessage.fulfilled, (state, action) => {
-      state.messages = (state.messages || []).filter((message) => message.id.toString() !== action.payload.data.toString());
+      state.messages = (state.messages || []).filter(
+        (message) => message.id.toString() !== action.payload.data.toString()
+      );
     });
     builder.addCase(deleteMessage.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-
   },
 });
 

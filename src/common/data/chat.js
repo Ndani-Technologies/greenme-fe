@@ -260,199 +260,205 @@ const attachements = [
 
 const chatContactData = [
   {
-    title: 'A',
+    title: "A",
     contacts: [
       {
         id: 1,
-        name: 'Alice Cruickshank',
+        name: "Alice Cruickshank",
         status: "offline",
-        roomId: 5
-      }
+        roomId: 5,
+      },
     ],
   },
   {
-    title: 'B',
+    title: "B",
     contacts: [
       {
         id: 1,
-        name: 'Barrett Brown',
+        name: "Barrett Brown",
         status: "offline",
         roomId: 1,
-        image: avatar4
-      }
+        image: avatar4,
+      },
     ],
   },
   {
-    title: 'C',
+    title: "C",
     contacts: [
       {
         id: 1,
-        name: 'Chris Kiernan',
+        name: "Chris Kiernan",
         status: "offline",
-        roomId: 3
+        roomId: 3,
       },
       {
         id: 2,
-        name: 'Clifford Taylor',
+        name: "Clifford Taylor",
         status: "offline",
-        roomId: 4
-      }
+        roomId: 4,
+      },
     ],
   },
   {
-    title: 'E',
+    title: "E",
     contacts: [
       {
         id: 1,
-        name: 'Edith Evans',
+        name: "Edith Evans",
         status: "offline",
-        roomId: 5
-      }
+        roomId: 5,
+      },
     ],
   },
   {
-    title: 'F',
+    title: "F",
     contacts: [
       {
         id: 1,
-        name: 'Frank Thomas',
+        name: "Frank Thomas",
         status: "offline",
         roomId: 6,
-        image: avatar3
-      }
+        image: avatar3,
+      },
     ],
   },
   {
-    title: 'G',
+    title: "G",
     contacts: [
       {
         id: 1,
-        name: 'Gilbert Beer',
+        name: "Gilbert Beer",
         status: "offline",
-        roomId: 7
-      }
+        roomId: 7,
+      },
     ],
   },
   {
-    title: 'J',
+    title: "J",
     contacts: [
       {
         id: 1,
-        name: 'Janette Caster',
+        name: "Janette Caster",
         status: "offline",
         roomId: 8,
-        image: avatar4
+        image: avatar4,
       },
       {
         id: 2,
-        name: 'Joseph Siegel',
+        name: "Joseph Siegel",
         status: "offline",
         roomId: 9,
-        image: avatar7
+        image: avatar7,
       },
       {
         id: 3,
-        name: 'Justyn Wisoky',
+        name: "Justyn Wisoky",
         status: "offline",
         roomId: 2,
-        image: avatar1
-      }
+        image: avatar1,
+      },
     ],
   },
   {
-    title: 'K',
+    title: "K",
     contacts: [
       {
         id: 1,
-        name: 'Keaton King',
+        name: "Keaton King",
         status: "offline",
         roomId: 11,
-        image: avatar5
-      }
+        image: avatar5,
+      },
     ],
   },
   {
-    title: 'L',
+    title: "L",
     contacts: [
       {
         id: 1,
-        name: 'Lisa Parker',
+        name: "Lisa Parker",
         status: "offline",
         roomId: 1,
-        image: avatar2
-      }
+        image: avatar2,
+      },
     ],
   },
   {
-    title: 'M',
+    title: "M",
     contacts: [
       {
         id: 1,
-        name: 'Marian Moen',
+        name: "Marian Moen",
         status: "offline",
-        roomId: 3
-      }
+        roomId: 3,
+      },
     ],
   },
   {
-    title: 'N',
+    title: "N",
     contacts: [
       {
         id: 1,
-        name: 'Nellie Cornett',
+        name: "Nellie Cornett",
         status: "offline",
         roomId: 4,
-        image: avatar6
-      }
+        image: avatar6,
+      },
     ],
   },
   {
-    title: 'R',
+    title: "R",
     contacts: [
       {
         id: 1,
-        name: 'Ronald Downey',
+        name: "Ronald Downey",
         status: "offline",
-        roomId: 5
-      }
+        roomId: 5,
+      },
     ],
   },
   {
-    title: 'S',
+    title: "S",
     contacts: [
       {
         id: 1,
-        name: 'Sarah Beattie',
+        name: "Sarah Beattie",
         status: "offline",
         roomId: 6,
-        image: avatar5
-      }
+        image: avatar5,
+      },
     ],
   },
   {
-    title: 'V',
+    title: "V",
     contacts: [
       {
         id: 1,
-        name: 'Victor Beahan',
+        name: "Victor Beahan",
         status: "offline",
         roomId: 7,
-        image: avatar10
-      }
+        image: avatar10,
+      },
     ],
   },
   {
-    title: 'W',
+    title: "W",
     contacts: [
       {
         id: 1,
-        name: 'Wayne Runte',
+        name: "Wayne Runte",
         status: "offline",
         roomId: 8,
-        image: avatar2
-      }
+        image: avatar2,
+      },
     ],
   },
 ];
 
-export { direactContact, channelsList, messages, attachements, chatContactData };
+export {
+  direactContact,
+  channelsList,
+  messages,
+  attachements,
+  chatContactData,
+};

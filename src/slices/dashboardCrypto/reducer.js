@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getPortfolioChartsData, getMarketChartsData } from './thunk';
+import { getPortfolioChartsData, getMarketChartsData } from "./thunk";
 export const initialState = {
   portfolioData: [],
   marketData: [],
-  error: {}
+  error: {},
 };
 
-
 const DashboardCryptoSlice = createSlice({
-  name: 'DashboardCrypto',
+  name: "DashboardCrypto",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -26,7 +25,7 @@ const DashboardCryptoSlice = createSlice({
     builder.addCase(getMarketChartsData.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default DashboardCryptoSlice.reducer;

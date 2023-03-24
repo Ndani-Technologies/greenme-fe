@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getMailDetails, deleteMail } from './thunk';
+import { getMailDetails, deleteMail } from "./thunk";
 
 export const initialState = {
   mailDetails: [],
   error: {},
-  isLoader : false
+  isLoader: false,
 };
 
 const MailBoxSlice = createSlice({
-  name: 'MailBoxSlice',
+  name: "MailBoxSlice",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -22,7 +22,7 @@ const MailBoxSlice = createSlice({
     });
     builder.addCase(deleteMail.fulfilled, (state, action) => {
       state.mailDetails = state.mailDetails.filter(
-        mail => mail.forId !== action.payload
+        (mail) => mail.forId !== action.payload
       );
       state.isMailDetailsDeleted = false;
     });
@@ -30,7 +30,7 @@ const MailBoxSlice = createSlice({
       state.error = action.payload.error || null;
       state.isMailDetailsDeleted = false;
     });
-  }
+  },
 });
 
 export default MailBoxSlice.reducer;

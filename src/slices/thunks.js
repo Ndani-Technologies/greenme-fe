@@ -55,10 +55,10 @@ export * from "./dashboardNFT/thunk";
 export * from "./team/thunk";
 
 // File Manager
-export * from "./fileManager/thunk"
+export * from "./fileManager/thunk";
 
 // To do
-export * from "./todos/thunk"
+export * from "./todos/thunk";
 
 // Jobs
 export * from "./jobs/thunk";

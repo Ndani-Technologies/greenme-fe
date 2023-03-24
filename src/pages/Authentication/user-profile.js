@@ -34,10 +34,10 @@ const UserProfile = () => {
 
   const [userName, setUserName] = useState("Admin");
 
-  const { user, success, error } = useSelector(state => ({
+  const { user, success, error } = useSelector((state) => ({
     user: state.Profile.user,
     success: state.Profile.success,
-    error: state.Profile.error
+    error: state.Profile.error,
   }));
 
   useEffect(() => {
@@ -60,22 +60,20 @@ const UserProfile = () => {
     }
   }, [dispatch, user]);
 
-
-
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
 
     initialValues: {
-      first_name: userName || 'Admin',
-      idx: idx || '',
+      first_name: userName || "Admin",
+      idx: idx || "",
     },
     validationSchema: Yup.object({
       first_name: Yup.string().required("Please Enter Your UserName"),
     }),
     onSubmit: (values) => {
       dispatch(editProfile(values));
-    }
+    },
   });
 
   document.title = "Profile | Velzon - React Admin & Dashboard Template";
@@ -86,7 +84,9 @@ const UserProfile = () => {
           <Row>
             <Col lg="12">
               {error && error ? <Alert color="danger">{error}</Alert> : null}
-              {success ? <Alert color="success">Username Updated To {userName}</Alert> : null}
+              {success ? (
+                <Alert color="success">Username Updated To {userName}</Alert>
+              ) : null}
 
               <Card>
                 <CardBody>
@@ -135,11 +135,17 @@ const UserProfile = () => {
                     onBlur={validation.handleBlur}
                     value={validation.values.first_name || ""}
                     invalid={
-                      validation.touched.first_name && validation.errors.first_name ? true : false
+                      validation.touched.first_name &&
+                      validation.errors.first_name
+                        ? true
+                        : false
                     }
                   />
-                  {validation.touched.first_name && validation.errors.first_name ? (
-                    <FormFeedback type="invalid">{validation.errors.first_name}</FormFeedback>
+                  {validation.touched.first_name &&
+                  validation.errors.first_name ? (
+                    <FormFeedback type="invalid">
+                      {validation.errors.first_name}
+                    </FormFeedback>
                   ) : null}
                   <Input name="idx" value={idx} type="hidden" />
                 </div>

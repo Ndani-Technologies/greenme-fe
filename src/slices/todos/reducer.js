@@ -1,5 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getTodos, addNewTodo, updateTodo, deleteTodo, getProjects, addNewProject } from './thunk';
+import {
+  getTodos,
+  addNewTodo,
+  updateTodo,
+  deleteTodo,
+  getProjects,
+  addNewProject,
+} from "./thunk";
 export const initialState = {
   todos: [],
   projects: [],
@@ -7,7 +14,7 @@ export const initialState = {
 };
 
 const TodosSlice = createSlice({
-  name: 'TodosSlice',
+  name: "TodosSlice",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -24,7 +31,7 @@ const TodosSlice = createSlice({
       state.error = action.payload.error || null;
     });
     builder.addCase(updateTodo.fulfilled, (state, action) => {
-      state.todos = state.todos.map(todo =>
+      state.todos = state.todos.map((todo) =>
         todo.id.toString() === action.payload.id.toString()
           ? { ...todo, ...action.payload }
           : todo
@@ -35,7 +42,7 @@ const TodosSlice = createSlice({
     });
     builder.addCase(deleteTodo.fulfilled, (state, action) => {
       state.todos = state.todos.filter(
-        todo => todo.id.toString() !== action.payload.id.toString()
+        (todo) => todo.id.toString() !== action.payload.id.toString()
       );
     });
     builder.addCase(deleteTodo.rejected, (state, action) => {
@@ -53,7 +60,7 @@ const TodosSlice = createSlice({
     builder.addCase(addNewProject.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default TodosSlice.reducer;

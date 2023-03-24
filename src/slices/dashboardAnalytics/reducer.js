@@ -1,16 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllData, getAudiencesMetricsChartsData, getUserDeviceChartsData, getAudiencesSessionsChartsData } from './thunk';
+import {
+  getAllData,
+  getAudiencesMetricsChartsData,
+  getUserDeviceChartsData,
+  getAudiencesSessionsChartsData,
+} from "./thunk";
 
 export const initialState = {
   chartData: [],
   audiencesMetricsData: [],
   userDeviceData: [],
   audiencesSessionsData: [],
-  error: {}
+  error: {},
 };
 
 const DashboardAnalyticsSlice = createSlice({
-  name: 'DashboardAnalytics',
+  name: "DashboardAnalytics",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -21,9 +26,12 @@ const DashboardAnalyticsSlice = createSlice({
       state.error = action.payload.error || null;
     });
 
-    builder.addCase(getAudiencesMetricsChartsData.fulfilled, (state, action) => {
-      state.audiencesMetricsData = action.payload;
-    });
+    builder.addCase(
+      getAudiencesMetricsChartsData.fulfilled,
+      (state, action) => {
+        state.audiencesMetricsData = action.payload;
+      }
+    );
     builder.addCase(getAudiencesMetricsChartsData.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
@@ -35,14 +43,19 @@ const DashboardAnalyticsSlice = createSlice({
       state.error = action.payload.error || null;
     });
 
-    builder.addCase(getAudiencesSessionsChartsData.fulfilled, (state, action) => {
-      state.audiencesSessionsData = action.payload;
-    });
-    builder.addCase(getAudiencesSessionsChartsData.rejected, (state, action) => {
-      state.error = action.payload.error || null;
-    });
-
-  }
+    builder.addCase(
+      getAudiencesSessionsChartsData.fulfilled,
+      (state, action) => {
+        state.audiencesSessionsData = action.payload;
+      }
+    );
+    builder.addCase(
+      getAudiencesSessionsChartsData.rejected,
+      (state, action) => {
+        state.error = action.payload.error || null;
+      }
+    );
+  },
 });
 
 export default DashboardAnalyticsSlice.reducer;

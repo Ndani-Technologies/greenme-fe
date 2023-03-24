@@ -1,5 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProducts, addNewProduct, updateProduct, deleteProducts, getOrders, addNewOrder, updateOrder, deleteOrder, getCustomers, addNewCustomer, updateCustomer, deleteCustomer, getSellers } from './thunk';
+import {
+  getProducts,
+  addNewProduct,
+  updateProduct,
+  deleteProducts,
+  getOrders,
+  addNewOrder,
+  updateOrder,
+  deleteOrder,
+  getCustomers,
+  addNewCustomer,
+  updateCustomer,
+  deleteCustomer,
+  getSellers,
+} from "./thunk";
 export const initialState = {
   products: [],
   orders: [],
@@ -9,7 +23,7 @@ export const initialState = {
 };
 
 const EcommerceSlice = createSlice({
-  name: 'EcommerceSlice',
+  name: "EcommerceSlice",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -30,11 +44,11 @@ const EcommerceSlice = createSlice({
     });
 
     builder.addCase(updateProduct.fulfilled, (state, action) => {
-      state.products = state.products.map(product =>
+      state.products = state.products.map((product) =>
         product._id.toString() === action.payload.data._id.toString()
           ? { ...product, ...action.payload.data }
           : product
-      );;
+      );
     });
 
     builder.addCase(updateProduct.rejected, (state, action) => {
@@ -42,7 +56,10 @@ const EcommerceSlice = createSlice({
     });
 
     builder.addCase(deleteProducts.fulfilled, (state, action) => {
-      state.products = (state.products || []).filter((product) => product._id.toString() !== action.payload.product.toString());
+      state.products = (state.products || []).filter(
+        (product) =>
+          product._id.toString() !== action.payload.product.toString()
+      );
     });
 
     builder.addCase(deleteProducts.rejected, (state, action) => {
@@ -58,7 +75,7 @@ const EcommerceSlice = createSlice({
     builder.addCase(getOrders.rejected, (state, action) => {
       state.error = action.payload.error || null;
       state.isOrderCreated = false;
-      state.isOrderSuccess = false;  
+      state.isOrderSuccess = false;
     });
 
     builder.addCase(addNewOrder.fulfilled, (state, action) => {
@@ -71,7 +88,7 @@ const EcommerceSlice = createSlice({
     });
 
     builder.addCase(updateOrder.fulfilled, (state, action) => {
-      state.orders = state.orders.map(order =>
+      state.orders = state.orders.map((order) =>
         order._id.toString() === action.payload.data._id.toString()
           ? { ...order, ...action.payload.data }
           : order
@@ -84,7 +101,7 @@ const EcommerceSlice = createSlice({
 
     builder.addCase(deleteOrder.fulfilled, (state, action) => {
       state.orders = state.orders.filter(
-        order => order._id.toString() !== action.payload.order.toString()
+        (order) => order._id.toString() !== action.payload.order.toString()
       );
     });
 
@@ -121,7 +138,7 @@ const EcommerceSlice = createSlice({
     });
 
     builder.addCase(updateCustomer.fulfilled, (state, action) => {
-      state.customers = state.customers.map(customer =>
+      state.customers = state.customers.map((customer) =>
         customer._id.toString() === action.payload.data._id.toString()
           ? { ...customer, ...action.payload.data }
           : customer
@@ -133,13 +150,14 @@ const EcommerceSlice = createSlice({
 
     builder.addCase(deleteCustomer.fulfilled, (state, action) => {
       state.customers = state.customers.filter(
-        customer => customer._id.toString() !== action.payload.customer.toString()
+        (customer) =>
+          customer._id.toString() !== action.payload.customer.toString()
       );
     });
     builder.addCase(deleteCustomer.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default EcommerceSlice.reducer;

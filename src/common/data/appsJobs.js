@@ -35,7 +35,7 @@ const jobWidgets = [
     id: 1,
     lable: "Application",
     icon: "ri-arrow-up-line ",
-    badgeColor : "success",
+    badgeColor: "success",
     chartColor: '["--vz-success" , "--vz-transparent"]',
     number: "16.24 %",
     series: [
@@ -49,7 +49,7 @@ const jobWidgets = [
     id: 2,
     lable: "Interviewed",
     icon: "ri-arrow-up-line ",
-    badgeColor : "success",
+    badgeColor: "success",
     chartColor: '["--vz-success" , "--vz-transparent"]',
     number: "34.24 %",
     series: [
@@ -63,7 +63,7 @@ const jobWidgets = [
     id: 3,
     lable: "Hired",
     icon: "ri-arrow-up-line ",
-    badgeColor : "success",
+    badgeColor: "success",
     chartColor: '["--vz-success" , "--vz-transparent"]',
     number: "6.67 %",
     series: [
@@ -77,7 +77,7 @@ const jobWidgets = [
     id: 4,
     lable: "Rejected",
     icon: "ri-arrow-down-line ",
-    badgeColor : "danger",
+    badgeColor: "danger",
     chartColor: '["--vz-danger" , "--vz-transparent"]',
     number: "3.24 %",
     series: [
@@ -149,7 +149,7 @@ const jobList = [
     location: "Escondido, California",
     applied: "640 Applied",
     postDate: "11 Sep, 2022",
-    bookMark: false
+    bookMark: false,
   },
   {
     id: 2,
@@ -165,7 +165,7 @@ const jobList = [
     location: "Vinninga, Sweden",
     applied: "134 Applied",
     postDate: "13 Sep, 2022",
-    bookMark: false
+    bookMark: false,
   },
   {
     id: 3,
@@ -181,7 +181,7 @@ const jobList = [
     location: "Cullera, Spain",
     applied: "79 Applied",
     postDate: "14 Sep, 2022",
-    bookMark: false
+    bookMark: false,
   },
   {
     id: 4,
@@ -197,7 +197,7 @@ const jobList = [
     location: "Stordorf, Germany",
     applied: "36 Applied",
     postDate: "14 Sep, 2022",
-    bookMark: false
+    bookMark: false,
   },
   {
     id: 5,
@@ -213,7 +213,7 @@ const jobList = [
     location: "United Kingdom",
     applied: "74 Applied",
     postDate: "15 Sep, 2022",
-    bookMark: false
+    bookMark: false,
   },
 ];
 

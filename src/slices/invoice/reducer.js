@@ -1,13 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getInvoices, addNewInvoice, updateInvoice, deleteInvoice } from './thunk';
+import {
+  getInvoices,
+  addNewInvoice,
+  updateInvoice,
+  deleteInvoice,
+} from "./thunk";
 export const initialState = {
   invoices: [],
   error: {},
 };
 
-
 const InvoiceSlice = createSlice({
-  name: 'InvoiceSlice',
+  name: "InvoiceSlice",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -29,7 +33,7 @@ const InvoiceSlice = createSlice({
       state.error = action.payload.error || null;
     });
     builder.addCase(updateInvoice.fulfilled, (state, action) => {
-      state.invoices = state.invoices.map(invoice =>
+      state.invoices = state.invoices.map((invoice) =>
         invoice._id.toString() === action.payload.data._id.toString()
           ? { ...invoice, ...action.payload.data }
           : invoice
@@ -40,13 +44,14 @@ const InvoiceSlice = createSlice({
     });
     builder.addCase(deleteInvoice.fulfilled, (state, action) => {
       state.invoices = state.invoices.filter(
-        invoice => invoice._id.toString() !== action.payload.invoice.toString()
+        (invoice) =>
+          invoice._id.toString() !== action.payload.invoice.toString()
       );
     });
     builder.addCase(deleteInvoice.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default InvoiceSlice.reducer;

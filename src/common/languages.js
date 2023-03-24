@@ -46,6 +46,6 @@ const languages = {
     label: "Arabic",
     flag: flagarabic,
   },
-}
+};
 
-export default languages
+export default languages;

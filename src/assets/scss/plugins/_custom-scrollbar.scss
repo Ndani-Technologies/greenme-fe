@@ -70,7 +70,7 @@
 
 .simplebar-content:before,
 .simplebar-content:after {
-  content: ' ';
+  content: " ";
   display: table;
 }
 
@@ -143,7 +143,7 @@
 
 .simplebar-scrollbar:before {
   position: absolute;
-  content: '';
+  content: "";
   background: #a2adb7;
   border-radius: 7px;
   left: 0;
@@ -190,7 +190,7 @@
 }
 
 /* Rtl support */
-[data-simplebar-direction='rtl'] .simplebar-track.simplebar-vertical {
+[data-simplebar-direction="rtl"] .simplebar-track.simplebar-vertical {
   right: auto;
   left: 0;
 }
@@ -219,8 +219,8 @@
 }
 
 @each $color, $value in $theme-colors {
-  [data-simplebar-track="#{$color}"]{
-    .simplebar-scrollbar:before{
+  [data-simplebar-track="#{$color}"] {
+    .simplebar-scrollbar:before {
       background: $value;
     }
   }

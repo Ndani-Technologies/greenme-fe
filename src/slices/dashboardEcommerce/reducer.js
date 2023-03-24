@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRevenueChartsData } from './thunk';
+import { getRevenueChartsData } from "./thunk";
 
 export const initialState = {
   revenueData: [],
-  error: {}
+  error: {},
 };
 
 const DashboardEcommerceSlice = createSlice({
-  name: 'DashboardEcommerce',
+  name: "DashboardEcommerce",
   initialState,
   reducer: {},
   extraReducers: (builder) => {
@@ -17,7 +17,7 @@ const DashboardEcommerceSlice = createSlice({
     builder.addCase(getRevenueChartsData.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default DashboardEcommerceSlice.reducer;

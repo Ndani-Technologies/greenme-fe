@@ -1,15 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProjectChartsData, getProjectStatusChartsData } from './thunk';
+import { getProjectChartsData, getProjectStatusChartsData } from "./thunk";
 
 export const initialState = {
   projectData: [],
   projectStatusData: [],
-  error: {}
+  error: {},
 };
 
-
 const DashboardProjectSlice = createSlice({
-  name: 'DashboardProject',
+  name: "DashboardProject",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -26,7 +25,7 @@ const DashboardProjectSlice = createSlice({
     builder.addCase(getProjectStatusChartsData.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-  }
+  },
 });
 
 export default DashboardProjectSlice.reducer;

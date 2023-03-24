@@ -35,8 +35,13 @@ const AccessRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={props => {
-        return (<> <Component {...props} /> </>);
+      render={(props) => {
+        return (
+          <>
+            {" "}
+            <Component {...props} />{" "}
+          </>
+        );
       }}
     />
   );

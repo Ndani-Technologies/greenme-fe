@@ -64,35 +64,35 @@ const featuredCompany = [
     img: img1,
     lable: "Force Medicines",
     city: " Cullera, Spain",
-    bgColor : "secondary"
+    bgColor: "secondary",
   },
   {
     id: 2,
     img: img3,
     lable: "Syntyce Solutions",
     city: "Mughairah, UAE",
-    bgColor : "warning"
+    bgColor: "warning",
   },
   {
     id: 3,
     img: img2,
     lable: "Moetic Fashion",
     city: "Mughairah, UAE",
-    bgColor : "primary"
+    bgColor: "primary",
   },
   {
     id: 4,
     img: img4,
     lable: "Meta4Systems",
     city: "Germany",
-    bgColor : "danger"
+    bgColor: "danger",
   },
   {
     id: 5,
     img: img5,
     lable: "Themesbrand",
     city: " Limestone, US",
-    bgColor : "danger"
+    bgColor: "danger",
   },
 ];
 
@@ -108,7 +108,7 @@ const recentApplicants = [
     type: "Full Time",
     typeColor: "success",
     rating: "5.0",
-    ratingDetails : "(245 Rating)"
+    ratingDetails: "(245 Rating)",
   },
   {
     id: 2,
@@ -121,7 +121,7 @@ const recentApplicants = [
     type: "Freelancer",
     typeColor: "secondary",
     rating: "4.7",
-    ratingDetails : "(1.34 Rating)"
+    ratingDetails: "(1.34 Rating)",
   },
   {
     id: 3,
@@ -134,7 +134,7 @@ const recentApplicants = [
     type: "Part Time",
     typeColor: "danger",
     rating: "4.5",
-    ratingDetails : "(2.93 Rating)"
+    ratingDetails: "(2.93 Rating)",
   },
   {
     id: 4,
@@ -147,7 +147,7 @@ const recentApplicants = [
     type: "Part Time",
     typeColor: "danger",
     rating: "2.3",
-    ratingDetails : "(4.5 Rating)"
+    ratingDetails: "(4.5 Rating)",
   },
   {
     id: 5,
@@ -160,7 +160,7 @@ const recentApplicants = [
     type: "Full Time",
     typeColor: "success",
     rating: "4.5",
-    ratingDetails : "(645 Rating)"
+    ratingDetails: "(645 Rating)",
   },
   {
     id: 6,
@@ -173,7 +173,7 @@ const recentApplicants = [
     type: "Freelancer",
     typeColor: "secondary",
     rating: "4.5",
-    ratingDetails : "(12 Rating)"
+    ratingDetails: "(12 Rating)",
   },
   {
     id: 7,
@@ -186,7 +186,7 @@ const recentApplicants = [
     type: "Part Time",
     typeColor: "danger",
     rating: "2.5",
-    ratingDetails : "(6.3 Rating)"
+    ratingDetails: "(6.3 Rating)",
   },
   {
     id: 8,
@@ -199,7 +199,7 @@ const recentApplicants = [
     type: "Full Time",
     typeColor: "success",
     rating: "4.7",
-    ratingDetails : "(23 Rating)"
+    ratingDetails: "(23 Rating)",
   },
 ];
 export { jobWidgets, featuredCompany, recentApplicants };

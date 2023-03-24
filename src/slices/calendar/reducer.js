@@ -1,14 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getEvents, addNewEvent, updateEvent, deleteEvent, getCategories, getUpCommingEvent ,resetCalendar} from './thunk';
+import {
+  getEvents,
+  addNewEvent,
+  updateEvent,
+  deleteEvent,
+  getCategories,
+  getUpCommingEvent,
+  resetCalendar,
+} from "./thunk";
 
 export const initialState = {
   events: [],
   categories: [],
   upcommingevents: [],
-  error: {}
+  error: {},
 };
-
 
 const calendarSlice = createSlice({
   name: "calendar",
@@ -77,7 +84,6 @@ const calendarSlice = createSlice({
     builder.addCase(resetCalendar.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-
   },
 });
 

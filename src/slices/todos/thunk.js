@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 //Include Both Helper File with needed methods
 import {
@@ -66,14 +66,17 @@ export const getProjects = createAsyncThunk("todos/getProjects", async () => {
   }
 });
 
-export const addNewProject = createAsyncThunk("todos/addNewProject", async (project) => {
-  try {
-    const response = addNewProjectApi(project);
-    const data = await response;
-    toast.success("Project Added Successfully", { autoClose: 3000 });
-    return data;
-  } catch (error) {
-    toast.error("Project Added Failed", { autoClose: 3000 });
-    return error;
+export const addNewProject = createAsyncThunk(
+  "todos/addNewProject",
+  async (project) => {
+    try {
+      const response = addNewProjectApi(project);
+      const data = await response;
+      toast.success("Project Added Successfully", { autoClose: 3000 });
+      return data;
+    } catch (error) {
+      toast.error("Project Added Failed", { autoClose: 3000 });
+      return error;
+    }
   }
-});
+);

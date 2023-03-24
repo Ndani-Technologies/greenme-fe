@@ -13,10 +13,7 @@ const DashboardEcommerce = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <Row>
-            
-            
-          </Row>
+          <Row></Row>
         </Container>
       </div>
     </React.Fragment>

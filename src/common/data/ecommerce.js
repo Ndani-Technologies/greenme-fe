@@ -29,7 +29,7 @@ const productsData = [
     type: "published",
     rating: 4.2,
     publishedDate: ["12 Oct, 2021", "10:05 AM"],
-    categories: "fashion"
+    categories: "fashion",
   },
   {
     id: 2,
@@ -42,7 +42,7 @@ const productsData = [
     type: "unpublished",
     rating: 3.3,
     publishedDate: ["06 Jan, 2021", "01:31 PM"],
-    categories: "furniture"
+    categories: "furniture",
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ const productsData = [
     type: "unpublished",
     rating: 4.5,
     publishedDate: ["26 Mar, 2021", "11:40 AM"],
-    categories: "grocery"
+    categories: "grocery",
   },
   {
     id: 4,
@@ -68,7 +68,7 @@ const productsData = [
     type: "unpublished",
     rating: 3.2,
     publishedDate: ["19 Apr, 2021", "02:51 PM"],
-    categories: "furniture"
+    categories: "furniture",
   },
   {
     id: 5,
@@ -81,7 +81,7 @@ const productsData = [
     type: "unpublished",
     rating: 4.4,
     publishedDate: ["30 Mar, 2021", "09:42 AM"],
-    categories: "auto"
+    categories: "auto",
   },
   {
     id: 6,
@@ -94,7 +94,7 @@ const productsData = [
     type: "unpublished",
     rating: 3.2,
     publishedDate: ["12 Oct, 2021", "04:55 PM"],
-    categories: "fashion"
+    categories: "fashion",
   },
   {
     id: 7,
@@ -107,7 +107,7 @@ const productsData = [
     type: "published",
     rating: 4.3,
     publishedDate: ["15 May, 2021", "03:40 PM"],
-    categories: "watches"
+    categories: "watches",
   },
   {
     id: 8,
@@ -120,7 +120,7 @@ const productsData = [
     type: "published",
     rating: 2.2,
     publishedDate: ["21 Jun, 2021", "12:18 PM"],
-    categories: "fashion"
+    categories: "fashion",
   },
   {
     id: 9,
@@ -133,7 +133,7 @@ const productsData = [
     type: "published",
     rating: 2.3,
     publishedDate: ["15 Jan, 2021", "10:29 AM"],
-    categories: "grocery"
+    categories: "grocery",
   },
   {
     id: 10,
@@ -146,7 +146,7 @@ const productsData = [
     type: "published",
     rating: 2.3,
     publishedDate: ["15 Jun, 2021", "03:51 Pm"],
-    categories: "kids"
+    categories: "kids",
   },
   {
     id: 11,
@@ -159,7 +159,7 @@ const productsData = [
     type: "published",
     rating: 4.2,
     publishedDate: ["12 Oct, 2021", "10:05 AM"],
-    categories: "fashion"
+    categories: "fashion",
   },
   {
     id: 12,
@@ -172,7 +172,7 @@ const productsData = [
     type: "published",
     rating: 4.3,
     publishedDate: ["06 Jan, 2021", "01:31 PM"],
-    categories: "furniture"
+    categories: "furniture",
   },
 ];
 
@@ -605,7 +605,7 @@ const orderSummary = [
     name: "Sweatshirt for Men (Pink)",
     price: 119.99,
     quantity: 2,
-    total: 239.98
+    total: 239.98,
   },
   {
     id: 2,
@@ -613,7 +613,7 @@ const orderSummary = [
     name: "Noise Evolve Smartwatch",
     price: 94.99,
     quantity: 1,
-    total: 94.99
+    total: 94.99,
   },
   {
     id: 3,
@@ -621,7 +621,7 @@ const orderSummary = [
     name: "350 ml Glass Grocery Container",
     price: 24.99,
     quantity: 1,
-    total: 24.99
+    total: 24.99,
   },
 ];
 
@@ -638,7 +638,7 @@ const sellersList = [
     chartdata: [12, 14, 2, 47, 42, 15, 47, 75, 65, 19, 14],
     color: "#f06548",
     balance: "$45,415",
-    category:"Health & Medicine"
+    category: "Health & Medicine",
   },
   {
     id: 2,
@@ -650,7 +650,7 @@ const sellersList = [
     chartdata: [12, 14, 2, 47, 42, 15, 35, 75, 20, 67, 89],
     color: "#11d1b7",
     balance: "$97,642",
-    category:"Manufacturer"
+    category: "Manufacturer",
   },
   {
     id: 3,
@@ -662,7 +662,7 @@ const sellersList = [
     chartdata: [45, 20, 8, 42, 30, 5, 35, 79, 22, 54, 64],
     color: "#f7b84b",
     balance: "$27,102",
-    category:"Manufacturer"
+    category: "Manufacturer",
   },
   {
     id: 4,
@@ -674,7 +674,7 @@ const sellersList = [
     chartdata: [26, 15, 48, 12, 47, 19, 35, 19, 85, 68, 50],
     color: "#11d1b7",
     balance: "$14,933",
-    category:"Food Service"
+    category: "Food Service",
   },
   {
     id: 5,
@@ -686,7 +686,7 @@ const sellersList = [
     chartdata: [60, 67, 12, 49, 6, 78, 63, 51, 33, 8, 16],
     color: "#f7b84b",
     balance: "$73,426",
-    category:"Computers & Electronics"
+    category: "Computers & Electronics",
   },
   {
     id: 6,
@@ -698,7 +698,7 @@ const sellersList = [
     chartdata: [78, 63, 51, 33, 8, 16, 60, 67, 12, 49],
     color: "#11d1b7",
     balance: "$34,241",
-    category:"Computers & Electronics"
+    category: "Computers & Electronics",
   },
   {
     id: 7,
@@ -710,7 +710,7 @@ const sellersList = [
     chartdata: [15, 35, 75, 20, 67, 8, 42, 30, 5, 35],
     color: "#f06548",
     balance: "$17,200",
-    category:"Manufacturer"
+    category: "Manufacturer",
   },
   {
     id: 8,
@@ -722,7 +722,7 @@ const sellersList = [
     chartdata: [45, 32, 68, 55, 36, 10, 48, 25, 74, 54],
     color: "#f7b84b",
     balance: "$97,642",
-    category:"Retailer"
+    category: "Retailer",
   },
 ];
 
@@ -736,7 +736,7 @@ const revenueWidgets = [
     decimals: 0,
     prefix: "",
     separator: "",
-    suffix: ""
+    suffix: "",
   },
   {
     id: 2,
@@ -745,7 +745,7 @@ const revenueWidgets = [
     decimals: 2,
     prefix: "$",
     separator: ",",
-    suffix: "k"
+    suffix: "k",
   },
   {
     id: 3,
@@ -754,7 +754,7 @@ const revenueWidgets = [
     decimals: 1,
     prefix: "$",
     separator: ",",
-    suffix: ""
+    suffix: "",
   },
   {
     id: 4,
@@ -764,10 +764,9 @@ const revenueWidgets = [
     decimals: 2,
     prefix: "",
     separator: "",
-    suffix: "%"
+    suffix: "%",
   },
 ];
-
 
 // Ecommerce > Seller Details > Products Review
 
@@ -826,4 +825,16 @@ const productsReview = [
   },
 ];
 
-export { productsData, productDetailsWidgets, reviews, orders, productDetails, customerList, shoppingCart, orderSummary, sellersList, revenueWidgets, productsReview };
+export {
+  productsData,
+  productDetailsWidgets,
+  reviews,
+  orders,
+  productDetails,
+  customerList,
+  shoppingCart,
+  orderSummary,
+  sellersList,
+  revenueWidgets,
+  productsReview,
+};
