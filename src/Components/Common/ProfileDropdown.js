@@ -16,7 +16,7 @@ const ProfileDropdown = () => {
     user: state.Profile.user,
   }));
 
-  const [userName, setUserName] = useState("Admin");
+  const [userName, setUserName] = useState("Test User");
 
   useEffect(() => {
     if (sessionStorage.getItem("authUser")) {
@@ -90,27 +90,14 @@ const ProfileDropdown = () => {
               <span className="align-middle">Taskboard</span>
             </Link>
           </DropdownItem>
-          <DropdownItem className="p-0">
-            <Link
-              to={process.env.PUBLIC_URL + "/pages-faqs"}
-              className="dropdown-item"
-            >
-              <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{" "}
-              <span className="align-middle">Help</span>
-            </Link>
-          </DropdownItem>
           <div className="dropdown-divider"></div>
-          <DropdownItem className="p-0">
-            <Link
-              to={process.env.PUBLIC_URL + "/pages-profile"}
-              className="dropdown-item"
-            >
-              <i className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i>{" "}
-              <span className="align-middle">
-                Balance : <b>$5971.67</b>
-              </span>
-            </Link>
-          </DropdownItem>
+          {/* <DropdownItem className='p-0'>
+                        <Link to={process.env.PUBLIC_URL + "/pages-profile"} className="dropdown-item">
+                            <i
+                                className="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span
+                                    className="align-middle">Balance : <b>$5971.67</b></span>
+                        </Link>
+                    </DropdownItem > */}
           <DropdownItem className="p-0">
             <Link
               to={process.env.PUBLIC_URL + "/pages-profile-settings"}
@@ -123,15 +110,12 @@ const ProfileDropdown = () => {
               <span className="align-middle">Settings</span>
             </Link>
           </DropdownItem>
-          <DropdownItem className="p-0">
-            <Link
-              to={process.env.PUBLIC_URL + "/auth-lockscreen-basic"}
-              className="dropdown-item"
-            >
-              <i className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>{" "}
-              <span className="align-middle">Lock screen</span>
-            </Link>
-          </DropdownItem>
+          {/* <DropdownItem className='p-0'>
+                        <Link to={process.env.PUBLIC_URL + "/auth-lockscreen-basic"} className="dropdown-item">
+                            <i
+                                className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span className="align-middle">Lock screen</span>
+                        </Link>
+                    </DropdownItem> */}
           <DropdownItem className="p-0">
             <Link
               to={process.env.PUBLIC_URL + "/logout"}

@@ -18,7 +18,7 @@ import logoLight from "../../../assets/images/logo-light.png";
 const BasicSignIn = () => {
   const [passwordShow, setPasswordShow] = useState(false);
 
-  document.title = "Basic SignIn | Velzon - React Admin & Dashboard Template";
+  document.title = "Basic SignIn |GreenMe";
   return (
     <React.Fragment>
       <ParticlesAuth>

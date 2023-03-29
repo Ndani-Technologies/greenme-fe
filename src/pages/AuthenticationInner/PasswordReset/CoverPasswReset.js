@@ -19,7 +19,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const CoverPasswReset = () => {
-  document.title = "Reset Password | Velzon - React Admin & Dashboard Template";
+  document.title = "Reset Password |GreenMe";
 
   const validation = useFormik({
     enableReinitialize: true,
