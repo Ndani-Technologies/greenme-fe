@@ -34,8 +34,8 @@ import Login from "../pages/Authentication/Login";
 import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
-import UserDetail from "../pages/UserDetail/UserDetail";
-import Contacts from "../pages/Contacts/Contacts";
+import UsersManagement from "../pages/Management/UserManagement";
+import Profile from "../pages/UserDetail/UserDetail";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -57,8 +57,8 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
-  { path: "/UserDetail", component: <UserDetail /> },
-  { path: "/Contacts", component: <Contacts /> },
+  { path: "/Profile", component: <Profile /> },
+  { path: "/UsersManagement", component: <UsersManagement /> },
 
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },

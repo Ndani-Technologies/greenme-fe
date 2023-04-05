@@ -16,6 +16,7 @@ const LightDark = ({ layoutMode, onChangeLayoutMode }) => {
   return (
     <div className="ms-1 header-item d-none d-sm-flex">
       <button
+        data-testid="darkButton"
         onClick={() => {
           onChangeLayoutMode(mode);
           dispatch(

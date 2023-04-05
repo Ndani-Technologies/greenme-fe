@@ -330,8 +330,8 @@ const Navdata = () => {
     {
       id: 1,
       icon: "ri-contacts-book-line",
-      label: "Contacts",
-      link: "/Contacts",
+      label: "Users Management",
+      link: "/UsersManagement",
     },
     //                 { id: 2, label: "Companies", link: "/#" },
     //                 { id: 3, label: "Deals", link: "/#" },
@@ -741,13 +741,13 @@ const Navdata = () => {
     //     stateVariables: isProfile,
     //     childItems: [
     // { id: 1, label: "Simple Page", link: "/#", parentId: "pages" },
-    {
-      id: 2,
-      icon: "ri-user-line",
-      label: "User Detail",
-      link: "/UserDetail",
-      parentId: "pages",
-    },
+    // {
+    //   id: 2,
+    //   icon: "ri-user-line",
+    //   label: "User Detail",
+    //   link: "/Profile",
+    //   parentId: "pages",
+    // },
     //     ]
     // },
     // { id: "team", label: "Team", link: "/#", parentId: "pages" },

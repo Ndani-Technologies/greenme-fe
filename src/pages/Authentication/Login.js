@@ -18,7 +18,7 @@ import ParticlesAuth from "../AuthenticationInner/ParticlesAuth";
 //redux
 import { useSelector, useDispatch } from "react-redux";
 
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 // Formik validation
 import * as Yup from "yup";
@@ -34,10 +34,12 @@ import { loginUser, socialLogin, resetLoginFlag } from "../../slices/thunks";
 import logoLight from "../../assets/images/logo-light.png";
 //Import config
 import { facebook, google } from "../../config";
+import { color } from "echarts";
 //import images
 
 const Login = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user } = useSelector((state) => ({
     user: state.Account.user,
   }));
@@ -53,7 +55,9 @@ const Login = (props) => {
       });
     }
   }, [user]);
-
+  const loginClicked = () => {
+    navigate("/Profile");
+  };
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -215,24 +219,26 @@ const Login = (props) => {
                           </p>
                         </div>
                         <div className="mt-4 d-flex justify-content-between">
-                          <NavLink to="/UserDetail">
-                            <Button
-                              style={{ width: "180px" }}
-                              color="success"
-                              disabled={error ? null : loading ? true : false}
-                              className="btn btn-success "
-                              type="submit"
-                            >
-                              {loading ? (
-                                <Spinner className="me-2"> Loading... </Spinner>
-                              ) : null}
-                              Sign In
-                            </Button>
-                          </NavLink>
+                          {/* <NavLink to="/Profile"> */}
                           <Button
                             style={{ width: "180px" }}
                             color="success"
-                            className="btn btn-success"
+                            onClick={loginClicked}
+                            disabled={error ? null : loading ? true : false}
+                            className="btn btn-success "
+                            type="submit"
+                            data-testid="loginButton"
+                          >
+                            {loading ? (
+                              <Spinner className="me-2"> Loading... </Spinner>
+                            ) : null}
+                            Sign In
+                          </Button>
+                          {/* </NavLink> */}
+                          <Button
+                            style={{ width: "180px" }}
+                            color="primary"
+                            className="btn"
                           >
                             Register
                           </Button>

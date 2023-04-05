@@ -23,9 +23,10 @@ import Flatpickr from "react-flatpickr";
 import progileBg from "../../../src/assets/images/profile-bg.jpg";
 import avatar1 from "../../../src/assets/images/users/avatar-1.jpg";
 import Layouts from "../../Layouts";
+import { Icon } from "leaflet";
 
-const UserDetail = () => {
-  document.title = "User-Detail |GreenMe";
+const Profile = () => {
+  document.title = "Profile |GreenMe";
   const [activeTab, setActiveTab] = useState("1");
 
   const tabChange = (tab) => {
@@ -63,6 +64,16 @@ const UserDetail = () => {
             <Row>
               <Col xxl={3}>
                 <Card className="mt-n5">
+                  <h1
+                    style={{
+                      marginTop: "-100px",
+                      color: "#fff",
+                      fontSize: "40px",
+                      fontWeight: "400",
+                    }}
+                  >
+                    My Profile
+                  </h1>
                   <CardBody className="p-4">
                     <div className="text-center">
                       <div className="profile-user position-relative d-inline-block mx-auto  mb-4">
@@ -177,7 +188,56 @@ const UserDetail = () => {
               </Col>
 
               <Col xxl={9}>
-                <Card className="mt-xxl-n5">
+                <div className="mt-xxl-n5 card">
+                  <div className="d-flex padding">
+                    <div className="d-flex justify-content-between w-25 border-end custom-padding">
+                      <div>
+                        <span className="fs-7">BENCHMARKING</span>
+                        <div>
+                          <span className="fs-3">5/10</span>
+                        </div>
+                      </div>
+                      <i class="ri-arrow-up-circle-line"></i>
+                    </div>
+                    <div className="d-flex justify-content-between w-25 border-end p-15  custom-padding">
+                      <div>
+                        <span className="fs-7">RECOMMENDED ACTIONS</span>
+                        <div>
+                          <span className="fs-3">39/48</span>
+                        </div>
+                      </div>
+                      <i class="ri-arrow-up-circle-line"></i>
+                    </div>
+                    <div className="d-flex justify-content-between w-25 border-end custom-padding ">
+                      <div>
+                        <span className="fs-7">DISCUSSIONS</span>
+                        <div>
+                          <span className="fs-3">4 Active</span>
+                        </div>
+                      </div>
+                      <i class="ri-arrow-up-circle-line"></i>
+                    </div>
+                    <div className="d-flex justify-content-between w-25 border-end custom-padding ">
+                      <div>
+                        <span className="fs-7">COLLABORATIONS</span>
+                        <div>
+                          <span className="fs-3">5 Active</span>
+                        </div>
+                      </div>
+                      <i class="ri-arrow-up-circle-line"></i>
+                    </div>
+                    <div className="d-flex justify-content-between w-25 custom-padding custom-padding ">
+                      <div>
+                        <span className="fs-7">LEADERBOARD</span>
+                        <div>
+                          <span className="fs-3">200 points</span>
+                        </div>
+                      </div>
+                      <i class="ri-arrow-up-circle-line"></i>
+                    </div>
+                  </div>
+                </div>
+                <Card className="mt-xxl-n2">
                   <CardHeader>
                     <Nav
                       className="nav-tabs-custom rounded card-header-tabs border-bottom-0"
@@ -194,7 +254,7 @@ const UserDetail = () => {
                           Personal Details
                         </NavLink>
                       </NavItem>
-                      <NavItem>
+                      {/* <NavItem>
                         <NavLink
                           to="#"
                           // className={classnames({ active: activeTab === "2" })}
@@ -205,8 +265,8 @@ const UserDetail = () => {
                         >
                           Change Password
                         </NavLink>
-                      </NavItem>
-                      <NavItem>
+                      </NavItem> */}
+                      {/* <NavItem>
                         <NavLink
                           to="#"
                           // className={classnames({ active: activeTab === "3" })}
@@ -217,8 +277,8 @@ const UserDetail = () => {
                         >
                           Experience
                         </NavLink>
-                      </NavItem>
-                      <NavItem>
+                      </NavItem> */}
+                      {/* <NavItem>
                         <NavLink
                           to="#"
                           // className={classnames({ active: activeTab === "4" })}
@@ -229,7 +289,7 @@ const UserDetail = () => {
                         >
                           Privacy Policy
                         </NavLink>
-                      </NavItem>
+                      </NavItem> */}
                     </Nav>
                   </CardHeader>
                   <CardBody className="p-4">
@@ -359,8 +419,10 @@ const UserDetail = () => {
                                 >
                                   Role
                                 </Label>
-                                <select className="form-select mb-3">
-                                  <option>Select your Skill </option>
+                                <select multiple className="form-select mb-3">
+                                  <option hidden selected>
+                                    Select your role
+                                  </option>
                                   <option value="Choices1">
                                     Local Fleet Manager
                                   </option>
@@ -413,7 +475,7 @@ const UserDetail = () => {
                                   type="button"
                                   className="btn btn-primary"
                                 >
-                                  Updates
+                                  Update
                                 </button>
                                 <button
                                   type="button"
@@ -1026,4 +1088,4 @@ const UserDetail = () => {
   );
 };
 
-export default UserDetail;
+export default Profile;

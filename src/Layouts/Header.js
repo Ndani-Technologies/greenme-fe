@@ -110,6 +110,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
               </div>
 
               <button
+                data-id="menuButton"
                 onClick={toogleMenuBtn}
                 type="button"
                 className="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"

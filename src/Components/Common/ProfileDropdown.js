@@ -72,7 +72,7 @@ const ProfileDropdown = () => {
               className="dropdown-item"
             >
               <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-              <span className="align-middle">Profile</span>
+              <span className="align-middle"> User Profile</span>
             </Link>
           </DropdownItem>
           <DropdownItem className="p-0">

@@ -8,6 +8,7 @@ import ExportCSVModal from "../../Components/Common/ExportCSVModal";
 
 // Import Images
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
+import avatar from "../../assets/images/avatar-6.jpg";
 
 import {
   Col,
@@ -56,7 +57,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Layout } from "feather-icons-react/build/IconComponents";
 import Layouts from "../../Layouts";
 
-const Contacts = () => {
+const UsersManagement = () => {
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
@@ -69,6 +70,7 @@ const Contacts = () => {
   useEffect(() => {
     if (crmcontacts && !crmcontacts.length) {
       dispatch(onGetContacts());
+      // setContact(arr)
     }
   }, [dispatch, crmcontacts]);
 
@@ -341,7 +343,7 @@ const Contacts = () => {
         id: "#",
       },
       {
-        Header: "Name",
+        Header: "Full Name",
         accessor: "name",
         filterable: false,
         Cell: (contact) => (
@@ -352,9 +354,10 @@ const Contacts = () => {
                   contact.row.original.image_src ? (
                     <img
                       src={
-                        process.env.REACT_APP_API_URL +
-                        "/images/users/" +
-                        contact.row.original.image_src
+                        avatar
+                        // process.env.REACT_APP_API_URL +
+                        // "../../assets/images/" +
+                        // contact.row.original.image_src
                       }
                       alt=""
                       className="avatar-xxs rounded-circle"
@@ -377,54 +380,55 @@ const Contacts = () => {
         ),
       },
       {
-        Header: "Company",
+        Header: "Orgnaization",
         accessor: "company",
         filterable: false,
       },
       {
-        Header: "Email ID",
+        Header: "Email",
         accessor: "email",
         filterable: false,
       },
       {
-        Header: "Phone No",
+        Header: "Role",
         accessor: "phone",
         filterable: false,
       },
       {
-        Header: "Lead Score",
+        Header: "Country",
         accessor: "lead_score",
         filterable: false,
       },
       {
-        Header: "Tags",
-        Cell: (contact) => (
-          <>
-            {contact.row.original.tags.map((item, key) => (
-              <span className="badge badge-soft-primary me-1" key={key}>
-                {item}
-              </span>
-            ))}
-          </>
-        ),
+        Header: "Status",
+        accessor: "tags",
+        // Cell: (contact) => (
+        //   <>
+        //     {contact.row.original.tags.map((item, key) => (
+        //       <span className="badge badge-soft-primary me-1" key={key}>
+        //         {item}
+        //       </span>
+        //     ))}
+        //   </>
+        // ),
       },
+      // {
+      //   Header: "Last Contacted",
+      //   Cell: (contact) => (
+      //     <>
+      //       {handleValidDate(contact.row.original.last_contacted)},{" "}
+      //       <small className="text-muted">
+      //         {handleValidTime(contact.row.original.last_contacted)}
+      //       </small>
+      //     </>
+      //   ),
+      // },
       {
-        Header: "Last Contacted",
-        Cell: (contact) => (
-          <>
-            {handleValidDate(contact.row.original.last_contacted)},{" "}
-            <small className="text-muted">
-              {handleValidTime(contact.row.original.last_contacted)}
-            </small>
-          </>
-        ),
-      },
-      {
-        Header: "Action",
+        Header: "Actions",
         Cell: (cellProps) => {
           return (
             <ul className="list-inline hstack gap-2 mb-0">
-              <li className="list-inline-item edit" title="Call">
+              {/* <li className="list-inline-item edit" title="Call">
                 <Link to="#" className="text-muted d-inline-block">
                   <i className="ri-phone-line fs-16"></i>
                 </Link>
@@ -433,7 +437,7 @@ const Contacts = () => {
                 <Link to="#" className="text-muted d-inline-block">
                   <i className="ri-question-answer-line fs-16"></i>
                 </Link>
-              </li>
+              </li> */}
               <li className="list-inline-item">
                 <UncontrolledDropdown>
                   <DropdownToggle
@@ -444,7 +448,7 @@ const Contacts = () => {
                     <i className="ri-more-fill align-middle"></i>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-menu-end">
-                    <DropdownItem
+                    {/* <DropdownItem
                       className="dropdown-item"
                       href="#"
                       onClick={() => {
@@ -454,7 +458,7 @@ const Contacts = () => {
                     >
                       <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "}
                       View
-                    </DropdownItem>
+                    </DropdownItem> */}
                     <DropdownItem
                       className="dropdown-item edit-item-btn"
                       href="#"
@@ -510,7 +514,7 @@ const Contacts = () => {
   // Export Modal
   const [isExportCSV, setIsExportCSV] = useState(false);
 
-  document.title = "Contacts | GreenMe";
+  document.title = "UsersManagement | GreenMe";
   return (
     <React.Fragment>
       <Layouts>
@@ -534,13 +538,13 @@ const Contacts = () => {
             onCloseClick={() => setDeleteModalMulti(false)}
           />
           <Container fluid>
-            <BreadCrumb title="Contacts" pageTitle="CRM" />
+            <BreadCrumb title="User Management" pageTitle="CRM" />
             <Row>
               <Col lg={12}>
                 <Card>
                   <CardHeader>
                     <div className="d-flex align-items-center flex-wrap gap-2">
-                      <div className="flex-grow-1">
+                      {/* <div className="flex-grow-1">
                         <button
                           className="btn btn-info add-btn"
                           onClick={() => {
@@ -550,7 +554,7 @@ const Contacts = () => {
                           <i className="ri-add-fill me-1 align-bottom"></i> Add
                           Contacts
                         </button>
-                      </div>
+                      </div> */}
                       <div className="flex-shrink-0">
                         <div className="hstack text-nowrap gap-2">
                           {isMultiDeleteButton && (
@@ -969,9 +973,10 @@ const Contacts = () => {
                     <div className="position-relative d-inline-block">
                       <img
                         src={
-                          process.env.REACT_APP_API_URL +
-                          "/images/users/" +
-                          (info.image_src || "avatar-10.jpg")
+                          avatar
+                          // process.env.REACT_APP_API_URL +
+                          // "/images/users/" +
+                          // (info.image_src || "avatar-10.jpg")
                         }
                         alt=""
                         className="avatar-lg rounded-circle img-thumbnail"
@@ -1085,4 +1090,4 @@ const Contacts = () => {
   );
 };
 
-export default Contacts;
+export default UsersManagement;

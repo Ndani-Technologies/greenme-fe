@@ -11,6 +11,7 @@
     "@fullcalendar/interaction": "^6.0.3",
     "@fullcalendar/list": "^6.0.3",
     "@fullcalendar/react": "^6.0.4",
+    "@mui/icons-material": "^5.11.16",
     "@reduxjs/toolkit": "^1.9.1",
     "@simonwep/pickr": "^1.8.2",
     "@testing-library/jest-dom": "^5.16.5",
@@ -37,6 +38,7 @@
     "google-maps-react": "^2.0.6",
     "gridjs": "^5.1.0",
     "gridjs-react": "^5.1.0",
+    "history": "^5.3.0",
     "i18next": "^22.4.9",
     "i18next-browser-languagedetector": "^7.0.1",
     "leaflet": "^1.9.3",
@@ -131,7 +133,8 @@
     "babel-eslint": "^10.1.0",
     "husky": ">=6",
     "lint-staged": ">=10",
-    "prettier": "^2.8.7"
+    "prettier": "^2.8.7",
+    "react-test-renderer": "^18.2.0"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,scss,md}": "prettier --write"
