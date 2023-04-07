@@ -390,15 +390,16 @@ const UsersManagement = () => {
         filterable: false,
       },
       {
-        Header: "Role",
-        accessor: "phone",
-        filterable: false,
-      },
-      {
         Header: "Country",
         accessor: "lead_score",
         filterable: false,
       },
+      // {
+      //   Header: "Role",
+      //   accessor: "phone",
+      //   filterable: false,
+      // },
+
       {
         Header: "Status",
         accessor: "tags",
@@ -412,32 +413,22 @@ const UsersManagement = () => {
         //   </>
         // ),
       },
-      // {
-      //   Header: "Last Contacted",
-      //   Cell: (contact) => (
-      //     <>
-      //       {handleValidDate(contact.row.original.last_contacted)},{" "}
-      //       <small className="text-muted">
-      //         {handleValidTime(contact.row.original.last_contacted)}
-      //       </small>
-      //     </>
-      //   ),
-      // },
       {
-        Header: "Actions",
+        Header: "Last Seen",
+        Cell: (contact) => (
+          <>
+            {handleValidDate(contact.row.original.last_contacted)},{" "}
+            <small className="text-muted">
+              {/* {handleValidTime(contact.row.original.last_contacted)} */}
+            </small>
+          </>
+        ),
+      },
+      {
+        Header: "Action",
         Cell: (cellProps) => {
           return (
             <ul className="list-inline hstack gap-2 mb-0">
-              {/* <li className="list-inline-item edit" title="Call">
-                <Link to="#" className="text-muted d-inline-block">
-                  <i className="ri-phone-line fs-16"></i>
-                </Link>
-              </li>
-              <li className="list-inline-item edit" title="Message">
-                <Link to="#" className="text-muted d-inline-block">
-                  <i className="ri-question-answer-line fs-16"></i>
-                </Link>
-              </li> */}
               <li className="list-inline-item">
                 <UncontrolledDropdown>
                   <DropdownToggle
@@ -448,7 +439,7 @@ const UsersManagement = () => {
                     <i className="ri-more-fill align-middle"></i>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-menu-end">
-                    {/* <DropdownItem
+                    <DropdownItem
                       className="dropdown-item"
                       href="#"
                       onClick={() => {
@@ -456,9 +447,20 @@ const UsersManagement = () => {
                         setInfo(contactData);
                       }}
                     >
-                      <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "}
+                      {/* <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "} */}
                       View
-                    </DropdownItem> */}
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item"
+                      href="#"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        setInfo(contactData);
+                      }}
+                    >
+                      {/* <i className="ri-eye-fill align-bottom me-2 text-muted"></i>{" "} */}
+                      Activate
+                    </DropdownItem>
                     <DropdownItem
                       className="dropdown-item edit-item-btn"
                       href="#"
@@ -467,7 +469,7 @@ const UsersManagement = () => {
                         handleContactClick(contactData);
                       }}
                     >
-                      <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "}
+                      {/* <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "} */}
                       Edit
                     </DropdownItem>
                     <DropdownItem
@@ -478,7 +480,7 @@ const UsersManagement = () => {
                         onClickDelete(contactData);
                       }}
                     >
-                      <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "}
+                      {/* <i className="ri-delete-bin-fill align-bottom me-2 text-muted"></i>{" "} */}
                       Delete
                     </DropdownItem>
                   </DropdownMenu>
@@ -538,13 +540,14 @@ const UsersManagement = () => {
             onCloseClick={() => setDeleteModalMulti(false)}
           />
           <Container fluid>
-            <BreadCrumb title="User Management" pageTitle="CRM" />
+            <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
             <Row>
+              {/* For Future Use
               <Col lg={12}>
                 <Card>
                   <CardHeader>
                     <div className="d-flex align-items-center flex-wrap gap-2">
-                      {/* <div className="flex-grow-1">
+                      <div className="flex-grow-1">
                         <button
                           className="btn btn-info add-btn"
                           onClick={() => {
@@ -554,7 +557,7 @@ const UsersManagement = () => {
                           <i className="ri-add-fill me-1 align-bottom"></i> Add
                           Contacts
                         </button>
-                      </div> */}
+                      </div>
                       <div className="flex-shrink-0">
                         <div className="hstack text-nowrap gap-2">
                           {isMultiDeleteButton && (
@@ -604,7 +607,7 @@ const UsersManagement = () => {
                     </div>
                   </CardHeader>
                 </Card>
-              </Col>
+              </Col> */}
               <Col xxl={9}>
                 <Card id="contactList">
                   <CardBody className="pt-0">
@@ -618,7 +621,7 @@ const UsersManagement = () => {
                           isAddUserList={false}
                           customPageSize={8}
                           className="custom-header-css"
-                          divClass="table-responsive table-card mb-3"
+                          divClass="table-responsive table-card mb-0"
                           tableClass="align-middle table-nowrap"
                           theadClass="table-light"
                           handleContactClick={handleContactClicks}
@@ -987,10 +990,10 @@ const UsersManagement = () => {
                     </div>
                     <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
                     <p className="text-muted">
-                      {info.company || "Nesta Technologies"}
+                      {info.company || "FleetMGT Co. Z"}
                     </p>
 
-                    <ul className="list-inline mb-0">
+                    {/* <ul className="list-inline mb-0">
                       <li className="list-inline-item avatar-xs">
                         <Link
                           to="#"
@@ -1015,38 +1018,37 @@ const UsersManagement = () => {
                           <i className="ri-question-answer-line"></i>
                         </Link>
                       </li>
-                    </ul>
+                    </ul> */}
                   </CardBody>
                   <CardBody>
-                    <h6 className="text-muted text-uppercase fw-semibold mb-3">
-                      Personal Information
-                    </h6>
-                    <p className="text-muted mb-4">
-                      Hello, I'm {info.name || "Tonya Noble"}, The most
-                      effective objective is one that is tailored to the job you
-                      are applying for. It states what kind of career you are
-                      seeking, and what skills and experiences.
-                    </p>
                     <div className="table-responsive table-card">
                       <Table className="table table-borderless mb-0">
                         <tbody>
                           <tr>
+                            <td className="fw-medium">Country</td>
+                            <td>UK</td>
+                          </tr>
+                          <tr>
                             <td className="fw-medium">Designation</td>
-                            <td>Lead Designer / Developer</td>
+                            <td>Global Fleet Manager</td>
                           </tr>
                           <tr>
                             <td className="fw-medium">Email ID</td>
                             <td>{info.email || "tonyanoble@velzon.com"}</td>
                           </tr>
                           <tr>
-                            <td className="fw-medium">Phone No</td>
-                            <td>{info.phone || "414-453-5725"}</td>
+                            <td className="fw-medium">Points</td>
+                            <td>235</td>
                           </tr>
                           <tr>
-                            <td className="fw-medium">Lead Score</td>
+                            <td className="fw-medium">Leaderboard points</td>
                             <td>{info.lead_score || "154"}</td>
                           </tr>
                           <tr>
+                            <td className="fw-medium">Area of Expertise</td>
+                            <td>Tracking, Management.</td>
+                          </tr>
+                          {/* <tr>
                             <td className="fw-medium">Tags</td>
                             <td>
                               {(info.tags || ["Lead", "Partner"]).map(
@@ -1060,8 +1062,8 @@ const UsersManagement = () => {
                                 )
                               )}
                             </td>
-                          </tr>
-                          <tr>
+                          </tr> */}
+                          {/* <tr>
                             <td className="fw-medium">Last Contacted</td>
                             <td>
                               {handleValidDate(
@@ -1075,9 +1077,60 @@ const UsersManagement = () => {
                                 )}
                               </small>
                             </td>
-                          </tr>
+                          </tr> */}
                         </tbody>
                       </Table>
+                    </div>
+                  </CardBody>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-4">
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{ width: "40%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">40%</div>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-0">Benchmark progress</h5>
+                      </div>
+                    </div>
+                  </CardBody>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-0">
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{ width: "30%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">30%</div>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-0">
+                          Recommended actions progress
+                        </h5>
+                      </div>
+                    </div>
+                    <div className="d-flex gap-2 ">
+                      <span className="mt-2">Chat</span>
+                      <span className="avatar-xs">
+                        <Link
+                          to="#"
+                          className="avatar-title bg-soft-warning text-warning fs-15 rounded"
+                        >
+                          <i className="ri-question-answer-line"></i>
+                        </Link>
+                      </span>
                     </div>
                   </CardBody>
                 </Card>

@@ -98,8 +98,10 @@ const Profile = () => {
                           </Label>
                         </div>
                       </div>
-                      <h5 className="fs-16 mb-1">Test User</h5>
-                      <p className="text-muted mb-0">Local Fleet Manager</p>
+                      <h5 className="fs-16 mb-1">Dave</h5>
+                      <p className="text-muted mb-0">Global Fleet Manager</p>
+                      <p className="text-muted mb-0">FleetMGT Co. A</p>
+                      <p className="text-muted mb-0">Kenya</p>
                     </div>
                   </CardBody>
                 </Card>
@@ -108,9 +110,7 @@ const Profile = () => {
                   <CardBody>
                     <div className="d-flex align-items-center mb-5">
                       <div className="flex-grow-1">
-                        <h5 className="card-title mb-0">
-                          Complete Your Profile
-                        </h5>
+                        <h5 className="card-title mb-0">Profile Completion</h5>
                       </div>
                       <div className="flex-shrink-0">
                         <Link
@@ -124,7 +124,44 @@ const Profile = () => {
                     </div>
                     <div className="progress animated-progress custom-progress progress-label">
                       <div
-                        className="progress-bar bg-info"
+                        className="progress-bar bg-"
+                        role="progressbar"
+                        style={{ width: "80%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">80%</div>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-4">
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{ width: "40%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">40%</div>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-0">Benchmark progress</h5>
+                      </div>
+                    </div>
+                  </CardBody>
+                </Card>
+                <Card>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-4">
+                      <div
+                        className="progress-bar bg- "
                         role="progressbar"
                         style={{ width: "30%" }}
                         aria-valuenow="30"
@@ -134,8 +171,16 @@ const Profile = () => {
                         <div className="label">30%</div>
                       </div>
                     </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-0">
+                          Recommended actions progress
+                        </h5>
+                      </div>
+                    </div>
                   </CardBody>
                 </Card>
+                {/* For Future Use */}
                 {/* <Card>
                                 <CardBody>
                                     <div className="d-flex align-items-center mb-4">
@@ -189,7 +234,7 @@ const Profile = () => {
 
               <Col xxl={9}>
                 <div className="mt-xxl-n5 card">
-                  <div className="d-flex padding">
+                  <div className="d-flex">
                     <div className="d-flex justify-content-between w-25 border-end custom-padding">
                       <div>
                         <span className="fs-7">BENCHMARKING</span>
@@ -197,7 +242,10 @@ const Profile = () => {
                           <span className="fs-3">5/10</span>
                         </div>
                       </div>
-                      <i class="ri-arrow-up-circle-line"></i>
+                      <i
+                        class="ri-arrow-up-circle-line"
+                        style={{ color: "#11D1BD" }}
+                      ></i>
                     </div>
                     <div className="d-flex justify-content-between w-25 border-end p-15  custom-padding">
                       <div>
@@ -206,7 +254,10 @@ const Profile = () => {
                           <span className="fs-3">39/48</span>
                         </div>
                       </div>
-                      <i class="ri-arrow-up-circle-line"></i>
+                      <i
+                        class="ri-arrow-up-circle-line"
+                        style={{ color: "#11D1BD" }}
+                      ></i>
                     </div>
                     <div className="d-flex justify-content-between w-25 border-end custom-padding ">
                       <div>
@@ -215,7 +266,10 @@ const Profile = () => {
                           <span className="fs-3">4 Active</span>
                         </div>
                       </div>
-                      <i class="ri-arrow-up-circle-line"></i>
+                      <i
+                        class="ri-arrow-down-circle-line"
+                        style={{ color: "#FF7F47" }}
+                      ></i>
                     </div>
                     <div className="d-flex justify-content-between w-25 border-end custom-padding ">
                       <div>
@@ -224,7 +278,10 @@ const Profile = () => {
                           <span className="fs-3">5 Active</span>
                         </div>
                       </div>
-                      <i class="ri-arrow-up-circle-line"></i>
+                      <i
+                        class="ri-arrow-up-circle-line"
+                        style={{ color: "#11D1BD" }}
+                      ></i>
                     </div>
                     <div className="d-flex justify-content-between w-25 custom-padding custom-padding ">
                       <div>
@@ -233,14 +290,17 @@ const Profile = () => {
                           <span className="fs-3">200 points</span>
                         </div>
                       </div>
-                      <i class="ri-arrow-up-circle-line"></i>
+                      <i
+                        class="ri-arrow-down-circle-line"
+                        style={{ color: "#FF7F47" }}
+                      ></i>
                     </div>
                   </div>
                 </div>
                 <Card className="mt-xxl-n2">
                   <CardHeader>
                     <Nav
-                      className="nav-tabs-custom rounded card-header-tabs border-bottom-0"
+                      className="nav-tabs-custom rounded card-header-tabs border-bottom-0 d-flex justify-content-between"
                       role="tablist"
                     >
                       <NavItem>
@@ -254,7 +314,7 @@ const Profile = () => {
                           Personal Details
                         </NavLink>
                       </NavItem>
-                      {/* <NavItem>
+                      <NavItem>
                         <NavLink
                           to="#"
                           // className={classnames({ active: activeTab === "2" })}
@@ -263,10 +323,10 @@ const Profile = () => {
                           // }}
                           type="button"
                         >
-                          Change Password
+                          Benchmarking
                         </NavLink>
-                      </NavItem> */}
-                      {/* <NavItem>
+                      </NavItem>
+                      <NavItem>
                         <NavLink
                           to="#"
                           // className={classnames({ active: activeTab === "3" })}
@@ -275,21 +335,45 @@ const Profile = () => {
                           // }}
                           type="button"
                         >
-                          Experience
+                          Recommended Actions
                         </NavLink>
-                      </NavItem> */}
-                      {/* <NavItem>
+                      </NavItem>
+                      <NavItem>
                         <NavLink
                           to="#"
-                          // className={classnames({ active: activeTab === "4" })}
+                          // className={classnames({ active: activeTab === "3" })}
                           // onClick={() => {
-                          //     tabChange("4");
+                          //     tabChange("3");
                           // }}
                           type="button"
                         >
-                          Privacy Policy
+                          Discussions
                         </NavLink>
-                      </NavItem> */}
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          to="#"
+                          // className={classnames({ active: activeTab === "3" })}
+                          // onClick={() => {
+                          //     tabChange("3");
+                          // }}
+                          type="button"
+                        >
+                          Collaborations
+                        </NavLink>
+                      </NavItem>
+                      <NavItem>
+                        <NavLink
+                          to="#"
+                          // className={classnames({ active: activeTab === "3" })}
+                          // onClick={() => {
+                          //     tabChange("3");
+                          // }}
+                          type="button"
+                        >
+                          Leaderboard
+                        </NavLink>
+                      </NavItem>
                     </Nav>
                   </CardHeader>
                   <CardBody className="p-4">
@@ -356,7 +440,7 @@ const Profile = () => {
                                   className="form-control"
                                   id="emailInput"
                                   placeholder="Enter your email"
-                                  defaultValue="testuser@fleetforum.org"
+                                  defaultValue="daveadame@velzon.com"
                                   disabled
                                 />
                               </div>
@@ -368,35 +452,15 @@ const Profile = () => {
                                   htmlFor="Orgnaization"
                                   className="form-label"
                                 >
-                                  Test Orgnaization
+                                  Orgnaization
                                 </Label>
                                 <Input
                                   type="Orgnaization"
                                   className="form-control"
                                   id="Orgnaization"
-                                  placeholder="Test Orgnaization"
+                                  placeholder="FleetMGT Co. X"
                                   disabled
                                 />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="Expertise"
-                                  className="form-label"
-                                >
-                                  Area of Expertise
-                                </Label>
-                                <select className="form-select mb-3" disabled>
-                                  <option>Select your Expertise </option>
-                                  <option value="Choices1">
-                                    Armored vehicles
-                                  </option>
-                                  <option value="Choices2">
-                                    {" "}
-                                    Journey management
-                                  </option>
-                                </select>
                               </div>
                             </Col>
                             {/* <Col lg={12}>
@@ -419,56 +483,70 @@ const Profile = () => {
                                 >
                                   Role
                                 </Label>
-                                <select multiple className="form-select mb-3">
+                                <Input
+                                  type="text"
+                                  className="form-control"
+                                  id="countryInput"
+                                  placeholder="Logistics Coordinator"
+                                  defaultValue="Logistics Coordinator"
+                                  disabled
+                                />
+                              </div>
+                            </Col>
+                            <Col lg={6}>
+                              <div className="mb-3">
+                                <Label
+                                  htmlFor="skillsInput"
+                                  className="form-label"
+                                >
+                                  Scope
+                                </Label>
+                                <select disable className="form-select mb-3">
                                   <option hidden selected>
-                                    Select your role
+                                    National,Global,Regional
                                   </option>
-                                  <option value="Choices1">
-                                    Local Fleet Manager
-                                  </option>
-                                  <option value="Choices2">
-                                    Regional Fleet Manager
-                                  </option>
-                                  <option value="Choices3">
-                                    Global Fleet Manager
-                                  </option>
+                                  <option value="Choices1">National</option>
+                                  <option value="Choices1">Global</option>
+                                  <option value="Choices2">Regional</option>
                                 </select>
                               </div>
                             </Col>
-                            {/* <Col lg={4}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="cityInput" className="form-label">City</Label>
-                                                            <Input type="text" className="form-control" id="cityInput"
-                                                                placeholder="City" defaultValue="California" />
-                                                        </div>
-                                                    </Col> */}
-                            <Col lg={4}>
+                            <Col lg={6}>
                               <div className="mb-3">
                                 <Label
                                   htmlFor="countryInput"
                                   className="form-label"
                                 >
-                                  Country
+                                  Duty Station Country
                                 </Label>
                                 <Input
                                   type="text"
                                   className="form-control"
                                   id="countryInput"
-                                  placeholder="Country"
-                                  defaultValue="United States"
+                                  placeholder=""
+                                  defaultValue=""
                                   disabled
                                 />
                               </div>
                             </Col>
-                            {/* <Col lg={4}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="zipcodeInput" className="form-label">Zip
-                                                                Code</Label>
-                                                            <Input type="text" className="form-control" minLength="5"
-                                                                maxLength="6" id="zipcodeInput"
-                                                                placeholder="Enter zipcode" defaultValue="90011" />
-                                                        </div>
-                                                    </Col> */}
+                            <Col lg={6}>
+                              <div className="mb-3">
+                                <Label
+                                  htmlFor="skillsInput"
+                                  className="form-label"
+                                >
+                                  Other Countries of Operation
+                                </Label>
+                                <select disable className="form-select mb-3">
+                                  <option hidden selected>
+                                    Kenya,Tanzania,Ethopia
+                                  </option>
+                                  <option value="Choices1">Kenya</option>
+                                  <option value="Choices1">Tanzania</option>
+                                  <option value="Choices2">Ethopia</option>
+                                </select>
+                              </div>
+                            </Col>
                             <Col lg={12}>
                               <div className="hstack gap-2 justify-content-end">
                                 <button
@@ -479,7 +557,7 @@ const Profile = () => {
                                 </button>
                                 <button
                                   type="button"
-                                  className="btn btn-soft-info"
+                                  className="btn btn-soft-info $primary"
                                 >
                                   Cancel
                                 </button>

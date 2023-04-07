@@ -16,7 +16,7 @@ const ProfileDropdown = () => {
     user: state.Profile.user,
   }));
 
-  const [userName, setUserName] = useState("Test User");
+  const [userName, setUserName] = useState("Dave");
 
   useEffect(() => {
     if (sessionStorage.getItem("authUser")) {
@@ -59,7 +59,7 @@ const ProfileDropdown = () => {
                 {userName}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
-                Founder
+                FleetMGT Co. X
               </span>
             </span>
           </span>

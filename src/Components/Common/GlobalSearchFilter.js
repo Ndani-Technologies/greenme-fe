@@ -7,6 +7,7 @@ import {
   DropdownToggle,
   DropdownItem,
   DropdownMenu,
+  Input,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
@@ -209,18 +210,34 @@ const ContactsGlobalFilter = () => {
   ];
   return (
     <React.Fragment>
-      <div className="col-md-auto ms-auto">
+      <div className="col-lg">
         <div className="d-flex align-items-center gap-2">
-          <span className="text-muted">Sort by: </span>
-          <Select
-            className="mb-0"
-            value={sortBy}
-            onChange={() => {
-              handlesortBy();
-            }}
-            options={sortbyname}
-            id="choices-single-default"
-          ></Select>
+          <span className="text-muted">Filter by: </span>
+          <Col lg={4}>
+            <Select
+              className="mb-0"
+              value={sortBy}
+              onChange={() => {
+                handlesortBy();
+              }}
+              options={sortbyname}
+              id="choices-single-default"
+              placeholder="Orgnaization"
+            ></Select>
+          </Col>
+          <span className="text-muted">Filter by: </span>
+          <Col lg={4}>
+            <Select
+              className="mb-0"
+              value={sortBy}
+              onChange={() => {
+                handlesortBy();
+              }}
+              options={sortbyname}
+              id="choices-single-default"
+              placeholder="Duty Station"
+            ></Select>
+          </Col>
         </div>
       </div>
     </React.Fragment>
