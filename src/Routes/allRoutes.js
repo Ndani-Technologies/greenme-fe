@@ -36,6 +36,9 @@ import Logout from "../pages/Authentication/Logout";
 import Register from "../pages/Authentication/Register";
 import UsersManagement from "../pages/Management/UserManagement";
 import Profile from "../pages/UserDetail/UserDetail";
+import Benchmarking from "../pages/Benchmarking/Benchmarking";
+import BenchmarkSummary from "../pages/Benchmarking-Summary/BenchmarkSummary";
+import BenchmarkingDashboard from "../pages/Benchmarking-Dashboard/BenchmarkingDashboard";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -59,6 +62,9 @@ const publicRoutes = [
   { path: "/register", component: <Register /> },
   { path: "/Profile", component: <Profile /> },
   { path: "/UsersManagement", component: <UsersManagement /> },
+  { path: "/Benchmarking", component: <Benchmarking /> },
+  { path: "/BenchmarkSummary", component: <BenchmarkSummary /> },
+  { path: "/BenchmarkingDashboard", component: <BenchmarkingDashboard /> },
 
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },

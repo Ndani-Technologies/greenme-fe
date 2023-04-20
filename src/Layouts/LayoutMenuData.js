@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 const Navdata = () => {
   const history = useNavigate();
+  const navigate = useNavigate();
   //state data
   const [isDashboard, setIsDashboard] = useState(false);
   const [isApps, setIsApps] = useState(false);
   const [isAuth, setIsAuth] = useState(false);
   const [isPages, setIsPages] = useState(false);
+  const [isBanchmarking, setIsBanchmarking] = useState(false);
   const [isBaseUi, setIsBaseUi] = useState(false);
   const [isAdvanceUi, setIsAdvanceUi] = useState(false);
   const [isForms, setIsForms] = useState(false);
@@ -130,13 +131,13 @@ const Navdata = () => {
     isIcons,
     isMaps,
     isMultiLevel,
+    isBanchmarking,
   ]);
-
   const menuItems = [
-    // {
-    //     label: "Menu",
-    //     isHeader: true,
-    // },
+    {
+      label: "Menu",
+      isHeader: true,
+    },
     // {
     //     id: "dashboard",
     //     label: "Dashboards",
@@ -298,26 +299,25 @@ const Navdata = () => {
     //                 { id: 3, label: "Create Project", link: "/#", parentId: "apps", },
     //             ]
     //         },
-    //         {
-    //             id: "tasks",
-    //             label: "Tasks",
-    //             link: "/#",
-    //             isChildItem: true,
-    //             click: function (e) {
-    //                 e.preventDefault();
-    //                 setIsTasks(!isTasks);
-    //             },
-    //             parentId: "apps",
-    //             stateVariables: isTasks,
-    //             childItems: [
-    //                 { id: 1, label: "List View", link: "/#", parentId: "apps", },
-    //                 { id: 2, label: "Task Details", link: "/#", parentId: "apps", },
-    //             ]
-    //         },
+    // {
+    //   id: "tasks",
+    //   label: "Tasks",
+    //   link: "/#",
+    //   isChildItem: true,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsTasks(!isTasks);
+    //   },
+    //   parentId: "apps",
+    //   stateVariables: isTasks,
+    //   childItems: [
+    //     { id: 1, label: "List View", link: "/#", parentId: "apps" },
+    //     { id: 2, label: "Task Details", link: "/#", parentId: "apps" },
+    //   ],
+    // },
     //         {
     //             id: "appscrm",
     //             label: "CRM",
-
     //             link: "/#",
     //             isChildItem: true,
     //             click: function (e) {
@@ -327,11 +327,82 @@ const Navdata = () => {
     //             parentId: "apps",
     //             stateVariables: isCRM,
     //             childItems: [
+
     {
       id: 1,
+      icon: "ri-dashboard-2-line",
+      label: "MY Dashboard",
+      link: "/",
+    },
+    {
+      id: "",
       icon: "ri-contacts-book-line",
       label: "Users Management",
       link: "/UsersManagement",
+    },
+    {
+      id: "Benchmarking",
+      icon: "ri-compasses-2-line",
+      label: "Benchmarking",
+      // link: "/Banchmarking",
+      stateVariables: isBanchmarking,
+      click: function (e) {
+        e.preventDefault();
+        setIsBanchmarking(!isBanchmarking);
+        setIscurrentState("Benchmarking");
+        updateIconSidebar(e);
+        navigate("/Benchmarking");
+      },
+      subItems: [
+        {
+          id: 1,
+          label: "Dashboard",
+          link: "/BenchmarkingDashboard",
+          parentId: "Benchmarking",
+        },
+      ],
+    },
+    // {
+    //   id: "Benchmarking",
+    //   icon: "ri-compasses-2-line",
+    //   label: "Benchmarking",
+    //   link: "/Benchmarking",
+    // },
+    {
+      id: 3,
+      icon: "ri-pencil-ruler-2-line",
+      label: "Recommended Actions",
+      link: "/",
+    },
+    {
+      id: 4,
+      icon: "ri-stack-line",
+      label: "Document sharing",
+      link: "/",
+    },
+    {
+      id: 5,
+      icon: "ri-layout-grid-line",
+      label: "Collaboration",
+      link: "/",
+    },
+    {
+      id: 6,
+      icon: "ri-apps-2-line",
+      label: "Discussions",
+      link: "/",
+    },
+    {
+      id: 7,
+      icon: "ri-rocket-line",
+      label: "Leaderboard",
+      link: "/",
+    },
+    {
+      id: 8,
+      icon: "ri-pie-chart-line",
+      label: "Reports",
+      link: "/",
     },
     //                 { id: 2, label: "Companies", link: "/#" },
     //                 { id: 3, label: "Deals", link: "/#" },

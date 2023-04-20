@@ -62,7 +62,7 @@ function GlobalFilter({
                   isCompaniesFilter ||
                   isNFTRankingFilter
                     ? "search-box me-2 mb-0 d-inline-block"
-                    : "search-box me-2 mb-0 d-inline-block col-12"
+                    : "search-box me-2 mb-0 d-inline-block col-3"
                 }
               >
                 <input

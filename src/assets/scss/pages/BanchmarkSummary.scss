@@ -1,0 +1,34 @@
+.Main {
+  background-image: url(../../images/Banchmarking/Summary.png);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 100px 0 100px 68px;
+  h1 {
+    color: #fff;
+  }
+}
+.d-flex.justify-content-between.p-2 {
+  background-color: #ccd4dc;
+  border-radius: 5px;
+  p {
+    font-size: 16px;
+    color: #878a99;
+  }
+  span {
+    font-size: 25px;
+    color: #495057;
+  }
+}
+.d-flex.justify-content-between.align-items-center.p-2.m-0 {
+  background-color: #e9e9e9;
+}
+.card-height-100 {
+  background-color: #e9ebec;
+}
+.align-items-center.d-flex.p-3 {
+  background-color: #e9ebec;
+}
+.apexcharts-legend.apexcharts-align-center.apx-legend-position-bottom {
+  display: block;
+}

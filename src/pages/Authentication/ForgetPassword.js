@@ -54,7 +54,7 @@ const ForgetPasswordPage = (props) => {
     forgetSuccessMsg: state.ForgetPassword.forgetSuccessMsg,
   }));
 
-  document.title = "Reset Password |GreenMe";
+  document.title = "Reset Password | GreenMe";
 
   return (
     <ParticlesAuth>
