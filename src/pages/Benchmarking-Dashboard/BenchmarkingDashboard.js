@@ -20,6 +20,7 @@ import {
   ModalFooter,
   Table,
   FormFeedback,
+  Button,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -27,6 +28,8 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
 } from "../../slices/thunks";
+import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
+import { TooltipModalExample } from "../BaseUi/UiModals/UiModalCode";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
 import Select from "react-select";
@@ -37,6 +40,7 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
+import { Height } from "@mui/icons-material";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -469,7 +473,7 @@ const BenchmarkingDashboard = () => {
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem
                       className="dropdown-item"
-                      href="/BenchmarkSummary"
+                      href="/Benchmarking"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
@@ -548,7 +552,18 @@ const BenchmarkingDashboard = () => {
   const [info, setInfo] = useState([]);
 
   // Export Modal
-  const [isExportCSV, setIsExportCSV] = useState(false);
+  // const [isExportCSV, setIsExportCSV] = useState(false);
+  // const [modal_tooltip, setmodal_tooltip] = useState(false);
+  // function tog_tooltip() {
+  //   setmodal_tooltip(!modal_tooltip);
+  //   console.log(modal_tooltip);
+  // }
+  // <!-- Grids in modals -->
+
+  const [modal_grid, setmodal_grid] = useState(false);
+  function tog_grid() {
+    setmodal_grid(!modal_grid);
+  }
   return (
     <React.Fragment>
       <Layouts>
@@ -568,10 +583,71 @@ const BenchmarkingDashboard = () => {
               className="d-flex justify-content-between"
               style={{ paddingRight: "100px" }}
             >
-              <div className="d-flex align-items-center justify-content-between w-25 bg-white p-3 mt-5 shadow-lg p-3 mb-5 bg-white rounded">
-                <span>Start new Benchmark</span>
-                <i class="ri-add-fill"></i>
-              </div>
+              <Col className="pt-5">
+                <Button
+                  className="d-flex align-items-center justify-content-between w-25 p-3 bg-white shadow-lg p-3 mb-5 rounded"
+                  color="white"
+                  onClick={() => setmodal_grid(true)}
+                >
+                  Start new Benchmark
+                  <i class="ri-add-fill"></i>
+                </Button>
+
+                <Modal
+                  className="postion-relative"
+                  isOpen={modal_grid}
+                  toggle={() => {
+                    tog_grid();
+                  }}
+                >
+                  <div
+                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                    style={{ width: "35px", height: "35px" }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setmodal_grid(false);
+                      }}
+                      className="btn-close color-black bg-white border border-dark rounded-circle "
+                      aria-label="close"
+                    ></Button>
+                  </div>
+                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                    <h4 className="modal-title">Benchmarking</h4>
+                  </ModalHeader>
+                  <ModalBody>
+                    <form action="#">
+                      <div className="row g-3">
+                        <Col xxl={12}>
+                          <div>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              id="firstName"
+                              placeholder="Enter Benchmark title"
+                            />
+                          </div>
+                        </Col>
+                        <Col>
+                          <select lg={12} disable className="form-select mb-3">
+                            <option hidden selected>
+                              Select Duty Station Country
+                            </option>
+                            <option value="Choices1">Kenya</option>
+                            <option value="Choices1">United Kindom</option>
+                          </select>
+                        </Col>
+                        <div className="col-lg-12">
+                          <div className="hstack gap-2 justify-content-start">
+                            <Button color="primary">Start Benchmark</Button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </ModalBody>
+                </Modal>
+              </Col>
               <div className="pt-2 d-flex gap-3">
                 <i class="ri-share-line"></i>
                 <i class="ri-flag-line"></i>
@@ -587,6 +663,7 @@ const BenchmarkingDashboard = () => {
                       data={crmcontacts || []}
                       isGlobalFilter={true}
                       isAddUserList={false}
+                      isFilterA={true}
                       customPageSize={8}
                       className="custom-header-css"
                       divClass="table-responsive table-card mb-0"

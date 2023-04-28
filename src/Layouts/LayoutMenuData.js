@@ -340,19 +340,46 @@ const Navdata = () => {
       label: "Users Management",
       link: "/UsersManagement",
     },
+    // {
+    //   id: "Benchmarking",
+    //   icon: "ri-compasses-2-line",
+    //   label: "Benchmarking",
+    //   // link: "/Banchmarking",
+    //   stateVariables: isBanchmarking,
+    //   click: function (e) {
+    //     e.preventDefault();
+    //     setIsBanchmarking(!isBanchmarking);
+    //     setIscurrentState("Benchmarking");
+    //     updateIconSidebar(e);
+    //     // navigate("/Benchmarking");
+    //   },
+    //   subItems: [
+    //     {
+    //       id: 1,
+    //       label: "Dashboard",
+    //       link: "/BenchmarkingDashboard",
+    //       parentId: "Benchmarking",
+    //     },
+    //     {
+    //       id: 1,
+    //       label: "Summary",
+    //       link: "/BanchmarkingSummary",
+    //       parentId: "Benchmarking",
+    //     },
+    //   ],
+    // },
     {
       id: "Benchmarking",
       icon: "ri-compasses-2-line",
       label: "Benchmarking",
-      // link: "/Banchmarking",
-      stateVariables: isBanchmarking,
+      link: "/#",
       click: function (e) {
         e.preventDefault();
-        setIsBanchmarking(!isBanchmarking);
-        setIscurrentState("Benchmarking");
+        setIsApps(!isApps);
+        setIscurrentState("Apps");
         updateIconSidebar(e);
-        navigate("/Benchmarking");
       },
+      stateVariables: isApps,
       subItems: [
         {
           id: 1,
@@ -360,14 +387,14 @@ const Navdata = () => {
           link: "/BenchmarkingDashboard",
           parentId: "Benchmarking",
         },
+        {
+          id: 2,
+          label: "Summary",
+          link: "/BenchmarkSummary",
+          parentId: "Benchmarking",
+        },
       ],
     },
-    // {
-    //   id: "Benchmarking",
-    //   icon: "ri-compasses-2-line",
-    //   label: "Benchmarking",
-    //   link: "/Benchmarking",
-    // },
     {
       id: 3,
       icon: "ri-pencil-ruler-2-line",

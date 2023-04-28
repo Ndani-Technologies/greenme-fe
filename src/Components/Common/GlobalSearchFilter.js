@@ -8,6 +8,7 @@ import {
   DropdownItem,
   DropdownMenu,
   Input,
+  Label,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
@@ -26,7 +27,69 @@ const ProductsGlobalFilter = () => {
     </React.Fragment>
   );
 };
-
+const FilterA = () => {
+  return (
+    <div className="d-flex justify-content-between align-items-center w-100">
+      <div
+        className="d-flex align-items-center gap-2 "
+        style={{ width: "220px" }}
+      >
+        <span>From Date </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span></span>
+          <i class="ri-calendar-2-line"></i>
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center gap-2 flex-shrink-0"
+        style={{ width: "200px" }}
+      >
+        <span>To Date </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span></span>
+          <i class="ri-calendar-2-line"></i>
+        </div>
+      </div>
+      <div className="flex-shrink-0">
+        <div className="form-check form-switch form-switch-right form-switch-md">
+          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
+            Status:
+          </Label>
+          <Input
+            className="form-check-input code-switcher"
+            type="checkbox"
+            value="active"
+          />
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center gap-4"
+        style={{ width: "220px" }}
+      >
+        <span>Filter by </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span>Country</span>
+          <i class="ri-arrow-drop-down-line"></i>
+        </div>
+      </div>
+    </div>
+  );
+};
 const CustomersGlobalFilter = () => {
   const [customerStatus, setcustomerStatus] = useState(null);
 
@@ -571,4 +634,5 @@ export {
   NFTRankingGlobalFilter,
   TaskListGlobalFilter,
   LeadsGlobalFilter,
+  FilterA,
 };

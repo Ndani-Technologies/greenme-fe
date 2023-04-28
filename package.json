@@ -5,6 +5,8 @@
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^35.4.0",
     "@ckeditor/ckeditor5-react": "^5.0.6",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@fullcalendar/bootstrap": "^6.0.3",
     "@fullcalendar/core": "^6.0.3",
     "@fullcalendar/daygrid": "^6.0.3",
@@ -12,6 +14,7 @@
     "@fullcalendar/list": "^6.0.3",
     "@fullcalendar/react": "^6.0.4",
     "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.12.2",
     "@reduxjs/toolkit": "^1.9.1",
     "@simonwep/pickr": "^1.8.2",
     "@testing-library/jest-dom": "^5.16.5",

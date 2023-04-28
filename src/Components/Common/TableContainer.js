@@ -14,6 +14,7 @@ import { Table, Row, Col, Button, Input, CardBody } from "reactstrap";
 import { DefaultColumnFilter } from "./filters";
 import {
   ProductsGlobalFilter,
+  FilterA,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -43,6 +44,7 @@ function GlobalFilter({
   isProductsFilter,
   isLeadsFilter,
   SearchPlaceholder,
+  isFilterA,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -54,7 +56,7 @@ function GlobalFilter({
       <CardBody className="border border-dashed border-end-0 border-start-0">
         <form>
           <Row className="g-3">
-            <Col>
+            <Col className="d-flex align-items-center justify-content-between w-100">
               <div
                 className={
                   isProductsFilter ||
@@ -78,6 +80,8 @@ function GlobalFilter({
                 />
                 <i className="bx bx-search-alt search-icon"></i>
               </div>
+              {isFilterA && <FilterA />}
+              {/* <FilterA /> */}
             </Col>
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
@@ -99,6 +103,7 @@ function GlobalFilter({
 
 const TableContainer = ({
   columns,
+  isFilterA,
   data,
   isGlobalSearch,
   isGlobalFilter,
@@ -202,6 +207,7 @@ const TableContainer = ({
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
+            isFilterA={isFilterA}
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}

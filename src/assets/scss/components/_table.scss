@@ -16,12 +16,15 @@
 }
 
 .table-nowrap {
-  th,
   td {
+    white-space: wrap;
+  }
+}
+.table-nowrap {
+  th {
     white-space: nowrap;
   }
 }
-
 // card table
 
 .table-card {
