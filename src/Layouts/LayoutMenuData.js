@@ -340,34 +340,6 @@ const Navdata = () => {
       label: "Users Management",
       link: "/UsersManagement",
     },
-    // {
-    //   id: "Benchmarking",
-    //   icon: "ri-compasses-2-line",
-    //   label: "Benchmarking",
-    //   // link: "/Banchmarking",
-    //   stateVariables: isBanchmarking,
-    //   click: function (e) {
-    //     e.preventDefault();
-    //     setIsBanchmarking(!isBanchmarking);
-    //     setIscurrentState("Benchmarking");
-    //     updateIconSidebar(e);
-    //     // navigate("/Benchmarking");
-    //   },
-    //   subItems: [
-    //     {
-    //       id: 1,
-    //       label: "Dashboard",
-    //       link: "/BenchmarkingDashboard",
-    //       parentId: "Benchmarking",
-    //     },
-    //     {
-    //       id: 1,
-    //       label: "Summary",
-    //       link: "/BanchmarkingSummary",
-    //       parentId: "Benchmarking",
-    //     },
-    //   ],
-    // },
     {
       id: "Benchmarking",
       icon: "ri-compasses-2-line",
@@ -392,6 +364,39 @@ const Navdata = () => {
           label: "Summary",
           link: "/BenchmarkSummary",
           parentId: "Benchmarking",
+        },
+      ],
+    },
+    {
+      id: "Benchmarking Admin",
+      icon: "ri-compasses-2-line",
+      label: "Benchmarking Admin",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsBanchmarking(!isBanchmarking);
+        setIscurrentState("Benchmarking");
+        updateIconSidebar(e);
+      },
+      stateVariables: isBanchmarking,
+      subItems: [
+        {
+          id: 1,
+          label: "Benchmarking QA",
+          link: "/BenchmarkingQA",
+          parentId: "Benchmarking Admin",
+        },
+        {
+          id: 2,
+          label: "Summary",
+          link: "/BenchmarkSummaryAdmin",
+          parentId: "Benchmarking Admin",
+        },
+        {
+          id: 2,
+          label: "Comaprison",
+          link: "/Comparison",
+          parentId: "Benchmarking Admin",
         },
       ],
     },

@@ -343,18 +343,6 @@ const BenchmarkingQA = () => {
     },
     [toggle]
   );
-
-  // Node API
-  // useEffect(() => {
-  //   if (isContactCreated) {
-  //     setContact(null);
-  //     dispatch(onGetContacts());
-  //   }
-  // }, [
-  //   dispatch,
-  //   isContactCreated,
-  // ]);
-
   const handleValidDate = (date) => {
     const date1 = moment(new Date(date)).format("DD MMM Y");
     return date1;
@@ -657,7 +645,7 @@ const BenchmarkingQA = () => {
     const updatedCategories = categories.filter((c) => c.id !== categoryId);
     setCategories(updatedCategories);
   };
-
+  document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
       <Layouts>
@@ -1235,6 +1223,7 @@ const BenchmarkingQA = () => {
                       isGlobalFilter={true}
                       isAddUserList={false}
                       isFilterA={false}
+                      isFooter={true}
                       customPageSize={8}
                       className="custom-header-css"
                       divClass="table-responsive table-card mb-0"

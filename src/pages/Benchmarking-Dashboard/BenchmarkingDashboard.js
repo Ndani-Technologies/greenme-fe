@@ -592,7 +592,6 @@ const BenchmarkingDashboard = () => {
                   Start new Benchmark
                   <i class="ri-add-fill"></i>
                 </Button>
-
                 <Modal
                   className="postion-relative"
                   isOpen={modal_grid}
@@ -664,6 +663,7 @@ const BenchmarkingDashboard = () => {
                       isGlobalFilter={true}
                       isAddUserList={false}
                       isFilterA={true}
+                      isFooter={true}
                       customPageSize={8}
                       className="custom-header-css"
                       divClass="table-responsive table-card mb-0"

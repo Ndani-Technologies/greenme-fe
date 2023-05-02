@@ -664,6 +664,7 @@ const UsersManagement = () => {
                           data={crmcontacts || []}
                           isGlobalFilter={true}
                           isAddUserList={false}
+                          isFooter={true}
                           customPageSize={8}
                           className="custom-header-css"
                           divClass="table-responsive table-card mb-0"
@@ -1037,33 +1038,6 @@ const UsersManagement = () => {
                     <p className="text-muted">
                       {info.company || "FleetMGT Co. Z"}
                     </p>
-
-                    {/* <ul className="list-inline mb-0">
-                      <li className="list-inline-item avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-success text-success fs-15 rounded"
-                        >
-                          <i className="ri-phone-line"></i>
-                        </Link>
-                      </li>
-                      <li className="list-inline-item avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-danger text-danger fs-15 rounded"
-                        >
-                          <i className="ri-mail-line"></i>
-                        </Link>
-                      </li>
-                      <li className="list-inline-item avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                        >
-                          <i className="ri-question-answer-line"></i>
-                        </Link>
-                      </li>
-                    </ul> */}
                   </CardBody>
                   <CardBody>
                     <div className="table-responsive table-card">
@@ -1093,36 +1067,6 @@ const UsersManagement = () => {
                             <td className="fw-medium">Area of Expertise</td>
                             <td>Tracking, Management.</td>
                           </tr>
-                          {/* <tr>
-                            <td className="fw-medium">Tags</td>
-                            <td>
-                              {(info.tags || ["Lead", "Partner"]).map(
-                                (item, key) => (
-                                  <span
-                                    className="badge badge-soft-primary me-1"
-                                    key={key}
-                                  >
-                                    {item}
-                                  </span>
-                                )
-                              )}
-                            </td>
-                          </tr> */}
-                          {/* <tr>
-                            <td className="fw-medium">Last Contacted</td>
-                            <td>
-                              {handleValidDate(
-                                info.last_contacted ||
-                                  "2021-04-13T18:30:00.000Z"
-                              )}{" "}
-                              <small className="text-muted">
-                                {handleValidTime(
-                                  info.last_contacted ||
-                                    "2021-04-13T18:30:00.000Z"
-                                )}
-                              </small>
-                            </td>
-                          </tr> */}
                         </tbody>
                       </Table>
                     </div>

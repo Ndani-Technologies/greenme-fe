@@ -76,14 +76,14 @@ const FilterA = () => {
         className="d-flex align-items-center gap-4"
         style={{ width: "220px" }}
       >
-        <span>Filter by </span>
+        <span style={{ color: "black" }}>Filter by </span>
         <div
           className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
           type="text"
           style={{ width: "140px" }}
         >
           {" "}
-          <span>Country</span>
+          <span style={{ color: "black" }}>Country</span>
           <i class="ri-arrow-drop-down-line"></i>
         </div>
       </div>

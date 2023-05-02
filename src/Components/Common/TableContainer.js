@@ -104,6 +104,8 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   isFilterA,
+  isHorzontal,
+  isFooter,
   data,
   isGlobalSearch,
   isGlobalFilter,
@@ -273,85 +275,128 @@ const TableContainer = ({
       <div className={divClass}>
         <Table hover {...getTableProps()} className={tableClass}>
           <thead className={theadClass}>
-            {headerGroups.map((headerGroup) => (
-              <tr
-                className={trClass}
-                key={headerGroup.id}
-                {...headerGroup.getHeaderGroupProps()}
-              >
-                {headerGroup.headers.map((column) => (
-                  <th
-                    key={column.id}
-                    className={thClass}
-                    {...column.getSortByToggleProps()}
+            {isHorzontal
+              ? null
+              : headerGroups.map((headerGroup) => (
+                  <tr
+                    className={trClass}
+                    key={headerGroup.id}
+                    {...headerGroup.getHeaderGroupProps()}
                   >
-                    {column.render("Header")}
-                    {generateSortingIndicator(column)}
-                    {/* <Filter column={column} /> */}
-                  </th>
+                    {headerGroup.headers.map((column) => (
+                      <th
+                        key={column.id}
+                        className={thClass}
+                        {...column.getSortByToggleProps()}
+                      >
+                        {column.render("Header")}
+                        {generateSortingIndicator(column)}
+                      </th>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
           </thead>
 
           <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <Fragment key={row.getRowProps().key}>
-                  <tr>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td key={cell.id} {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                </Fragment>
-              );
-            })}
+            {isHorzontal &&
+              headerGroups.map((headerGroup) => (
+                <th
+                  className={trClass}
+                  key={headerGroup.id}
+                  {...headerGroup.getHeaderGroupProps()}
+                >
+                  {headerGroup.headers.map((column) => (
+                    <tr
+                      key={column.id}
+                      className={thClass}
+                      {...column.getSortByToggleProps()}
+                    >
+                      {column.render("Header")}
+                      {generateSortingIndicator(column)}
+                    </tr>
+                  ))}
+                </th>
+              ))}
+
+            {isHorzontal
+              ? page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <Fragment key={row.getRowProps().key}>
+                      <th>
+                        {row.cells.map((cell) => {
+                          return (
+                            <tr key={cell.id} {...cell.getCellProps()}>
+                              {cell.render("Cell")}
+                            </tr>
+                          );
+                        })}
+                      </th>
+                    </Fragment>
+                  );
+                })
+              : page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <Fragment key={row.getRowProps().key}>
+                      <tr>
+                        {row.cells.map((cell) => {
+                          return (
+                            <td key={cell.id} {...cell.getCellProps()}>
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    </Fragment>
+                  );
+                })}
           </tbody>
         </Table>
       </div>
+      {isFooter ? (
+        <Row className="justify-content-md-end justify-content-center align-items-center p-2">
+          <Col className="col-md-auto">
+            <div className="d-flex gap-1">
+              <Button
+                color="primary"
+                onClick={previousPage}
+                disabled={!canPreviousPage}
+              >
+                {"<"}
+              </Button>
+            </div>
+          </Col>
+          <Col className="col-md-auto d-none d-md-block">
+            Page{" "}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>
+          </Col>
+          <Col className="col-md-auto">
+            <Input
+              type="number"
+              min={1}
+              style={{ width: 70 }}
+              max={pageOptions.length}
+              defaultValue={pageIndex + 1}
+              onChange={onChangeInInput}
+            />
+          </Col>
 
-      <Row className="justify-content-md-end justify-content-center align-items-center p-2">
-        <Col className="col-md-auto">
-          <div className="d-flex gap-1">
-            <Button
-              color="primary"
-              onClick={previousPage}
-              disabled={!canPreviousPage}
-            >
-              {"<"}
-            </Button>
-          </div>
-        </Col>
-        <Col className="col-md-auto d-none d-md-block">
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </Col>
-        <Col className="col-md-auto">
-          <Input
-            type="number"
-            min={1}
-            style={{ width: 70 }}
-            max={pageOptions.length}
-            defaultValue={pageIndex + 1}
-            onChange={onChangeInInput}
-          />
-        </Col>
-
-        <Col className="col-md-auto">
-          <div className="d-flex gap-1">
-            <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
-              {">"}
-            </Button>
-          </div>
-        </Col>
-      </Row>
+          <Col className="col-md-auto">
+            <div className="d-flex gap-1">
+              <Button
+                color="primary"
+                onClick={nextPage}
+                disabled={!canNextPage}
+              >
+                {">"}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      ) : null}
     </Fragment>
   );
 };
