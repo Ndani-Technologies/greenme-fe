@@ -78,8 +78,8 @@ const publicRoutes = [
     component: <BenchmarkSummaryAdmin />,
   },
   { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
-  { path: "/adminbenchmarking/questions/compare", component: <Comparison /> },
-  { path: "/QAComparison", component: <QAComparison /> },
+  { path: "/adminbenchmarking/compare", component: <Comparison /> },
+  { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },

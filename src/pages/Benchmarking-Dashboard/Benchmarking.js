@@ -47,7 +47,7 @@ const arr = [
     name: "Michael Morris",
     email: "45%",
     last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "20%",
+    lead_score: "Japan",
     tags: "Inprogress",
   },
   {
@@ -90,7 +90,7 @@ const arr = [
     email: "45%",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "Poland",
-    tags: "Regional Fleet Manager",
+    tags: "Completed",
   },
   {
     _id: "625d3cd5923ccd040209ebec",
@@ -99,8 +99,8 @@ const arr = [
     designation: "PHP Developer",
     email: "70%",
     last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "5/100",
-    tags: "Head, Fleet Manager",
+    lead_score: "Japan",
+    tags: "Inprogress",
   },
   {
     _id: "625d3cd5923ccd040209ebea",
@@ -110,7 +110,7 @@ const arr = [
     email: "100%",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "Russia",
-    tags: "Driver",
+    tags: "Progess",
   },
   {
     _id: "625d3cd5923ccd040209ebef",
@@ -120,7 +120,7 @@ const arr = [
     email: "20%",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "Poland",
-    tags: "Driver",
+    tags: "Completed",
   },
   {
     _id: "625d3cd5923ccd040209ebed",
@@ -130,7 +130,7 @@ const arr = [
     email: "10%",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "Japan",
-    tags: "inprogress",
+    tags: "Inprogress",
   },
 ];
 const BenchmarkingDashboard = () => {

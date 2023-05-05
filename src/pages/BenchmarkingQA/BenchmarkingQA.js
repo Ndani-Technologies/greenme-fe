@@ -160,6 +160,12 @@ const arr = [
   },
 ];
 const BenchmarkingQA = () => {
+  const [isGrey, setIsGrey] = useState(false);
+  const [isGrey2, setIsGrey2] = useState(false);
+  const [isGrey3, setIsGrey3] = useState(false);
+  const [isGrey4, setIsGrey4] = useState(false);
+  const [isGrey5, setIsGrey5] = useState(false);
+
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
@@ -489,7 +495,7 @@ const BenchmarkingQA = () => {
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
-                      href="#"
+                      href="/QAComparison"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
@@ -614,10 +620,15 @@ const BenchmarkingQA = () => {
     setEditingAnswerId(null);
     setInputFields("");
   };
+  const [updAnswers, setUpdAnswers] = useState([]);
+  const [updCategories, setUpdCategories] = useState([]);
 
-  const handleDeletes = (AnswerId) => {
+  const handleDeletes = (AnswerId, id) => {
     const updatedAnswers = Answers.filter((c) => c.id !== AnswerId);
-    setAnswers(updatedAnswers);
+    setUpdAnswers(updatedAnswers);
+    // setAnswers(updatedAnswers);
+    // setDeleteId(id);
+    setDeleteConfirmation(true);
   };
   const [modals_grid, setmodals_grid] = useState(false);
   function tog_grids() {
@@ -694,7 +705,11 @@ const BenchmarkingQA = () => {
 
   const handleDelete = (categoryId) => {
     const updatedCategories = categories.filter((c) => c.id !== categoryId);
-    setCategories(updatedCategories);
+    console.log("upda", updatedCategories);
+    setUpdCategories(updatedCategories);
+    setDeleteConfirmation2(true);
+    // setCategories(updatedCategories);
+    // setUpdCategories(updatedCategories);
   };
   const handleDragEnd = (result) => {
     if (!result.destination) {
@@ -720,6 +735,37 @@ const BenchmarkingQA = () => {
 
     setCategories(newCategories);
   };
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
+
+  const [deleteId, setDeleteId] = useState(null);
+
+  const confirmDelete = (AnswerId, id) => {
+    // TODO: implement deletion logic using `deleteId`
+    // setCategories(updCategories);
+
+    setAnswers(updAnswers);
+    setDeleteConfirmation(false);
+    // setUpdAnswers([]);
+    // setUpdCategories([]);
+    setDeleteId(null);
+  };
+  const confirmDelete2 = (AnswerId, id) => {
+    setCategories(updCategories);
+    setDeleteConfirmation2(false);
+    // setUpdAnswers([]);
+    // setUpdCategories([]);
+    setDeleteId(null);
+  };
+
+  const cancelDelete = () => {
+    setDeleteConfirmation(false);
+    setDeleteId(null);
+  };
+  const cancelDelete2 = () => {
+    setDeleteConfirmation(false);
+    setDeleteId(null);
+  };
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
@@ -744,7 +790,7 @@ const BenchmarkingQA = () => {
                   onClick={() => setmodal_grid(true)}
                   style={{ width: "270px" }}
                 >
-                  Create new Question
+                  Start new Question
                   <i class="ri-add-fill"></i>
                 </Button>
                 <Modal
@@ -769,7 +815,7 @@ const BenchmarkingQA = () => {
                     ></Button>
                   </div>
                   <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                    <h4 className="modal-title">Create new Question</h4>
+                    <h4 className="modal-title">Start new Question</h4>
                   </ModalHeader>
                   <ModalBody>
                     <form className="p-4 pt-2 pb-2" action="#">
@@ -925,34 +971,14 @@ const BenchmarkingQA = () => {
                         <Col className="p-0 border rounded">
                           <div className="border p-3  d-flex justify-content-between ">
                             Answer Options{" "}
-                            <div className="flex-shrink-0">
-                              <div className="form-check form-switch form-switch-right form-switch-md ">
-                                <Label
-                                  htmlFor="form-grid-showcode"
-                                  className="form-label text-muted"
-                                >
-                                  Include Explanation
-                                </Label>
-                                <Input
-                                  className="form-check-input code-switcher"
-                                  type="checkbox"
-                                  value="active"
-                                  checked={isChecked1}
-                                  onChange={handleCheckboxChange1}
-                                  style={{
-                                    backgroundColor: isChecked1
-                                      ? "#88C756"
-                                      : "#fff",
-                                    width: "50px",
-                                    border: "0",
-                                  }}
-                                />
-                              </div>
-                            </div>
                           </div>
-                          <div className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   ">
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   "
+                            style={{ color: isGrey ? "black" : "#cccccc" }}
+                          >
                             <div>
                               <Checkbox
+                                onChange={() => setIsGrey(!isGrey)}
                                 icon={<CropSquareIcon />}
                                 checkedIcon={<SquareRoundedIcon />}
                               />
@@ -981,9 +1007,13 @@ const BenchmarkingQA = () => {
                               />
                             </div>
                           </div>
-                          <div className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center ">
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
+                            style={{ color: isGrey2 ? "black" : "#cccccc" }}
+                          >
                             <div>
                               <Checkbox
+                                onChange={() => setIsGrey2(!isGrey2)}
                                 icon={<CropSquareIcon />}
                                 checkedIcon={<SquareRoundedIcon />}
                               />
@@ -1012,9 +1042,13 @@ const BenchmarkingQA = () => {
                               />
                             </div>
                           </div>
-                          <div className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center  ">
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center  "
+                            style={{ color: isGrey3 ? "black" : "#cccccc" }}
+                          >
                             <div>
                               <Checkbox
+                                onChange={() => setIsGrey3(!isGrey3)}
                                 icon={<CropSquareIcon />}
                                 checkedIcon={<SquareRoundedIcon />}
                               />
@@ -1045,11 +1079,11 @@ const BenchmarkingQA = () => {
                           </div>
                           <div
                             className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
-                            style={{ color: "#cccccc" }}
+                            style={{ color: isGrey4 ? "black" : "#cccccc" }}
                           >
                             <div>
                               <Checkbox
-                                disabled
+                                onChange={() => setIsGrey4(!isGrey4)}
                                 icon={<CropSquareIcon />}
                                 checkedIcon={<SquareRoundedIcon />}
                               />
@@ -1069,17 +1103,16 @@ const BenchmarkingQA = () => {
                                 style={{
                                   width: "50px",
                                 }}
-                                disabled
                               />
                             </div>
                           </div>
                           <div
                             className="border p-3 pt-1 pb-1 bg-white"
-                            style={{ color: "#cccccc" }}
+                            style={{ color: isGrey5 ? "black" : "#cccccc" }}
                           >
                             <div>
                               <Checkbox
-                                disabled
+                                onChange={() => setIsGrey5(!isGrey5)}
                                 icon={<CropSquareIcon />}
                                 checkedIcon={<SquareRoundedIcon />}
                               />
@@ -1240,46 +1273,78 @@ const BenchmarkingQA = () => {
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                               >
-                                {Answers.map((Answer, index) => (
-                                  <Draggable
-                                    key={Answer.id}
-                                    draggableId={Answer.id.toString()}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        ref={provided.innerRef}
+                                {Answers &&
+                                  Answers.map((Answer, index) => (
+                                    <>
+                                      <Draggable
+                                        key={Answer.id}
+                                        draggableId={Answer.id.toString()}
+                                        index={index}
                                       >
-                                        <div className="d-flex align-items-center gap-2">
-                                          <i
-                                            className="ri-drag-move-2-line fs-24"
-                                            style={{ color: "#4A7BA4" }}
-                                          ></i>
-                                          <h5 className="m-0">{Answer.name}</h5>
-                                        </div>
-                                        <div className="d-flex gap-2">
-                                          <i
-                                            className="ri-pencil-fill fs-18"
-                                            style={{ color: "gray" }}
-                                            onClick={() =>
-                                              handleEdits(Answer.id)
-                                            }
-                                          ></i>
-                                          <i
-                                            className="ri-delete-bin-2-line fs-18"
-                                            style={{ color: "red" }}
-                                            onClick={() =>
-                                              handleDeletes(Answer.id)
-                                            }
-                                          ></i>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                ))}
+                                        {(provided) => (
+                                          <div
+                                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
+                                          >
+                                            <div className="d-flex align-items-center gap-2">
+                                              <i
+                                                className="ri-drag-move-2-line fs-24"
+                                                style={{ color: "#4A7BA4" }}
+                                              ></i>
+                                              <h5 className="m-0">
+                                                {Answer.name}
+                                              </h5>
+                                            </div>
+                                            <div className="d-flex gap-2">
+                                              <i
+                                                className="ri-pencil-fill fs-18"
+                                                style={{ color: "gray" }}
+                                                onClick={() =>
+                                                  handleEdits(Answer.id)
+                                                }
+                                              ></i>
+                                              <i
+                                                className="ri-delete-bin-2-line fs-18"
+                                                style={{ color: "red" }}
+                                                onClick={() =>
+                                                  handleDeletes(Answer.id)
+                                                }
+                                              ></i>
+                                            </div>
+                                          </div>
+                                        )}
+                                      </Draggable>
+                                    </>
+                                  ))}
+                                <Modal
+                                  isOpen={deleteConfirmation}
+                                  toggle={cancelDelete}
+                                >
+                                  <ModalHeader toggle={cancelDelete}>
+                                    Confirm Deletion
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    Are you sure you want to delete this answer
+                                    variation?
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button
+                                      color="danger"
+                                      onClick={confirmDelete}
+                                    >
+                                      Delete
+                                    </Button>
+                                    <Button
+                                      color="secondary"
+                                      onClick={cancelDelete}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </ModalFooter>
+                                </Modal>
+
                                 {provided.placeholder}
                                 <Col xxl={12}>
                                   <div>
@@ -1447,49 +1512,78 @@ const BenchmarkingQA = () => {
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                               >
-                                {categories.map((category, index) => (
-                                  <Draggable
-                                    key={category.id}
-                                    draggableId={category.id.toString()}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        key={category.id}
-                                        className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        ref={provided.innerRef}
-                                      >
-                                        <div className="d-flex align-items-center gap-2">
-                                          <i
-                                            className="ri-drag-move-2-line fs-24"
-                                            style={{ color: "#4A7BA4" }}
-                                          ></i>
-                                          <h5 className="m-0">
-                                            {category.name}
-                                          </h5>
+                                {console.log("cat", categories)}
+                                {categories &&
+                                  categories.map((category, index) => (
+                                    <Draggable
+                                      key={category.id}
+                                      draggableId={category.id.toString()}
+                                      index={index}
+                                    >
+                                      {(provided) => (
+                                        <div
+                                          key={category.id}
+                                          className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
+                                          ref={provided.innerRef}
+                                        >
+                                          <div className="d-flex align-items-center gap-2">
+                                            <i
+                                              className="ri-drag-move-2-line fs-24"
+                                              style={{ color: "#4A7BA4" }}
+                                            ></i>
+                                            <h5 className="m-0">
+                                              {category.name}
+                                            </h5>
+                                          </div>
+                                          <div className="d-flex gap-2">
+                                            <i
+                                              className="ri-pencil-fill fs-18"
+                                              style={{ color: "gray" }}
+                                              onClick={() =>
+                                                handleEdit(category.id)
+                                              }
+                                            ></i>
+                                            <i
+                                              className="ri-delete-bin-2-line fs-18"
+                                              style={{ color: "red" }}
+                                              onClick={() =>
+                                                handleDelete(category.id)
+                                              }
+                                            ></i>
+                                          </div>
                                         </div>
-                                        <div className="d-flex gap-2">
-                                          <i
-                                            className="ri-pencil-fill fs-18"
-                                            style={{ color: "gray" }}
-                                            onClick={() =>
-                                              handleEdit(category.id)
-                                            }
-                                          ></i>
-                                          <i
-                                            className="ri-delete-bin-2-line fs-18"
-                                            style={{ color: "red" }}
-                                            onClick={() =>
-                                              handleDelete(category.id)
-                                            }
-                                          ></i>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                ))}
+                                      )}
+                                    </Draggable>
+                                  ))}
+                                <Modal
+                                  isOpen={deleteConfirmation2}
+                                  toggle={cancelDelete2}
+                                >
+                                  <ModalHeader toggle={cancelDelete2}>
+                                    Confirm Deletion
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    Are you sure you want to delete this
+                                    category variation?
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button
+                                      color="danger"
+                                      onClick={confirmDelete2}
+                                    >
+                                      Delete
+                                    </Button>
+                                    <Button
+                                      color="secondary"
+                                      onClick={cancelDelete2}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </ModalFooter>
+                                </Modal>
+
                                 <Col xxl={12}>
                                   <div>
                                     <Input
@@ -1526,7 +1620,10 @@ const BenchmarkingQA = () => {
                   </ModalBody>
                 </Modal>
               </div>
-              <Button className="m-3 p-3" href="/QAComparison">
+              <Button
+                className="m-3 p-3"
+                href="/adminbenchmarking/questions/compare"
+              >
                 View Comparison
               </Button>
             </div>

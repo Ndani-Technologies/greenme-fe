@@ -32,9 +32,6 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
 } from "../../slices/thunks";
-import classnames from "classnames";
-import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
-import { TooltipModalExample } from "../BaseUi/UiModals/UiModalCode";
 import avatar from "../../assets/images/avatar-6.jpg";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -46,15 +43,13 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
-import { Height } from "@mui/icons-material";
 import { Link, NavLink } from "react-router-dom";
-import { color } from "echarts";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
     name: "Michael Morris",
     email: "45%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 1",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. A",
     tags: "Inprogress",
@@ -63,7 +58,7 @@ const arr = [
     _id: "625d3cd5923ccd040209ebf3",
     name: "Kevin Dawson",
     email: "10%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 2",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. B",
     tags: "Inprogress",
@@ -72,7 +67,7 @@ const arr = [
     _id: "625d3cd5923ccd040209ebee",
     name: "James Price",
     email: "100%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 3",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. C",
     tags: "Completed",
@@ -81,7 +76,7 @@ const arr = [
     _id: "625d3cd5923ccd040209ebf0",
     name: "Herbert Stokes",
     email: "80%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 4",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. D",
     tags: "Inprogress",
@@ -90,7 +85,7 @@ const arr = [
     _id: "625d3cd5923ccd040209ebf2",
     name: "Timothy Smith",
     email: "0%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 5",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. E",
     tags: "Inprogress",
@@ -101,10 +96,10 @@ const arr = [
     company: "iTest Factory",
     designation: "UI / UX Designer",
     email: "45%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 6",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. F",
-    tags: "Regional Fleet Manager",
+    tags: "progress",
   },
   {
     _id: "625d3cd5923ccd040209ebec",
@@ -112,10 +107,10 @@ const arr = [
     company: "Force Medicines",
     designation: "PHP Developer",
     email: "70%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 7",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. G",
-    tags: "Head, Fleet Manager",
+    tags: "Inprogress",
   },
   {
     _id: "625d3cd5923ccd040209ebea",
@@ -123,10 +118,10 @@ const arr = [
     company: "Nesta Technologies",
     designation: "Lead Designer / Developer",
     email: "100%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 8",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. H",
-    tags: "Driver",
+    tags: "Completed",
   },
   {
     _id: "625d3cd5923ccd040209ebef",
@@ -134,10 +129,10 @@ const arr = [
     company: "Micro Design",
     designation: "Asp.Net Developer",
     email: "20%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 9",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. I",
-    tags: "Driver",
+    tags: "inprogress",
   },
   {
     _id: "625d3cd5923ccd040209ebed",
@@ -145,10 +140,10 @@ const arr = [
     company: "Digitech Galaxy",
     designation: "Full Stack Developer",
     email: "10%",
-    Email: "Country Fleet Manager",
+    Email: "Benchmark 10",
     last_contacted: "2010-11-05T00:00:02.016Z",
     lead_score: "FleetMGT Co. J",
-    tags: "inprogress",
+    tags: "Inprogress",
   },
 ];
 const BenchmarkAdmin = () => {
@@ -491,33 +486,13 @@ const BenchmarkAdmin = () => {
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
-                      href="/adminbenchmarking/questions/compare"
+                      href="/adminbenchmarking/compare"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
                       }}
                     >
                       Edit
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Reset
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Complete
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
