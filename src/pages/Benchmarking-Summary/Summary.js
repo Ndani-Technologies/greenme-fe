@@ -12,7 +12,7 @@ import {
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
 import Layouts from "../../Layouts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
-const BenchmarkSummary = () => {
+const BenhmarkSummary = () => {
   return (
     <React.Fragment>
       <Layouts>
@@ -174,4 +174,4 @@ const BenchmarkSummary = () => {
   );
 };
 
-export default BenchmarkSummary;
+export default BenhmarkSummary;

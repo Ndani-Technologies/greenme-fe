@@ -1,6 +1,7 @@
 import React from "react";
 import Layouts from "../../../Layouts";
 import Germany from "../../../assets/images/Banchmarking/Germany-flag.png";
+import John from "../../../assets/images/Banchmarking/John.png";
 
 const Comparison = () => {
   return (
@@ -22,6 +23,9 @@ const Comparison = () => {
               <tbody className="d-flex justify-content-between align-items-center">
                 <thead>
                   <th className="p-0">
+                    <div className="trr top">
+                      <tr></tr>
+                    </div>
                     <div className="trr">
                       <tr>Benchmark Title</tr>
                     </div>
@@ -49,6 +53,14 @@ const Comparison = () => {
                   </th>
                 </thead>
                 <th>
+                  <div className="top">
+                    <tr>
+                      {" "}
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={John} /> John Doe
+                      </div>
+                    </tr>
+                  </div>
                   <div className="tr">
                     <tr>Benchmark Title 2</tr>
                   </div>
@@ -67,22 +79,30 @@ const Comparison = () => {
                     <tr>15</tr>
                   </div>
                   <div className="tr">
-                    <tr>$24.05</tr>
+                    <tr>06</tr>
                   </div>
                   <div className="tr">
-                    <tr>sddf</tr>
+                    <tr>10</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>Inprogress</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>Jan 11, 2017 </tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>20%</tr>
                   </div>
                 </th>
                 <th>
+                  <div className="top">
+                    <tr>
+                      {" "}
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={John} /> John Doe
+                      </div>
+                    </tr>
+                  </div>
                   <div className="tr">
                     <tr>Benchmark Title 2</tr>
                   </div>
@@ -101,22 +121,30 @@ const Comparison = () => {
                     <tr>15</tr>
                   </div>
                   <div className="tr">
-                    <tr>$24.05</tr>
+                    <tr>34</tr>
                   </div>
                   <div className="tr">
-                    <tr>sddf</tr>
+                    <tr>34</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>Inprogress</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>April 21, 2019</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>55%</tr>
                   </div>
                 </th>
                 <th>
+                  <div className="top">
+                    <tr>
+                      {" "}
+                      <div className="d-flex align-items-center gap-2">
+                        <img src={John} /> John Doe
+                      </div>
+                    </tr>
+                  </div>
                   <div className="tr">
                     <tr>Benchmark Title 3</tr>
                   </div>
@@ -135,19 +163,19 @@ const Comparison = () => {
                     <tr>11</tr>
                   </div>
                   <div className="tr">
-                    <tr>$24.05</tr>
+                    <tr>17</tr>
                   </div>
                   <div className="tr">
-                    <tr>sddf</tr>
+                    <tr>02</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>Completed</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>May 03, 2020 - June 15, 2021</tr>
                   </div>
                   <div className="tr">
-                    <tr>fghfgh</tr>
+                    <tr>100%</tr>
                   </div>
                 </th>
               </tbody>

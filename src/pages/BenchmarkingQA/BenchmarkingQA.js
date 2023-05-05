@@ -35,6 +35,7 @@ import CropSquareIcon from "@mui/icons-material/CropSquare";
 import Select from "react-select";
 import { toast, ToastContainer } from "react-toastify";
 import Layouts from "../../Layouts";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
@@ -44,6 +45,7 @@ import { Category, Language } from "@mui/icons-material";
 import { languages } from "prismjs";
 import { lineHeight } from "@mui/system";
 import { Checkbox } from "@mui/material";
+import { Link } from "feather-icons-react/build/IconComponents";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -462,6 +464,7 @@ const BenchmarkingQA = () => {
       {
         Header: "Action",
         Cell: (cellProps) => {
+          const { _id } = cellProps.row.original;
           return (
             <ul className="list-inline hstack gap-2 mb-0">
               <li className="list-inline-item">
@@ -476,7 +479,7 @@ const BenchmarkingQA = () => {
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem
                       className="dropdown-item"
-                      href="/BenchmarkSummary"
+                      href={`/adminbenchmarking/questions/summary/${_id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
@@ -568,6 +571,54 @@ const BenchmarkingQA = () => {
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
+  const [modals_Answer, setmodals_Answer] = useState(false);
+  function tog_Answer() {
+    setmodals_Answer(!modals_grid);
+  }
+  const [Answers, setAnswers] = useState([
+    { id: 1, name: "Yes" },
+    { id: 2, name: "NO" },
+    { id: 3, name: "We don't have a policy" },
+    { id: 4, name: "Don't Know" },
+    { id: 5, name: "Sell privately,Auction, Scrap Donate, Return to supplier" },
+  ]);
+  const [editingAnswerId, setEditingAnswerId] = useState(null);
+  const [inputFields, setInputFields] = useState("");
+
+  // const handleAdds = () => {
+  //   const newAnswerName = inputFields;
+  //   if (newAnswerName) {
+  //     const newAnswer = {
+  //       id: Answers.length + 1,
+  //       name: newAnswerName,
+  //     };
+  //     setAnswers([newAnswer, ...Answers]);
+  //     setInputFields("");
+  //   }
+  // };
+  const handleEdits = (AnswerId) => {
+    setEditingAnswerId(AnswerId);
+    const Answer = Answers.find((c) => c.id === AnswerId);
+    setInputFields(Answer.name);
+  };
+
+  const handleUpdates = () => {
+    const updatedAnswerName = inputFields;
+    const updatedAnswers = Answers.map((c) => {
+      if (c.id === editingAnswerId) {
+        return { ...c, name: updatedAnswerName };
+      }
+      return c;
+    });
+    setAnswers(updatedAnswers);
+    setEditingAnswerId(null);
+    setInputFields("");
+  };
+
+  const handleDeletes = (AnswerId) => {
+    const updatedAnswers = Answers.filter((c) => c.id !== AnswerId);
+    setAnswers(updatedAnswers);
+  };
   const [modals_grid, setmodals_grid] = useState(false);
   function tog_grids() {
     setmodals_grid(!modals_grid);
@@ -645,6 +696,30 @@ const BenchmarkingQA = () => {
     const updatedCategories = categories.filter((c) => c.id !== categoryId);
     setCategories(updatedCategories);
   };
+  const handleDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const items = Array.from(Answers);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setAnswers(items);
+  };
+  const handleDragEnds = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const newCategories = [...categories];
+    const draggedCategory = newCategories[result.source.index];
+
+    newCategories.splice(result.source.index, 1);
+    newCategories.splice(result.destination.index, 0, draggedCategory);
+
+    setCategories(newCategories);
+  };
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
@@ -669,7 +744,7 @@ const BenchmarkingQA = () => {
                   onClick={() => setmodal_grid(true)}
                   style={{ width: "270px" }}
                 >
-                  Start new Question
+                  Create new Question
                   <i class="ri-add-fill"></i>
                 </Button>
                 <Modal
@@ -694,7 +769,7 @@ const BenchmarkingQA = () => {
                     ></Button>
                   </div>
                   <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                    <h4 className="modal-title">Start new Question</h4>
+                    <h4 className="modal-title">Create new Question</h4>
                   </ModalHeader>
                   <ModalBody>
                     <form className="p-4 pt-2 pb-2" action="#">
@@ -1029,7 +1104,215 @@ const BenchmarkingQA = () => {
                   </ModalBody>
                 </Modal>
               </Col>
-              <Col className="pt-5">
+              <div>
+                <Button
+                  className="m-3 p-3"
+                  onClick={() => setmodals_Answer(true)}
+                >
+                  Manage Answers
+                </Button>
+                <Modal
+                  size="lg p-5"
+                  className="postion-relative"
+                  isOpen={modals_Answer}
+                  toggle={() => {
+                    tog_Answer();
+                  }}
+                >
+                  <div
+                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                    style={{ width: "35px", height: "35px" }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setmodals_Answer(false);
+                      }}
+                      className="btn-close color-black bg-white border border-dark rounded-circle "
+                      aria-label="close"
+                    ></Button>
+                  </div>
+                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                    <h4 className="modal-title">Manage answers</h4>
+                  </ModalHeader>
+                  <ModalBody>
+                    <form className="p-4 pt-2 pb-2" action="#">
+                      <div className="row g-3">
+                        <Col lg={12} className="border p-2">
+                          Language Selector:
+                          <div className="d-flex gap-2 pt-2">
+                            <Button
+                              onClick={() => handleClick("ENGLISH")}
+                              style={
+                                selectedLanguage === "ENGLISH"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              ENGLISH
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("FRENCH")}
+                              style={
+                                selectedLanguage === "FRENCH"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              FRENCH
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("SPANISH")}
+                              style={
+                                selectedLanguage === "SPANISH"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              SPANISH
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("ARABIC")}
+                              style={
+                                selectedLanguage === "ARABIC"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              ARABIC
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("GERMAN")}
+                              style={
+                                selectedLanguage === "GERMAN"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              GERMAN
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("ITALIAN")}
+                              style={
+                                selectedLanguage === "ITALIAN"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      color: "#9DB1C7",
+                                      border: "none",
+                                    }
+                              }
+                            >
+                              ITALIAN
+                            </Button>
+                          </div>
+                        </Col>
+                        <Col xxl={12}>
+                          <div className="form-control mt-2">
+                            View your answers
+                          </div>
+                        </Col>
+                        <DragDropContext onDragEnd={handleDragEnd}>
+                          <Droppable droppableId="answers">
+                            {(provided) => (
+                              <div
+                                className="mt-0"
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                              >
+                                {Answers.map((Answer, index) => (
+                                  <Draggable
+                                    key={Answer.id}
+                                    draggableId={Answer.id.toString()}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        ref={provided.innerRef}
+                                      >
+                                        <div className="d-flex align-items-center gap-2">
+                                          <i
+                                            className="ri-drag-move-2-line fs-24"
+                                            style={{ color: "#4A7BA4" }}
+                                          ></i>
+                                          <h5 className="m-0">{Answer.name}</h5>
+                                        </div>
+                                        <div className="d-flex gap-2">
+                                          <i
+                                            className="ri-pencil-fill fs-18"
+                                            style={{ color: "gray" }}
+                                            onClick={() =>
+                                              handleEdits(Answer.id)
+                                            }
+                                          ></i>
+                                          <i
+                                            className="ri-delete-bin-2-line fs-18"
+                                            style={{ color: "red" }}
+                                            onClick={() =>
+                                              handleDeletes(Answer.id)
+                                            }
+                                          ></i>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                ))}
+                                {provided.placeholder}
+                                <Col xxl={12}>
+                                  <div>
+                                    <Input
+                                      type="text"
+                                      className="form-control mt-2"
+                                      id="firstName"
+                                      placeholder="Enter an answer variation"
+                                      onChange={(e) =>
+                                        setInputFields(e.target.value)
+                                      }
+                                      value={inputFields}
+                                    />
+                                  </div>
+                                </Col>
+                                <div className="d-flex gap-3 col-lg-12 mt-3">
+                                  <div className="d-flex gap-2">
+                                    <Button onClick={handleUpdates}>
+                                      Save
+                                    </Button>
+                                    <Button color="primary">Cancel</Button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </Droppable>
+                        </DragDropContext>
+                      </div>
+                    </form>
+                  </ModalBody>
+                </Modal>
+              </div>
+              <div className="pt-5" style={{ width: "270px" }}>
                 <Button
                   className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded float-end"
                   color="white"
@@ -1156,61 +1439,96 @@ const BenchmarkingQA = () => {
                             </Button>
                           </div>
                         </Col>
-                        <div>
-                          {categories.map((category) => (
-                            <div
-                              key={category.id}
-                              className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                            >
-                              <div className="d-flex align-items-center gap-2">
-                                <i
-                                  className="ri-drag-move-2-line fs-24"
-                                  style={{ color: "#4A7BA4" }}
-                                ></i>
-                                <h5 className="m-0">{category.name}</h5>
+                        <DragDropContext onDragEnd={handleDragEnds}>
+                          <Droppable droppableId="categories">
+                            {(provided) => (
+                              <div
+                                className="mt-0"
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                              >
+                                {categories.map((category, index) => (
+                                  <Draggable
+                                    key={category.id}
+                                    draggableId={category.id.toString()}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        key={category.id}
+                                        className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        ref={provided.innerRef}
+                                      >
+                                        <div className="d-flex align-items-center gap-2">
+                                          <i
+                                            className="ri-drag-move-2-line fs-24"
+                                            style={{ color: "#4A7BA4" }}
+                                          ></i>
+                                          <h5 className="m-0">
+                                            {category.name}
+                                          </h5>
+                                        </div>
+                                        <div className="d-flex gap-2">
+                                          <i
+                                            className="ri-pencil-fill fs-18"
+                                            style={{ color: "gray" }}
+                                            onClick={() =>
+                                              handleEdit(category.id)
+                                            }
+                                          ></i>
+                                          <i
+                                            className="ri-delete-bin-2-line fs-18"
+                                            style={{ color: "red" }}
+                                            onClick={() =>
+                                              handleDelete(category.id)
+                                            }
+                                          ></i>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                ))}
+                                <Col xxl={12}>
+                                  <div>
+                                    <Input
+                                      type="text"
+                                      className="form-control mt-2"
+                                      id="firstName"
+                                      placeholder="Edit Category name"
+                                      onChange={(e) =>
+                                        setInputField(e.target.value)
+                                      }
+                                      value={inputField}
+                                    />
+                                  </div>
+                                </Col>
+                                <div className="d-flex gap-3 col-lg-12 mt-3">
+                                  <div className="d-flex gap-2">
+                                    <Button
+                                      color="primary"
+                                      onClick={handleUpdate}
+                                    >
+                                      Update Category
+                                    </Button>
+                                    <Button color="primary" onClick={handleAdd}>
+                                      Add new item to list
+                                    </Button>
+                                  </div>
+                                </div>
                               </div>
-                              <div className="d-flex gap-2">
-                                <i
-                                  className="ri-pencil-fill fs-18"
-                                  style={{ color: "gray" }}
-                                  onClick={() => handleEdit(category.id)}
-                                ></i>
-                                <i
-                                  className="ri-delete-bin-2-line fs-18"
-                                  style={{ color: "red" }}
-                                  onClick={() => handleDelete(category.id)}
-                                ></i>
-                              </div>
-                            </div>
-                          ))}
-                          <Col xxl={12}>
-                            <div>
-                              <Input
-                                type="text"
-                                className="form-control mt-2"
-                                id="firstName"
-                                placeholder="Edit Category name"
-                                onChange={(e) => setInputField(e.target.value)}
-                                value={inputField}
-                              />
-                            </div>
-                          </Col>
-                          <div className="d-flex gap-3 col-lg-12 mt-3">
-                            <div className="d-flex gap-2">
-                              <Button color="primary" onClick={handleUpdate}>
-                                Update Category
-                              </Button>
-                              <Button color="primary" onClick={handleAdd}>
-                                Add new item to list
-                              </Button>
-                            </div>
-                          </div>
-                        </div>
+                            )}
+                          </Droppable>
+                        </DragDropContext>
                       </div>
                     </form>
                   </ModalBody>
                 </Modal>
-              </Col>
+              </div>
+              <Button className="m-3 p-3" href="/QAComparison">
+                View Comparison
+              </Button>
             </div>
             <Card id="contactList">
               <CardBody className="pt-0">

@@ -45,6 +45,7 @@ function GlobalFilter({
   isLeadsFilter,
   SearchPlaceholder,
   isFilterA,
+  isSearchInput,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -57,29 +58,63 @@ function GlobalFilter({
         <form>
           <Row className="g-3">
             <Col className="d-flex align-items-center justify-content-between w-100">
-              <div
-                className={
-                  isProductsFilter ||
-                  isContactsFilter ||
-                  isCompaniesFilter ||
-                  isNFTRankingFilter
-                    ? "search-box me-2 mb-0 d-inline-block"
-                    : "search-box me-2 mb-0 d-inline-block col-3"
-                }
-              >
-                <input
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                    onChange(e.target.value);
-                  }}
-                  id="search-bar-0"
-                  type="text"
-                  className="form-control search /"
-                  placeholder={SearchPlaceholder}
-                  value={value || ""}
-                />
-                <i className="bx bx-search-alt search-icon"></i>
-              </div>
+              {console.log(
+                "searchInput",
+                isSearchInput,
+                !isSearchInput,
+                !isSearchInput || isSearchInput == undefined ? "hi" : "no"
+              )}
+              {/* {!isSearchInput || isSearchInput == undefined ? (
+                <div
+                  className={
+                    isProductsFilter ||
+                    isContactsFilter ||
+                    isCompaniesFilter ||
+                    isNFTRankingFilter
+                      ? "search-box me-2 mb-0 d-inline-block"
+                      : "search-box me-2 mb-0 d-inline-block col-3 d-none"
+                  }
+                >
+                  <input
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      onChange(e.target.value);
+                    }}
+                    id="search-bar-0"
+                    type="text"
+                    className="form-control search /"
+                    placeholder={SearchPlaceholder}
+                    value={value || ""}
+                  />
+                  <i className="bx bx-search-alt search-icon"></i>
+                </div>
+              ) : null} */}
+              {true && (
+                <div
+                  className={
+                    isProductsFilter ||
+                    isContactsFilter ||
+                    isCompaniesFilter ||
+                    isNFTRankingFilter ||
+                    isSearchInput
+                      ? "search-box me-2 mb-0 d-inline-block"
+                      : "search-box me-2 mb-0 d-inline-block col-3 d-none"
+                  }
+                >
+                  <input
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      onChange(e.target.value);
+                    }}
+                    id="search-bar-0"
+                    type="text"
+                    className="form-control search /"
+                    placeholder={SearchPlaceholder}
+                    value={value || ""}
+                  />
+                  <i className="bx bx-search-alt search-icon"></i>
+                </div>
+              )}
               {isFilterA && <FilterA />}
               {/* <FilterA /> */}
             </Col>
@@ -119,6 +154,7 @@ const TableContainer = ({
   isInvoiceListFilter,
   isTicketsListFilter,
   isNFTRankingFilter,
+  isSearchInput,
   isTaskListFilter,
   isAddOptions,
   isAddUserList,
@@ -221,6 +257,7 @@ const TableContainer = ({
             isInvoiceListFilter={isInvoiceListFilter}
             isTicketsListFilter={isTicketsListFilter}
             isNFTRankingFilter={isNFTRankingFilter}
+            isSearchInput={isSearchInput}
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
           />

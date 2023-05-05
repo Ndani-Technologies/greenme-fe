@@ -315,18 +315,6 @@ const BenchmarkingDashboard = () => {
     },
     [toggle]
   );
-
-  // Node API
-  // useEffect(() => {
-  //   if (isContactCreated) {
-  //     setContact(null);
-  //     dispatch(onGetContacts());
-  //   }
-  // }, [
-  //   dispatch,
-  //   isContactCreated,
-  // ]);
-
   const handleValidDate = (date) => {
     const date1 = moment(new Date(date)).format("DD MMM Y");
     return date1;
@@ -439,9 +427,7 @@ const BenchmarkingDashboard = () => {
         Cell: (contact) => (
           <>
             {handleValidDate(contact.row.original.last_contacted)},{" "}
-            <small className="text-muted">
-              {/* {handleValidTime(contact.row.original.last_contacted)} */}
-            </small>
+            <small className="text-muted"></small>
           </>
         ),
       },
@@ -450,15 +436,15 @@ const BenchmarkingDashboard = () => {
         Cell: (contact) => (
           <>
             {handleValidDate(contact.row.original.last_contacted)},{" "}
-            <small className="text-muted">
-              {/* {handleValidTime(contact.row.original.last_contacted)} */}
-            </small>
+            <small className="text-muted"></small>
           </>
         ),
       },
       {
         Header: "Action",
         Cell: (cellProps) => {
+          const { _id } = cellProps.row.original;
+
           return (
             <ul className="list-inline hstack gap-2 mb-0">
               <li className="list-inline-item">
@@ -473,17 +459,18 @@ const BenchmarkingDashboard = () => {
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem
                       className="dropdown-item"
-                      href="/Benchmarking"
+                      href={`/benchmarking/summary/${_id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
+                        console.log("contact data", contactData);
                       }}
                     >
                       View
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
-                      href="#"
+                      href={`/benchmarking/${_id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
@@ -550,15 +537,6 @@ const BenchmarkingDashboard = () => {
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
-
-  // Export Modal
-  // const [isExportCSV, setIsExportCSV] = useState(false);
-  // const [modal_tooltip, setmodal_tooltip] = useState(false);
-  // function tog_tooltip() {
-  //   setmodal_tooltip(!modal_tooltip);
-  //   console.log(modal_tooltip);
-  // }
-  // <!-- Grids in modals -->
 
   const [modal_grid, setmodal_grid] = useState(false);
   function tog_grid() {
@@ -670,7 +648,7 @@ const BenchmarkingDashboard = () => {
                       tableClass="align-middle table-nowrap"
                       theadClass="table-light"
                       handleContactClick={handleContactClicks}
-                      isContactsFilter={false}
+                      isSearchInput={true}
                       SearchPlaceholder="Search for contact..."
                     />
                   ) : (

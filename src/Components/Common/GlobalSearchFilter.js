@@ -84,7 +84,7 @@ const FilterA = () => {
         >
           {" "}
           <span style={{ color: "black" }}>Country</span>
-          <i class="ri-arrow-drop-down-line"></i>
+          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
         </div>
       </div>
     </div>

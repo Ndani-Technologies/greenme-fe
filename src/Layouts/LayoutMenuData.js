@@ -356,13 +356,7 @@ const Navdata = () => {
         {
           id: 1,
           label: "Dashboard",
-          link: "/BenchmarkingDashboard",
-          parentId: "Benchmarking",
-        },
-        {
-          id: 2,
-          label: "Summary",
-          link: "/BenchmarkSummary",
+          link: "/benchmarking",
           parentId: "Benchmarking",
         },
       ],
@@ -383,19 +377,13 @@ const Navdata = () => {
         {
           id: 1,
           label: "Benchmarking QA",
-          link: "/BenchmarkingQA",
+          link: "/adminbenchmarking/questions",
           parentId: "Benchmarking Admin",
         },
         {
-          id: 2,
-          label: "Summary",
-          link: "/BenchmarkSummaryAdmin",
-          parentId: "Benchmarking Admin",
-        },
-        {
-          id: 2,
-          label: "Comaprison",
-          link: "/Comparison",
+          id: 4,
+          label: "Benchmark",
+          link: "/adminbenchmarking",
           parentId: "Benchmarking Admin",
         },
       ],
