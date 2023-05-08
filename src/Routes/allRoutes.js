@@ -74,6 +74,10 @@ const publicRoutes = [
   //benchmarking admin
   { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
   {
+    path: `/adminbenchmarking/summary/:id`,
+    component: <BenchmarkSummaryAdmin />,
+  },
+  {
     path: `/adminbenchmarking/questions/summary/:id`,
     component: <BenchmarkSummaryAdmin />,
   },

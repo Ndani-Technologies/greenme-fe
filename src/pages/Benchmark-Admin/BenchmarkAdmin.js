@@ -476,7 +476,7 @@ const BenchmarkAdmin = () => {
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem
                       className="dropdown-item"
-                      href={`/adminbenchmarking/questions/summary/${_id}`}
+                      href={`/adminbenchmarking/summary/${_id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
@@ -539,15 +539,6 @@ const BenchmarkAdmin = () => {
     setmodal_grid(!modal_grid);
   }
   document.title = "Profile | GreenMe";
-  const [activeTab, setActiveTab] = useState("1");
-
-  const tabChange = (tab) => {
-    if (activeTab !== tab) setActiveTab(tab);
-  };
-  const [isActive, setIsActive] = useState(0);
-  const Click = (index) => {
-    setIsActive(index);
-  };
   return (
     <React.Fragment>
       <Layouts>
@@ -565,87 +556,7 @@ const BenchmarkAdmin = () => {
             </p>
           </div>
           <Col xxl={9} className="m-auto">
-            <Col
-              className="d-flex justify-content-between mt-0 p-5 pt-3 pb-2"
-              // style={{
-              //   backgroundColor: "#BEC887",
-              // }}
-            >
-              {/* <CardHeader className="border-0">
-                <h4 className="pb-4">GreenMe Benchmarking Dashboard</h4>
-                <Nav
-                  className="nav-tabs-custom rounded card-header-tabs border-bottom-0 d-flex gap-5"
-                  role="tablist"
-                >
-                  <NavItem className="pb-4 border-bottom">
-                    <NavLink
-                      to="#"
-                      className={classnames({ active: activeTab === "1" })}
-                      onClick={() => {
-                        tabChange("1");
-                      }}
-                      style={{
-                        color: "#fff",
-                      }}
-                    >
-                      Overview
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      to="#"
-                      className={classnames({ active: activeTab === "2" })}
-                      onClick={() => {
-                        tabChange("2");
-                      }}
-                      type="button"
-                      style={{ color: "#fff" }}
-                    >
-                      Reports
-                    </NavLink>
-                  </NavItem>
-                  <NavItem>
-                    <NavLink
-                      to="#"
-                      className={classnames({ active: activeTab === "3" })}
-                      onClick={() => {
-                        tabChange("3");
-                      }}
-                      type="button"
-                      style={{ color: "#fff" }}
-                    >
-                      Leaderboard
-                    </NavLink>
-                  </NavItem>
-                </Nav>
-              </CardHeader> */}
-              {/* <div className=" d-flex gap-3 white">
-                <i
-                  class="ri-star-line"
-                  style={{
-                    color: isActive === 1 ? "#ffff" : "#000",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => Click(1)}
-                ></i>
-                <i
-                  class="ri-share-line"
-                  style={{
-                    color: isActive === 2 ? "#ffff" : "#000",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => Click(2)}
-                ></i>
-                <i
-                  class="ri-flag-line"
-                  style={{
-                    color: isActive === 3 ? "#ffff" : "#000",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => Click(3)}
-                ></i>
-              </div> */}
-            </Col>
+            <Col className="d-flex justify-content-between mt-0 p-5 pt-3 pb-2"></Col>
             <Row>
               <Col xxl={9}>
                 <Card id="contactList">

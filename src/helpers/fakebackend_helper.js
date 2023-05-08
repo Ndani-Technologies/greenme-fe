@@ -20,6 +20,9 @@ export const isUserAuthenticated = () => {
 export const postFakeRegister = (data) =>
   api.create(url.POST_FAKE_REGISTER, data);
 
+//login real server
+export const postLogin = () => api.create("http://localhost:5000/user/login");
+
 // Login Method
 export const postFakeLogin = (data) => api.create(url.POST_FAKE_LOGIN, data);
 
