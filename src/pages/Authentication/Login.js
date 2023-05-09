@@ -76,8 +76,9 @@ const Login = (props) => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
+      props.router.navigate("/Profile");
       // dispatch(loginUser(values, props.router.navigate));
-      dispatch(loginUserReal(props.router.navigate));
+      // dispatch(loginUserReal(props.router.navigate));
     },
   });
 

@@ -56,6 +56,10 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Layout } from "feather-icons-react/build/IconComponents";
 import Layouts from "../../Layouts";
+import {
+  deleteUserDetails,
+  getUserDetails,
+} from "../../slices/usermanagement/thunk";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -180,16 +184,22 @@ const arr = [
 ];
 const UsersManagement = () => {
   const dispatch = useDispatch();
-  const { crmcontacts, isContactCreated, isContactSuccess, error } =
+  const { userDetail, crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
+      userDetail: state.UserDetail.userDetail,
       error: state.Crm.error,
     }));
   useEffect(() => {
-    dispatch(onGetContacts(arr));
-  }, [dispatch, crmcontacts]);
+    dispatch(getUserDetails());
+  }, []);
+  useEffect(() => {
+    console.log("data user", userDetail);
+
+    dispatch(onGetContacts(userDetail));
+  }, [dispatch, crmcontacts, userDetail]);
 
   useEffect(() => {
     setContact(crmcontacts);
@@ -229,9 +239,11 @@ const UsersManagement = () => {
     }
   };
 
-  const onClickDelete = (contact) => {
-    setContact(contact);
-    setDeleteModal(true);
+  const onClickDelete = (user) => {
+    console.log("selected row", user, user._id);
+    dispatch(deleteUserDetails(user?._id));
+    // setContact(contact);
+    // setDeleteModal(true);
   };
 
   // Add Data

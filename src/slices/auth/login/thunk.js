@@ -25,7 +25,7 @@ export const loginUserReal = (history) => async (dispatch) => {
     console.log("url", env.BACKEND_URL + " user/login");
 
     const popup = window.open(
-      env.BASE_URL + "/user/login",
+      env.USER_URL + "/user/login",
       "",
       "width=500,height=500"
     );
