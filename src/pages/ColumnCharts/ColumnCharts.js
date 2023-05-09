@@ -6,15 +6,15 @@ const BasicColumn = ({ dataColors }) => {
   var chartColumnColors = getChartColorsArray(dataColors);
   const series = [
     {
-      name: "Net Profit",
+      name: "Avoid",
       data: [46, 57, 59, 54, 62, 58, 64, 60, 66],
     },
     {
-      name: "Revenue",
+      name: "Shift",
       data: [74, 83, 102, 97, 86, 106, 93, 114, 94],
     },
     {
-      name: "Free Cash Flow",
+      name: "Improved",
       data: [37, 42, 38, 26, 47, 50, 54, 55, 43],
     },
   ];
@@ -30,7 +30,7 @@ const BasicColumn = ({ dataColors }) => {
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "45%",
+        columnWidth: "65%",
         endingShape: "rounded",
       },
     },
@@ -58,7 +58,7 @@ const BasicColumn = ({ dataColors }) => {
     },
     yaxis: {
       title: {
-        text: "$ (thousands)",
+        text: "Time scale",
       },
     },
     grid: {
@@ -381,7 +381,6 @@ const ColumnMarker = ({ dataColors }) => {
           y: 1292,
           goals: [
             {
-              name: "Expected",
               value: 1400,
               strokeWidth: 5,
               strokeColor: "#775DD0",
@@ -393,7 +392,6 @@ const ColumnMarker = ({ dataColors }) => {
           y: 4432,
           goals: [
             {
-              name: "Expected",
               value: 5400,
               strokeWidth: 5,
               strokeColor: "#775DD0",
@@ -405,68 +403,7 @@ const ColumnMarker = ({ dataColors }) => {
           y: 5423,
           goals: [
             {
-              name: "Expected",
               value: 5200,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
-        },
-        {
-          x: "2014",
-          y: 6653,
-          goals: [
-            {
-              name: "Expected",
-              value: 6500,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
-        },
-        {
-          x: "2015",
-          y: 8133,
-          goals: [
-            {
-              name: "Expected",
-              value: 6600,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
-        },
-        {
-          x: "2016",
-          y: 7132,
-          goals: [
-            {
-              name: "Expected",
-              value: 7500,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
-        },
-        {
-          x: "2017",
-          y: 7332,
-          goals: [
-            {
-              name: "Expected",
-              value: 8700,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
-        },
-        {
-          x: "2018",
-          y: 6553,
-          goals: [
-            {
-              name: "Expected",
-              value: 7300,
               strokeWidth: 5,
               strokeColor: "#775DD0",
             },
@@ -483,7 +420,7 @@ const ColumnMarker = ({ dataColors }) => {
     },
     plotOptions: {
       bar: {
-        columnWidth: "30%",
+        columnWidth: "50%",
       },
     },
     colors: chartColumnMarkersColors,
@@ -493,9 +430,9 @@ const ColumnMarker = ({ dataColors }) => {
     legend: {
       show: !0,
       showForSingleSeries: !0,
-      customLegendItems: ["Actual", "Expected"],
+      customLegendItems: ["Actual"],
       markers: {
-        fillColors: ["#51d28c", "#564ab1"],
+        fillColors: ["#51d28c"],
       },
     },
   };

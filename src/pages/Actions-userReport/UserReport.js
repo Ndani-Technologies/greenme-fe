@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardBody, CardHeader, Col } from "reactstrap";
 import Layouts from "../../Layouts";
-import { BasicColumn } from "../ColumnCharts/ColumnCharts";
+import { BasicColumn, ColumnMarker } from "../ColumnCharts/ColumnCharts";
 
 const UserReport = () => {
   return (
@@ -112,15 +112,31 @@ const UserReport = () => {
               </div>
             </div>
           </div>
-          <Col lg={6}>
-            <Card>
-              <CardHeader>
-                <h4 className="card-title mb-0">Basic Column Chart</h4>
-              </CardHeader>
-              <CardBody>
-                <BasicColumn dataColors='["--vz-gray-300", "--vz-primary", "--vz-info"]' />
-              </CardBody>
-            </Card>
+          <Col className="d-flex">
+            <Col lg={6}>
+              <Card>
+                <CardHeader>
+                  <h4 className="card-title mb-0">
+                    Average spent on actions, by category (monthly)
+                  </h4>
+                </CardHeader>
+                <CardBody>
+                  <BasicColumn dataColors='["--vz-red", "--vz-primary", "--vz-green"]' />
+                </CardBody>
+              </Card>
+            </Col>
+            <Col lg={4}>
+              <Card>
+                <CardHeader>
+                  <h4 className="card-title mb-0">
+                    Total time spent on actions, by category
+                  </h4>
+                </CardHeader>
+                <CardBody>
+                  <ColumnMarker dataColors='["--vz-info", "--vz-primary"]' />
+                </CardBody>
+              </Card>
+            </Col>
           </Col>
         </div>
       </Layouts>
