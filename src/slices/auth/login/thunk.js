@@ -6,7 +6,7 @@ import {
   postLogin,
   postSocialLogin,
 } from "../../../helpers/fakebackend_helper";
-
+import env from "react-dotenv";
 import {
   loginSuccess,
   logoutUserSuccess,
@@ -22,10 +22,10 @@ const fireBaseBackend = getFirebaseBackend();
 export const loginUserReal = (history) => async (dispatch) => {
   try {
     // Open a popup window to initiate the SSO process
-    console.log("url", process.env.BACKEND_URL + " user/login");
+    console.log("url", env.BACKEND_URL + " user/login");
 
     const popup = window.open(
-      "http://localhost:5000/user/login",
+      env.BASE_URL + "/user/login",
       "",
       "width=500,height=500"
     );
@@ -33,7 +33,7 @@ export const loginUserReal = (history) => async (dispatch) => {
       window.addEventListener("message", (event) => {
         console.log("event", event);
 
-        if (event.origin !== "http://localhost:5000") return;
+        if (event.origin !== env.BASE_URL) return;
 
         resolve(event.data);
 
