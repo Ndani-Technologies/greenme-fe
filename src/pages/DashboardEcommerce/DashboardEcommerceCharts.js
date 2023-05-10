@@ -141,12 +141,13 @@ const StoreVisitsCharts = ({ dataColors }) => {
   const series = [44, 55, 41, 17, 15];
   var options = {
     labels: [
-      "No. of questions answered ",
-      "No. of questions answered YES",
-      "No. of questions answered NO",
-      "No. of questions answered DON’T KNOW",
-      "No. of questions answered WITH NO POLICY",
-      "No. of questions answered WITH COMMENTS",
+      "No. of Actions inactive ",
+      "No. of actions assigned",
+      "No. of actions not started",
+      "No. of actions in progress",
+      "No. of actions completedY",
+      "No. of actions unassigned",
+      "No. of actions Attempted",
     ],
     chart: {
       height: 333,

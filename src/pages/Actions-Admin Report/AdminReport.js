@@ -17,8 +17,9 @@ import { CircleRadialbar } from "../RadialbarCharts/RadialbarCharts";
 import { PieChart } from "../ECharts/ECharts";
 import CountUp from "react-countup";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import kenya from "../../assets/images/Banchmarking/Kenya.png";
 
-const UserReport = () => {
+const AdminReport = () => {
   return (
     <React.Fragment>
       <Layouts>
@@ -27,14 +28,22 @@ const UserReport = () => {
             <div className="d-flex  justify-content-between align-items-center">
               <div>
                 <h1>Recommended Actions - Report</h1>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus
-                  vestibulum integer massa vel sem id. Mi quis a et quis.
-                  Rhoncus mattis urna adipiscing dolor nam sem sit vel netus.
-                  Egestas vulputate adipiscing aenean tellus elit commodo
-                  tellus. Tincidunt sit turpis est dolor convallis viverra enim
-                  aliquet euismod.{" "}
-                </p>
+                <div className="d-flex gap-4 mt-5">
+                  <h5 style={{ color: "#fff" }}>
+                    Full Name:<span> Timothy Smith</span>
+                  </h5>
+
+                  <h5 style={{ display: "flex", color: "#fff" }}>
+                    Country:
+                    <span className="d-flex gap-2">
+                      Kenya <img src={kenya} />
+                    </span>
+                  </h5>
+
+                  <h5 style={{ color: "#fff" }}>
+                    Org:<span> FleetMGT CO.C</span>
+                  </h5>
+                </div>
               </div>
               <div className="d-flex gap-3">
                 <i class="ri-star-line" style={{ color: "white" }}></i>
@@ -368,4 +377,4 @@ const UserReport = () => {
   );
 };
 
-export default UserReport;
+export default AdminReport;

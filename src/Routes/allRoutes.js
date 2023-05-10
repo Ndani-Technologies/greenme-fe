@@ -45,6 +45,7 @@ import Benchmarking from "../pages/Benchmarking/Benchmarking";
 import BenhmarkSummary from "../pages/Benchmarking-Summary/Summary";
 import BenchmarkSummaryAdmin from "../pages/Benchmak-Summary-Admin/BenchmarkingSummaryAdmin";
 import UserReport from "../pages/Actions-userReport/UserReport";
+import AdminReport from "../pages/Actions-Admin Report/AdminReport";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -87,6 +88,8 @@ const publicRoutes = [
   { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
   //User Recomendations pages
   { path: "/userreport", component: <UserReport /> },
+  //Admin Recomendations pages
+  { path: "/adminreport", component: <AdminReport /> },
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },

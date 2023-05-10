@@ -374,40 +374,19 @@ const ColumnMarker = ({ dataColors }) => {
   var chartColumnMarkersColors = getChartColorsArray(dataColors);
   const series = [
     {
-      name: "Actual",
+      name: "Action Categories",
       data: [
         {
-          x: "2011",
+          x: "Avoid",
           y: 1292,
-          goals: [
-            {
-              value: 1400,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
         },
         {
-          x: "2012",
+          x: "Shift",
           y: 4432,
-          goals: [
-            {
-              value: 5400,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
         },
         {
-          x: "2013",
+          x: "Improve",
           y: 5423,
-          goals: [
-            {
-              value: 5200,
-              strokeWidth: 5,
-              strokeColor: "#775DD0",
-            },
-          ],
         },
       ],
     },
@@ -430,9 +409,9 @@ const ColumnMarker = ({ dataColors }) => {
     legend: {
       show: !0,
       showForSingleSeries: !0,
-      customLegendItems: ["Actual"],
+      customLegendItems: ["Action Categories"],
       markers: {
-        fillColors: ["#51d28c"],
+        fillColors: ["primary"],
       },
     },
   };
