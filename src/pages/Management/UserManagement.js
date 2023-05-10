@@ -59,6 +59,7 @@ import Layouts from "../../Layouts";
 import {
   deleteUserDetails,
   getUserDetails,
+  updatedUserDetails,
 } from "../../slices/usermanagement/thunk";
 const arr = [
   {
@@ -68,7 +69,7 @@ const arr = [
     designation: "NodeJS Developer",
     email: "michaelmorris@velzon.com",
     phone: "484-606-3104",
-    lead_score: "Sweden",
+    leadScore: "Sweden",
     last_contacted: "2022-08-15T00:00:01.991Z",
     image_src: "avatar-6.jpg",
     tags: "active",
@@ -80,7 +81,7 @@ const arr = [
     designation: "Senoir Developer",
     email: "kevindawson@velzon.com",
     phone: "745-321-9874",
-    lead_score: "Kenya",
+    leadScore: "Kenya",
     last_contacted: "2012-01-01T00:00:02.001Z",
     image_src: "avatar-5.jpg",
     tags: "Active",
@@ -92,7 +93,7 @@ const arr = [
     designation: "Assitant Develope",
     email: "jamesprice@velzon.com",
     phone: "646-276-2274",
-    lead_score: "Nigeria",
+    leadScore: "Nigeria",
     last_contacted: "2021-07-14T00:00:01.997Z",
     image_src: "avatar-8.jpg",
     tags: "Banned",
@@ -104,7 +105,7 @@ const arr = [
     designation: "Lead Developer",
     email: "herbertstokes@velzon.com",
     phone: "949-791-0614",
-    lead_score: "Malaysia",
+    leadScore: "Malaysia",
     last_contacted: "1970-01-01T00:00:02.001Z",
     image_src: "avatar-4.jpg",
     tags: "Banned",
@@ -116,7 +117,7 @@ const arr = [
     designation: "Mean Stack Developer",
     email: "timothysmith@velzon.com",
     phone: "231-480-8536",
-    lead_score: "Japan",
+    leadScore: "Japan",
     last_contacted: "2021-10-21T00:00:01.993Z",
     image_src: "avatar-8.jpg",
     tags: "Active",
@@ -128,7 +129,7 @@ const arr = [
     designation: "UI / UX Designer",
     email: "thomastaylor@velzon.com",
     phone: "580-464-4694",
-    lead_score: "Poland",
+    leadScore: "Poland",
     last_contacted: "2022-02-22T00:00:01.994Z",
     image_src: "avatar-9.jpg",
     tags: "Banned",
@@ -140,7 +141,7 @@ const arr = [
     designation: "PHP Developer",
     email: "nancymartino@velzon.com",
     phone: "786-253-9927",
-    lead_score: "UK",
+    leadScore: "UK",
     last_contacted: "1970-02-02T00:00:02.004Z",
     image_src: "avatar-1.jpg",
     tags: "Active",
@@ -152,7 +153,7 @@ const arr = [
     designation: "Lead Designer / Developer",
     email: "tonyanoble@velzon.com",
     phone: "414-453-5725",
-    lead_score: "Russia",
+    leadScore: "Russia",
     last_contacted: "2022-05-09T18:30:00.000Z",
     image_src: "avatar-7.jpg",
     tags: "Active",
@@ -164,7 +165,7 @@ const arr = [
     designation: "Asp.Net Developer",
     email: "marycousar@velzon.com",
     phone: "540-575-0991",
-    lead_score: "Poland",
+    leadScore: "Poland",
     last_contacted: "2010-11-05T00:00:02.016Z",
     image_src: "avatar-3.jpg",
     tags: "Banned",
@@ -176,7 +177,7 @@ const arr = [
     designation: "Full Stack Developer",
     email: "alexisclarke@velzon.com",
     phone: "515-395-1069",
-    lead_score: "Japan",
+    leadScore: "Japan",
     last_contacted: "1970-01-01T00:00:01.996Z",
     image_src: "avatar-6.jpg",
     tags: "Active",
@@ -189,28 +190,13 @@ const UsersManagement = () => {
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
+
       userDetail: state.UserDetail.userDetail,
       error: state.Crm.error,
     }));
   useEffect(() => {
     dispatch(getUserDetails());
   }, []);
-  useEffect(() => {
-    console.log("data user", userDetail);
-
-    dispatch(onGetContacts(userDetail));
-  }, [dispatch, crmcontacts, userDetail]);
-
-  useEffect(() => {
-    setContact(crmcontacts);
-  }, [crmcontacts]);
-
-  useEffect(() => {
-    if (!isEmpty(crmcontacts)) {
-      setContact(crmcontacts);
-      setIsEdit(false);
-    }
-  }, [crmcontacts]);
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -292,13 +278,14 @@ const UsersManagement = () => {
     enableReinitialize: true,
 
     initialValues: {
-      // img: (contact && contact.img) || '',
+      img: (contact && contact.profilePic) || "",
+      _id: (contact && contact._id) || "",
       name: (contact && contact.name) || "",
       company: (contact && contact.company) || "",
       designation: (contact && contact.designation) || "",
       email: (contact && contact.email) || "",
       phone: (contact && contact.phone) || "",
-      lead_score: (contact && contact.lead_score) || "",
+      leadScore: (contact && contact.leadScore) || "",
       tags: (contact && contact.tags) || [],
     },
     validationSchema: Yup.object({
@@ -307,25 +294,29 @@ const UsersManagement = () => {
       designation: Yup.string().required("Please Enter Designation"),
       email: Yup.string().required("Please Enter Email"),
       phone: Yup.string().required("Please Enter Phone"),
-      lead_score: Yup.string().required("Please Enter lead_score"),
+      leadScore: Yup.string().required("Please Enter leadScore"),
+      leadScore: Yup.string().required("Please Enter leadScore"),
     }),
     onSubmit: (values) => {
       if (isEdit) {
         const updateContact = {
           _id: contact ? contact._id : 0,
           // img: values.img,
-          name: values.name,
-          company: values.company,
-          designation: values.designation,
+          firstName: values.name.split(" ")[0],
+          lastName: values.name.split(" ")[1],
+          organization: values.company,
+          position: values.designation,
           email: values.email,
           phone: values.phone,
-          lead_score: values.lead_score,
+          leadScore: values.leadScore,
           last_contacted: dateFormat(),
           // time: timeFormat(),
-          tags: assignTag,
+          tags: tag[0].value,
         };
+        console.log("on submit", updateContact);
         // update Contact
-        dispatch(onUpdateContact(updateContact));
+        // dispatch(onUpdateContact(updateContact));
+        dispatch(updatedUserDetails(updateContact));
         validation.resetForm();
       } else {
         const newContact = {
@@ -336,7 +327,7 @@ const UsersManagement = () => {
           designation: values["designation"],
           email: values["email"],
           phone: values["phone"],
-          lead_score: values["lead_score"],
+          leadScore: values["leadScore"],
           last_contacted: dateFormat(),
           // time: timeFormat(),
           tags: assignTag,
@@ -353,19 +344,20 @@ const UsersManagement = () => {
   const handleContactClick = useCallback(
     (arg) => {
       const contact = arg;
-
+      console.log("arg contact", contact);
       setContact({
-        contactId: contact.contactId,
+        _id: contact._id,
         // img: contact.img,
         name: contact.name,
         company: contact.company,
         email: contact.email,
         designation: contact.designation,
         phone: contact.phone,
-        lead_score: contact.lead_score,
+        leadScore: contact.leadScore,
         last_contacted: contact.date,
         // time: contact.time,
-        tags: contact.tags,
+        tags: tag.value,
+        // contact,
       });
 
       setIsEdit(true);
@@ -389,6 +381,7 @@ const UsersManagement = () => {
     const date1 = moment(new Date(date)).format("DD MMM Y");
     return date1;
   };
+  const handelUpdate = () => {};
 
   const handleValidTime = (time) => {
     const time1 = new Date(time);
@@ -520,12 +513,12 @@ const UsersManagement = () => {
       },
       {
         Header: "Country",
-        accessor: "lead_score",
+        accessor: "country",
         filterable: false,
       },
       {
         Header: "Status",
-        accessor: "tags",
+        accessor: "state",
         // Cell: (contact) => (
         //   <>
         //     {contact.row.original.tags.map((item, key) => (
@@ -590,6 +583,7 @@ const UsersManagement = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         handleContactClick(contactData);
+                        // console.log("contactDatas", contactData);
                       }}
                     >
                       {/* <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "} */}
@@ -616,7 +610,12 @@ const UsersManagement = () => {
     ],
     [handleContactClick, checkedAll]
   );
-
+  const tags = [
+    { label: "Exiting", value: "Exiting" },
+    { label: "Lead", value: "Lead" },
+    { label: "Long-term", value: "Long-term" },
+    { label: "Partner", value: "Partner" },
+  ];
   const [tag, setTag] = useState([]);
   const [assignTag, setAssignTag] = useState([]);
 
@@ -625,13 +624,6 @@ const UsersManagement = () => {
     const assigned = tags.map((item) => item.value);
     setAssignTag(assigned);
   }
-
-  const tags = [
-    { label: "Exiting", value: "Exiting" },
-    { label: "Lead", value: "Lead" },
-    { label: "Long-term", value: "Long-term" },
-    { label: "Partner", value: "Partner" },
-  ];
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
@@ -664,19 +656,24 @@ const UsersManagement = () => {
           />
           <Container fluid>
             <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
-            <Row>
+            <Row
+              onClick={() => {
+                // const contactData = cellProps.row.original;
+                // setInfo(contactData);
+              }}
+            >
               <Col xxl={9}>
                 <Card id="contactList">
                   <CardBody className="pt-0">
                     <div>
-                      {console.log("contact", crmcontacts)}
-                      {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                      {userDetail ? (
                         <TableContainer
                           columns={columns}
-                          data={crmcontacts || []}
+                          data={userDetail || []}
                           isGlobalFilter={true}
                           isAddUserList={false}
                           isFooter={true}
+                          setInfo={setInfo}
                           customPageSize={8}
                           className="custom-header-css"
                           divClass="table-responsive table-card mb-0"
@@ -937,15 +934,15 @@ const UsersManagement = () => {
                             <Col lg={6}>
                               <div>
                                 <Label
-                                  htmlFor="lead_score-field"
+                                  htmlFor="leadScore-field"
                                   className="form-label"
                                 >
                                   Lead Score
                                 </Label>
 
                                 <Input
-                                  name="lead_score"
-                                  id="lead_score-field"
+                                  name="leadScore"
+                                  id="leadScore-field"
                                   className="form-control"
                                   placeholder="Enter Lead Score"
                                   type="text"
@@ -954,18 +951,18 @@ const UsersManagement = () => {
                                   }}
                                   onChange={validation.handleChange}
                                   onBlur={validation.handleBlur}
-                                  value={validation.values.lead_score || ""}
+                                  value={validation.values.leadScore || ""}
                                   invalid={
-                                    validation.touched.lead_score &&
-                                    validation.errors.lead_score
+                                    validation.touched.leadScore &&
+                                    validation.errors.leadScore
                                       ? true
                                       : false
                                   }
                                 />
-                                {validation.touched.lead_score &&
-                                validation.errors.lead_score ? (
+                                {validation.touched.leadScore &&
+                                validation.errors.leadScore ? (
                                   <FormFeedback type="invalid">
-                                    {validation.errors.lead_score}
+                                    {validation.errors.leadScore}
                                   </FormFeedback>
                                 ) : null}
                               </div>
@@ -1016,7 +1013,6 @@ const UsersManagement = () => {
                               className="btn btn-success"
                               id="add-btn"
                             >
-                              {" "}
                               {!!isEdit ? "Update" : "Add Contact"}{" "}
                             </button>
                           </div>
@@ -1073,7 +1069,7 @@ const UsersManagement = () => {
                           </tr>
                           <tr>
                             <td className="fw-medium">Leaderboard points</td>
-                            <td>{info.lead_score || "154"}</td>
+                            <td>{info.leadScore || "154"}</td>
                           </tr>
                           <tr>
                             <td className="fw-medium">Area of Expertise</td>

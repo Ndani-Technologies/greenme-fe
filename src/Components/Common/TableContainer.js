@@ -138,6 +138,7 @@ function GlobalFilter({
 
 const TableContainer = ({
   columns,
+  setInfo,
   isFilterA,
   isHorzontal,
   isFooter,
@@ -363,7 +364,14 @@ const TableContainer = ({
                       <th>
                         {row.cells.map((cell) => {
                           return (
-                            <tr key={cell.id} {...cell.getCellProps()}>
+                            <tr
+                              key={cell.id}
+                              {...cell.getCellProps()}
+                              onClick={() => {
+                                console.log("row1", cell?.row?.original);
+                                setInfo(cell?.row?.original);
+                              }}
+                            >
                               {cell.render("Cell")}
                             </tr>
                           );
@@ -379,7 +387,14 @@ const TableContainer = ({
                       <tr>
                         {row.cells.map((cell) => {
                           return (
-                            <td key={cell.id} {...cell.getCellProps()}>
+                            <td
+                              key={cell.id}
+                              {...cell.getCellProps()}
+                              onClick={() => {
+                                console.log("row2", cell?.row?.original);
+                                setInfo(cell?.row?.original);
+                              }}
+                            >
                               {cell.render("Cell")}
                             </td>
                           );
