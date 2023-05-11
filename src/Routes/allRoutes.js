@@ -57,16 +57,8 @@ const authProtectedRoutes = [
     component: <Navigate to="/dashboard" />,
   },
   { path: "*", component: <Navigate to="/dashboard" /> },
-];
-
-const publicRoutes = [
-  // Authentication Page
-  { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
-  { path: "/forgot-password", component: <ForgetPasswordPage /> },
-  { path: "/register", component: <Register /> },
   { path: "/Profile", component: <Profile /> },
-  { path: "/UsersManagement", component: <UsersManagement /> },
+
   //benchmarking user
   { path: "/benchmarking", component: <BenchmarkingDashboard /> },
   { path: `/benchmarking/:id`, component: <Benchmarking /> },
@@ -84,6 +76,33 @@ const publicRoutes = [
   { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
   { path: "/adminbenchmarking/compare", component: <Comparison /> },
   { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
+];
+
+const publicRoutes = [
+  // Authentication Page
+  { path: "/logout", component: <Logout /> },
+  { path: "/login", component: <Login /> },
+  { path: "/forgot-password", component: <ForgetPasswordPage /> },
+  { path: "/register", component: <Register /> },
+  // { path: "/Profile", component: <Profile /> },
+  // { path: "/UsersManagement", component: <UsersManagement /> },
+  // //benchmarking user
+  // { path: "/benchmarking", component: <BenchmarkingDashboard /> },
+  // { path: `/benchmarking/:id`, component: <Benchmarking /> },
+  // { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
+  // //benchmarking admin
+  // { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
+  // {
+  //   path: `/adminbenchmarking/summary/:id`,
+  //   component: <BenchmarkSummaryAdmin />,
+  // },
+  // {
+  //   path: `/adminbenchmarking/questions/summary/:id`,
+  //   component: <BenchmarkSummaryAdmin />,
+  // },
+  // { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
+  // { path: "/adminbenchmarking/compare", component: <Comparison /> },
+  // { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },

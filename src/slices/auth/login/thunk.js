@@ -102,10 +102,10 @@ export const registerUserReal = (history) => async (dispatch) => {
     console.error(error);
   }
 };
-export const updateUser = (user) => async (dispatch, getState) => {
+export const updateUser = (userId, user) => async (dispatch, getState) => {
   try {
     // Open a popup window to initiate the SSO process
-    let resp = await axios.patch(env.USER_URL + `user/${user._id}`);
+    let resp = await axios.patch(env.USER_URL + `user/${userId}`, user);
 
     console.log("resp", resp);
     if (resp.success) {
