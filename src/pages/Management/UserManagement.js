@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
 import * as moment from "moment";
-
+import Select from "react-select";
 // Export Modal
 import ExportCSVModal from "../../Components/Common/ExportCSVModal";
 
@@ -31,8 +31,6 @@ import {
   Table,
   FormFeedback,
 } from "reactstrap";
-import Select from "react-select";
-
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import DeleteModal from "../../Components/Common/DeleteModal";
 
@@ -54,7 +52,6 @@ import { useFormik } from "formik";
 import Loader from "../../Components/Common/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Layout } from "feather-icons-react/build/IconComponents";
 import Layouts from "../../Layouts";
 const arr = [
   {
@@ -362,17 +359,6 @@ const UsersManagement = () => {
     [toggle]
   );
 
-  // Node API
-  // useEffect(() => {
-  //   if (isContactCreated) {
-  //     setContact(null);
-  //     dispatch(onGetContacts());
-  //   }
-  // }, [
-  //   dispatch,
-  //   isContactCreated,
-  // ]);
-
   const handleValidDate = (date) => {
     const date1 = moment(new Date(date)).format("DD MMM Y");
     return date1;
@@ -514,15 +500,6 @@ const UsersManagement = () => {
       {
         Header: "Status",
         accessor: "tags",
-        // Cell: (contact) => (
-        //   <>
-        //     {contact.row.original.tags.map((item, key) => (
-        //       <span className="badge badge-soft-primary me-1" key={key}>
-        //         {item}
-        //       </span>
-        //     ))}
-        //   </>
-        // ),
       },
       {
         Header: "Last Seen",

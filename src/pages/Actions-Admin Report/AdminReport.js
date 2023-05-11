@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import {
   Card,
   CardBody,
@@ -7,6 +7,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Label,
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
@@ -15,11 +16,25 @@ import { BasicColumn, ColumnMarker } from "../ColumnCharts/ColumnCharts";
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
 import { CircleRadialbar } from "../RadialbarCharts/RadialbarCharts";
 import { PieChart } from "../ECharts/ECharts";
-import CountUp from "react-countup";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
+import DatePicker from "react-datepicker";
+import Select from "react-select";
+import "react-datepicker/dist/react-datepicker.css";
+import countryList from "react-select-country-list";
 
 const AdminReport = () => {
+  const [value, setValue] = useState("");
+  const options = useMemo(() => countryList().getData(), []);
+
+  const changeHandler = (value) => {
+    setValue(value);
+  };
+  const [startDate, setStartDate] = useState(null);
+
+  const handleDateChange = (date) => {
+    setStartDate(date);
+  };
   return (
     <React.Fragment>
       <Layouts>
@@ -146,7 +161,54 @@ const AdminReport = () => {
               </div>
             </div>
           </div>
-          <Col className="bg-white pt-5 ">
+          <Col className="bg-white  p-2">
+            <Col className="d-flex justify-content-between">
+              <Col lg={2}>
+                <div className="mb-5">
+                  <select className="form-select mb-3">
+                    <option hidden selected>
+                      User
+                    </option>
+                    <option value="Choices1"> Nancy Martino</option>
+                    <option value="Choices1">Timothy Smith</option>
+                    <option value="Choices2">Michael Morris</option>
+                  </select>
+                </div>
+              </Col>
+              <Col lg={2}>
+                <div className="mb-5">
+                  <select disable className="form-select mb-3">
+                    <option hidden selected>
+                      Organization
+                    </option>
+                  </select>
+                </div>
+              </Col>
+              <Col lg={2}>
+                <Select
+                  placeholder="Country"
+                  options={options}
+                  value={value}
+                  onChange={changeHandler}
+                />
+              </Col>
+              <Col lg={2}>
+                <DatePicker
+                  className="form-select mb-3"
+                  selected={startDate}
+                  onChange={handleDateChange}
+                  placeholderText="Start Date"
+                />
+              </Col>
+              <Col lg={2}>
+                <DatePicker
+                  className="form-select mb-3"
+                  selected={startDate}
+                  onChange={handleDateChange}
+                  placeholderText="End Date"
+                />
+              </Col>
+            </Col>
             <Col className="d-flex gap-2">
               <Col lg={5}>
                 <Card className="pb-3">

@@ -12,44 +12,32 @@ import {
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
 import Layouts from "../../Layouts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
-const BenchmarkSummaryAdmin = () => {
-  document.title = "Summary | GreenMe";
+const ActionUserSummary = () => {
   return (
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main  mx-n4 mt-n4 w-100">
-            <h1>Benchmarking Summary</h1>
-            <div className="d-flex gap-4">
-              <div>Username: Tonya B</div>
-              <div>Orgnaization: FleetMGT.A</div>
+          <div className="Main mx-n4 mt-n4 w-100">
+            <div className="d-flex  justify-content-between align-items-center">
+              <div>
+                <h1>Recommended Actions - Report</h1>
+                <p>
+                  Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus
+                  vestibulum integer massa vel sem id. Mi quis a et quis.
+                  Rhoncus mattis urna adipiscing dolor nam sem sit vel netus.
+                  Egestas vulputate adipiscing aenean tellus elit commodo
+                  tellus. Tincidunt sit turpis est dolor convallis viverra enim
+                  aliquet euismod.{" "}
+                </p>
+              </div>
+              <div className="d-flex gap-3">
+                <i class="ri-star-line" style={{ color: "white" }}></i>
+                <i class="ri-share-fill" style={{ color: "white" }}></i>
+                <i class="ri-flag-line" style={{ color: "white" }}></i>
+              </div>
             </div>
           </div>
           <div className="bg-white p-2 pb-0 pt-4">
-            <div className="d-flex justify-content-between ">
-              <span>
-                <b>Benchmark title:</b> My benchmark title here
-              </span>
-              <div>
-                <span>
-                  <b>Country:</b> Kenya
-                </span>
-                <img
-                  style={{ marginLeft: "8px", height: "13px" }}
-                  src={kenya}
-                />
-              </div>
-              <span>
-                <b>Status:</b> In Progress
-              </span>
-              <span>
-                <b>Start date:</b> 17June, 2021
-              </span>
-              <span>
-                {" "}
-                <span className="fw-light">End date:</span> DD / MM /YY
-              </span>
-            </div>
             <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
               <Col xl={7} className="mt-2">
                 <Col xl={12}>
@@ -182,4 +170,24 @@ const BenchmarkSummaryAdmin = () => {
   );
 };
 
-export default BenchmarkSummaryAdmin;
+export default ActionUserSummary;
+
+<div className="Main mx-n4 mt-n4 w-100">
+  <div className="d-flex  justify-content-between align-items-center">
+    <div>
+      <h1>Recommended Actions - Report</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum
+        integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna
+        adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing
+        aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor
+        convallis viverra enim aliquet euismod.{" "}
+      </p>
+    </div>
+    <div className="d-flex gap-3">
+      <i class="ri-star-line" style={{ color: "white" }}></i>
+      <i class="ri-share-fill" style={{ color: "white" }}></i>
+      <i class="ri-flag-line" style={{ color: "white" }}></i>
+    </div>
+  </div>
+</div>;
