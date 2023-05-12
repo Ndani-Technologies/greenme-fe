@@ -246,6 +246,24 @@ const Navdata = () => {
           link: "/adminreport",
           parentId: "Recommended Actions Admin",
         },
+        {
+          id: 2,
+          label: "Admin Summary",
+          link: "/adminSummary",
+          parentId: "Recommended Actions Admin",
+        },
+        {
+          id: 3,
+          label: "Comparison",
+          link: "/actioncomparison",
+          parentId: "Recommended Actions Admin",
+        },
+        {
+          id: 4,
+          label: "Admin Dashboard",
+          link: "/actionadmindashboard",
+          parentId: "Recommended Actions Admin",
+        },
       ],
     },
     {

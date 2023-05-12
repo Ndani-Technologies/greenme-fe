@@ -1297,7 +1297,7 @@ const BenchmarkingQA = () => {
                                                 {Answer.name}
                                               </h5>
                                             </div>
-                                            <div className="d-flex gap-2">
+                                            <div className="d-flex justify-content-end gap-2">
                                               <i
                                                 className="ri-pencil-fill fs-18"
                                                 style={{ color: "gray" }}
@@ -1537,7 +1537,7 @@ const BenchmarkingQA = () => {
                                               {category.name}
                                             </h5>
                                           </div>
-                                          <div className="d-flex gap-2">
+                                          <div className="d-flex justify-content-end gap-2">
                                             <i
                                               className="ri-pencil-fill fs-18"
                                               style={{ color: "gray" }}

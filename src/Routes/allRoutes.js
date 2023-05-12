@@ -47,6 +47,9 @@ import BenchmarkSummaryAdmin from "../pages/Benchmak-Summary-Admin/BenchmarkingS
 import UserReport from "../pages/Actions-userReport/UserReport";
 import AdminReport from "../pages/Actions-Admin Report/AdminReport";
 import ActionUserSummary from "../pages/Action-User-Summary/ActionUserSummary";
+import ActionAdminSummary from "../pages/Action-Admin-Summary/ActionAdminSummary";
+import ActionComparison from "../pages/ActionComparison/ActionComparison";
+import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDashboard";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -92,6 +95,10 @@ const publicRoutes = [
   { path: "/usersummary", component: <ActionUserSummary /> },
   //Admin Recomendations pages
   { path: "/adminreport", component: <AdminReport /> },
+  ,
+  { path: "/adminsummary", component: <ActionAdminSummary /> },
+  { path: "/actioncomparison", component: <ActionComparison /> },
+  { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },
