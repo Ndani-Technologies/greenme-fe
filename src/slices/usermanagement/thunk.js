@@ -40,9 +40,9 @@ export const deleteUserDetails = (userId) => async (dispatch, getState) => {
     if (resp.success) {
       const userDetail = getState().UserDetail.userDetail;
       // console.log("Current state", userDetail);
-      // const updateded = userDetail.filter((elem) => elem._id !== userId);
+      const updateded = userDetail.filter((elem) => elem._id !== userId);
       //filter:
-      // dispatch(userDetailSuccess(updateded));
+      dispatch(userDetailSuccess(updateded));
     } else {
       dispatch(userDetailFailure());
     }
@@ -90,7 +90,7 @@ export const updatedUserDetails = (user) => async (dispatch, getState) => {
       // console.log("updated store", updatededData);
       // //filter:
       // dispatch(userDetailSuccess(updatededData));
-      dispatch(getUserDetails());
+      dispatch(userDetailSuccess());
     } else {
       dispatch(userDetailFailure());
     }

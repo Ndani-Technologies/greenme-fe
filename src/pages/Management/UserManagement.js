@@ -295,7 +295,6 @@ const UsersManagement = () => {
       email: Yup.string().required("Please Enter Email"),
       phone: Yup.string().required("Please Enter Phone"),
       leadScore: Yup.string().required("Please Enter leadScore"),
-      leadScore: Yup.string().required("Please Enter leadScore"),
     }),
     onSubmit: (values) => {
       if (isEdit) {
@@ -311,7 +310,7 @@ const UsersManagement = () => {
           leadScore: values.leadScore,
           last_contacted: dateFormat(),
           // time: timeFormat(),
-          tags: tag[0].value,
+          tags: tags.value,
         };
         console.log("on submit", updateContact);
         // update Contact
