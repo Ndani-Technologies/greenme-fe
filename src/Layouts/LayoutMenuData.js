@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Navdata = () => {
+  const user = useSelector((state) => state.Login.user);
   const history = useNavigate();
   const navigate = useNavigate();
   //state data
@@ -135,7 +137,7 @@ const Navdata = () => {
     isMultiLevel,
     isBanchmarking,
   ]);
-  const menuItems = [
+  const menuItemsAdmin = [
     {
       label: "Menu",
       isHeader: true,
@@ -151,27 +153,6 @@ const Navdata = () => {
       icon: "ri-contacts-book-line",
       label: "Users Management",
       link: "/UsersManagement",
-    },
-    {
-      id: "Benchmarking",
-      icon: "ri-compasses-2-line",
-      label: "Benchmarking",
-      link: "/#",
-      click: function (e) {
-        e.preventDefault();
-        setIsApps(!isApps);
-        setIscurrentState("Apps");
-        updateIconSidebar(e);
-      },
-      stateVariables: isApps,
-      subItems: [
-        {
-          id: 1,
-          label: "Dashboard",
-          link: "/benchmarking",
-          parentId: "Benchmarking",
-        },
-      ],
     },
     {
       id: "Benchmarking Admin",
@@ -297,6 +278,86 @@ const Navdata = () => {
       link: "/",
     },
   ];
-  return <React.Fragment>{menuItems}</React.Fragment>;
+  const menuItems = [
+    {
+      label: "Menu",
+      isHeader: true,
+    },
+    {
+      id: 1,
+      icon: "ri-dashboard-2-line",
+      label: "MY Dashboard",
+      link: "/",
+    },
+    {
+      id: "",
+      icon: "ri-contacts-book-line",
+      label: "Users Management",
+      link: "/UsersManagement",
+    },
+    {
+      id: "Benchmarking",
+      icon: "ri-compasses-2-line",
+      label: "Benchmarking",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsApps(!isApps);
+        setIscurrentState("Apps");
+        updateIconSidebar(e);
+      },
+      stateVariables: isApps,
+      subItems: [
+        {
+          id: 1,
+          label: "Dashboard",
+          link: "/benchmarking",
+          parentId: "Benchmarking",
+        },
+      ],
+    },
+
+    {
+      id: 3,
+      icon: "ri-pencil-ruler-2-line",
+      label: "Recommended Actions",
+      link: "/",
+    },
+    {
+      id: 4,
+      icon: "ri-stack-line",
+      label: "Document sharing",
+      link: "/",
+    },
+    {
+      id: 5,
+      icon: "ri-layout-grid-line",
+      label: "Collaboration",
+      link: "/",
+    },
+    {
+      id: 6,
+      icon: "ri-apps-2-line",
+      label: "Discussions",
+      link: "/",
+    },
+    {
+      id: 7,
+      icon: "ri-rocket-line",
+      label: "Leaderboard",
+      link: "/",
+    },
+    {
+      id: 8,
+      icon: "ri-pie-chart-line",
+      label: "Reports",
+      link: "/",
+    },
+  ];
+  return (
+    <React.Fragment>
+      {user?.role?.title == "Admin" ? menuItemsAdmin : menuItems}
+    </React.Fragment>
+  );
 };
 export default Navdata;
