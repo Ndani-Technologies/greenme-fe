@@ -22,13 +22,9 @@ const WebAppsDropdown = () => {
         toggle={toggleWebAppDropdown}
         className="topbar-head-dropdown ms-1 header-item"
       >
-        <DropdownToggle
-          tag="button"
-          type="button"
-          className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
-        >
-          <i className="bx bx-category-alt fs-22"></i>
-        </DropdownToggle>
+        {/* <DropdownToggle tag="button" type="button" className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle">
+                    <i className='bx bx-category-alt fs-22'></i>
+                </DropdownToggle> */}
         <DropdownMenu className="dropdown-menu-lg p-0 dropdown-menu-end">
           <div className="p-3 border-top-0 border-start-0 border-end-0 border-dashed border">
             <Row className="align-items-center">

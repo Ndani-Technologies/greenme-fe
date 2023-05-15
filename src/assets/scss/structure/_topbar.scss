@@ -52,7 +52,7 @@
   }
 
   .user-name-text {
-    color: var(--#{$prefix}gray-700);
+    color: #ffff;
   }
 }
 
@@ -67,6 +67,7 @@
     padding-left: 40px;
     padding-right: 30px;
     background-color: $topbar-search-bg;
+    color: #ffff;
     box-shadow: none;
   }
 

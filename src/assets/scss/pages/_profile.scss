@@ -9,7 +9,12 @@
     font-size: 10rem;
   }
 }
-
+.custom-padding {
+  padding: 10px;
+  .fs-7 {
+    color: #878a99;
+  }
+}
 // profile
 
 .profile-wid-bg {
@@ -21,18 +26,18 @@
   @media (max-width: 575.98px) {
     height: 445px;
   }
-
-  &::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    opacity: 0.9;
-    background: $primary;
-    background: linear-gradient(to top, darken($primary, 25%), $primary);
-  }
+  //  For Future use in any case we use when apply color on Image
+  //   &::before {
+  //     content: "";
+  //     position: absolute;
+  //     left: 0;
+  //     right: 0;
+  //     top: 0;
+  //     bottom: 0;
+  //     opacity: 0.9;
+  //     background: $primary;
+  //     background: linear-gradient(to top, darken($primary, 25%), $primary);
+  //   }
 
   .profile-wid-img {
     width: 100%;
