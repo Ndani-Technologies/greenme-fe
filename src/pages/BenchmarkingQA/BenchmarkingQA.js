@@ -27,6 +27,16 @@ import {
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
+  getAllQA,
+  getAllAnswers,
+  getAllCategories,
+  updateAnswer,
+  deleteAnswer,
+  addAnswer,
+  addCategory,
+  deleteCategory,
+  updateCategory,
+  addQuestion,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -44,127 +54,15 @@ import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
 import { Category, Language } from "@mui/icons-material";
 import { languages } from "prismjs";
 import { lineHeight } from "@mui/system";
-import { Checkbox } from "@mui/material";
+import { Checkbox, TextField } from "@mui/material";
 import { Link } from "feather-icons-react/build/IconComponents";
-const arr = [
-  {
-    _id: "625d3cd5923ccd040209ebf1",
-    name: "Does your organisation have environmental commitments?",
-    phone: "02",
-    email: "Yes",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "30%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf3",
-    name: "Does your organisation have a ‘green’ strategy?",
-    phone: "08",
-    email: "No",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "10%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebee",
-    name: "Does your fleet policy contain references to a green strategy or environmental sustainability?",
-    phone: "20",
-    email: "Yes",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "40%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf0",
-    name: "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
-    phone: "33",
-    email: "Yes",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "5%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf2",
-    name: "Do you have standardised fleet procurement (global framework agreement…)?",
-    phone: "15",
-    email: "No",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "In-active",
-    response: "45%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebeb",
-    name: "Do you use sustainability criteria to assess/ select suppliers?",
-    phone: "05",
-    company: "iTest Factory",
-    designation: "UI / UX Designer",
-    email: "Yes",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "80%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebec",
-    name: "How do you dispose of vehicles?",
-    phone: "10",
-    company: "Force Medicines",
-    designation: "PHP Developer",
-    email: "No",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "50%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebea",
-    name: "Do you take the environmental impact into consideration when planning for disposal ?",
-    phone: "14",
-    company: "Nesta Technologies",
-    designation: "Lead Designer / Developer",
-    email: "No",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "30%",
-  },
 
-  {
-    _id: "625d3cd5923ccd040209ebef",
-    name: "How do you dispose of vehicles?",
-    phone: "33",
-    company: "Micro Design",
-    designation: "Asp.Net Developer",
-    email: "Yes",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "active",
-    response: "90%",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebed",
-    name: "How do you dispose of vehicles?",
-    phone: "02",
-    company: "Digitech Galaxy",
-    designation: "Full Stack Developer",
-    email: "Yes",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "In-active",
-    response: "30%",
-  },
-];
 const BenchmarkingQA = () => {
-  const [isGrey, setIsGrey] = useState(false);
-  const [isGrey2, setIsGrey2] = useState(false);
-  const [isGrey3, setIsGrey3] = useState(false);
-  const [isGrey4, setIsGrey4] = useState(false);
-  const [isGrey5, setIsGrey5] = useState(false);
+  // const [isGrey, setIsGrey] = useState(false);
+  // const [isGrey2, setIsGrey2] = useState(false);
+  // const [isGrey3, setIsGrey3] = useState(false);
+  // const [isGrey4, setIsGrey4] = useState(false);
+  // const [isGrey5, setIsGrey5] = useState(false);
 
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
@@ -174,11 +72,28 @@ const BenchmarkingQA = () => {
       isContactSuccess: state.Crm.isContactSuccess,
       error: state.Crm.error,
     }));
+  const [qa, setQA] = useState([]);
+  const [allAnswers, setAllAnswers] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+  const allQA = () => {
+    getAllQA()
+      .then((resp) => setQA(resp))
+      .catch((err) => console.log("qa all error", err));
+    getAllAnswers()
+      .then((resp) => setAllAnswers(resp))
+      .catch((err) => console.log("answer all error", err));
+    getAllCategories()
+      .then((resp) => setAllCategories(resp))
+      .catch((err) => console.log("category all error", err));
+  };
   useEffect(() => {
-    dispatch(onGetContacts(arr));
-  }, [dispatch, crmcontacts]);
+    allQA();
+  }, []);
+  // useEffect(() => {
+  //   dispatch(onGetContacts(arr));
+  // }, [dispatch, crmcontacts]);
   useEffect(() => {
-    setContact(crmcontacts);
+    setContact(qa);
   }, [crmcontacts]);
 
   useEffect(() => {
@@ -202,7 +117,7 @@ const BenchmarkingQA = () => {
       setContact(null);
     } else {
       setModal(true);
-      setTag([]);
+      // setTag([]);
       setAssignTag([]);
     }
   }, [modal]);
@@ -266,62 +181,34 @@ const BenchmarkingQA = () => {
 
     initialValues: {
       // img: (contact && contact.img) || '',
-      name: (contact && contact.name) || "",
-      reeponse: (contact && contact.response) || "",
-      company: (contact && contact.company) || "",
-      designation: (contact && contact.designation) || "",
-      email: (contact && contact.email) || "",
-      phone: (contact && contact.phone) || "",
-      lead_score: (contact && contact.lead_score) || "",
-      tags: (contact && contact.tags) || [],
+      title: "",
+      status: false,
+      visibility: false,
+      description: "",
+      category: "",
+      answerOption: [],
     },
     validationSchema: Yup.object({
-      name: Yup.string().required("Please Enter Name"),
-      response: Yup.string().required("Please Enter Name"),
-      company: Yup.string().required("Please Enter Company"),
-      designation: Yup.string().required("Please Enter Designation"),
-      email: Yup.string().required("Please Enter Email"),
-      phone: Yup.string().required("Please Enter Phone"),
-      lead_score: Yup.string().required("Please Enter lead_score"),
+      title: Yup.string().required("Please Enter title"),
+      description: Yup.string().required("Please Enter description"),
+      category: Yup.string().required("Please select category"),
     }),
     onSubmit: (values) => {
-      if (isEdit) {
-        const updateContact = {
-          _id: contact ? contact._id : 0,
-          // img: values.img,
-          name: values.name,
-          response: assignResponse,
-          company: values.company,
-          designation: values.designation,
-          email: values.email,
-          phone: values.phone,
-          lead_score: values.lead_score,
-          last_contacted: dateFormat(),
-          // time: timeFormat(),
-          tags: assignTag,
-        };
-        // update Contact
-        dispatch(onUpdateContact(updateContact));
-        validation.resetForm();
-      } else {
-        const newContact = {
-          _id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
-          // img: values["img"],
-          name: values["name"],
-          response: values["response"],
-          company: values["company"],
-          designation: values["designation"],
-          email: values["email"],
-          phone: values["phone"],
-          lead_score: values["lead_score"],
-          last_contacted: dateFormat(),
-          // time: timeFormat(),
-          tags: assignTag,
-        };
-        // save new Contact
-        dispatch(onAddNewContact(newContact));
-        validation.resetForm();
-      }
+      const cd = allCategories.find(
+        (value) => value.titleEng == values.category
+      );
+
+      const mappedData = {
+        ...values,
+        category: cd._id,
+      };
+      addQuestion(mappedData)
+        .then((resp) => {
+          setQA([...qa, resp]);
+          setSelectedIndexes([]);
+          validation.resetForm();
+        })
+        .catch((err) => console.log("error in adding question"));
       toggle();
     },
   });
@@ -351,26 +238,26 @@ const BenchmarkingQA = () => {
     },
     [toggle]
   );
-  const handleValidDate = (date) => {
-    const date1 = moment(new Date(date)).format("DD MMM Y");
-    return date1;
-  };
+  // const handleValidDate = (date) => {
+  //   const date1 = moment(new Date(date)).format("DD MMM Y");
+  //   return date1;
+  // };
 
-  const handleValidTime = (time) => {
-    const time1 = new Date(time);
-    const getHour = time1.getUTCHours();
-    const getMin = time1.getUTCMinutes();
-    const getTime = `${getHour}:${getMin}`;
-    var meridiem = "";
-    if (getHour >= 12) {
-      meridiem = "PM";
-    } else {
-      meridiem = "AM";
-    }
-    const updateTime =
-      moment(getTime, "hh:mm").format("hh:mm") + " " + meridiem;
-    return updateTime;
-  };
+  // const handleValidTime = (time) => {
+  //   const time1 = new Date(time);
+  //   const getHour = time1.getUTCHours();
+  //   const getMin = time1.getUTCMinutes();
+  //   const getTime = `${getHour}:${getMin}`;
+  //   var meridiem = "";
+  //   if (getHour >= 12) {
+  //     meridiem = "PM";
+  //   } else {
+  //     meridiem = "AM";
+  //   }
+  //   const updateTime =
+  //     moment(getTime, "hh:mm").format("hh:mm") + " " + meridiem;
+  //   return updateTime;
+  // };
 
   // Checked All
   const checkedAll = useCallback(() => {
@@ -431,41 +318,45 @@ const BenchmarkingQA = () => {
       },
       {
         Header: "Question title",
-        accessor: "name",
+        accessor: "title",
         filterable: false,
-        Cell: (contact) => (
-          <>
-            <div className="d-flex align-items-center">
-              <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
-                {contact.row.original.name}
-              </div>
-            </div>
-          </>
-        ),
+        // Cell: (contact) => (
+        //   <>
+        //     <div className="d-flex align-items-center">
+        //       <div className="flex-shrink-0"></div>
+        //       <div className="flex-grow-1 ms-2 name">
+        //         {contact.row.original.name}
+        //       </div>
+        //     </div>
+        //   </>
+        // ),
       },
       {
         Header: "Category",
-        accessor: "lead_score",
+        accessor: "category",
         filterable: false,
       },
       {
         Header: "Who has answered",
-        accessor: "phone",
+        accessor: "answered",
       },
+      // {
+      //   Header: "Status",
+      //   accessor: "status",
+      // },
       {
         Header: "Status",
-        accessor: "tags",
+        accessor: "status",
       },
       {
         Header: "Question Visibility",
-        accessor: "email",
-        filterable: false,
+        accessor: "visibility",
+        // filterable: false,
       },
       {
         Header: "Response %",
         accessor: "response",
-        filterable: false,
+        // filterable: false,
       },
       {
         Header: "Action",
@@ -544,29 +435,29 @@ const BenchmarkingQA = () => {
     [handleContactClick, checkedAll]
   );
 
-  const [response, setResponse] = useState([]);
-  const [assignResponse, setAssignResponse] = useState([]);
+  // const [response, setResponse] = useState([]);
+  // const [assignResponse, setAssignResponse] = useState([]);
 
-  function handlestag(response) {
-    setResponse(response);
-    const assigned = tags.map((item) => item.value);
-    setAssignResponse(assigned);
-  }
-  const [tag, setTag] = useState([]);
-  const [assignTag, setAssignTag] = useState([]);
+  // function handlestag(response) {
+  //   setResponse(response);
+  //   const assigned = tags.map((item) => item.value);
+  //   setAssignResponse(assigned);
+  // }
+  // const [tag, setTag] = useState([]);
+  // const [assignTag, setAssignTag] = useState([]);
 
-  function handlestag(tags) {
-    setTag(tags);
-    const assigned = tags.map((item) => item.value);
-    setAssignTag(assigned);
-  }
+  // function handlestag(tags) {
+  //   setTag(tags);
+  //   const assigned = tags.map((item) => item.value);
+  //   setAssignTag(assigned);
+  // }
 
-  const tags = [
-    { label: "Exiting", value: "Exiting" },
-    { label: "Lead", value: "Lead" },
-    { label: "Long-term", value: "Long-term" },
-    { label: "Partner", value: "Partner" },
-  ];
+  // const tags = [
+  //   { label: "Exiting", value: "Exiting" },
+  //   { label: "Lead", value: "Lead" },
+  //   { label: "Long-term", value: "Long-term" },
+  //   { label: "Partner", value: "Partner" },
+  // ];
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
@@ -581,13 +472,13 @@ const BenchmarkingQA = () => {
   function tog_Answer() {
     setmodals_Answer(!modals_grid);
   }
-  const [Answers, setAnswers] = useState([
-    { id: 1, name: "Yes" },
-    { id: 2, name: "NO" },
-    { id: 3, name: "We don't have a policy" },
-    { id: 4, name: "Don't Know" },
-    { id: 5, name: "Sell privately,Auction, Scrap Donate, Return to supplier" },
-  ]);
+  // const [Answers, setAnswers] = useState([
+  //   { id: 1, name: "Yes" },
+  //   { id: 2, name: "NO" },
+  //   { id: 3, name: "We don't have a policy" },
+  //   { id: 4, name: "Don't Know" },
+  //   { id: 5, name: "Sell privately,Auction, Scrap Donate, Return to supplier" },
+  // ]);
   const [editingAnswerId, setEditingAnswerId] = useState(null);
   const [inputFields, setInputFields] = useState("");
 
@@ -604,31 +495,60 @@ const BenchmarkingQA = () => {
   // };
   const handleEdits = (AnswerId) => {
     setEditingAnswerId(AnswerId);
-    const Answer = Answers.find((c) => c.id === AnswerId);
-    setInputFields(Answer.name);
+    const Answer = allAnswers.find((c) => c._id === AnswerId);
+    setInputFields(Answer.answerOption);
   };
 
   const handleUpdates = () => {
     const updatedAnswerName = inputFields;
-    const updatedAnswers = Answers.map((c) => {
-      if (c.id === editingAnswerId) {
-        return { ...c, name: updatedAnswerName };
-      }
-      return c;
-    });
-    setAnswers(updatedAnswers);
+    updateAnswer(editingAnswerId, { answerOption: updatedAnswerName })
+      .then(() => {
+        const updatedAnswers = allAnswers.map((c) => {
+          if (c._id === editingAnswerId) {
+            return { ...c, answerOption: updatedAnswerName };
+          }
+          return c;
+        });
+        setAllAnswers(updatedAnswers);
+      })
+      .catch((err) => console.log("error in updating answer", err));
     setEditingAnswerId(null);
     setInputFields("");
   };
-  const [updAnswers, setUpdAnswers] = useState([]);
-  const [updCategories, setUpdCategories] = useState([]);
+  const handleAnswerAdd = () => {
+    const newName = inputFields;
+    if (newName) {
+      const newAnswer = {
+        answerOption: newName,
+        includeExplanation: false,
+      };
+      addAnswer(newAnswer)
+        .then((resp) => {
+          setAllAnswers([resp, ...allAnswers]);
+        })
+        .catch((err) => console.log("adding in answer", err));
+      setInputFields("");
+    }
+  };
+  // const [updAnswers, setUpdAnswers] = useState([]);
+  // const [updCategories, setUpdCategories] = useState([]);
 
   const handleDeletes = (AnswerId, id) => {
-    const updatedAnswers = Answers.filter((c) => c.id !== AnswerId);
-    setUpdAnswers(updatedAnswers);
-    // setAnswers(updatedAnswers);
-    // setDeleteId(id);
+    setEditingAnswerId(AnswerId);
     setDeleteConfirmation(true);
+  };
+
+  const confirmDelete = (AnswerId, id) => {
+    deleteAnswer(editingAnswerId)
+      .then(() => {
+        const updatedAnswers = allAnswers.filter((c) => {
+          return c._id != editingAnswerId;
+        });
+        setAllAnswers(updatedAnswers);
+      })
+      .catch((err) => console.log("error in deleting answer", err));
+    setDeleteConfirmation(false);
+    setDeleteId(null);
   };
   const [modals_grid, setmodals_grid] = useState(false);
   function tog_grids() {
@@ -638,31 +558,31 @@ const BenchmarkingQA = () => {
   const handleClick = (language) => {
     setSelectedLanguage(language);
   };
-  const [isChecked1, setIsChecked1] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
-  const [isChecked3, setIsChecked3] = useState(false);
-  const [isChecked4, setIsChecked4] = useState(false);
-  const [isChecked5, setIsChecked5] = useState(true);
-  const [isChecked6, setIsChecked6] = useState(true);
+  // const [isChecked1, setIsChecked1] = useState(false);
+  // const [isChecked2, setIsChecked2] = useState(false);
+  // const [isChecked3, setIsChecked3] = useState(false);
+  // const [isChecked4, setIsChecked4] = useState(false);
+  // const [isStatusCheckedQue, setIsStatusCheckedQue] = useState(true);
+  // const [isVisibilityCheckedQue, setIsVisibilityCheckedQue] = useState(true);
 
-  const handleCheckboxChange1 = (event) => {
-    setIsChecked1(!isChecked1);
-  };
-  const handleCheckboxChange2 = (event) => {
-    setIsChecked2(!isChecked2);
-  };
-  const handleCheckboxChange3 = (event) => {
-    setIsChecked3(!isChecked3);
-  };
-  const handleCheckboxChange4 = (event) => {
-    setIsChecked4(!isChecked4);
-  };
-  const handleCheckboxChange5 = (event) => {
-    setIsChecked5(!isChecked5);
-  };
-  const handleCheckboxChange6 = (event) => {
-    setIsChecked6(!isChecked6);
-  };
+  // const handleCheckboxChange1 = (event) => {
+  //   setIsChecked1(!isChecked1);
+  // };
+  // const handleCheckboxChange2 = (event) => {
+  //   setIsChecked2(!isChecked2);
+  // };
+  // const handleCheckboxChange3 = (event) => {
+  //   setIsChecked3(!isChecked3);
+  // };
+  // const handleCheckboxChange4 = (event) => {
+  //   setIsChecked4(!isChecked4);
+  // };
+  // const handleCheckboxChange5 = (event) => {
+  //   setIsStatusCheckedQue(!isStatusCheckedQue);
+  // };
+  // const handleCheckboxChange6 = (event) => {
+  //   setIsVisibilityCheckedQue(!isVisibilityCheckedQue);
+  // };
   const [categories, setCategories] = useState([
     { id: 1, name: "General" },
     { id: 2, name: "Data Section" },
@@ -677,50 +597,69 @@ const BenchmarkingQA = () => {
     const newCategoryName = inputField;
     if (newCategoryName) {
       const newCategory = {
-        id: categories.length + 1,
-        name: newCategoryName,
+        titleEng: newCategoryName,
       };
-      setCategories([newCategory, ...categories]);
+      addCategory(newCategory)
+        .then((resp) => {
+          setAllCategories([resp, ...allCategories]);
+        })
+        .catch((err) => console.log("error in adding category", err));
       setInputField("");
     }
   };
   const handleEdit = (categoryId) => {
     setEditingCategoryId(categoryId);
-    const category = categories.find((c) => c.id === categoryId);
-    setInputField(category.name);
+    const category = allCategories.find((c) => c._id === categoryId);
+    setInputField(category.titleEng);
   };
 
   const handleUpdate = () => {
     const updatedCategoryName = inputField;
-    const updatedCategories = categories.map((c) => {
-      if (c.id === editingCategoryId) {
-        return { ...c, name: updatedCategoryName };
-      }
-      return c;
-    });
-    setCategories(updatedCategories);
+    const mappedData = {
+      titleEng: updatedCategoryName,
+    };
+    updateCategory(editingCategoryId, mappedData)
+      .then((resp) => {
+        const updatedCategories = allCategories.map((c) => {
+          if (c._id === editingCategoryId) {
+            return { ...c, titleEng: updatedCategoryName };
+          }
+          return c;
+        });
+        setAllCategories(updatedCategories);
+      })
+      .catch((err) => console.log("err in updating category", err));
     setEditingCategoryId(null);
     setInputField("");
   };
-
-  const handleDelete = (categoryId) => {
-    const updatedCategories = categories.filter((c) => c.id !== categoryId);
-    console.log("upda", updatedCategories);
-    setUpdCategories(updatedCategories);
+  const handleDelete = (id) => {
+    setDeleteId(id);
     setDeleteConfirmation2(true);
     // setCategories(updatedCategories);
     // setUpdCategories(updatedCategories);
+  };
+  const confirmDelete2 = () => {
+    deleteCategory(deleteId)
+      .then((resp) => {
+        const updatedCategories = allCategories.filter(
+          (c) => c._id !== deleteId
+        );
+        setAllCategories(updatedCategories);
+      })
+      .catch((err) => console.log("err in deleteing category", err));
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
   };
   const handleDragEnd = (result) => {
     if (!result.destination) {
       return;
     }
 
-    const items = Array.from(Answers);
+    const items = Array.from(allAnswers);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
 
-    setAnswers(items);
+    setAllAnswers(items);
   };
   const handleDragEnds = (result) => {
     if (!result.destination) {
@@ -740,24 +679,6 @@ const BenchmarkingQA = () => {
 
   const [deleteId, setDeleteId] = useState(null);
 
-  const confirmDelete = (AnswerId, id) => {
-    // TODO: implement deletion logic using `deleteId`
-    // setCategories(updCategories);
-
-    setAnswers(updAnswers);
-    setDeleteConfirmation(false);
-    // setUpdAnswers([]);
-    // setUpdCategories([]);
-    setDeleteId(null);
-  };
-  const confirmDelete2 = (AnswerId, id) => {
-    setCategories(updCategories);
-    setDeleteConfirmation2(false);
-    // setUpdAnswers([]);
-    // setUpdCategories([]);
-    setDeleteId(null);
-  };
-
   const cancelDelete = () => {
     setDeleteConfirmation(false);
     setDeleteId(null);
@@ -766,414 +687,73 @@ const BenchmarkingQA = () => {
     setDeleteConfirmation(false);
     setDeleteId(null);
   };
+  const [selectedIndexes, setSelectedIndexes] = useState([]);
+
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
-      <Layouts>
-        <div className="page-content overflow-auto ">
-          <div className="Main  mx-n4 mt-n4 w-100 pb-4">
-            <h1>
-              Benchmarking Q&A Management <span className="fs-5">Admin</span>
-            </h1>
-            <p style={{ color: "#BEC887" }}>
-              This is page where an admin user can create and edit Benchmarking
-              categories, Questions <br /> and manage the type of answering
-              criteria for users.
-            </p>
-          </div>
-          <Col xxl={9} className="m-auto">
-            <div className="d-flex justify-content-between align-items-center w-100">
-              <Col className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded"
-                  color="white"
-                  onClick={() => setmodal_grid(true)}
-                  style={{ width: "270px" }}
+      {/* <Layouts> */}
+      <div className="page-content overflow-auto ">
+        <div className="Main  mx-n4 mt-n4 w-100 pb-4">
+          <h1>
+            Benchmarking Q&A Management <span className="fs-5">Admin</span>
+          </h1>
+          <p style={{ color: "#BEC887" }}>
+            This is page where an admin user can create and edit Benchmarking
+            categories, Questions <br /> and manage the type of answering
+            criteria for users.
+          </p>
+        </div>
+        <Col xxl={9} className="m-auto">
+          <div className="d-flex justify-content-between align-items-center w-100">
+            <Col className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded"
+                color="white"
+                onClick={() => setmodal_grid(true)}
+                style={{ width: "270px" }}
+              >
+                Create new Question
+                <i class="ri-add-fill"></i>
+              </Button>
+              <Modal
+                size="lg p-5"
+                className="postion-relative m-0 float-end"
+                isOpen={modal_grid}
+                toggle={() => {
+                  tog_grid();
+                }}
+              >
+                <div
+                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                  style={{ width: "35px", height: "35px" }}
                 >
-                  Start new Question
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <Modal
-                  size="lg p-5"
-                  className="postion-relative m-0 float-end"
-                  isOpen={modal_grid}
-                  toggle={() => {
-                    tog_grid();
-                  }}
-                >
-                  <div
-                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
-                    style={{ width: "35px", height: "35px" }}
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setmodal_grid(false);
+                    }}
+                    className="btn-close color-black bg-white border border-dark rounded-circle "
+                    aria-label="close"
+                  ></Button>
+                </div>
+                <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                  <h4 className="modal-title">Create new Question</h4>
+                </ModalHeader>
+                <ModalBody>
+                  <form
+                    className="p-4 pt-2 pb-2"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      validation.handleSubmit();
+                      return false;
+                    }}
                   >
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        setmodal_grid(false);
-                      }}
-                      className="btn-close color-black bg-white border border-dark rounded-circle "
-                      aria-label="close"
-                    ></Button>
-                  </div>
-                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                    <h4 className="modal-title">Start new Question</h4>
-                  </ModalHeader>
-                  <ModalBody>
-                    <form className="p-4 pt-2 pb-2" action="#">
-                      <div className="row g-3">
-                        <div className="p-0 d-flex align-items-center justify-content-between">
-                          <Col lg={7} className="border p-2">
-                            Language Selector:
-                            <div className="d-flex justify-content-between pt-2">
-                              <Button
-                                onClick={() => handleClick("ENGLISH")}
-                                style={
-                                  selectedLanguage === "ENGLISH"
-                                    ? { backgroundColor: "#4A7BA4" }
-                                    : {
-                                        backgroundColor: "#E9EBEC",
-                                        border: "none",
-                                      }
-                                }
-                              >
-                                ENGLISH
-                              </Button>
-                              <Button
-                                onClick={() => handleClick("FRENCH")}
-                                style={
-                                  selectedLanguage === "FRENCH"
-                                    ? { backgroundColor: "#4A7BA4" }
-                                    : {
-                                        backgroundColor: "#E9EBEC",
-                                        border: "none",
-                                      }
-                                }
-                              >
-                                FRENCH
-                              </Button>
-                              <Button
-                                onClick={() => handleClick("SPANISH")}
-                                style={
-                                  selectedLanguage === "SPANISH"
-                                    ? { backgroundColor: "#4A7BA4" }
-                                    : {
-                                        backgroundColor: "#E9EBEC",
-                                        border: "none",
-                                      }
-                                }
-                              >
-                                SPANISH
-                              </Button>
-                              <Button
-                                onClick={() => handleClick("ARABIC")}
-                                style={
-                                  selectedLanguage === "ARABIC"
-                                    ? { backgroundColor: "#4A7BA4" }
-                                    : {
-                                        backgroundColor: "#E9EBEC",
-                                        border: "none",
-                                        lineHeight: "-5px",
-                                      }
-                                }
-                              >
-                                ARABIC
-                              </Button>
-                            </div>
-                          </Col>
-                          <div>
-                            <div className="flex-shrink-0 border p-3 pt-1 pb-1 mb-2 rounded">
-                              <div className="form-check form-switch form-switch-right form-switch-md ">
-                                <Label
-                                  htmlFor="form-grid-showcode"
-                                  className="form-label text-muted"
-                                >
-                                  Status:
-                                </Label>
-                                <Input
-                                  className="form-check-input code-switcher"
-                                  type="checkbox"
-                                  value="active"
-                                  checked={isChecked5}
-                                  onChange={handleCheckboxChange5}
-                                  style={{
-                                    backgroundColor: isChecked5
-                                      ? "#88C756"
-                                      : "#fff",
-                                    width: "80px",
-                                    border: "0",
-                                  }}
-                                />
-                              </div>
-                            </div>
-                            <div className="flex-shrink-0 border p-3 pt-1 pb-1 d-flex justify-content-end rounded">
-                              <div className="form-check form-switch form-switch-right form-switch-md">
-                                <Label
-                                  htmlFor="form-grid-showcode"
-                                  className="form-label text-muted"
-                                >
-                                  Visibility:
-                                </Label>
-                                <Input
-                                  className="form-check-input code-switcher"
-                                  type="checkbox"
-                                  value="active"
-                                  checked={isChecked6}
-                                  onChange={handleCheckboxChange6}
-                                  style={{
-                                    backgroundColor: isChecked6
-                                      ? "#88c765"
-                                      : "#fff",
-                                    width: "50px",
-                                    border: "0",
-                                  }}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <Col xxl={12} className="p-0">
-                          <div>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              id="firstName"
-                              placeholder="Title"
-                            />
-                          </div>
-                        </Col>
-                        <Col xxl={12} className="p-0">
-                          <div>
-                            <textarea
-                              class="form-control"
-                              placeholder="Discription"
-                              id="floatingTextarea"
-                              style={{
-                                height: "120px",
-                                overflow: "hidden",
-                                backgroundColor: "#dfdfdf",
-                              }}
-                            ></textarea>
-                          </div>
-                        </Col>
-                        <Col xxl={12} className="p-0">
-                          <select lg={12} disable className="form-select mb-3">
-                            <option hidden selected>
-                              Select Category
-                            </option>
-                            <option value="Choices1">General</option>
-                            <option value="Choices1">Data Section</option>
-                            <option value="Choices1">Vehicle Profile</option>
-                            <option value="Choices1">
-                              Occupancy & Utilsation Rates
-                            </option>
-                            <option value="Choices1">Other</option>
-                          </select>
-                        </Col>
-                        <Col className="p-0 border rounded">
-                          <div className="border p-3  d-flex justify-content-between ">
-                            Answer Options{" "}
-                          </div>
-                          <div
-                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   "
-                            style={{ color: isGrey ? "black" : "#cccccc" }}
-                          >
-                            <div>
-                              <Checkbox
-                                onChange={() => setIsGrey(!isGrey)}
-                                icon={<CropSquareIcon />}
-                                checkedIcon={<SquareRoundedIcon />}
-                              />
-                              YES{" "}
-                            </div>
-                            <div className="form-check form-switch form-switch-right form-switch-md ">
-                              <Label
-                                htmlFor="form-grid-showcode"
-                                className="form-label text-muted"
-                              >
-                                Include Explanation
-                              </Label>
-                              <Input
-                                className="form-check-input code-switcher"
-                                type="checkbox"
-                                value="active"
-                                checked={isChecked2}
-                                onChange={handleCheckboxChange2}
-                                style={{
-                                  backgroundColor: isChecked2
-                                    ? "#88C756"
-                                    : "#fff",
-                                  width: "50px",
-                                  border: "0",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div
-                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
-                            style={{ color: isGrey2 ? "black" : "#cccccc" }}
-                          >
-                            <div>
-                              <Checkbox
-                                onChange={() => setIsGrey2(!isGrey2)}
-                                icon={<CropSquareIcon />}
-                                checkedIcon={<SquareRoundedIcon />}
-                              />
-                              No{" "}
-                            </div>
-                            <div className="form-check form-switch form-switch-right form-switch-md ">
-                              <Label
-                                htmlFor="form-grid-showcode"
-                                className="form-label text-muted"
-                              >
-                                Include Explanation
-                              </Label>
-                              <Input
-                                className="form-check-input code-switcher"
-                                type="checkbox"
-                                value="active"
-                                checked={isChecked3}
-                                onChange={handleCheckboxChange3}
-                                style={{
-                                  backgroundColor: isChecked3
-                                    ? "#88C756"
-                                    : "#fff",
-                                  width: "50px",
-                                  border: "0",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div
-                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center  "
-                            style={{ color: isGrey3 ? "black" : "#cccccc" }}
-                          >
-                            <div>
-                              <Checkbox
-                                onChange={() => setIsGrey3(!isGrey3)}
-                                icon={<CropSquareIcon />}
-                                checkedIcon={<SquareRoundedIcon />}
-                              />
-                              I DON'T KNOW{" "}
-                            </div>
-                            <div className="form-check form-switch form-switch-right form-switch-md ">
-                              <Label
-                                htmlFor="form-grid-showcode"
-                                className="form-label text-muted"
-                              >
-                                Include Explanation
-                              </Label>
-                              <Input
-                                className="form-check-input code-switcher"
-                                type="checkbox"
-                                value="active"
-                                checked={isChecked4}
-                                onChange={handleCheckboxChange4}
-                                style={{
-                                  backgroundColor: isChecked4
-                                    ? "#88C756"
-                                    : "#fff",
-                                  width: "50px",
-                                  border: "0",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div
-                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
-                            style={{ color: isGrey4 ? "black" : "#cccccc" }}
-                          >
-                            <div>
-                              <Checkbox
-                                onChange={() => setIsGrey4(!isGrey4)}
-                                icon={<CropSquareIcon />}
-                                checkedIcon={<SquareRoundedIcon />}
-                              />
-                              WE DO NOT HAVE A POLICY{" "}
-                            </div>
-                            <div className="form-check form-switch form-switch-right form-switch-md ">
-                              <Label
-                                htmlFor="form-grid-showcode"
-                                className="form-label text-muted"
-                              >
-                                Include Explanation
-                              </Label>
-                              <Input
-                                className="form-check-input code-switcher"
-                                type="checkbox"
-                                value="active"
-                                style={{
-                                  width: "50px",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div
-                            className="border p-3 pt-1 pb-1 bg-white"
-                            style={{ color: isGrey5 ? "black" : "#cccccc" }}
-                          >
-                            <div>
-                              <Checkbox
-                                onChange={() => setIsGrey5(!isGrey5)}
-                                icon={<CropSquareIcon />}
-                                checkedIcon={<SquareRoundedIcon />}
-                              />
-                              PERCENTAGE
-                            </div>
-                          </div>
-                        </Col>
-                        <div className="col-lg-12 d-flex gap-3">
-                          <div className="hstack gap-2 justify-content-start">
-                            <Button className="btn btn-danger p-4 pt-2 pb-2">
-                              Cancel
-                            </Button>
-                          </div>
-                          <div className="hstack gap-2 justify-content-start">
-                            <Button className="p-4 pt-2 pb-2" color="secondary">
-                              Save
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </form>
-                  </ModalBody>
-                </Modal>
-              </Col>
-              <div>
-                <Button
-                  className="m-3 p-3"
-                  onClick={() => setmodals_Answer(true)}
-                >
-                  Manage Answers
-                </Button>
-                <Modal
-                  size="lg p-5"
-                  className="postion-relative"
-                  isOpen={modals_Answer}
-                  toggle={() => {
-                    tog_Answer();
-                  }}
-                >
-                  <div
-                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
-                    style={{ width: "35px", height: "35px" }}
-                  >
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        setmodals_Answer(false);
-                      }}
-                      className="btn-close color-black bg-white border border-dark rounded-circle "
-                      aria-label="close"
-                    ></Button>
-                  </div>
-                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                    <h4 className="modal-title">Manage answers</h4>
-                  </ModalHeader>
-                  <ModalBody>
-                    <form className="p-4 pt-2 pb-2" action="#">
-                      <div className="row g-3">
-                        <Col lg={12} className="border p-2">
+                    <div className="row g-3">
+                      <div className="p-0 d-flex align-items-center justify-content-between">
+                        <Col lg={7} className="border p-2">
                           Language Selector:
-                          <div className="d-flex gap-2 pt-2">
+                          <div className="d-flex justify-content-between pt-2">
                             <Button
                               onClick={() => handleClick("ENGLISH")}
                               style={
@@ -1182,7 +762,6 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
-                                      color: "#9DB1C7",
                                     }
                               }
                             >
@@ -1196,7 +775,6 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
-                                      color: "#9DB1C7",
                                     }
                               }
                             >
@@ -1210,7 +788,6 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
-                                      color: "#9DB1C7",
                                     }
                               }
                             >
@@ -1224,305 +801,424 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
-                                      color: "#9DB1C7",
+                                      lineHeight: "-5px",
                                     }
                               }
                             >
                               ARABIC
                             </Button>
-                            <Button
-                              onClick={() => handleClick("GERMAN")}
-                              style={
-                                selectedLanguage === "GERMAN"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      border: "none",
-                                      color: "#9DB1C7",
-                                    }
-                              }
-                            >
-                              GERMAN
-                            </Button>
-                            <Button
-                              onClick={() => handleClick("ITALIAN")}
-                              style={
-                                selectedLanguage === "ITALIAN"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      color: "#9DB1C7",
-                                      border: "none",
-                                    }
-                              }
-                            >
-                              ITALIAN
-                            </Button>
                           </div>
                         </Col>
-                        <Col xxl={12}>
-                          <div className="form-control mt-2">
-                            View your answers
-                          </div>
-                        </Col>
-                        <DragDropContext onDragEnd={handleDragEnd}>
-                          <Droppable droppableId="answers">
-                            {(provided) => (
-                              <div
-                                className="mt-0"
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
+                        <div>
+                          <div className="flex-shrink-0 border p-3 pt-1 pb-1 mb-2 rounded">
+                            <div className="form-check form-switch form-switch-right form-switch-md ">
+                              <Label
+                                htmlFor="form-grid-showcode"
+                                className="form-label text-muted"
                               >
-                                {Answers &&
-                                  Answers.map((Answer, index) => (
-                                    <>
-                                      <Draggable
-                                        key={Answer.id}
-                                        draggableId={Answer.id.toString()}
-                                        index={index}
-                                      >
-                                        {(provided) => (
-                                          <div
-                                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                            ref={provided.innerRef}
-                                          >
-                                            <div className="d-flex align-items-center gap-2">
-                                              <i
-                                                className="ri-drag-move-2-line fs-24"
-                                                style={{ color: "#4A7BA4" }}
-                                              ></i>
-                                              <h5 className="m-0">
-                                                {Answer.name}
-                                              </h5>
-                                            </div>
-                                            <div className="d-flex gap-2">
-                                              <i
-                                                className="ri-pencil-fill fs-18"
-                                                style={{ color: "gray" }}
-                                                onClick={() =>
-                                                  handleEdits(Answer.id)
-                                                }
-                                              ></i>
-                                              <i
-                                                className="ri-delete-bin-2-line fs-18"
-                                                style={{ color: "red" }}
-                                                onClick={() =>
-                                                  handleDeletes(Answer.id)
-                                                }
-                                              ></i>
-                                            </div>
-                                          </div>
-                                        )}
-                                      </Draggable>
-                                    </>
-                                  ))}
-                                <Modal
-                                  isOpen={deleteConfirmation}
-                                  toggle={cancelDelete}
-                                >
-                                  <ModalHeader toggle={cancelDelete}>
-                                    Confirm Deletion
-                                  </ModalHeader>
-                                  <ModalBody>
-                                    Are you sure you want to delete this answer
-                                    variation?
-                                  </ModalBody>
-                                  <ModalFooter>
-                                    <Button
-                                      color="danger"
-                                      onClick={confirmDelete}
-                                    >
-                                      Delete
-                                    </Button>
-                                    <Button
-                                      color="secondary"
-                                      onClick={cancelDelete}
-                                    >
-                                      Cancel
-                                    </Button>
-                                  </ModalFooter>
-                                </Modal>
-
-                                {provided.placeholder}
-                                <Col xxl={12}>
-                                  <div>
-                                    <Input
-                                      type="text"
-                                      className="form-control mt-2"
-                                      id="firstName"
-                                      placeholder="Enter an answer variation"
-                                      onChange={(e) =>
-                                        setInputFields(e.target.value)
+                                Status:
+                              </Label>
+                              <Input
+                                className="form-check-input code-switcher"
+                                type="checkbox"
+                                name="status"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                checked={validation.values.status}
+                                style={{
+                                  backgroundColor: validation.values.status
+                                    ? "#88C756"
+                                    : "#fff",
+                                  width: "80px",
+                                  border: "0",
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="flex-shrink-0 border p-3 pt-1 pb-1 d-flex justify-content-end rounded">
+                            <div className="form-check form-switch form-switch-right form-switch-md">
+                              <Label
+                                htmlFor="form-grid-showcode"
+                                className="form-label text-muted"
+                              >
+                                Visibility:
+                              </Label>
+                              <Input
+                                className="form-check-input code-switcher"
+                                type="checkbox"
+                                value="active"
+                                name="visibility"
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                checked={validation.values.visibility}
+                                style={{
+                                  backgroundColor: validation.values.visibility
+                                    ? "#88c765"
+                                    : "#fff",
+                                  width: "50px",
+                                  border: "0",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <Col xxl={12} className="p-0">
+                        <div>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            id="title"
+                            name="title"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.title || ""}
+                            invalid={
+                              validation.touched.title &&
+                              validation.errors.title
+                                ? true
+                                : false
+                            }
+                            placeholder="Title"
+                          />
+                          {validation.touched.title &&
+                          validation.errors.title ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.title}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                      </Col>
+                      <Col xxl={12} className="p-0">
+                        <div>
+                          <Input
+                            type="textarea"
+                            class="form-control"
+                            placeholder="Description"
+                            id="description"
+                            name="description"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            onChange={validation.handleChange}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.description || ""}
+                            invalid={
+                              validation.touched.description &&
+                              validation.errors.description
+                                ? true
+                                : false
+                            }
+                            style={{
+                              height: "120px",
+                              overflow: "hidden",
+                              backgroundColor: "#dfdfdf",
+                            }}
+                          ></Input>
+                          {validation.touched.description &&
+                          validation.errors.description ? (
+                            <FormFeedback type="invalid">
+                              {validation.errors.description}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                      </Col>
+                      <Col xxl={12} className="p-0">
+                        <Input
+                          type="select"
+                          lg={12}
+                          disable
+                          className="form-select mb-3"
+                          validate={{
+                            required: { value: true },
+                          }}
+                          name="category"
+                          onChange={validation.handleChange}
+                          onBlur={validation.handleBlur}
+                          value={validation.values.category || ""}
+                          invalid={
+                            validation.touched.category &&
+                            validation.errors.category
+                              ? true
+                              : false
+                          }
+                        >
+                          <option hidden selected>
+                            Select Category
+                          </option>
+                          {allCategories &&
+                            allCategories.map((value, index) => {
+                              return (
+                                <option key={index}>{value.titleEng}</option>
+                              );
+                            })}
+                        </Input>
+                        {validation.touched.category &&
+                        validation.errors.category ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.category}
+                          </FormFeedback>
+                        ) : null}
+                      </Col>
+                      <Col className="p-0 border rounded">
+                        <div className="border p-3  d-flex justify-content-between ">
+                          Answer Options{" "}
+                        </div>
+                        {allAnswers &&
+                          allAnswers.map((value, index) => {
+                            const isSelected = selectedIndexes.includes(index);
+                            return (
+                              <div
+                                className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   "
+                                style={{
+                                  color: isSelected ? "black" : "#cccccc",
+                                }}
+                                key={index}
+                              >
+                                <div>
+                                  <Checkbox
+                                    name="answerOption"
+                                    onBlur={() => {
+                                      validation.setFieldValue(
+                                        "answerOption",
+                                        selectedIndexes.map(
+                                          (i) => allAnswers[i].answerOption
+                                        )
+                                      );
+                                    }}
+                                    value={index}
+                                    checked={selectedIndexes.includes(index)}
+                                    onChange={(e) => {
+                                      e.preventDefault();
+                                      const { checked } = e.target;
+                                      if (checked) {
+                                        setSelectedIndexes([
+                                          ...selectedIndexes,
+                                          index,
+                                        ]);
+                                      } else {
+                                        setSelectedIndexes(
+                                          selectedIndexes.filter(
+                                            (i) => i !== index
+                                          )
+                                        );
                                       }
-                                      value={inputFields}
+                                      validation.setFieldValue(
+                                        "answerOption",
+                                        selectedIndexes.map(
+                                          (i) => allAnswers[i].answerOption
+                                        )
+                                      );
+                                    }}
+                                    icon={<CropSquareIcon />}
+                                    checkedIcon={<SquareRoundedIcon />}
+                                  />
+                                  {value.answerOption}
+                                </div>
+
+                                {value.includeExplanation && (
+                                  <div className="form-check form-switch form-switch-right form-switch-md ">
+                                    <Label
+                                      htmlFor="form-grid-showcode"
+                                      className="form-label text-muted"
+                                    >
+                                      Include Explanation
+                                    </Label>
+                                    <Input
+                                      className="form-check-input code-switcher"
+                                      type="checkbox"
+                                      value="active"
+                                      checked={isChecked2}
+                                      onChange={handleCheckboxChange2}
+                                      style={{
+                                        backgroundColor: isChecked2
+                                          ? "#88C756"
+                                          : "#fff",
+                                        width: "50px",
+                                        border: "0",
+                                      }}
                                     />
                                   </div>
-                                </Col>
-                                <div className="d-flex gap-3 col-lg-12 mt-3">
-                                  <div className="d-flex gap-2">
-                                    <Button onClick={handleUpdates}>
-                                      Save
-                                    </Button>
-                                    <Button color="primary">Cancel</Button>
-                                  </div>
-                                </div>
+                                )}
                               </div>
-                            )}
-                          </Droppable>
-                        </DragDropContext>
+                            );
+                          })}
+                      </Col>
+                      <div className="col-lg-12 d-flex gap-3">
+                        <div className="hstack gap-2 justify-content-start">
+                          <Button className="btn btn-danger p-4 pt-2 pb-2">
+                            Cancel
+                          </Button>
+                        </div>
+                        <div className="hstack gap-2 justify-content-start">
+                          <Button
+                            type="submit"
+                            className="p-4 pt-2 pb-2"
+                            color="secondary"
+                          >
+                            Save
+                          </Button>
+                        </div>
                       </div>
-                    </form>
-                  </ModalBody>
-                </Modal>
-              </div>
-              <div className="pt-5" style={{ width: "270px" }}>
-                <Button
-                  className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "270px" }}
-                  onClick={() => setmodals_grid(true)}
+                    </div>
+                  </form>
+                </ModalBody>
+              </Modal>
+            </Col>
+            <div>
+              <Button
+                className="m-3 p-3"
+                onClick={() => {
+                  getAllAnswers()
+                    .then((res) => setAllAnswers(res))
+                    .catch((err) => console.log("err in getting answers", err));
+                  setmodals_Answer(true);
+                }}
+              >
+                Manage Answers
+              </Button>
+              <Modal
+                size="lg p-5"
+                className="postion-relative"
+                isOpen={modals_Answer}
+                toggle={() => {
+                  tog_Answer();
+                }}
+              >
+                <div
+                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                  style={{ width: "35px", height: "35px" }}
                 >
-                  Manage Category
-                  <i class="ri-add-fill"></i>
-                </Button>
-
-                <Modal
-                  size="lg p-5"
-                  className="postion-relative"
-                  isOpen={modals_grid}
-                  toggle={() => {
-                    tog_grids();
-                  }}
-                >
-                  <div
-                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
-                    style={{ width: "35px", height: "35px" }}
-                  >
-                    <Button
-                      type="button"
-                      onClick={() => {
-                        setmodals_grid(false);
-                      }}
-                      className="btn-close color-black bg-white border border-dark rounded-circle "
-                      aria-label="close"
-                    ></Button>
-                  </div>
-                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                    <h4 className="modal-title">Manage categories</h4>
-                  </ModalHeader>
-                  <ModalBody>
-                    <form className="p-4 pt-2 pb-2" action="#">
-                      <div className="row g-3">
-                        <Col lg={12} className="border p-2">
-                          Language Selector:
-                          <div className="d-flex gap-2 pt-2">
-                            <Button
-                              onClick={() => handleClick("ENGLISH")}
-                              style={
-                                selectedLanguage === "ENGLISH"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      border: "none",
-                                      color: "#9DB1C7",
-                                    }
-                              }
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setmodals_Answer(false);
+                    }}
+                    className="btn-close color-black bg-white border border-dark rounded-circle "
+                    aria-label="close"
+                  ></Button>
+                </div>
+                <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                  <h4 className="modal-title">Manage answers</h4>
+                </ModalHeader>
+                <ModalBody>
+                  <form className="p-4 pt-2 pb-2" action="#">
+                    <div className="row g-3">
+                      <Col lg={12} className="border p-2">
+                        Language Selector:
+                        <div className="d-flex gap-2 pt-2">
+                          <Button
+                            onClick={() => handleClick("ENGLISH")}
+                            style={
+                              selectedLanguage === "ENGLISH"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            ENGLISH
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("FRENCH")}
+                            style={
+                              selectedLanguage === "FRENCH"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            FRENCH
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("SPANISH")}
+                            style={
+                              selectedLanguage === "SPANISH"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            SPANISH
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("ARABIC")}
+                            style={
+                              selectedLanguage === "ARABIC"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            ARABIC
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("GERMAN")}
+                            style={
+                              selectedLanguage === "GERMAN"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            GERMAN
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("ITALIAN")}
+                            style={
+                              selectedLanguage === "ITALIAN"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    color: "#9DB1C7",
+                                    border: "none",
+                                  }
+                            }
+                          >
+                            ITALIAN
+                          </Button>
+                        </div>
+                      </Col>
+                      <Col xxl={12}>
+                        <div className="form-control mt-2">
+                          View your answers
+                        </div>
+                      </Col>
+                      <DragDropContext onDragEnd={handleDragEnd}>
+                        <Droppable droppableId="answers">
+                          {(provided) => (
+                            <div
+                              className="mt-0"
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
                             >
-                              ENGLISH
-                            </Button>
-                            <Button
-                              onClick={() => handleClick("FRENCH")}
-                              style={
-                                selectedLanguage === "FRENCH"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      border: "none",
-                                      color: "#9DB1C7",
-                                    }
-                              }
-                            >
-                              FRENCH
-                            </Button>
-                            <Button
-                              onClick={() => handleClick("SPANISH")}
-                              style={
-                                selectedLanguage === "SPANISH"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      border: "none",
-                                      color: "#9DB1C7",
-                                    }
-                              }
-                            >
-                              SPANISH
-                            </Button>
-                            <Button
-                              onClick={() => handleClick("ARABIC")}
-                              style={
-                                selectedLanguage === "ARABIC"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      border: "none",
-                                      color: "#9DB1C7",
-                                    }
-                              }
-                            >
-                              ARABIC
-                            </Button>
-                            <Button
-                              onClick={() => handleClick("GERMAN")}
-                              style={
-                                selectedLanguage === "GERMAN"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      border: "none",
-                                      color: "#9DB1C7",
-                                    }
-                              }
-                            >
-                              GERMAN
-                            </Button>
-                            <Button
-                              onClick={() => handleClick("ITALIAN")}
-                              style={
-                                selectedLanguage === "ITALIAN"
-                                  ? { backgroundColor: "#4A7BA4" }
-                                  : {
-                                      backgroundColor: "#E9EBEC",
-                                      color: "#9DB1C7",
-                                      border: "none",
-                                    }
-                              }
-                            >
-                              ITALIAN
-                            </Button>
-                          </div>
-                        </Col>
-                        <DragDropContext onDragEnd={handleDragEnds}>
-                          <Droppable droppableId="categories">
-                            {(provided) => (
-                              <div
-                                className="mt-0"
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                              >
-                                {console.log("cat", categories)}
-                                {categories &&
-                                  categories.map((category, index) => (
+                              {allAnswers &&
+                                allAnswers.map((Answer, index) => (
+                                  <>
                                     <Draggable
-                                      key={category.id}
-                                      draggableId={category.id.toString()}
+                                      key={Answer._id}
+                                      draggableId={Answer._id.toString()}
                                       index={index}
                                     >
                                       {(provided) => (
                                         <div
-                                          key={category.id}
                                           className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -1534,7 +1230,7 @@ const BenchmarkingQA = () => {
                                               style={{ color: "#4A7BA4" }}
                                             ></i>
                                             <h5 className="m-0">
-                                              {category.name}
+                                              {Answer.answerOption}
                                             </h5>
                                           </div>
                                           <div className="d-flex gap-2">
@@ -1542,460 +1238,370 @@ const BenchmarkingQA = () => {
                                               className="ri-pencil-fill fs-18"
                                               style={{ color: "gray" }}
                                               onClick={() =>
-                                                handleEdit(category.id)
+                                                handleEdits(Answer._id)
                                               }
                                             ></i>
                                             <i
                                               className="ri-delete-bin-2-line fs-18"
                                               style={{ color: "red" }}
                                               onClick={() =>
-                                                handleDelete(category.id)
+                                                handleDeletes(Answer._id)
                                               }
                                             ></i>
                                           </div>
                                         </div>
                                       )}
                                     </Draggable>
-                                  ))}
-                                <Modal
-                                  isOpen={deleteConfirmation2}
-                                  toggle={cancelDelete2}
-                                >
-                                  <ModalHeader toggle={cancelDelete2}>
-                                    Confirm Deletion
-                                  </ModalHeader>
-                                  <ModalBody>
-                                    Are you sure you want to delete this
-                                    category variation?
-                                  </ModalBody>
-                                  <ModalFooter>
-                                    <Button
-                                      color="danger"
-                                      onClick={confirmDelete2}
-                                    >
-                                      Delete
-                                    </Button>
-                                    <Button
-                                      color="secondary"
-                                      onClick={cancelDelete2}
-                                    >
-                                      Cancel
-                                    </Button>
-                                  </ModalFooter>
-                                </Modal>
+                                  </>
+                                ))}
+                              <Modal
+                                isOpen={deleteConfirmation}
+                                toggle={cancelDelete}
+                              >
+                                <ModalHeader toggle={cancelDelete}>
+                                  Confirm Deletion
+                                </ModalHeader>
+                                <ModalBody>
+                                  Are you sure you want to delete this answer
+                                  variation?
+                                </ModalBody>
+                                <ModalFooter>
+                                  <Button
+                                    color="danger"
+                                    onClick={confirmDelete}
+                                  >
+                                    Delete
+                                  </Button>
+                                  <Button
+                                    color="secondary"
+                                    onClick={cancelDelete}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </ModalFooter>
+                              </Modal>
 
-                                <Col xxl={12}>
-                                  <div>
-                                    <Input
-                                      type="text"
-                                      className="form-control mt-2"
-                                      id="firstName"
-                                      placeholder="Edit Category name"
-                                      onChange={(e) =>
-                                        setInputField(e.target.value)
-                                      }
-                                      value={inputField}
-                                    />
-                                  </div>
-                                </Col>
-                                <div className="d-flex gap-3 col-lg-12 mt-3">
-                                  <div className="d-flex gap-2">
-                                    <Button
-                                      color="primary"
-                                      onClick={handleUpdate}
-                                    >
-                                      Update Category
-                                    </Button>
-                                    <Button color="primary" onClick={handleAdd}>
-                                      Add new item to list
-                                    </Button>
-                                  </div>
+                              {provided.placeholder}
+                              <Col xxl={12}>
+                                <div>
+                                  <Input
+                                    type="text"
+                                    className="form-control mt-2"
+                                    id="firstName"
+                                    placeholder="Enter an answer variation"
+                                    onChange={(e) =>
+                                      setInputFields(e.target.value)
+                                    }
+                                    value={inputFields}
+                                  />
+                                </div>
+                              </Col>
+                              <div className="d-flex gap-3 col-lg-12 mt-3">
+                                <div className="d-flex gap-2">
+                                  <Button onClick={handleUpdates}>Save</Button>
+                                  <Button
+                                    color="primary"
+                                    onClick={handleAnswerAdd}
+                                  >
+                                    Add new item to list
+                                  </Button>
                                 </div>
                               </div>
-                            )}
-                          </Droppable>
-                        </DragDropContext>
-                      </div>
-                    </form>
-                  </ModalBody>
-                </Modal>
-              </div>
-              <Button
-                className="m-3 p-3"
-                href="/adminbenchmarking/questions/compare"
-              >
-                View Comparison
-              </Button>
+                            </div>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
+                    </div>
+                  </form>
+                </ModalBody>
+              </Modal>
             </div>
-            <Card id="contactList">
-              <CardBody className="pt-0">
-                <div>
-                  {console.log("contact", crmcontacts)}
-                  {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                    <TableContainer
-                      columns={columns}
-                      data={crmcontacts || []}
-                      isGlobalFilter={true}
-                      isAddUserList={false}
-                      isFilterA={false}
-                      isFooter={true}
-                      customPageSize={8}
-                      className="custom-header-css"
-                      divClass="table-responsive table-card mb-0"
-                      tableClass="align-middle table-nowrap"
-                      theadClass="table-light"
-                      handleContactClick={handleContactClicks}
-                      isContactsFilter={false}
-                      SearchPlaceholder="Search by the Question title"
-                    />
-                  ) : (
-                    <Loader error={error} />
-                  )}
-                </div>
+            <div className="pt-5" style={{ width: "270px" }}>
+              <Button
+                className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded float-end"
+                color="white"
+                style={{ width: "270px" }}
+                onClick={() => {
+                  getAllCategories()
+                    .then((res) => setAllCategories(res))
+                    .catch((err) =>
+                      console.log("err in getting cateories", err)
+                    );
+                  setmodals_grid(true);
+                }}
+              >
+                Manage Category
+                <i class="ri-add-fill"></i>
+              </Button>
 
-                <Modal id="showModal" isOpen={modal} toggle={toggle} centered>
-                  <ModalHeader className="bg-soft-info p-3" toggle={toggle}>
-                    {!!isEdit ? "Edit Contact" : "Add Contact"}
-                  </ModalHeader>
-
-                  <Form
-                    className="tablelist-form"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      validation.handleSubmit();
-                      return false;
+              <Modal
+                size="lg p-5"
+                className="postion-relative"
+                isOpen={modals_grid}
+                toggle={() => {
+                  tog_grids();
+                }}
+              >
+                <div
+                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                  style={{ width: "35px", height: "35px" }}
+                >
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setmodals_grid(false);
                     }}
-                  >
-                    <ModalBody>
-                      <Input type="hidden" id="id-field" />
-                      <Row className="g-3">
-                        <Col lg={6}>
-                          <div className="text-center">
-                            <div className="position-relative d-inline-block">
-                              <div className="position-absolute  bottom-0 end-0">
-                                <Label
-                                  htmlFor="customer-image-input"
-                                  className="mb-0"
-                                >
-                                  <div className="avatar-xs cursor-pointer">
-                                    <div className="avatar-title bg-light border rounded-circle text-muted">
-                                      <i className="ri-image-fill"></i>
-                                    </div>
-                                  </div>
-                                </Label>
-                                <Input
-                                  className="form-control d-none"
-                                  id="customer-image-input"
-                                  type="file"
-                                  accept="image/png, image/gif, image/jpeg"
-                                  onChange={validation.handleChange}
-                                  onBlur={validation.handleBlur}
-                                  value={validation.values.img || ""}
-                                  invalid={
-                                    validation.touched.img &&
-                                    validation.errors.img
-                                      ? true
-                                      : false
+                    className="btn-close color-black bg-white border border-dark rounded-circle "
+                    aria-label="close"
+                  ></Button>
+                </div>
+                <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                  <h4 className="modal-title">Manage categories</h4>
+                </ModalHeader>
+                <ModalBody>
+                  <form className="p-4 pt-2 pb-2" action="#">
+                    <div className="row g-3">
+                      <Col lg={12} className="border p-2">
+                        Language Selector:
+                        <div className="d-flex gap-2 pt-2">
+                          <Button
+                            onClick={() => handleClick("ENGLISH")}
+                            style={
+                              selectedLanguage === "ENGLISH"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
                                   }
-                                />
+                            }
+                          >
+                            ENGLISH
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("FRENCH")}
+                            style={
+                              selectedLanguage === "FRENCH"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            FRENCH
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("SPANISH")}
+                            style={
+                              selectedLanguage === "SPANISH"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            SPANISH
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("ARABIC")}
+                            style={
+                              selectedLanguage === "ARABIC"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            ARABIC
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("GERMAN")}
+                            style={
+                              selectedLanguage === "GERMAN"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    border: "none",
+                                    color: "#9DB1C7",
+                                  }
+                            }
+                          >
+                            GERMAN
+                          </Button>
+                          <Button
+                            onClick={() => handleClick("ITALIAN")}
+                            style={
+                              selectedLanguage === "ITALIAN"
+                                ? { backgroundColor: "#4A7BA4" }
+                                : {
+                                    backgroundColor: "#E9EBEC",
+                                    color: "#9DB1C7",
+                                    border: "none",
+                                  }
+                            }
+                          >
+                            ITALIAN
+                          </Button>
+                        </div>
+                      </Col>
+                      <DragDropContext onDragEnd={handleDragEnds}>
+                        <Droppable droppableId="categories">
+                          {(provided) => (
+                            <div
+                              className="mt-0"
+                              {...provided.droppableProps}
+                              ref={provided.innerRef}
+                            >
+                              {allCategories &&
+                                allCategories.map((category, index) => (
+                                  <Draggable
+                                    key={category._id}
+                                    draggableId={category._id.toString()}
+                                    index={index}
+                                  >
+                                    {(provided) => (
+                                      <div
+                                        key={category._id}
+                                        className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
+                                        ref={provided.innerRef}
+                                      >
+                                        <div className="d-flex align-items-center gap-2">
+                                          <i
+                                            className="ri-drag-move-2-line fs-24"
+                                            style={{ color: "#4A7BA4" }}
+                                          ></i>
+                                          <h5 className="m-0">
+                                            {category.titleEng}
+                                          </h5>
+                                        </div>
+                                        <div className="d-flex gap-2">
+                                          <i
+                                            className="ri-pencil-fill fs-18"
+                                            style={{ color: "gray" }}
+                                            onClick={() =>
+                                              handleEdit(category._id)
+                                            }
+                                          ></i>
+                                          <i
+                                            className="ri-delete-bin-2-line fs-18"
+                                            style={{ color: "red" }}
+                                            onClick={() =>
+                                              handleDelete(category._id)
+                                            }
+                                          ></i>
+                                        </div>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                ))}
+                              <Modal
+                                isOpen={deleteConfirmation2}
+                                toggle={cancelDelete2}
+                              >
+                                <ModalHeader toggle={cancelDelete2}>
+                                  Confirm Deletion
+                                </ModalHeader>
+                                <ModalBody>
+                                  Are you sure you want to delete this category
+                                  variation?
+                                </ModalBody>
+                                <ModalFooter>
+                                  <Button
+                                    color="danger"
+                                    onClick={confirmDelete2}
+                                  >
+                                    Delete
+                                  </Button>
+                                  <Button
+                                    color="secondary"
+                                    onClick={cancelDelete2}
+                                  >
+                                    Cancel
+                                  </Button>
+                                </ModalFooter>
+                              </Modal>
+
+                              <Col xxl={12}>
+                                <div>
+                                  <Input
+                                    type="text"
+                                    className="form-control mt-2"
+                                    id="firstName"
+                                    placeholder="Edit Category name"
+                                    onChange={(e) =>
+                                      setInputField(e.target.value)
+                                    }
+                                    value={inputField}
+                                  />
+                                </div>
+                              </Col>
+                              <div className="d-flex gap-3 col-lg-12 mt-3">
+                                <div className="d-flex gap-2">
+                                  <Button
+                                    color="primary"
+                                    onClick={handleUpdate}
+                                  >
+                                    Update Category
+                                  </Button>
+                                  <Button color="primary" onClick={handleAdd}>
+                                    Add new item to list
+                                  </Button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                          <div>
-                            <Label htmlFor="name-field" className="form-label">
-                              Name
-                            </Label>
-                            <Input
-                              name="name"
-                              id="customername-field"
-                              className="form-control"
-                              placeholder="Enter Name"
-                              type="text"
-                              validate={{
-                                required: { value: true },
-                              }}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.name || ""}
-                              invalid={
-                                validation.touched.name &&
-                                validation.errors.name
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.name &&
-                            validation.errors.name ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.name}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-                        <Col lg={12}>
-                          <div>
-                            <Label
-                              htmlFor="company_name-field"
-                              className="form-label"
-                            >
-                              Company Name
-                            </Label>
-                            <Input
-                              name="company"
-                              id="company_name-field"
-                              className="form-control"
-                              placeholder="Enter Company Name"
-                              type="text"
-                              validate={{
-                                required: { value: true },
-                              }}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.start || ""}
-                              invalid={
-                                validation.touched.company &&
-                                validation.errors.company
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.company &&
-                            validation.errors.company ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.company}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-
-                        <Col lg={12}>
-                          <div>
-                            <Label
-                              htmlFor="designation-field"
-                              className="form-label"
-                            >
-                              Designation
-                            </Label>
-
-                            <Input
-                              name="designation"
-                              id="designation-field"
-                              className="form-control"
-                              placeholder="Enter Designation"
-                              type="text"
-                              validate={{
-                                required: { value: true },
-                              }}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.designation || ""}
-                              invalid={
-                                validation.touched.designation &&
-                                validation.errors.designation
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.designation &&
-                            validation.errors.designation ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.designation}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-
-                        <Col lg={12}>
-                          <div>
-                            <Label
-                              htmlFor="email_id-field"
-                              className="form-label"
-                            >
-                              Email ID
-                            </Label>
-
-                            <Input
-                              name="email"
-                              id="email_id-field"
-                              className="form-control"
-                              placeholder="Enter Email"
-                              type="text"
-                              validate={{
-                                required: { value: true },
-                              }}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.email || ""}
-                              invalid={
-                                validation.touched.email &&
-                                validation.errors.email
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.email &&
-                            validation.errors.email ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.email}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-                        <Col lg={6}>
-                          <div>
-                            <Label htmlFor="phone-field" className="form-label">
-                              Phone
-                            </Label>
-
-                            <Input
-                              name="phone"
-                              id="phone-field"
-                              className="form-control"
-                              placeholder="Enter Phone No."
-                              type="text"
-                              validate={{
-                                required: { value: true },
-                              }}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.phone || ""}
-                              invalid={
-                                validation.touched.phone &&
-                                validation.errors.phone
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.phone &&
-                            validation.errors.phone ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.phone}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-                        <Col lg={6}>
-                          <div>
-                            <Label
-                              htmlFor="lead_score-field"
-                              className="form-label"
-                            >
-                              Lead Score
-                            </Label>
-
-                            <Input
-                              name="lead_score"
-                              id="lead_score-field"
-                              className="form-control"
-                              placeholder="Enter Lead Score"
-                              type="text"
-                              validate={{
-                                required: { value: true },
-                              }}
-                              onChange={validation.handleChange}
-                              onBlur={validation.handleBlur}
-                              value={validation.values.lead_score || ""}
-                              invalid={
-                                validation.touched.lead_score &&
-                                validation.errors.lead_score
-                                  ? true
-                                  : false
-                              }
-                            />
-                            {validation.touched.lead_score &&
-                            validation.errors.lead_score ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.lead_score}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-                        <Col lg={12}>
-                          <div>
-                            <Label
-                              htmlFor="taginput-choices"
-                              className="form-label font-size-13 text-muted"
-                            >
-                              Tags
-                            </Label>
-                            <Select
-                              isMulti
-                              value={tag}
-                              onChange={(e) => {
-                                handlestag(e);
-                              }}
-                              className="mb-0"
-                              options={tags}
-                              id="taginput-choices"
-                            ></Select>
-
-                            {validation.touched.tags &&
-                            validation.errors.tags ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.tags}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-                        <Col lg={12}>
-                          <div>
-                            <Label
-                              htmlFor="taginput-choices"
-                              className="form-label font-size-13 text-muted"
-                            >
-                              Response
-                            </Label>
-                            <Select
-                              isMulti
-                              value={response}
-                              onChange={(e) => {
-                                handlestag(e);
-                              }}
-                              className="mb-0"
-                              options={response}
-                              id="taginput-choices"
-                            ></Select>
-
-                            {validation.touched.response &&
-                            validation.errors.response ? (
-                              <FormFeedback type="invalid">
-                                {validation.errors.response}
-                              </FormFeedback>
-                            ) : null}
-                          </div>
-                        </Col>
-                      </Row>
-                    </ModalBody>
-                    <ModalFooter>
-                      <div className="hstack gap-2 justify-content-end">
-                        <button
-                          type="button"
-                          className="btn btn-light"
-                          onClick={() => {
-                            setModal(false);
-                          }}
-                        >
-                          {" "}
-                          Close{" "}
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-success"
-                          id="add-btn"
-                        >
-                          {" "}
-                          {!!isEdit ? "Update" : "Add Contact"}{" "}
-                        </button>
-                      </div>
-                    </ModalFooter>
-                  </Form>
-                </Modal>
-                <ToastContainer closeButton={false} limit={1} />
-              </CardBody>
-            </Card>
-          </Col>
-        </div>
-      </Layouts>
+                          )}
+                        </Droppable>
+                      </DragDropContext>
+                    </div>
+                  </form>
+                </ModalBody>
+              </Modal>
+            </div>
+            <Button
+              className="m-3 p-3"
+              href="/adminbenchmarking/questions/compare"
+            >
+              View Comparison
+            </Button>
+          </div>
+          <Card id="contactList">
+            <CardBody className="pt-0">
+              <div>
+                {qa.length > 0 ? (
+                  <TableContainer
+                    columns={columns}
+                    data={qa || []}
+                    isGlobalFilter={true}
+                    isAddUserList={false}
+                    isFilterA={false}
+                    isFooter={true}
+                    customPageSize={8}
+                    className="custom-header-css"
+                    divClass="table-responsive table-card mb-0"
+                    tableClass="align-middle table-nowrap"
+                    theadClass="table-light"
+                    handleContactClick={handleContactClicks}
+                    isContactsFilter={false}
+                    SearchPlaceholder="Search by the Question title"
+                  />
+                ) : (
+                  <Loader error={error} />
+                )}
+              </div>
+              <ToastContainer closeButton={false} limit={1} />
+            </CardBody>
+          </Card>
+        </Col>
+      </div>
+      {/* </Layouts> */}
     </React.Fragment>
   );
 };

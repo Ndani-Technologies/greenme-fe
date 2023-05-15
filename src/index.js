@@ -6,8 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./slices";
+import { persistReducer } from "redux-persist";
+import localStorage from "redux-persist/lib/storage";
+const persistConfig = {
+  key: "root",
+  storage: localStorage,
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = configureStore({ reducer: rootReducer, devTools: true });
+const store = configureStore({ reducer: persistedReducer, devTools: true });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 

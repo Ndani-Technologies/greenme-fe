@@ -1,9 +1,12 @@
 window.env = {
   ALLUSERSPROFILE: "C:\\ProgramData",
+  ANSWER_URL: "http://localhost:5001/api/v1/answer",
   APPDATA: "C:\\Users\\HM.Store\\AppData\\Roaming",
   BASE_URL: "http://localhost:5000",
+  BENCHMARK_URL: "http://localhost:5001/api/v1/benchmarking",
+  CATEGORY_URL: "http://localhost:5001/api/v1/category",
   CHROME_CRASHPAD_PIPE_NAME:
-    "\\\\.\\pipe\\LOCAL\\crashpad_7064_QFVTMEUBVYGJLLVG",
+    "\\\\.\\pipe\\LOCAL\\crashpad_10556_KCMDCDDTGOBDBEZB",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
@@ -241,6 +244,7 @@ window.env = {
   npm_package_dependencies_react_table: "^7.8.0",
   npm_package_dependencies_react_toastify: "^9.1.1",
   npm_package_dependencies_redux: "^4.2.0",
+  npm_package_dependencies_redux_persist: "^6.0.0",
   npm_package_dependencies_redux_thunk: "^2.4.2",
   npm_package_dependencies_remixicon_react: "^1.0.0",
   npm_package_dependencies_resolve_url_loader: "^5.0.0",
@@ -281,7 +285,7 @@ window.env = {
   npm_package_devDependencies__types_lodash: "^4.14.170",
   npm_package_devDependencies__types_react_bootstrap_table2_paginator: "^2.1.1",
   npm_package_devDependencies__types_react_bootstrap_table2_toolkit: "^2.1.4",
-  npm_package_gitHead: "a03f06d57475f53780b16aae0df3359cea242294",
+  npm_package_gitHead: "6c290584e28aa3c00facb94940fa430fccd17aa9",
   npm_package_lint_staged____js_jsx_ts_tsx_json_css_scss_md_:
     "prettier --write",
   npm_package_name: "interactive-velzon-thunk",
@@ -321,6 +325,7 @@ window.env = {
   PSModulePath:
     "C:\\Users\\HM.Store\\Documents\\WindowsPowerShell\\Modules;C:\\Program Files\\WindowsPowerShell\\Modules;C:\\Windows\\system32\\WindowsPowerShell\\v1.0\\Modules",
   PUBLIC: "C:\\Users\\Public",
+  QUESTION_URL: "http://localhost:5001/api/v1/questionnaire",
   SESSIONNAME: "Console",
   SystemDrive: "C:",
   SystemRoot: "C:\\Windows",
@@ -328,7 +333,6 @@ window.env = {
   TERM_PROGRAM: "vscode",
   TERM_PROGRAM_VERSION: "1.77.3",
   TMP: "C:\\Users\\HM0AB1~1.STO\\AppData\\Local\\Temp",
-  URL: "http://localhost:5000/api/v1",
   USERDOMAIN: "DESKTOP-6JO37J8",
   USERDOMAIN_ROAMINGPROFILE: "DESKTOP-6JO37J8",
   USERNAME: "HM.Store",

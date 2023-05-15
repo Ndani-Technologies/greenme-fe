@@ -42,6 +42,9 @@ export * from "./dashboardCRM/thunk";
 // Dashboard Ecommerce
 export * from "./dashboardEcommerce/thunk";
 
+//Benchmark user
+export * from "./BenchmarkingUser/thunk";
+
 // Dashboard Cryto
 export * from "./dashboardCrypto/thunk";
 

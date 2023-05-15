@@ -1,14 +1,233 @@
-export const getAllBenchmarks = () => async (dispatch, getState) => {
-  try {
-    // Open a popup window to initiate the SSO process
-    let resp = await axios.get(env.URL + `user/${userId}`, user);
+import axios from "axios";
+import { benchmarkSuccess } from "./reducer";
+import { toast } from "react-toastify";
+import env from "react-dotenv";
+import { addBenchmarkApi } from "../../helpers/Benchmark_helper/benchmark_user_helper";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-    console.log("resp", resp);
-    if (resp.success) {
-      const { data } = resp;
-      console.log("user updated", data);
-      // const currentState = getState().Login.user
+export const getAllBenchmarks = async () => {
+  try {
+    let resp = await axios.get(env.BENCHMARK_URL);
+    // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
+
+    let data;
+    data = resp.map((value) => {
+      return {
+        title: value?.title,
+        status: value?.status,
+        completion_level: value?.completionLevel,
+        country: value?.country,
+        start_date: value?.start_date,
+        end_data: value?.end_date,
+        ...value,
+      };
+    });
+    console.log("benchmark get all", data);
+    return data;
+    // dispatch(benchmarkSuccess(data))
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getSingleBenchmark = async (id) => {
+  // let resp = await axios.get(`http://localhost:5001/api/v1/benchmarking/${id}`);
+  let resp = await axios.get(`${env.BENCHMARK_URL}/${id}`);
+  console.log("benchmark get single", resp);
+  return resp;
+};
+export const updateUserResp =
+  (id, user_resp, history) => async (dispatch, getState) => {
+    // let resp = await axios.patch(`http://localhost:5001/api/v1/benchmarking/update_user_resp/${id}`, { user_resp });
+    let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
+    console.log("benchmark  user_resp_update", resp);
+    if (resp) history("/benchmarking");
+  };
+
+// export const addBenchmark = createAsyncThunk(
+//   "benchmark/addBenchmark",
+//   async (benchmark, {getState}) => {
+//     try {
+//       const { _id } = getState().Login.user;
+//       const mapData = {
+//         title: benchmark.title,
+//         country: benchmark.country,
+//         userId: _id
+//       }
+//       const response = await addBenchmarkApi(mapData);
+//       return response;
+//     } catch (error) {
+//       console.log("Error bench", error)
+//       toast.error("Benchmark Added Failed", { autoClose: 3000 });
+//       throw error; // throw the error to trigger the `rejected` action
+//     }
+//   }
+// );
+export const addBenchmark = async (benchmark) => {
+  let resp;
+  try {
+    // let user = getState().Login.user
+    let user = JSON.parse(sessionStorage.getItem("authUser"));
+    let { _id } = user;
+    let mapData = {
+      title: benchmark.title,
+      country: benchmark.country,
+      userId: _id,
+    };
+    resp = await axios.post(env.BENCHMARK_URL, mapData);
+    // resp = await axios.post("http://localhost:5001/api/v1/benchmarking", mapData);
+    console.log("benchmark add", mapData, resp);
+    if (resp) {
+      resp = {
+        completion_level: resp?.completionLevel,
+        ...resp,
+      };
+      // let data  = getAllBenchmarks()
+      return resp;
+    } else {
+      toast.error(resp.message, { autoClose: 3000 });
     }
+  } catch (err) {
+    console.log(err);
+    toast.error(err, { autoClose: 3000 });
+  }
+};
+
+//admin
+export const getAllQA = async () => {
+  try {
+    // let resp = await axios.get("http://localhost:5001/api/v1/questionnaire");
+    let resp = await axios.get(env.QUESTION_URL);
+
+    let data;
+    data = resp.map((value) => {
+      return {
+        ...value,
+        response: "50%",
+        answered: 2,
+        category: value?.category?.title,
+        status: value?.status ? "active" : "In-active",
+        visibility: value?.visibility ? "True" : "False",
+      };
+    });
+    console.log("QA get all", data);
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getAllAnswers = async () => {
+  try {
+    // let resp = await axios.get("http://localhost:5001/api/v1/answer");
+    let resp = await axios.get(env.ANSWER_URL);
+
+    console.log("get all answers", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const addAnswer = async (data) => {
+  try {
+    // let resp = await axios.post("http://localhost:5001/api/v1/answer", data);
+    let resp = await axios.post(env.ANSWER_URL, data);
+    console.log("add answers", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const updateAnswer = async (id, data) => {
+  try {
+    // let resp = await axios.put(`http://localhost:5001/api/v1/answer/${id}`, data);
+    let resp = await axios.put(`${env.ANSWER_URL}/${id}`, data);
+
+    console.log("update answers", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const deleteAnswer = async (id) => {
+  try {
+    // let resp = await axios.delete(`http://localhost:5001/api/v1/answer/${id}`);
+    let resp = await axios.delete(`${env.ANSWER_URL}/${id}`);
+
+    console.log("delete answers", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getAllCategories = async () => {
+  try {
+    // let resp = await axios.get("http://localhost:5001/api/v1/category");
+    let resp = await axios.get(env.CATEGORY_URL);
+
+    console.log("get all categories", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const updateCategory = async (id, data) => {
+  try {
+    // let resp = await axios.put(`http://localhost:5001/api/v1/category/${id}`, data);
+    let resp = await axios.put(`${env.CATEGORY_URL}/${id}`, data);
+
+    console.log("update categories", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const deleteCategory = async (id) => {
+  try {
+    // let resp = await axios.delete(`http://localhost:5001/api/v1/category/${id}`);
+    let resp = await axios.delete(`${env.CATEGORY_URL}/${id}`);
+
+    console.log("delete category", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const addCategory = async (data) => {
+  try {
+    // let resp = await axios.post("http://localhost:5001/api/v1/category", data);
+    let resp = await axios.post(env.CATEGORY_URL, data);
+    console.log("add category", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const addQuestion = async (data) => {
+  try {
+    // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
+    let resp = await axios.post(env.QUESTION_URL, data);
+    console.log("add question", resp);
+    return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const getAllAdminBenchmarks = async () => {
+  try {
+    let resp = await axios.get(env.BENCHMARK_URL);
+    // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
+
+    let data;
+    data = resp.map((value) => {
+      return {
+        ...value,
+        name: value.user.firstName + value.user.lastName,
+        organization: value.user.organization,
+      };
+    });
+    console.log("admin benchmark get all", data);
+    return data;
+    // dispatch(benchmarkSuccess(data))
   } catch (error) {
     console.error(error);
   }
