@@ -3,9 +3,10 @@ import { getFirebaseBackend } from "../../../helpers/firebase_helper";
 import {
   postFakeLogin,
   postJwtLogin,
+  postLogin,
   postSocialLogin,
 } from "../../../helpers/fakebackend_helper";
-
+import env from "react-dotenv";
 import {
   loginSuccess,
   logoutUserSuccess,
@@ -13,7 +14,57 @@ import {
   reset_login_flag,
 } from "./reducer";
 
+import axios from "axios";
+import { api } from "../../../config";
+
 const fireBaseBackend = getFirebaseBackend();
+
+export const loginUserReal = (history) => async (dispatch) => {
+  try {
+    // Open a popup window to initiate the SSO process
+    console.log("url", env.BACKEND_URL + " user/login");
+
+    const popup = window.open(
+      env.BASE_URL + "/user/login",
+      "",
+      "width=500,height=500"
+    );
+    const messagePromise = new Promise((resolve, reject) => {
+      window.addEventListener("message", (event) => {
+        console.log("event", event);
+
+        if (event.origin !== env.BASE_URL) return;
+
+        resolve(event.data);
+
+        popup.close();
+      });
+    });
+    const resp = await messagePromise;
+    console.log("resp", resp);
+    if (resp) {
+      sessionStorage.setItem("authUser", JSON.stringify(resp));
+      if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
+        var finallogin = JSON.stringify(resp);
+        finallogin = JSON.parse(finallogin);
+        resp = finallogin.data;
+        if (finallogin.status === "success") {
+          dispatch(loginSuccess(resp));
+          console.log("response ", resp);
+          history("/Profile");
+        } else {
+          dispatch(apiError(finallogin));
+        }
+      } else {
+        dispatch(loginSuccess(resp));
+        console.log("response 1", resp);
+        history("/Profile");
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const loginUser = (user, history) => async (dispatch) => {
   try {

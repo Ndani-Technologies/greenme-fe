@@ -29,7 +29,12 @@ import { GoogleLogin } from "react-google-login";
 // import TwitterLogin from "react-twitter-auth"
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 // actions
-import { loginUser, socialLogin, resetLoginFlag } from "../../slices/thunks";
+import {
+  loginUser,
+  socialLogin,
+  resetLoginFlag,
+  loginUserReal,
+} from "../../slices/thunks";
 
 import logoLight from "../../assets/images/logo-light.png";
 //Import config
@@ -71,7 +76,8 @@ const Login = (props) => {
       password: Yup.string().required("Please Enter Your Password"),
     }),
     onSubmit: (values) => {
-      dispatch(loginUser(values, props.router.navigate));
+      // dispatch(loginUser(values, props.router.navigate));
+      dispatch(loginUserReal(props.router.navigate));
     },
   });
 
@@ -223,7 +229,6 @@ const Login = (props) => {
                           <Button
                             style={{ width: "180px" }}
                             color="success"
-                            onClick={loginClicked}
                             disabled={error ? null : loading ? true : false}
                             className="btn btn-success "
                             type="submit"

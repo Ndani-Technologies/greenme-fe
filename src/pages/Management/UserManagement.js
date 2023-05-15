@@ -56,7 +56,128 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Layout } from "feather-icons-react/build/IconComponents";
 import Layouts from "../../Layouts";
-
+const arr = [
+  {
+    _id: "625d3cd5923ccd040209ebf1",
+    name: "Michael Morris",
+    company: "Syntyce Solutions",
+    designation: "NodeJS Developer",
+    email: "michaelmorris@velzon.com",
+    phone: "484-606-3104",
+    lead_score: "Sweden",
+    last_contacted: "2022-08-15T00:00:01.991Z",
+    image_src: "avatar-6.jpg",
+    tags: "active",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebf3",
+    name: "Kevin Dawson",
+    company: "Meta4Systems",
+    designation: "Senoir Developer",
+    email: "kevindawson@velzon.com",
+    phone: "745-321-9874",
+    lead_score: "Kenya",
+    last_contacted: "2012-01-01T00:00:02.001Z",
+    image_src: "avatar-5.jpg",
+    tags: "Active",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebee",
+    name: "James Price",
+    company: "Themesbrand",
+    designation: "Assitant Develope",
+    email: "jamesprice@velzon.com",
+    phone: "646-276-2274",
+    lead_score: "Nigeria",
+    last_contacted: "2021-07-14T00:00:01.997Z",
+    image_src: "avatar-8.jpg",
+    tags: "Banned",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebf0",
+    name: "Herbert Stokes",
+    company: "Themesbrand",
+    designation: "Lead Developer",
+    email: "herbertstokes@velzon.com",
+    phone: "949-791-0614",
+    lead_score: "Malaysia",
+    last_contacted: "1970-01-01T00:00:02.001Z",
+    image_src: "avatar-4.jpg",
+    tags: "Banned",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebf2",
+    name: "Timothy Smith",
+    company: "Digitech Galaxy",
+    designation: "Mean Stack Developer",
+    email: "timothysmith@velzon.com",
+    phone: "231-480-8536",
+    lead_score: "Japan",
+    last_contacted: "2021-10-21T00:00:01.993Z",
+    image_src: "avatar-8.jpg",
+    tags: "Active",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebeb",
+    name: "Thomas Taylor",
+    company: "iTest Factory",
+    designation: "UI / UX Designer",
+    email: "thomastaylor@velzon.com",
+    phone: "580-464-4694",
+    lead_score: "Poland",
+    last_contacted: "2022-02-22T00:00:01.994Z",
+    image_src: "avatar-9.jpg",
+    tags: "Banned",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebec",
+    name: "Nancy Martino",
+    company: "Force Medicines",
+    designation: "PHP Developer",
+    email: "nancymartino@velzon.com",
+    phone: "786-253-9927",
+    lead_score: "UK",
+    last_contacted: "1970-02-02T00:00:02.004Z",
+    image_src: "avatar-1.jpg",
+    tags: "Active",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebea",
+    name: "Tonya Noble 123",
+    company: "Nesta Technologies",
+    designation: "Lead Designer / Developer",
+    email: "tonyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "Russia",
+    last_contacted: "2022-05-09T18:30:00.000Z",
+    image_src: "avatar-7.jpg",
+    tags: "Active",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebef",
+    name: "Mary Cousar",
+    company: "Micro Design",
+    designation: "Asp.Net Developer",
+    email: "marycousar@velzon.com",
+    phone: "540-575-0991",
+    lead_score: "Poland",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    image_src: "avatar-3.jpg",
+    tags: "Banned",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebed",
+    name: "Alexis Clarke",
+    company: "Digitech Galaxy",
+    designation: "Full Stack Developer",
+    email: "alexisclarke@velzon.com",
+    phone: "515-395-1069",
+    lead_score: "Japan",
+    last_contacted: "1970-01-01T00:00:01.996Z",
+    image_src: "avatar-6.jpg",
+    tags: "Active",
+  },
+];
 const UsersManagement = () => {
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
@@ -66,12 +187,8 @@ const UsersManagement = () => {
       isContactSuccess: state.Crm.isContactSuccess,
       error: state.Crm.error,
     }));
-
   useEffect(() => {
-    if (crmcontacts && !crmcontacts.length) {
-      dispatch(onGetContacts());
-      // setContact(arr)
-    }
+    dispatch(onGetContacts(arr));
   }, [dispatch, crmcontacts]);
 
   useEffect(() => {
@@ -394,12 +511,6 @@ const UsersManagement = () => {
         accessor: "lead_score",
         filterable: false,
       },
-      // {
-      //   Header: "Role",
-      //   accessor: "phone",
-      //   filterable: false,
-      // },
-
       {
         Header: "Status",
         accessor: "tags",
@@ -542,72 +653,6 @@ const UsersManagement = () => {
           <Container fluid>
             <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
             <Row>
-              {/* For Future Use
-              <Col lg={12}>
-                <Card>
-                  <CardHeader>
-                    <div className="d-flex align-items-center flex-wrap gap-2">
-                      <div className="flex-grow-1">
-                        <button
-                          className="btn btn-info add-btn"
-                          onClick={() => {
-                            setModal(true);
-                          }}
-                        >
-                          <i className="ri-add-fill me-1 align-bottom"></i> Add
-                          Contacts
-                        </button>
-                      </div>
-                      <div className="flex-shrink-0">
-                        <div className="hstack text-nowrap gap-2">
-                          {isMultiDeleteButton && (
-                            <button
-                              className="btn btn-soft-danger"
-                              onClick={() => setDeleteModalMulti(true)}
-                            >
-                              <i className="ri-delete-bin-2-line"></i>
-                            </button>
-                          )}
-                          <button className="btn btn-primary">
-                            <i className="ri-filter-2-line me-1 align-bottom"></i>{" "}
-                            Filters
-                          </button>
-                          <button
-                            className="btn btn-soft-info"
-                            onClick={() => setIsExportCSV(true)}
-                          >
-                            Export
-                          </button>
-
-                          <UncontrolledDropdown>
-                            <DropdownToggle
-                              href="#"
-                              className="btn btn-soft-primary"
-                              tag="button"
-                            >
-                              <i className="ri-more-2-fill"></i>
-                            </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-end">
-                              <DropdownItem className="dropdown-item" href="#">
-                                All
-                              </DropdownItem>
-                              <DropdownItem className="dropdown-item" href="#">
-                                Last Week
-                              </DropdownItem>
-                              <DropdownItem className="dropdown-item" href="#">
-                                Last Month
-                              </DropdownItem>
-                              <DropdownItem className="dropdown-item" href="#">
-                                Last Year
-                              </DropdownItem>
-                            </DropdownMenu>
-                          </UncontrolledDropdown>
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </Col> */}
               <Col xxl={9}>
                 <Card id="contactList">
                   <CardBody className="pt-0">
@@ -619,6 +664,7 @@ const UsersManagement = () => {
                           data={crmcontacts || []}
                           isGlobalFilter={true}
                           isAddUserList={false}
+                          isFooter={true}
                           customPageSize={8}
                           className="custom-header-css"
                           divClass="table-responsive table-card mb-0"
@@ -992,33 +1038,6 @@ const UsersManagement = () => {
                     <p className="text-muted">
                       {info.company || "FleetMGT Co. Z"}
                     </p>
-
-                    {/* <ul className="list-inline mb-0">
-                      <li className="list-inline-item avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-success text-success fs-15 rounded"
-                        >
-                          <i className="ri-phone-line"></i>
-                        </Link>
-                      </li>
-                      <li className="list-inline-item avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-danger text-danger fs-15 rounded"
-                        >
-                          <i className="ri-mail-line"></i>
-                        </Link>
-                      </li>
-                      <li className="list-inline-item avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                        >
-                          <i className="ri-question-answer-line"></i>
-                        </Link>
-                      </li>
-                    </ul> */}
                   </CardBody>
                   <CardBody>
                     <div className="table-responsive table-card">
@@ -1048,36 +1067,6 @@ const UsersManagement = () => {
                             <td className="fw-medium">Area of Expertise</td>
                             <td>Tracking, Management.</td>
                           </tr>
-                          {/* <tr>
-                            <td className="fw-medium">Tags</td>
-                            <td>
-                              {(info.tags || ["Lead", "Partner"]).map(
-                                (item, key) => (
-                                  <span
-                                    className="badge badge-soft-primary me-1"
-                                    key={key}
-                                  >
-                                    {item}
-                                  </span>
-                                )
-                              )}
-                            </td>
-                          </tr> */}
-                          {/* <tr>
-                            <td className="fw-medium">Last Contacted</td>
-                            <td>
-                              {handleValidDate(
-                                info.last_contacted ||
-                                  "2021-04-13T18:30:00.000Z"
-                              )}{" "}
-                              <small className="text-muted">
-                                {handleValidTime(
-                                  info.last_contacted ||
-                                    "2021-04-13T18:30:00.000Z"
-                                )}
-                              </small>
-                            </td>
-                          </tr> */}
                         </tbody>
                       </Table>
                     </div>

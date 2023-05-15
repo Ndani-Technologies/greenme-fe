@@ -26,7 +26,7 @@ import Layouts from "../../Layouts";
 import { Icon } from "leaflet";
 
 const Profile = () => {
-  document.title = "Profile |GreenMe";
+  document.title = "Profile | GreenMe";
   const [activeTab, setActiveTab] = useState("1");
 
   const tabChange = (tab) => {
