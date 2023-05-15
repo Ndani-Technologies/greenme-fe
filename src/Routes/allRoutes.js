@@ -44,6 +44,12 @@ import BenchmarkingDashboard from "../pages/Benchmarking-Dashboard/Benchmarking"
 import Benchmarking from "../pages/Benchmarking/Benchmarking";
 import BenhmarkSummary from "../pages/Benchmarking-Summary/Summary";
 import BenchmarkSummaryAdmin from "../pages/Benchmak-Summary-Admin/BenchmarkingSummaryAdmin";
+import UserReport from "../pages/Actions-userReport/UserReport";
+import AdminReport from "../pages/Actions-Admin Report/AdminReport";
+import ActionUserSummary from "../pages/Action-User-Summary/ActionUserSummary";
+import ActionAdminSummary from "../pages/Action-Admin-Summary/ActionAdminSummary";
+import ActionComparison from "../pages/ActionComparison/ActionComparison";
+import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDashboard";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -76,6 +82,17 @@ const authProtectedRoutes = [
   { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
   { path: "/adminbenchmarking/compare", component: <Comparison /> },
   { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
+
+  //User Recomendations pages
+  { path: "/userreport", component: <UserReport /> },
+  { path: "/usersummary", component: <ActionUserSummary /> },
+  //Admin Recomendations pages
+  { path: "/adminreport", component: <AdminReport /> },
+  ,
+  { path: "/adminsummary", component: <ActionAdminSummary /> },
+  { path: "/actioncomparison", component: <ActionComparison /> },
+  { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
+
 ];
 
 const publicRoutes = [
@@ -84,25 +101,7 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
-  // { path: "/Profile", component: <Profile /> },
-  // { path: "/UsersManagement", component: <UsersManagement /> },
-  // //benchmarking user
-  // { path: "/benchmarking", component: <BenchmarkingDashboard /> },
-  // { path: `/benchmarking/:id`, component: <Benchmarking /> },
-  // { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
-  // //benchmarking admin
-  // { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
-  // {
-  //   path: `/adminbenchmarking/summary/:id`,
-  //   component: <BenchmarkSummaryAdmin />,
-  // },
-  // {
-  //   path: `/adminbenchmarking/questions/summary/:id`,
-  //   component: <BenchmarkSummaryAdmin />,
-  // },
-  // { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
-  // { path: "/adminbenchmarking/compare", component: <Comparison /> },
-  // { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
+  
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },
