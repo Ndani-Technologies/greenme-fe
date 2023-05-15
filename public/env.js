@@ -2,7 +2,7 @@ window.env = {
   "ACLOCAL_PATH": "C:\\Program Files\\Git\\mingw64\\share\\aclocal;C:\\Program Files\\Git\\usr\\share\\aclocal",
   "ALLUSERSPROFILE": "C:\\ProgramData",
   "APPDATA": "C:\\Users\\Humza Zubair\\AppData\\Roaming",
-  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\LOCAL\\crashpad_10196_WDDDEOJYRRGUMYUH",
+  "CHROME_CRASHPAD_PIPE_NAME": "\\\\.\\pipe\\LOCAL\\crashpad_4676_XEPOEJQIBPOARQGP",
   "COLOR": "1",
   "COLORTERM": "truecolor",
   "COMMONPROGRAMFILES": "C:\\Program Files\\Common Files",
@@ -100,6 +100,5 @@ window.env = {
   "VSCODE_GIT_ASKPASS_MAIN": "c:\\Users\\Humza Zubair\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass-main.js",
   "VSCODE_GIT_ASKPASS_NODE": "C:\\Users\\Humza Zubair\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
   "VSCODE_GIT_IPC_HANDLE": "\\\\.\\pipe\\vscode-git-4865c5b554-sock",
-  "WINDIR": "C:\\Windows",
-  "__COMPAT_LAYER": "DetectorsAppHealth"
+  "WINDIR": "C:\\Windows"
 };
