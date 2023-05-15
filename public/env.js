@@ -3,7 +3,7 @@ window.env = {
   APPDATA: "C:\\Users\\HM.Store\\AppData\\Roaming",
   BASE_URL: "http://localhost:5000",
   CHROME_CRASHPAD_PIPE_NAME:
-    "\\\\.\\pipe\\LOCAL\\crashpad_10828_NEVWRIADKOHICPQS",
+    "\\\\.\\pipe\\LOCAL\\crashpad_7064_QFVTMEUBVYGJLLVG",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
@@ -281,7 +281,7 @@ window.env = {
   npm_package_devDependencies__types_lodash: "^4.14.170",
   npm_package_devDependencies__types_react_bootstrap_table2_paginator: "^2.1.1",
   npm_package_devDependencies__types_react_bootstrap_table2_toolkit: "^2.1.4",
-  npm_package_gitHead: "ba4dd084a06ccbfe67fe0c39d4f6258ef25e2464",
+  npm_package_gitHead: "a03f06d57475f53780b16aae0df3359cea242294",
   npm_package_lint_staged____js_jsx_ts_tsx_json_css_scss_md_:
     "prettier --write",
   npm_package_name: "interactive-velzon-thunk",
@@ -328,10 +328,12 @@ window.env = {
   TERM_PROGRAM: "vscode",
   TERM_PROGRAM_VERSION: "1.77.3",
   TMP: "C:\\Users\\HM0AB1~1.STO\\AppData\\Local\\Temp",
+  URL: "http://localhost:5000/api/v1",
   USERDOMAIN: "DESKTOP-6JO37J8",
   USERDOMAIN_ROAMINGPROFILE: "DESKTOP-6JO37J8",
   USERNAME: "HM.Store",
   USERPROFILE: "C:\\Users\\HM.Store",
+  USER_URL: "http://localhost:5000/api/v1/",
   VSCODE_GIT_ASKPASS_EXTRA_ARGS: "--ms-enable-electron-run-as-node",
   VSCODE_GIT_ASKPASS_MAIN:
     "c:\\Users\\HM.Store\\AppData\\Local\\Programs\\Microsoft VS Code\\resources\\app\\extensions\\git\\dist\\askpass-main.js",

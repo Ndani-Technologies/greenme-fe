@@ -22,10 +22,9 @@ const fireBaseBackend = getFirebaseBackend();
 export const loginUserReal = (history) => async (dispatch) => {
   try {
     // Open a popup window to initiate the SSO process
-    console.log("url", env.BACKEND_URL + " user/login");
 
     const popup = window.open(
-      env.BASE_URL + "/user/login",
+      env.USER_URL + "user/login",
       "",
       "width=500,height=500"
     );
@@ -41,7 +40,6 @@ export const loginUserReal = (history) => async (dispatch) => {
       });
     });
     const resp = await messagePromise;
-    console.log("resp", resp);
     if (resp) {
       sessionStorage.setItem("authUser", JSON.stringify(resp));
       if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
@@ -50,14 +48,12 @@ export const loginUserReal = (history) => async (dispatch) => {
         resp = finallogin.data;
         if (finallogin.status === "success") {
           dispatch(loginSuccess(resp));
-          console.log("response ", resp);
           history("/Profile");
         } else {
           dispatch(apiError(finallogin));
         }
       } else {
         dispatch(loginSuccess(resp));
-        console.log("response 1", resp);
         history("/Profile");
       }
     }
@@ -66,45 +62,59 @@ export const loginUserReal = (history) => async (dispatch) => {
   }
 };
 
-export const loginUser = (user, history) => async (dispatch) => {
+export const registerUserReal = (history) => async (dispatch) => {
   try {
-    let response;
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      let fireBaseBackend = getFirebaseBackend();
-      response = fireBaseBackend.loginUser(user.email, user.password);
-    } else if (process.env.REACT_APP_DEFAULTAUTH === "jwt") {
-      response = postJwtLogin({
-        email: user.email,
-        password: user.password,
-      });
-    } else if (process.env.REACT_APP_API_URL) {
-      response = postFakeLogin({
-        email: user.email,
-        password: user.password,
-      });
-    }
+    const popup = window.open(
+      env.USER_URL + "user/signup",
+      "",
+      "width=500,height=500"
+    );
+    const messagePromise = new Promise((resolve, reject) => {
+      window.addEventListener("message", (event) => {
+        console.log("event", event);
 
-    var data = await response;
+        if (event.origin !== env.BASE_URL) return;
 
-    if (data) {
-      sessionStorage.setItem("authUser", JSON.stringify(data));
+        resolve(event.data);
+
+        popup.close();
+      });
+    });
+    const resp = await messagePromise;
+    if (resp) {
+      sessionStorage.setItem("authUser", JSON.stringify(resp));
       if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
-        var finallogin = JSON.stringify(data);
+        var finallogin = JSON.stringify(resp);
         finallogin = JSON.parse(finallogin);
-        data = finallogin.data;
+        resp = finallogin.data;
         if (finallogin.status === "success") {
-          dispatch(loginSuccess(data));
-          history("/dashboard");
+          dispatch(loginSuccess(resp));
+          history("/Profile");
         } else {
           dispatch(apiError(finallogin));
         }
       } else {
-        dispatch(loginSuccess(data));
-        history("/dashboard");
+        dispatch(loginSuccess(resp));
+        history("/Profile");
       }
     }
   } catch (error) {
-    dispatch(apiError(error));
+    console.error(error);
+  }
+};
+export const updateUser = (userId, user) => async (dispatch, getState) => {
+  try {
+    // Open a popup window to initiate the SSO process
+    let resp = await axios.patch(env.USER_URL + `user/${userId}`, user);
+
+    console.log("resp", resp);
+    if (resp.success) {
+      const { data } = resp;
+      console.log("user updated", data);
+      // const currentState = getState().Login.user
+    }
+  } catch (error) {
+    console.error(error);
   }
 };
 
