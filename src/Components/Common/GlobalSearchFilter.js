@@ -38,7 +38,7 @@ const FilterAction = () => {
     setValue(newValue);
   };
   return (
-    <div className="d-flex align-items-center justify-content-between w-100">
+    <div className="d-flex align-items-center justify-content-between w-100 p-0">
       <div className="d-flex align-items-center border border-dark p-1  rounded">
         <i className="bx bx-search-alt search-icon"></i>
         <input

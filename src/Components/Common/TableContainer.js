@@ -93,9 +93,9 @@ function GlobalFilter({
                 </div>
               )}
               {isFilterA && <FilterA />}
-              {isFilterAction && <FilterAction />}
               {/* <FilterA /> */}
             </Col>
+            {isFilterAction && <FilterAction />}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
