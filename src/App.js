@@ -1,7 +1,7 @@
 import React from "react";
 
 //import Scss
-import "./assets/scss/themes.scss";
+import "../src/assets/scss/themes.scss";
 
 //imoprt Route
 import Route from "./Routes";
@@ -11,7 +11,6 @@ import Route from "./Routes";
 
 // Fake Backend
 import fakeBackend from "./helpers/AuthType/fakeBackend";
-import Layouts from "./Layouts";
 
 // Activating fake backend
 fakeBackend();
@@ -33,9 +32,7 @@ fakeBackend();
 function App() {
   return (
     <React.Fragment>
-      <Layouts>
-        <Route />
-      </Layouts>
+      <Route />
     </React.Fragment>
   );
 }

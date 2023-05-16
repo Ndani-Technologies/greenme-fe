@@ -22,6 +22,7 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
+import Layouts from "../../Layouts";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -485,41 +486,43 @@ const AdminRelation = () => {
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
-      <div className="page-content overflow-auto ">
-        <ActionMain
-          Title={"Recommended Actions - Benchmark to Action Relationships"}
-        />
-        <Col xxl={9} className="m-auto mt-5">
-          <Card id="contactList">
-            <CardBody className="pt-0">
-              <div>
-                {console.log("contact", crmcontacts)}
-                {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                  <TableContainer
-                    columns={columns}
-                    data={crmcontacts || []}
-                    isGlobalFilter={true}
-                    isAddUserList={false}
-                    isFilterA={false}
-                    isFilterAction={true}
-                    isFooter={true}
-                    customPageSize={8}
-                    className="custom-header-css"
-                    divClass="table-responsive table-card mb-0"
-                    tableClass="align-middle table-nowrap"
-                    theadClass="table-light"
-                    handleContactClick={handleContactClicks}
-                    isContactsFilter={false}
-                    SearchPlaceholder="Search by  title "
-                  />
-                ) : (
-                  <Loader error={error} />
-                )}
-              </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </div>
+      <Layouts>
+        <div className="page-content overflow-auto ">
+          <ActionMain
+            Title={"Recommended Actions - Benchmark to Action Relationships"}
+          />
+          <Col xxl={9} className="m-auto mt-5">
+            <Card id="contactList">
+              <CardBody className="pt-0">
+                <div>
+                  {console.log("contact", crmcontacts)}
+                  {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                    <TableContainer
+                      columns={columns}
+                      data={crmcontacts || []}
+                      isGlobalFilter={true}
+                      isAddUserList={false}
+                      isFilterA={false}
+                      isFilterAction={true}
+                      isFooter={true}
+                      customPageSize={8}
+                      className="custom-header-css"
+                      divClass="table-responsive table-card mb-0"
+                      tableClass="align-middle table-nowrap"
+                      theadClass="table-light"
+                      handleContactClick={handleContactClicks}
+                      isContactsFilter={false}
+                      SearchPlaceholder="Search by  title "
+                    />
+                  ) : (
+                    <Loader error={error} />
+                  )}
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </div>
+      </Layouts>
     </React.Fragment>
   );
 };

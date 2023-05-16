@@ -596,163 +596,165 @@ const UsersManagement = () => {
   document.title = "UsersManagement | GreenMe";
   return (
     <React.Fragment>
-      <div className="page-content">
-        <ExportCSVModal
-          show={isExportCSV}
-          onCloseClick={() => setIsExportCSV(false)}
-          data={crmcontacts}
-        />
-        <DeleteModal
-          show={deleteModal}
-          onDeleteClick={handleDeleteContact}
-          onCloseClick={() => setDeleteModal(false)}
-        />
-        <DeleteModal
-          show={deleteModalMulti}
-          onDeleteClick={() => {
-            deleteMultiple();
-            setDeleteModalMulti(false);
-          }}
-          onCloseClick={() => setDeleteModalMulti(false)}
-        />
-        <Container fluid>
-          <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
-          <Row>
-            <Col xxl={9}>
-              <Card id="contactList">
-                <CardBody className="pt-0">
-                  <div>
-                    {console.log("contact", crmcontacts)}
-                    {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                      <TableContainer
-                        columns={columns}
-                        data={crmcontacts || []}
-                        isGlobalFilter={true}
-                        isAddUserList={false}
-                        isFooter={true}
-                        customPageSize={8}
-                        className="custom-header-css"
-                        divClass="table-responsive table-card mb-0"
-                        tableClass="align-middle table-nowrap"
-                        theadClass="table-light"
-                        handleContactClick={handleContactClicks}
-                        isContactsFilter={true}
-                        SearchPlaceholder="Search for contact..."
-                      />
-                    ) : (
-                      <Loader error={error} />
-                    )}
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
+      <Layouts>
+        <div className="page-content">
+          <ExportCSVModal
+            show={isExportCSV}
+            onCloseClick={() => setIsExportCSV(false)}
+            data={crmcontacts}
+          />
+          <DeleteModal
+            show={deleteModal}
+            onDeleteClick={handleDeleteContact}
+            onCloseClick={() => setDeleteModal(false)}
+          />
+          <DeleteModal
+            show={deleteModalMulti}
+            onDeleteClick={() => {
+              deleteMultiple();
+              setDeleteModalMulti(false);
+            }}
+            onCloseClick={() => setDeleteModalMulti(false)}
+          />
+          <Container fluid>
+            <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
+            <Row>
+              <Col xxl={9}>
+                <Card id="contactList">
+                  <CardBody className="pt-0">
+                    <div>
+                      {console.log("contact", crmcontacts)}
+                      {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                        <TableContainer
+                          columns={columns}
+                          data={crmcontacts || []}
+                          isGlobalFilter={true}
+                          isAddUserList={false}
+                          isFooter={true}
+                          customPageSize={8}
+                          className="custom-header-css"
+                          divClass="table-responsive table-card mb-0"
+                          tableClass="align-middle table-nowrap"
+                          theadClass="table-light"
+                          handleContactClick={handleContactClicks}
+                          isContactsFilter={true}
+                          SearchPlaceholder="Search for contact..."
+                        />
+                      ) : (
+                        <Loader error={error} />
+                      )}
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
 
-            <Col xxl={3}>
-              <Card id="contact-view-detail">
-                <CardBody className="text-center">
-                  <div className="position-relative d-inline-block">
-                    <img
-                      src={avatar}
-                      alt=""
-                      className="avatar-lg rounded-circle img-thumbnail"
-                    />
-                    <span className="contact-active position-absolute rounded-circle bg-success">
-                      <span className="visually-hidden"></span>
-                    </span>
-                  </div>
-                  <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
-                  <p className="text-muted">
-                    {info.company || "FleetMGT Co. Z"}
-                  </p>
-                </CardBody>
-                <CardBody>
-                  <div className="table-responsive table-card">
-                    <Table className="table table-borderless mb-0">
-                      <tbody>
-                        <tr>
-                          <td className="fw-medium">Country</td>
-                          <td>UK</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Designation</td>
-                          <td>Global Fleet Manager</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Email ID</td>
-                          <td>{info.email || "tonyanoble@velzon.com"}</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Points</td>
-                          <td>235</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Leaderboard points</td>
-                          <td>{info.lead_score || "154"}</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Area of Expertise</td>
-                          <td>Tracking, Management.</td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </CardBody>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-4">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "40%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">40%</div>
+              <Col xxl={3}>
+                <Card id="contact-view-detail">
+                  <CardBody className="text-center">
+                    <div className="position-relative d-inline-block">
+                      <img
+                        src={avatar}
+                        alt=""
+                        className="avatar-lg rounded-circle img-thumbnail"
+                      />
+                      <span className="contact-active position-absolute rounded-circle bg-success">
+                        <span className="visually-hidden"></span>
+                      </span>
                     </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-0">Benchmark progress</h5>
+                    <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
+                    <p className="text-muted">
+                      {info.company || "FleetMGT Co. Z"}
+                    </p>
+                  </CardBody>
+                  <CardBody>
+                    <div className="table-responsive table-card">
+                      <Table className="table table-borderless mb-0">
+                        <tbody>
+                          <tr>
+                            <td className="fw-medium">Country</td>
+                            <td>UK</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Designation</td>
+                            <td>Global Fleet Manager</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Email ID</td>
+                            <td>{info.email || "tonyanoble@velzon.com"}</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Points</td>
+                            <td>235</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Leaderboard points</td>
+                            <td>{info.lead_score || "154"}</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Area of Expertise</td>
+                            <td>Tracking, Management.</td>
+                          </tr>
+                        </tbody>
+                      </Table>
                     </div>
-                  </div>
-                </CardBody>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-0">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "30%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">30%</div>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-0">
-                        Recommended actions progress
-                      </h5>
-                    </div>
-                  </div>
-                  <div className="d-flex gap-2 ">
-                    <span className="mt-2">Chat</span>
-                    <span className="avatar-xs">
-                      <Link
-                        to="#"
-                        className="avatar-title bg-soft-warning text-warning fs-15 rounded"
+                  </CardBody>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-4">
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{ width: "40%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
                       >
-                        <i className="ri-question-answer-line"></i>
-                      </Link>
-                    </span>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
+                        <div className="label">40%</div>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-0">Benchmark progress</h5>
+                      </div>
+                    </div>
+                  </CardBody>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-0">
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{ width: "30%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">30%</div>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-0">
+                          Recommended actions progress
+                        </h5>
+                      </div>
+                    </div>
+                    <div className="d-flex gap-2 ">
+                      <span className="mt-2">Chat</span>
+                      <span className="avatar-xs">
+                        <Link
+                          to="#"
+                          className="avatar-title bg-soft-warning text-warning fs-15 rounded"
+                        >
+                          <i className="ri-question-answer-line"></i>
+                        </Link>
+                      </span>
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layouts>
     </React.Fragment>
   );
 };

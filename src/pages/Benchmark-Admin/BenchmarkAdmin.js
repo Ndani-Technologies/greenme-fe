@@ -20,7 +20,6 @@ import {
 import avatar from "../../assets/images/avatar-6.jpg";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
-import Select from "react-select";
 import { toast, ToastContainer } from "react-toastify";
 import Layouts from "../../Layouts";
 import { useSelector, useDispatch } from "react-redux";
@@ -526,136 +525,138 @@ const BenchmarkAdmin = () => {
   document.title = "Profile | GreenMe";
   return (
     <React.Fragment>
-      <div className="page-content overflow-auto ">
-        <div className="Main-sec mx-n4 mt-n4 w-100">
-          <h1>
-            Benchmarking <span className="fs-5">Admin</span>
-          </h1>
-          <p style={{ color: "#BEC887" }}>
-            This is a page where users can take self-assessment questionnaires
-            and view their results. It will feature the ability for users to
-            save progress and return to the assessment later as well as an
-            option to skip or go back to previous questions. Also the option for
-            the user to view their score and their benchmark results
-          </p>
-        </div>
-        <Col xxl={9} className="m-auto">
-          <Col className="d-flex justify-content-between mt-0 p-5 pt-3 pb-2"></Col>
-          <Row>
-            <Col xxl={9}>
-              <Card id="contactList">
-                <CardBody className="pt-0">
-                  <div>
-                    {console.log("contact", crmcontacts)}
-                    {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                      <TableContainer
-                        columns={columns}
-                        data={crmcontacts || []}
-                        isGlobalFilter={true}
-                        isAddUserList={false}
-                        isFilterA={true}
-                        isFooter={true}
-                        isSearchInput={false}
-                        customPageSize={8}
-                        className="custom-header-css"
-                        divClass="table-responsive table-card mb-0"
-                        tableClass="align-middle table-nowrap"
-                        theadClass="table-light"
-                        handleContactClick={handleContactClicks}
-                        isContactsFilter={false}
-                        SearchPlaceholder={false}
-                      />
-                    ) : (
-                      <Loader error={error} />
-                    )}
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
+      <Layouts>
+        <div className="page-content overflow-auto ">
+          <div className="Main-sec mx-n4 mt-n4 w-100">
+            <h1>
+              Benchmarking <span className="fs-5">Admin</span>
+            </h1>
+            <p style={{ color: "#BEC887" }}>
+              This is a page where users can take self-assessment questionnaires
+              and view their results. It will feature the ability for users to
+              save progress and return to the assessment later as well as an
+              option to skip or go back to previous questions. Also the option
+              for the user to view their score and their benchmark results
+            </p>
+          </div>
+          <Col xxl={9} className="m-auto">
+            <Col className="d-flex justify-content-between mt-0 p-5 pt-3 pb-2"></Col>
+            <Row>
+              <Col xxl={9}>
+                <Card id="contactList">
+                  <CardBody className="pt-0">
+                    <div>
+                      {console.log("contact", crmcontacts)}
+                      {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                        <TableContainer
+                          columns={columns}
+                          data={crmcontacts || []}
+                          isGlobalFilter={true}
+                          isAddUserList={false}
+                          isFilterA={true}
+                          isFooter={true}
+                          isSearchInput={false}
+                          customPageSize={8}
+                          className="custom-header-css"
+                          divClass="table-responsive table-card mb-0"
+                          tableClass="align-middle table-nowrap"
+                          theadClass="table-light"
+                          handleContactClick={handleContactClicks}
+                          isContactsFilter={false}
+                          SearchPlaceholder={false}
+                        />
+                      ) : (
+                        <Loader error={error} />
+                      )}
+                    </div>
+                  </CardBody>
+                </Card>
+              </Col>
 
-            <Col xxl={3}>
-              <Card id="contact-view-detail">
-                <CardBody className="text-center">
-                  <div className="position-relative d-inline-block">
-                    <img
-                      src={avatar}
-                      alt=""
-                      className="avatar-lg rounded-circle img-thumbnail"
-                    />
-                    <span className="contact-active position-absolute rounded-circle bg-success">
-                      <span className="visually-hidden"></span>
+              <Col xxl={3}>
+                <Card id="contact-view-detail">
+                  <CardBody className="text-center">
+                    <div className="position-relative d-inline-block">
+                      <img
+                        src={avatar}
+                        alt=""
+                        className="avatar-lg rounded-circle img-thumbnail"
+                      />
+                      <span className="contact-active position-absolute rounded-circle bg-success">
+                        <span className="visually-hidden"></span>
+                      </span>
+                    </div>
+                    <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
+                    <p className="text-muted">
+                      {info.company || "FleetMGT Co. Z"}
+                    </p>
+                  </CardBody>
+                  <CardBody>
+                    <div className="progress animated-progress custom-progress progress-label mt-4">
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{ width: "50%" }}
+                        aria-valuenow="30"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">50%</div>
+                      </div>
+                    </div>
+                    <div className="d-flex align-items-center mb-4 mt-3">
+                      <div className="flex-grow-1">
+                        <h5 className="card-title mb-">Benchmark Completion</h5>
+                      </div>
+                    </div>
+                  </CardBody>
+                  <CardBody className="d-flex gap-2 ">
+                    <span className="mt-2">Chat</span>
+                    <span className="avatar-xs">
+                      <Link
+                        to="#"
+                        className="avatar-title bg-soft-warning text-warning fs-15 rounded"
+                      >
+                        <i className="ri-question-answer-line"></i>
+                      </Link>
                     </span>
-                  </div>
-                  <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
-                  <p className="text-muted">
-                    {info.company || "FleetMGT Co. Z"}
-                  </p>
-                </CardBody>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-4">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "50%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">50%</div>
+                  </CardBody>
+                  <CardBody>
+                    <div className="table-responsive table-card">
+                      <Table className="table table-borderless mb-0">
+                        <tbody>
+                          <tr>
+                            <td className="fw-medium">Orgnaisation</td>
+                            <td>FleetMGT Co. A</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Benchmark title</td>
+                            <td>Country Fleet Manager</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Country</td>
+                            <td>Kenya</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Leaderboard</td>
+                            <td>{info.lead_score || "154 points"}</td>
+                          </tr>
+                          <tr>
+                            <td className="fw-medium">Last Seen</td>
+                            <td>
+                              15 Dec, 2021<span> 08:58AM</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </Table>
                     </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-">Benchmark Completion</h5>
-                    </div>
-                  </div>
-                </CardBody>
-                <CardBody className="d-flex gap-2 ">
-                  <span className="mt-2">Chat</span>
-                  <span className="avatar-xs">
-                    <Link
-                      to="#"
-                      className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                    >
-                      <i className="ri-question-answer-line"></i>
-                    </Link>
-                  </span>
-                </CardBody>
-                <CardBody>
-                  <div className="table-responsive table-card">
-                    <Table className="table table-borderless mb-0">
-                      <tbody>
-                        <tr>
-                          <td className="fw-medium">Orgnaisation</td>
-                          <td>FleetMGT Co. A</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Benchmark title</td>
-                          <td>Country Fleet Manager</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Country</td>
-                          <td>Kenya</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Leaderboard</td>
-                          <td>{info.lead_score || "154 points"}</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Last Seen</td>
-                          <td>
-                            15 Dec, 2021<span> 08:58AM</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Col>
-      </div>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Col>
+        </div>
+      </Layouts>
     </React.Fragment>
   );
 };

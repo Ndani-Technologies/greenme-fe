@@ -737,60 +737,413 @@ const BenchmarkingQA = () => {
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
-      <div className="page-content overflow-auto ">
-        <div className="Main  mx-n4 mt-n4 w-100 pb-4">
-          <h1>
-            Benchmarking Q&A Management <span className="fs-5">Admin</span>
-          </h1>
-          <p style={{ color: "#BEC887" }}>
-            This is page where an admin user can create and edit Benchmarking
-            categories, Questions <br /> and manage the type of answering
-            criteria for users.
-          </p>
-        </div>
-        <Col xxl={9} className="m-auto">
-          <div className="d-flex justify-content-between align-items-center w-100">
-            <Col className="pt-5">
-              <Button
-                className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded"
-                color="white"
-                onClick={() => setmodal_grid(true)}
-                style={{ width: "270px" }}
-              >
-                Start new Question
-                <i class="ri-add-fill"></i>
-              </Button>
-              <Modal
-                size="lg p-5"
-                className="postion-relative m-0 float-end"
-                isOpen={modal_grid}
-                toggle={() => {
-                  tog_grid();
-                }}
-              >
-                <div
-                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
-                  style={{ width: "35px", height: "35px" }}
+      <Layouts>
+        <div className="page-content overflow-auto ">
+          <div className="Main  mx-n4 mt-n4 w-100 pb-4">
+            <h1>
+              Benchmarking Q&A Management <span className="fs-5">Admin</span>
+            </h1>
+            <p style={{ color: "#BEC887" }}>
+              This is page where an admin user can create and edit Benchmarking
+              categories, Questions <br /> and manage the type of answering
+              criteria for users.
+            </p>
+          </div>
+          <Col xxl={9} className="m-auto">
+            <div className="d-flex justify-content-between align-items-center w-100">
+              <Col className="pt-5">
+                <Button
+                  className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded"
+                  color="white"
+                  onClick={() => setmodal_grid(true)}
+                  style={{ width: "270px" }}
                 >
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setmodal_grid(false);
-                    }}
-                    className="btn-close color-black bg-white border border-dark rounded-circle "
-                    aria-label="close"
-                  ></Button>
-                </div>
-                <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                  <h4 className="modal-title">Start new Question</h4>
-                </ModalHeader>
-                <ModalBody>
-                  <form className="p-4 pt-2 pb-2" action="#">
-                    <div className="row g-3">
-                      <div className="p-0 d-flex align-items-center justify-content-between">
-                        <Col lg={7} className="border p-2">
+                  Start new Question
+                  <i class="ri-add-fill"></i>
+                </Button>
+                <Modal
+                  size="lg p-5"
+                  className="postion-relative m-0 float-end"
+                  isOpen={modal_grid}
+                  toggle={() => {
+                    tog_grid();
+                  }}
+                >
+                  <div
+                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                    style={{ width: "35px", height: "35px" }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setmodal_grid(false);
+                      }}
+                      className="btn-close color-black bg-white border border-dark rounded-circle "
+                      aria-label="close"
+                    ></Button>
+                  </div>
+                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                    <h4 className="modal-title">Start new Question</h4>
+                  </ModalHeader>
+                  <ModalBody>
+                    <form className="p-4 pt-2 pb-2" action="#">
+                      <div className="row g-3">
+                        <div className="p-0 d-flex align-items-center justify-content-between">
+                          <Col lg={7} className="border p-2">
+                            Language Selector:
+                            <div className="d-flex justify-content-between pt-2">
+                              <Button
+                                onClick={() => handleClick("ENGLISH")}
+                                style={
+                                  selectedLanguage === "ENGLISH"
+                                    ? { backgroundColor: "#4A7BA4" }
+                                    : {
+                                        backgroundColor: "#E9EBEC",
+                                        border: "none",
+                                      }
+                                }
+                              >
+                                ENGLISH
+                              </Button>
+                              <Button
+                                onClick={() => handleClick("FRENCH")}
+                                style={
+                                  selectedLanguage === "FRENCH"
+                                    ? { backgroundColor: "#4A7BA4" }
+                                    : {
+                                        backgroundColor: "#E9EBEC",
+                                        border: "none",
+                                      }
+                                }
+                              >
+                                FRENCH
+                              </Button>
+                              <Button
+                                onClick={() => handleClick("SPANISH")}
+                                style={
+                                  selectedLanguage === "SPANISH"
+                                    ? { backgroundColor: "#4A7BA4" }
+                                    : {
+                                        backgroundColor: "#E9EBEC",
+                                        border: "none",
+                                      }
+                                }
+                              >
+                                SPANISH
+                              </Button>
+                              <Button
+                                onClick={() => handleClick("ARABIC")}
+                                style={
+                                  selectedLanguage === "ARABIC"
+                                    ? { backgroundColor: "#4A7BA4" }
+                                    : {
+                                        backgroundColor: "#E9EBEC",
+                                        border: "none",
+                                        lineHeight: "-5px",
+                                      }
+                                }
+                              >
+                                ARABIC
+                              </Button>
+                            </div>
+                          </Col>
+                          <div>
+                            <div className="flex-shrink-0 border p-3 pt-1 pb-1 mb-2 rounded">
+                              <div className="form-check form-switch form-switch-right form-switch-md ">
+                                <Label
+                                  htmlFor="form-grid-showcode"
+                                  className="form-label text-muted"
+                                >
+                                  Status:
+                                </Label>
+                                <Input
+                                  className="form-check-input code-switcher"
+                                  type="checkbox"
+                                  value="active"
+                                  checked={isChecked5}
+                                  onChange={handleCheckboxChange5}
+                                  style={{
+                                    backgroundColor: isChecked5
+                                      ? "#88C756"
+                                      : "#fff",
+                                    width: "80px",
+                                    border: "0",
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="flex-shrink-0 border p-3 pt-1 pb-1 d-flex justify-content-end rounded">
+                              <div className="form-check form-switch form-switch-right form-switch-md">
+                                <Label
+                                  htmlFor="form-grid-showcode"
+                                  className="form-label text-muted"
+                                >
+                                  Visibility:
+                                </Label>
+                                <Input
+                                  className="form-check-input code-switcher"
+                                  type="checkbox"
+                                  value="active"
+                                  checked={isChecked6}
+                                  onChange={handleCheckboxChange6}
+                                  style={{
+                                    backgroundColor: isChecked6
+                                      ? "#88c765"
+                                      : "#fff",
+                                    width: "50px",
+                                    border: "0",
+                                  }}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <Col xxl={12} className="p-0">
+                          <div>
+                            <Input
+                              type="text"
+                              className="form-control"
+                              id="firstName"
+                              placeholder="Title"
+                            />
+                          </div>
+                        </Col>
+                        <Col xxl={12} className="p-0">
+                          <div>
+                            <textarea
+                              class="form-control"
+                              placeholder="Discription"
+                              id="floatingTextarea"
+                              style={{
+                                height: "120px",
+                                overflow: "hidden",
+                                backgroundColor: "#dfdfdf",
+                              }}
+                            ></textarea>
+                          </div>
+                        </Col>
+                        <Col xxl={12} className="p-0">
+                          <select lg={12} disable className="form-select mb-3">
+                            <option hidden selected>
+                              Select Category
+                            </option>
+                            <option value="Choices1">General</option>
+                            <option value="Choices1">Data Section</option>
+                            <option value="Choices1">Vehicle Profile</option>
+                            <option value="Choices1">
+                              Occupancy & Utilsation Rates
+                            </option>
+                            <option value="Choices1">Other</option>
+                          </select>
+                        </Col>
+                        <Col className="p-0 border rounded">
+                          <div className="border p-3  d-flex justify-content-between ">
+                            Answer Options{" "}
+                          </div>
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   "
+                            style={{ color: isGrey ? "black" : "#cccccc" }}
+                          >
+                            <div>
+                              <Checkbox
+                                onChange={() => setIsGrey(!isGrey)}
+                                icon={<CropSquareIcon />}
+                                checkedIcon={<SquareRoundedIcon />}
+                              />
+                              YES{" "}
+                            </div>
+                            <div className="form-check form-switch form-switch-right form-switch-md ">
+                              <Label
+                                htmlFor="form-grid-showcode"
+                                className="form-label text-muted"
+                              >
+                                Include Explanation
+                              </Label>
+                              <Input
+                                className="form-check-input code-switcher"
+                                type="checkbox"
+                                value="active"
+                                checked={isChecked2}
+                                onChange={handleCheckboxChange2}
+                                style={{
+                                  backgroundColor: isChecked2
+                                    ? "#88C756"
+                                    : "#fff",
+                                  width: "50px",
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
+                            style={{ color: isGrey2 ? "black" : "#cccccc" }}
+                          >
+                            <div>
+                              <Checkbox
+                                onChange={() => setIsGrey2(!isGrey2)}
+                                icon={<CropSquareIcon />}
+                                checkedIcon={<SquareRoundedIcon />}
+                              />
+                              No{" "}
+                            </div>
+                            <div className="form-check form-switch form-switch-right form-switch-md ">
+                              <Label
+                                htmlFor="form-grid-showcode"
+                                className="form-label text-muted"
+                              >
+                                Include Explanation
+                              </Label>
+                              <Input
+                                className="form-check-input code-switcher"
+                                type="checkbox"
+                                value="active"
+                                checked={isChecked3}
+                                onChange={handleCheckboxChange3}
+                                style={{
+                                  backgroundColor: isChecked3
+                                    ? "#88C756"
+                                    : "#fff",
+                                  width: "50px",
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center  "
+                            style={{ color: isGrey3 ? "black" : "#cccccc" }}
+                          >
+                            <div>
+                              <Checkbox
+                                onChange={() => setIsGrey3(!isGrey3)}
+                                icon={<CropSquareIcon />}
+                                checkedIcon={<SquareRoundedIcon />}
+                              />
+                              I DON'T KNOW{" "}
+                            </div>
+                            <div className="form-check form-switch form-switch-right form-switch-md ">
+                              <Label
+                                htmlFor="form-grid-showcode"
+                                className="form-label text-muted"
+                              >
+                                Include Explanation
+                              </Label>
+                              <Input
+                                className="form-check-input code-switcher"
+                                type="checkbox"
+                                value="active"
+                                checked={isChecked4}
+                                onChange={handleCheckboxChange4}
+                                style={{
+                                  backgroundColor: isChecked4
+                                    ? "#88C756"
+                                    : "#fff",
+                                  width: "50px",
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
+                            style={{ color: isGrey4 ? "black" : "#cccccc" }}
+                          >
+                            <div>
+                              <Checkbox
+                                onChange={() => setIsGrey4(!isGrey4)}
+                                icon={<CropSquareIcon />}
+                                checkedIcon={<SquareRoundedIcon />}
+                              />
+                              WE DO NOT HAVE A POLICY{" "}
+                            </div>
+                            <div className="form-check form-switch form-switch-right form-switch-md ">
+                              <Label
+                                htmlFor="form-grid-showcode"
+                                className="form-label text-muted"
+                              >
+                                Include Explanation
+                              </Label>
+                              <Input
+                                className="form-check-input code-switcher"
+                                type="checkbox"
+                                value="active"
+                                checked={isChecked1}
+                                onChange={handleCheckboxChange1}
+                                style={{
+                                  backgroundColor: isChecked1
+                                    ? "#88C756"
+                                    : "#fff",
+                                  width: "50px",
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div
+                            className="border p-3 pt-1 pb-1 bg-white"
+                            style={{ color: isGrey5 ? "black" : "#cccccc" }}
+                          >
+                            <div>
+                              <Checkbox
+                                onChange={() => setIsGrey5(!isGrey5)}
+                                icon={<CropSquareIcon />}
+                                checkedIcon={<SquareRoundedIcon />}
+                              />
+                              PERCENTAGE
+                            </div>
+                          </div>
+                        </Col>
+                        <div className="col-lg-12 d-flex gap-3">
+                          <div className="hstack gap-2 justify-content-start">
+                            <Button className="btn btn-danger p-4 pt-2 pb-2">
+                              Cancel
+                            </Button>
+                          </div>
+                          <div className="hstack gap-2 justify-content-start">
+                            <Button className="p-4 pt-2 pb-2" color="secondary">
+                              Save
+                            </Button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                  </ModalBody>
+                </Modal>
+              </Col>
+              <div>
+                <Button
+                  className="m-3 p-3"
+                  onClick={() => setmodals_Answer(true)}
+                >
+                  Manage Answers
+                </Button>
+                <Modal
+                  size="lg p-5"
+                  className="postion-relative"
+                  isOpen={modals_Answer}
+                  toggle={() => {
+                    tog_Answer();
+                  }}
+                >
+                  <div
+                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                    style={{ width: "35px", height: "35px" }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setmodals_Answer(false);
+                      }}
+                      className="btn-close color-black bg-white border border-dark rounded-circle "
+                      aria-label="close"
+                    ></Button>
+                  </div>
+                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                    <h4 className="modal-title">Manage answers</h4>
+                  </ModalHeader>
+                  <ModalBody>
+                    <form className="p-4 pt-2 pb-2" action="#">
+                      <div className="row g-3">
+                        <Col lg={12} className="border p-2">
                           Language Selector:
-                          <div className="d-flex justify-content-between pt-2">
+                          <div className="d-flex gap-2 pt-2">
                             <Button
                               onClick={() => handleClick("ENGLISH")}
                               style={
@@ -799,6 +1152,7 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
+                                      color: "#9DB1C7",
                                     }
                               }
                             >
@@ -812,6 +1166,7 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
+                                      color: "#9DB1C7",
                                     }
                               }
                             >
@@ -825,6 +1180,7 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
+                                      color: "#9DB1C7",
                                     }
                               }
                             >
@@ -838,420 +1194,305 @@ const BenchmarkingQA = () => {
                                   : {
                                       backgroundColor: "#E9EBEC",
                                       border: "none",
-                                      lineHeight: "-5px",
+                                      color: "#9DB1C7",
                                     }
                               }
                             >
                               ARABIC
                             </Button>
+                            <Button
+                              onClick={() => handleClick("GERMAN")}
+                              style={
+                                selectedLanguage === "GERMAN"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              GERMAN
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("ITALIAN")}
+                              style={
+                                selectedLanguage === "ITALIAN"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      color: "#9DB1C7",
+                                      border: "none",
+                                    }
+                              }
+                            >
+                              ITALIAN
+                            </Button>
                           </div>
                         </Col>
-                        <div>
-                          <div className="flex-shrink-0 border p-3 pt-1 pb-1 mb-2 rounded">
-                            <div className="form-check form-switch form-switch-right form-switch-md ">
-                              <Label
-                                htmlFor="form-grid-showcode"
-                                className="form-label text-muted"
+                        <Col xxl={12}>
+                          <div className="form-control mt-2">
+                            View your answers
+                          </div>
+                        </Col>
+                        <DragDropContext onDragEnd={handleDragEnd}>
+                          <Droppable droppableId="answers">
+                            {(provided) => (
+                              <div
+                                className="mt-0"
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
                               >
-                                Status:
-                              </Label>
-                              <Input
-                                className="form-check-input code-switcher"
-                                type="checkbox"
-                                value="active"
-                                checked={isChecked5}
-                                onChange={handleCheckboxChange5}
-                                style={{
-                                  backgroundColor: isChecked5
-                                    ? "#88C756"
-                                    : "#fff",
-                                  width: "80px",
-                                  border: "0",
-                                }}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex-shrink-0 border p-3 pt-1 pb-1 d-flex justify-content-end rounded">
-                            <div className="form-check form-switch form-switch-right form-switch-md">
-                              <Label
-                                htmlFor="form-grid-showcode"
-                                className="form-label text-muted"
-                              >
-                                Visibility:
-                              </Label>
-                              <Input
-                                className="form-check-input code-switcher"
-                                type="checkbox"
-                                value="active"
-                                checked={isChecked6}
-                                onChange={handleCheckboxChange6}
-                                style={{
-                                  backgroundColor: isChecked6
-                                    ? "#88c765"
-                                    : "#fff",
-                                  width: "50px",
-                                  border: "0",
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
+                                {Answers &&
+                                  Answers.map((Answer, index) => (
+                                    <>
+                                      <Draggable
+                                        key={Answer.id}
+                                        draggableId={Answer.id.toString()}
+                                        index={index}
+                                      >
+                                        {(provided) => (
+                                          <div
+                                            className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
+                                          >
+                                            <div className="d-flex align-items-center gap-2">
+                                              <i
+                                                className="ri-drag-move-2-line fs-24"
+                                                style={{ color: "#4A7BA4" }}
+                                              ></i>
+                                              <h5 className="m-0">
+                                                {Answer.name}
+                                              </h5>
+                                            </div>
+                                            <div className="d-flex justify-content-end gap-2">
+                                              <i
+                                                className="ri-pencil-fill fs-18"
+                                                style={{ color: "gray" }}
+                                                onClick={() =>
+                                                  handleEdits(Answer.id)
+                                                }
+                                              ></i>
+                                              <i
+                                                className="ri-delete-bin-2-line fs-18"
+                                                style={{ color: "red" }}
+                                                onClick={() =>
+                                                  handleDeletes(Answer.id)
+                                                }
+                                              ></i>
+                                            </div>
+                                          </div>
+                                        )}
+                                      </Draggable>
+                                    </>
+                                  ))}
+                                <Modal
+                                  isOpen={deleteConfirmation}
+                                  toggle={cancelDelete}
+                                >
+                                  <ModalHeader toggle={cancelDelete}>
+                                    Confirm Deletion
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    Are you sure you want to delete this answer
+                                    variation?
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button
+                                      color="danger"
+                                      onClick={confirmDelete}
+                                    >
+                                      Delete
+                                    </Button>
+                                    <Button
+                                      color="secondary"
+                                      onClick={cancelDelete}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </ModalFooter>
+                                </Modal>
+
+                                {provided.placeholder}
+                                <Col xxl={12}>
+                                  <div>
+                                    <Input
+                                      type="text"
+                                      className="form-control mt-2"
+                                      id="firstName"
+                                      placeholder="Enter an answer variation"
+                                      onChange={(e) =>
+                                        setInputFields(e.target.value)
+                                      }
+                                      value={inputFields}
+                                    />
+                                  </div>
+                                </Col>
+                                <div className="d-flex gap-3 col-lg-12 mt-3">
+                                  <div className="d-flex gap-2">
+                                    <Button onClick={handleUpdates}>
+                                      Save
+                                    </Button>
+                                    <Button color="primary">Cancel</Button>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </Droppable>
+                        </DragDropContext>
                       </div>
-                      <Col xxl={12} className="p-0">
-                        <div>
-                          <Input
-                            type="text"
-                            className="form-control"
-                            id="firstName"
-                            placeholder="Title"
-                          />
-                        </div>
-                      </Col>
-                      <Col xxl={12} className="p-0">
-                        <div>
-                          <textarea
-                            class="form-control"
-                            placeholder="Discription"
-                            id="floatingTextarea"
-                            style={{
-                              height: "120px",
-                              overflow: "hidden",
-                              backgroundColor: "#dfdfdf",
-                            }}
-                          ></textarea>
-                        </div>
-                      </Col>
-                      <Col xxl={12} className="p-0">
-                        <select lg={12} disable className="form-select mb-3">
-                          <option hidden selected>
-                            Select Category
-                          </option>
-                          <option value="Choices1">General</option>
-                          <option value="Choices1">Data Section</option>
-                          <option value="Choices1">Vehicle Profile</option>
-                          <option value="Choices1">
-                            Occupancy & Utilsation Rates
-                          </option>
-                          <option value="Choices1">Other</option>
-                        </select>
-                      </Col>
-                      <Col className="p-0 border rounded">
-                        <div className="border p-3  d-flex justify-content-between ">
-                          Answer Options{" "}
-                        </div>
-                        <div
-                          className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   "
-                          style={{ color: isGrey ? "black" : "#cccccc" }}
-                        >
-                          <div>
-                            <Checkbox
-                              onChange={() => setIsGrey(!isGrey)}
-                              icon={<CropSquareIcon />}
-                              checkedIcon={<SquareRoundedIcon />}
-                            />
-                            YES{" "}
-                          </div>
-                          <div className="form-check form-switch form-switch-right form-switch-md ">
-                            <Label
-                              htmlFor="form-grid-showcode"
-                              className="form-label text-muted"
-                            >
-                              Include Explanation
-                            </Label>
-                            <Input
-                              className="form-check-input code-switcher"
-                              type="checkbox"
-                              value="active"
-                              checked={isChecked2}
-                              onChange={handleCheckboxChange2}
-                              style={{
-                                backgroundColor: isChecked2
-                                  ? "#88C756"
-                                  : "#fff",
-                                width: "50px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div
-                          className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
-                          style={{ color: isGrey2 ? "black" : "#cccccc" }}
-                        >
-                          <div>
-                            <Checkbox
-                              onChange={() => setIsGrey2(!isGrey2)}
-                              icon={<CropSquareIcon />}
-                              checkedIcon={<SquareRoundedIcon />}
-                            />
-                            No{" "}
-                          </div>
-                          <div className="form-check form-switch form-switch-right form-switch-md ">
-                            <Label
-                              htmlFor="form-grid-showcode"
-                              className="form-label text-muted"
-                            >
-                              Include Explanation
-                            </Label>
-                            <Input
-                              className="form-check-input code-switcher"
-                              type="checkbox"
-                              value="active"
-                              checked={isChecked3}
-                              onChange={handleCheckboxChange3}
-                              style={{
-                                backgroundColor: isChecked3
-                                  ? "#88C756"
-                                  : "#fff",
-                                width: "50px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div
-                          className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center  "
-                          style={{ color: isGrey3 ? "black" : "#cccccc" }}
-                        >
-                          <div>
-                            <Checkbox
-                              onChange={() => setIsGrey3(!isGrey3)}
-                              icon={<CropSquareIcon />}
-                              checkedIcon={<SquareRoundedIcon />}
-                            />
-                            I DON'T KNOW{" "}
-                          </div>
-                          <div className="form-check form-switch form-switch-right form-switch-md ">
-                            <Label
-                              htmlFor="form-grid-showcode"
-                              className="form-label text-muted"
-                            >
-                              Include Explanation
-                            </Label>
-                            <Input
-                              className="form-check-input code-switcher"
-                              type="checkbox"
-                              value="active"
-                              checked={isChecked4}
-                              onChange={handleCheckboxChange4}
-                              style={{
-                                backgroundColor: isChecked4
-                                  ? "#88C756"
-                                  : "#fff",
-                                width: "50px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div
-                          className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
-                          style={{ color: isGrey4 ? "black" : "#cccccc" }}
-                        >
-                          <div>
-                            <Checkbox
-                              onChange={() => setIsGrey4(!isGrey4)}
-                              icon={<CropSquareIcon />}
-                              checkedIcon={<SquareRoundedIcon />}
-                            />
-                            WE DO NOT HAVE A POLICY{" "}
-                          </div>
-                          <div className="form-check form-switch form-switch-right form-switch-md ">
-                            <Label
-                              htmlFor="form-grid-showcode"
-                              className="form-label text-muted"
-                            >
-                              Include Explanation
-                            </Label>
-                            <Input
-                              className="form-check-input code-switcher"
-                              type="checkbox"
-                              value="active"
-                              checked={isChecked1}
-                              onChange={handleCheckboxChange1}
-                              style={{
-                                backgroundColor: isChecked1
-                                  ? "#88C756"
-                                  : "#fff",
-                                width: "50px",
-                              }}
-                            />
-                          </div>
-                        </div>
-                        <div
-                          className="border p-3 pt-1 pb-1 bg-white"
-                          style={{ color: isGrey5 ? "black" : "#cccccc" }}
-                        >
-                          <div>
-                            <Checkbox
-                              onChange={() => setIsGrey5(!isGrey5)}
-                              icon={<CropSquareIcon />}
-                              checkedIcon={<SquareRoundedIcon />}
-                            />
-                            PERCENTAGE
-                          </div>
-                        </div>
-                      </Col>
-                      <div className="col-lg-12 d-flex gap-3">
-                        <div className="hstack gap-2 justify-content-start">
-                          <Button className="btn btn-danger p-4 pt-2 pb-2">
-                            Cancel
-                          </Button>
-                        </div>
-                        <div className="hstack gap-2 justify-content-start">
-                          <Button className="p-4 pt-2 pb-2" color="secondary">
-                            Save
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  </form>
-                </ModalBody>
-              </Modal>
-            </Col>
-            <div>
-              <Button
-                className="m-3 p-3"
-                onClick={() => setmodals_Answer(true)}
-              >
-                Manage Answers
-              </Button>
-              <Modal
-                size="lg p-5"
-                className="postion-relative"
-                isOpen={modals_Answer}
-                toggle={() => {
-                  tog_Answer();
-                }}
-              >
-                <div
-                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
-                  style={{ width: "35px", height: "35px" }}
+                    </form>
+                  </ModalBody>
+                </Modal>
+              </div>
+              <div className="pt-5" style={{ width: "270px" }}>
+                <Button
+                  className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded float-end"
+                  color="white"
+                  style={{ width: "270px" }}
+                  onClick={() => setmodals_grid(true)}
                 >
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setmodals_Answer(false);
-                    }}
-                    className="btn-close color-black bg-white border border-dark rounded-circle "
-                    aria-label="close"
-                  ></Button>
-                </div>
-                <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                  <h4 className="modal-title">Manage answers</h4>
-                </ModalHeader>
-                <ModalBody>
-                  <form className="p-4 pt-2 pb-2" action="#">
-                    <div className="row g-3">
-                      <Col lg={12} className="border p-2">
-                        Language Selector:
-                        <div className="d-flex gap-2 pt-2">
-                          <Button
-                            onClick={() => handleClick("ENGLISH")}
-                            style={
-                              selectedLanguage === "ENGLISH"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            ENGLISH
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("FRENCH")}
-                            style={
-                              selectedLanguage === "FRENCH"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            FRENCH
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("SPANISH")}
-                            style={
-                              selectedLanguage === "SPANISH"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            SPANISH
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("ARABIC")}
-                            style={
-                              selectedLanguage === "ARABIC"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            ARABIC
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("GERMAN")}
-                            style={
-                              selectedLanguage === "GERMAN"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            GERMAN
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("ITALIAN")}
-                            style={
-                              selectedLanguage === "ITALIAN"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    color: "#9DB1C7",
-                                    border: "none",
-                                  }
-                            }
-                          >
-                            ITALIAN
-                          </Button>
-                        </div>
-                      </Col>
-                      <Col xxl={12}>
-                        <div className="form-control mt-2">
-                          View your answers
-                        </div>
-                      </Col>
-                      <DragDropContext onDragEnd={handleDragEnd}>
-                        <Droppable droppableId="answers">
-                          {(provided) => (
-                            <div
-                              className="mt-0"
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
+                  Manage Category
+                  <i class="ri-add-fill"></i>
+                </Button>
+
+                <Modal
+                  size="lg p-5"
+                  className="postion-relative"
+                  isOpen={modals_grid}
+                  toggle={() => {
+                    tog_grids();
+                  }}
+                >
+                  <div
+                    className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                    style={{ width: "35px", height: "35px" }}
+                  >
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setmodals_grid(false);
+                      }}
+                      className="btn-close color-black bg-white border border-dark rounded-circle "
+                      aria-label="close"
+                    ></Button>
+                  </div>
+                  <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                    <h4 className="modal-title">Manage categories</h4>
+                  </ModalHeader>
+                  <ModalBody>
+                    <form className="p-4 pt-2 pb-2" action="#">
+                      <div className="row g-3">
+                        <Col lg={12} className="border p-2">
+                          Language Selector:
+                          <div className="d-flex gap-2 pt-2">
+                            <Button
+                              onClick={() => handleClick("ENGLISH")}
+                              style={
+                                selectedLanguage === "ENGLISH"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
                             >
-                              {Answers &&
-                                Answers.map((Answer, index) => (
-                                  <>
+                              ENGLISH
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("FRENCH")}
+                              style={
+                                selectedLanguage === "FRENCH"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              FRENCH
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("SPANISH")}
+                              style={
+                                selectedLanguage === "SPANISH"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              SPANISH
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("ARABIC")}
+                              style={
+                                selectedLanguage === "ARABIC"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              ARABIC
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("GERMAN")}
+                              style={
+                                selectedLanguage === "GERMAN"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      border: "none",
+                                      color: "#9DB1C7",
+                                    }
+                              }
+                            >
+                              GERMAN
+                            </Button>
+                            <Button
+                              onClick={() => handleClick("ITALIAN")}
+                              style={
+                                selectedLanguage === "ITALIAN"
+                                  ? { backgroundColor: "#4A7BA4" }
+                                  : {
+                                      backgroundColor: "#E9EBEC",
+                                      color: "#9DB1C7",
+                                      border: "none",
+                                    }
+                              }
+                            >
+                              ITALIAN
+                            </Button>
+                          </div>
+                        </Col>
+                        <DragDropContext onDragEnd={handleDragEnds}>
+                          <Droppable droppableId="categories">
+                            {(provided) => (
+                              <div
+                                className="mt-0"
+                                {...provided.droppableProps}
+                                ref={provided.innerRef}
+                              >
+                                {console.log("cat", categories)}
+                                {categories &&
+                                  categories.map((category, index) => (
                                     <Draggable
-                                      key={Answer.id}
-                                      draggableId={Answer.id.toString()}
+                                      key={category.id}
+                                      draggableId={category.id.toString()}
                                       index={index}
                                     >
                                       {(provided) => (
                                         <div
+                                          key={category.id}
                                           className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
@@ -1263,7 +1504,7 @@ const BenchmarkingQA = () => {
                                               style={{ color: "#4A7BA4" }}
                                             ></i>
                                             <h5 className="m-0">
-                                              {Answer.name}
+                                              {category.name}
                                             </h5>
                                           </div>
                                           <div className="d-flex justify-content-end gap-2">
@@ -1271,358 +1512,121 @@ const BenchmarkingQA = () => {
                                               className="ri-pencil-fill fs-18"
                                               style={{ color: "gray" }}
                                               onClick={() =>
-                                                handleEdits(Answer.id)
+                                                handleEdit(category.id)
                                               }
                                             ></i>
                                             <i
                                               className="ri-delete-bin-2-line fs-18"
                                               style={{ color: "red" }}
                                               onClick={() =>
-                                                handleDeletes(Answer.id)
+                                                handleDelete(category.id)
                                               }
                                             ></i>
                                           </div>
                                         </div>
                                       )}
                                     </Draggable>
-                                  </>
-                                ))}
-                              <Modal
-                                isOpen={deleteConfirmation}
-                                toggle={cancelDelete}
-                              >
-                                <ModalHeader toggle={cancelDelete}>
-                                  Confirm Deletion
-                                </ModalHeader>
-                                <ModalBody>
-                                  Are you sure you want to delete this answer
-                                  variation?
-                                </ModalBody>
-                                <ModalFooter>
-                                  <Button
-                                    color="danger"
-                                    onClick={confirmDelete}
-                                  >
-                                    Delete
-                                  </Button>
-                                  <Button
-                                    color="secondary"
-                                    onClick={cancelDelete}
-                                  >
-                                    Cancel
-                                  </Button>
-                                </ModalFooter>
-                              </Modal>
+                                  ))}
+                                <Modal
+                                  isOpen={deleteConfirmation2}
+                                  toggle={cancelDelete2}
+                                >
+                                  <ModalHeader toggle={cancelDelete2}>
+                                    Confirm Deletion
+                                  </ModalHeader>
+                                  <ModalBody>
+                                    Are you sure you want to delete this
+                                    category variation?
+                                  </ModalBody>
+                                  <ModalFooter>
+                                    <Button
+                                      color="danger"
+                                      onClick={confirmDelete2}
+                                    >
+                                      Delete
+                                    </Button>
+                                    <Button
+                                      color="secondary"
+                                      onClick={cancelDelete2}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  </ModalFooter>
+                                </Modal>
 
-                              {provided.placeholder}
-                              <Col xxl={12}>
-                                <div>
-                                  <Input
-                                    type="text"
-                                    className="form-control mt-2"
-                                    id="firstName"
-                                    placeholder="Enter an answer variation"
-                                    onChange={(e) =>
-                                      setInputFields(e.target.value)
-                                    }
-                                    value={inputFields}
-                                  />
-                                </div>
-                              </Col>
-                              <div className="d-flex gap-3 col-lg-12 mt-3">
-                                <div className="d-flex gap-2">
-                                  <Button onClick={handleUpdates}>Save</Button>
-                                  <Button color="primary">Cancel</Button>
+                                <Col xxl={12}>
+                                  <div>
+                                    <Input
+                                      type="text"
+                                      className="form-control mt-2"
+                                      id="firstName"
+                                      placeholder="Edit Category name"
+                                      onChange={(e) =>
+                                        setInputField(e.target.value)
+                                      }
+                                      value={inputField}
+                                    />
+                                  </div>
+                                </Col>
+                                <div className="d-flex gap-3 col-lg-12 mt-3">
+                                  <div className="d-flex gap-2">
+                                    <Button
+                                      color="primary"
+                                      onClick={handleUpdate}
+                                    >
+                                      Update Category
+                                    </Button>
+                                    <Button color="primary" onClick={handleAdd}>
+                                      Add new item to list
+                                    </Button>
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          )}
-                        </Droppable>
-                      </DragDropContext>
-                    </div>
-                  </form>
-                </ModalBody>
-              </Modal>
-            </div>
-            <div className="pt-5" style={{ width: "270px" }}>
-              <Button
-                className="d-flex align-items-center justify-content-between p-3 bg-white shadow-lg p-3 mb-5 rounded float-end"
-                color="white"
-                style={{ width: "270px" }}
-                onClick={() => setmodals_grid(true)}
-              >
-                Manage Category
-                <i class="ri-add-fill"></i>
-              </Button>
-
-              <Modal
-                size="lg p-5"
-                className="postion-relative"
-                isOpen={modals_grid}
-                toggle={() => {
-                  tog_grids();
-                }}
-              >
-                <div
-                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
-                  style={{ width: "35px", height: "35px" }}
-                >
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setmodals_grid(false);
-                    }}
-                    className="btn-close color-black bg-white border border-dark rounded-circle "
-                    aria-label="close"
-                  ></Button>
-                </div>
-                <ModalHeader className="border-bottom border-dark p-4 pt-0">
-                  <h4 className="modal-title">Manage categories</h4>
-                </ModalHeader>
-                <ModalBody>
-                  <form className="p-4 pt-2 pb-2" action="#">
-                    <div className="row g-3">
-                      <Col lg={12} className="border p-2">
-                        Language Selector:
-                        <div className="d-flex gap-2 pt-2">
-                          <Button
-                            onClick={() => handleClick("ENGLISH")}
-                            style={
-                              selectedLanguage === "ENGLISH"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            ENGLISH
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("FRENCH")}
-                            style={
-                              selectedLanguage === "FRENCH"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            FRENCH
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("SPANISH")}
-                            style={
-                              selectedLanguage === "SPANISH"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            SPANISH
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("ARABIC")}
-                            style={
-                              selectedLanguage === "ARABIC"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            ARABIC
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("GERMAN")}
-                            style={
-                              selectedLanguage === "GERMAN"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    border: "none",
-                                    color: "#9DB1C7",
-                                  }
-                            }
-                          >
-                            GERMAN
-                          </Button>
-                          <Button
-                            onClick={() => handleClick("ITALIAN")}
-                            style={
-                              selectedLanguage === "ITALIAN"
-                                ? { backgroundColor: "#4A7BA4" }
-                                : {
-                                    backgroundColor: "#E9EBEC",
-                                    color: "#9DB1C7",
-                                    border: "none",
-                                  }
-                            }
-                          >
-                            ITALIAN
-                          </Button>
-                        </div>
-                      </Col>
-                      <DragDropContext onDragEnd={handleDragEnds}>
-                        <Droppable droppableId="categories">
-                          {(provided) => (
-                            <div
-                              className="mt-0"
-                              {...provided.droppableProps}
-                              ref={provided.innerRef}
-                            >
-                              {console.log("cat", categories)}
-                              {categories &&
-                                categories.map((category, index) => (
-                                  <Draggable
-                                    key={category.id}
-                                    draggableId={category.id.toString()}
-                                    index={index}
-                                  >
-                                    {(provided) => (
-                                      <div
-                                        key={category.id}
-                                        className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                        {...provided.draggableProps}
-                                        {...provided.dragHandleProps}
-                                        ref={provided.innerRef}
-                                      >
-                                        <div className="d-flex align-items-center gap-2">
-                                          <i
-                                            className="ri-drag-move-2-line fs-24"
-                                            style={{ color: "#4A7BA4" }}
-                                          ></i>
-                                          <h5 className="m-0">
-                                            {category.name}
-                                          </h5>
-                                        </div>
-                                        <div className="d-flex justify-content-end gap-2">
-                                          <i
-                                            className="ri-pencil-fill fs-18"
-                                            style={{ color: "gray" }}
-                                            onClick={() =>
-                                              handleEdit(category.id)
-                                            }
-                                          ></i>
-                                          <i
-                                            className="ri-delete-bin-2-line fs-18"
-                                            style={{ color: "red" }}
-                                            onClick={() =>
-                                              handleDelete(category.id)
-                                            }
-                                          ></i>
-                                        </div>
-                                      </div>
-                                    )}
-                                  </Draggable>
-                                ))}
-                              <Modal
-                                isOpen={deleteConfirmation2}
-                                toggle={cancelDelete2}
-                              >
-                                <ModalHeader toggle={cancelDelete2}>
-                                  Confirm Deletion
-                                </ModalHeader>
-                                <ModalBody>
-                                  Are you sure you want to delete this category
-                                  variation?
-                                </ModalBody>
-                                <ModalFooter>
-                                  <Button
-                                    color="danger"
-                                    onClick={confirmDelete2}
-                                  >
-                                    Delete
-                                  </Button>
-                                  <Button
-                                    color="secondary"
-                                    onClick={cancelDelete2}
-                                  >
-                                    Cancel
-                                  </Button>
-                                </ModalFooter>
-                              </Modal>
-
-                              <Col xxl={12}>
-                                <div>
-                                  <Input
-                                    type="text"
-                                    className="form-control mt-2"
-                                    id="firstName"
-                                    placeholder="Edit Category name"
-                                    onChange={(e) =>
-                                      setInputField(e.target.value)
-                                    }
-                                    value={inputField}
-                                  />
-                                </div>
-                              </Col>
-                              <div className="d-flex gap-3 col-lg-12 mt-3">
-                                <div className="d-flex gap-2">
-                                  <Button
-                                    color="primary"
-                                    onClick={handleUpdate}
-                                  >
-                                    Update Category
-                                  </Button>
-                                  <Button color="primary" onClick={handleAdd}>
-                                    Add new item to list
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </Droppable>
-                      </DragDropContext>
-                    </div>
-                  </form>
-                </ModalBody>
-              </Modal>
-            </div>
-            <Button
-              className="m-3 p-3"
-              href="/adminbenchmarking/questions/compare"
-            >
-              View Comparison
-            </Button>
-          </div>
-          <Card id="contactList">
-            <CardBody className="pt-0">
-              <div>
-                {console.log("contact", crmcontacts)}
-                {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                  <TableContainer
-                    columns={columns}
-                    data={crmcontacts || []}
-                    isGlobalFilter={true}
-                    isAddUserList={false}
-                    isFilterA={false}
-                    isFooter={true}
-                    customPageSize={8}
-                    className="custom-header-css"
-                    divClass="table-responsive table-card mb-0"
-                    tableClass="align-middle table-nowrap"
-                    theadClass="table-light"
-                    handleContactClick={handleContactClicks}
-                    isContactsFilter={false}
-                    SearchPlaceholder="Search by the Question title"
-                  />
-                ) : (
-                  <Loader error={error} />
-                )}
+                            )}
+                          </Droppable>
+                        </DragDropContext>
+                      </div>
+                    </form>
+                  </ModalBody>
+                </Modal>
               </div>
-            </CardBody>
-          </Card>
-        </Col>
-      </div>
+              <Button
+                className="m-3 p-3"
+                href="/adminbenchmarking/questions/compare"
+              >
+                View Comparison
+              </Button>
+            </div>
+            <Card id="contactList">
+              <CardBody className="pt-0">
+                <div>
+                  {console.log("contact", crmcontacts)}
+                  {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                    <TableContainer
+                      columns={columns}
+                      data={crmcontacts || []}
+                      isGlobalFilter={true}
+                      isAddUserList={false}
+                      isFilterA={false}
+                      isFooter={true}
+                      customPageSize={8}
+                      className="custom-header-css"
+                      divClass="table-responsive table-card mb-0"
+                      tableClass="align-middle table-nowrap"
+                      theadClass="table-light"
+                      handleContactClick={handleContactClicks}
+                      isContactsFilter={false}
+                      SearchPlaceholder="Search by the Question title"
+                    />
+                  ) : (
+                    <Loader error={error} />
+                  )}
+                </div>
+              </CardBody>
+            </Card>
+          </Col>
+        </div>
+      </Layouts>
     </React.Fragment>
   );
 };

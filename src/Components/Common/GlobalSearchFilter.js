@@ -32,7 +32,7 @@ function valuetext(value) {
   return `${value}°C`;
 }
 const FilterAction = () => {
-  const [value, setValue] = React.useState([20, 37]);
+  const [value, setValue] = React.useState([8, 37]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

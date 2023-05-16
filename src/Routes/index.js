@@ -8,8 +8,11 @@ import VerticalLayout from "../Layouts/index";
 //routes
 import { authProtectedRoutes, publicRoutes } from "./allRoutes";
 import { AuthProtected } from "./AuthProtected";
+import { useSelector } from "react-redux";
 
 const Index = () => {
+  const user = useSelector((state) => state.Login.user);
+  console.log("user", user);
   return (
     <React.Fragment>
       <Routes>

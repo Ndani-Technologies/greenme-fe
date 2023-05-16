@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const Navdata = () => {
+  const user = useSelector((state) => state.Login.user);
   const history = useNavigate();
   const navigate = useNavigate();
   //state data
@@ -135,6 +137,55 @@ const Navdata = () => {
     isMultiLevel,
     isBanchmarking,
   ]);
+  const menuItemsAdmin = [
+    {
+      label: "Menu",
+      isHeader: true,
+    },
+    {
+      id: 1,
+      icon: "ri-dashboard-2-line",
+      label: "MY Dashboard",
+      link: "/",
+    },
+    {
+      id: "2",
+      icon: "ri-contacts-book-line",
+      label: "Users Management",
+      link: "/UsersManagement",
+    },
+
+    {
+      id: 4,
+      icon: "ri-stack-line",
+      label: "Document sharing",
+      link: "/",
+    },
+    {
+      id: 5,
+      icon: "ri-layout-grid-line",
+      label: "Collaboration",
+      link: "/",
+    },
+    {
+      id: 6,
+      icon: "ri-apps-2-line",
+      label: "Discussions",
+      link: "/",
+    },
+    {
+      id: 7,
+      icon: "ri-rocket-line",
+      label: "Leaderboard",
+      link: "/",
+    },
+    {
+      id: 8,
+      icon: "ri-pie-chart-line",
+      label: "Reports",
+      link: "/",
+    },
+  ];
   const menuItems = [
     {
       label: "Menu",
@@ -225,6 +276,12 @@ const Navdata = () => {
           link: "/usersummary",
           parentId: "Recommended Actions",
         },
+        {
+          id: 3,
+          label: "User Details",
+          link: "/actionuserdetail",
+          parentId: "Recommended Actions",
+        },
       ],
     },
     {
@@ -303,6 +360,11 @@ const Navdata = () => {
       link: "/",
     },
   ];
-  return <React.Fragment>{menuItems}</React.Fragment>;
+  return (
+    <React.Fragment>
+      {/* {user?.role?.title == "admin" ? menuItemsAdmin : menuItems} */}
+      {menuItems}
+    </React.Fragment>
+  );
 };
 export default Navdata;
