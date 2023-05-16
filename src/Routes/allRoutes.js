@@ -50,6 +50,8 @@ import ActionUserSummary from "../pages/Action-User-Summary/ActionUserSummary";
 import ActionAdminSummary from "../pages/Action-Admin-Summary/ActionAdminSummary";
 import ActionComparison from "../pages/ActionComparison/ActionComparison";
 import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDashboard";
+import { components } from "react-select";
+import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -99,6 +101,7 @@ const publicRoutes = [
   { path: "/adminsummary", component: <ActionAdminSummary /> },
   { path: "/actioncomparison", component: <ActionComparison /> },
   { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
+  { path: "/adminRelationship", component: <AdminRelation /> },
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },

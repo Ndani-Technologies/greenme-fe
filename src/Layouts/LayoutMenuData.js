@@ -264,6 +264,12 @@ const Navdata = () => {
           link: "/actionadmindashboard",
           parentId: "Recommended Actions Admin",
         },
+        {
+          id: 5,
+          label: "Admin Relation",
+          link: "/AdminRelationship",
+          parentId: "Recommended Actions Admin",
+        },
       ],
     },
     {

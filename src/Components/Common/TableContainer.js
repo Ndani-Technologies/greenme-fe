@@ -15,6 +15,7 @@ import { DefaultColumnFilter } from "./filters";
 import {
   ProductsGlobalFilter,
   FilterA,
+  FilterAction,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -45,6 +46,7 @@ function GlobalFilter({
   isLeadsFilter,
   SearchPlaceholder,
   isFilterA,
+  isFilterAction,
   isSearchInput,
 }) {
   const [value, setValue] = React.useState(globalFilter);
@@ -64,31 +66,6 @@ function GlobalFilter({
                 !isSearchInput,
                 !isSearchInput || isSearchInput == undefined ? "hi" : "no"
               )}
-              {/* {!isSearchInput || isSearchInput == undefined ? (
-                <div
-                  className={
-                    isProductsFilter ||
-                    isContactsFilter ||
-                    isCompaniesFilter ||
-                    isNFTRankingFilter
-                      ? "search-box me-2 mb-0 d-inline-block"
-                      : "search-box me-2 mb-0 d-inline-block col-3 d-none"
-                  }
-                >
-                  <input
-                    onChange={(e) => {
-                      setValue(e.target.value);
-                      onChange(e.target.value);
-                    }}
-                    id="search-bar-0"
-                    type="text"
-                    className="form-control search /"
-                    placeholder={SearchPlaceholder}
-                    value={value || ""}
-                  />
-                  <i className="bx bx-search-alt search-icon"></i>
-                </div>
-              ) : null} */}
               {true && (
                 <div
                   className={
@@ -116,6 +93,7 @@ function GlobalFilter({
                 </div>
               )}
               {isFilterA && <FilterA />}
+              {isFilterAction && <FilterAction />}
               {/* <FilterA /> */}
             </Col>
             {isProductsFilter && <ProductsGlobalFilter />}
@@ -139,6 +117,7 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   isFilterA,
+  isFilterAction,
   isHorzontal,
   isFooter,
   data,
@@ -246,6 +225,7 @@ const TableContainer = ({
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             isFilterA={isFilterA}
+            isFilterAction={isFilterAction}
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}

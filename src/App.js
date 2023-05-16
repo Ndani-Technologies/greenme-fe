@@ -11,6 +11,7 @@ import Route from "./Routes";
 
 // Fake Backend
 import fakeBackend from "./helpers/AuthType/fakeBackend";
+import Layouts from "./Layouts";
 
 // Activating fake backend
 fakeBackend();
@@ -32,7 +33,9 @@ fakeBackend();
 function App() {
   return (
     <React.Fragment>
-      <Route />
+      <Layouts>
+        <Route />
+      </Layouts>
     </React.Fragment>
   );
 }

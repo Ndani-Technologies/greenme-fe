@@ -13,6 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
+import { Box, Slider } from "@mui/material";
 
 const ProductsGlobalFilter = () => {
   return (
@@ -25,6 +26,73 @@ const ProductsGlobalFilter = () => {
         </div>
       </div>
     </React.Fragment>
+  );
+};
+function valuetext(value) {
+  return `${value}°C`;
+}
+const FilterAction = () => {
+  const [value, setValue] = React.useState([20, 37]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  return (
+    <div className="d-flex align-items-center justify-content-between w-100">
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Action"
+          type="text"
+        />
+      </div>
+      <div className="d-flex align-items-center border border-dark p-1 rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Question"
+          type="text"
+        />
+      </div>
+      <div className=" d-flex">
+        <Label className="m-2">Filter by</Label>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Answer
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Assignment type
+          </option>
+        </select>
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={value}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Status
+          </option>
+        </select>
+      </div>
+    </div>
   );
 };
 const FilterA = () => {
@@ -635,4 +703,5 @@ export {
   TaskListGlobalFilter,
   LeadsGlobalFilter,
   FilterA,
+  FilterAction,
 };
