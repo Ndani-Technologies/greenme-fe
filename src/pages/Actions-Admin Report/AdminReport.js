@@ -11,17 +11,17 @@ import {
   Row,
   UncontrolledDropdown,
 } from "reactstrap";
-import Layouts from "../../Layouts";
 import { BasicColumn, ColumnMarker } from "../ColumnCharts/ColumnCharts";
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
 import { CircleRadialbar } from "../RadialbarCharts/RadialbarCharts";
 import { PieChart } from "../ECharts/ECharts";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import kenya from "../../assets/images/Banchmarking/Kenya.png";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import "react-datepicker/dist/react-datepicker.css";
 import countryList from "react-select-country-list";
+import ActionMain from "../Recomended-Action-Main/ActionMain";
+import Layouts from "../../Layouts";
 
 const AdminReport = () => {
   const [value, setValue] = useState("");
@@ -39,34 +39,7 @@ const AdminReport = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-hidden ">
-          <div className="Main mx-n4 mt-n4 w-100">
-            <div className="d-flex  justify-content-between align-items-center">
-              <div>
-                <h1>Recommended Actions - Report</h1>
-                <div className="d-flex gap-4 mt-5">
-                  <h5 style={{ color: "#fff" }}>
-                    Full Name:<span> Timothy Smith</span>
-                  </h5>
-
-                  <h5 style={{ display: "flex", color: "#fff" }}>
-                    Country:
-                    <span className="d-flex gap-2">
-                      Kenya <img src={kenya} />
-                    </span>
-                  </h5>
-
-                  <h5 style={{ color: "#fff" }}>
-                    Org:<span> FleetMGT CO.C</span>
-                  </h5>
-                </div>
-              </div>
-              <div className="d-flex gap-3">
-                <i class="ri-star-line" style={{ color: "white" }}></i>
-                <i class="ri-share-fill" style={{ color: "white" }}></i>
-                <i class="ri-flag-line" style={{ color: "white" }}></i>
-              </div>
-            </div>
-          </div>
+          <ActionMain Title={"Recommended Actions - Report"} />
           <div className="card">
             <div className="d-flex">
               <div className="d-flex justify-content-between w-25 border-end custom-padding">

@@ -1,8 +1,6 @@
 import React from "react";
-import Layouts from "../../Layouts";
-import Germany from "../../assets/images/Banchmarking/Germany-flag.png";
-import John from "../../assets/images/Banchmarking/John.png";
 import { Col } from "reactstrap";
+import Layouts from "../../Layouts";
 
 const QAComparison = () => {
   return (

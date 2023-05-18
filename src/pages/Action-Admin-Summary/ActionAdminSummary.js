@@ -11,10 +11,11 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
-import Layouts from "../../Layouts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
 import Select from "react-select";
 import countryList from "react-select-country-list";
+import ActionMain from "../Recomended-Action-Main/ActionMain";
+import Layouts from "../../Layouts";
 
 const ActionAdminSummary = () => {
   const [value, setValue] = useState("");
@@ -27,26 +28,12 @@ const ActionAdminSummary = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main mx-n4 mt-n4 w-100">
-            <div className="d-flex  justify-content-between align-items-center">
-              <div>
-                <h1>Recommended Actions - Summary</h1>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus
-                  vestibulum integer massa vel sem id. Mi quis a et quis.
-                  Rhoncus mattis urna adipiscing dolor nam sem sit vel netus.
-                  Egestas vulputate adipiscing aenean tellus elit commodo
-                  tellus. Tincidunt sit turpis est dolor convallis viverra enim
-                  aliquet euismod.
-                </p>
-              </div>
-              <div className="d-flex gap-3">
-                <i class="ri-star-line" style={{ color: "white" }}></i>
-                <i class="ri-share-fill" style={{ color: "white" }}></i>
-                <i class="ri-flag-line" style={{ color: "white" }}></i>
-              </div>
-            </div>
-          </div>
+          <ActionMain
+            Title={"Recommended Actions - Summary"}
+            Text={
+              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+            }
+          />
           <div
             className="d-flex justify-content-between align-items-center bg-white p-3 pt-4 pb-4 rounded"
             style={{ marginTop: "-20px" }}

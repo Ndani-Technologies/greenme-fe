@@ -10,8 +10,8 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
-import Layouts from "../../Layouts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
+import Layouts from "../../Layouts";
 const BenhmarkSummary = () => {
   return (
     <React.Fragment>

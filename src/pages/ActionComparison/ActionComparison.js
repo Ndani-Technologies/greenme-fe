@@ -1,33 +1,20 @@
 import React from "react";
-import Layouts from "../../Layouts";
 import Germany from "../../assets/images/Banchmarking/Germany-flag.png";
 import John from "../../assets/images/Banchmarking/John.png";
+import ActionMain from "../Recomended-Action-Main/ActionMain";
+import Layouts from "../../Layouts";
 
 const ActionComparison = () => {
   return (
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main mx-n4 mt-n4 w-100">
-            <div className="d-flex  justify-content-between align-items-center">
-              <div>
-                <h1>Recommended Actions - Comparison</h1>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus
-                  vestibulum integer massa vel sem id. Mi quis a et quis.
-                  Rhoncus mattis urna adipiscing dolor nam sem sit vel netus.
-                  Egestas vulputate adipiscing aenean tellus elit commodo
-                  tellus. Tincidunt sit turpis est dolor convallis viverra enim
-                  aliquet euismod.
-                </p>
-              </div>
-              <div className="d-flex gap-3">
-                <i class="ri-star-line" style={{ color: "white" }}></i>
-                <i class="ri-share-fill" style={{ color: "white" }}></i>
-                <i class="ri-flag-line" style={{ color: "white" }}></i>
-              </div>
-            </div>
-          </div>
+          <ActionMain
+            Title={"Recommended Actions - Comparison"}
+            Text={
+              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+            }
+          />
           <div className="table-responsive table-card mt-5 ">
             <table className="table align-middle table-nowrap table-striped-columns mb-0">
               <tbody className="d-flex justify-content-between align-items-center">

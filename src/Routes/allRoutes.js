@@ -50,6 +50,9 @@ import ActionUserSummary from "../pages/Action-User-Summary/ActionUserSummary";
 import ActionAdminSummary from "../pages/Action-Admin-Summary/ActionAdminSummary";
 import ActionComparison from "../pages/ActionComparison/ActionComparison";
 import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDashboard";
+import { components } from "react-select";
+import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
+import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -63,36 +66,6 @@ const authProtectedRoutes = [
     component: <Navigate to="/dashboard" />,
   },
   { path: "*", component: <Navigate to="/dashboard" /> },
-  { path: "/Profile", component: <Profile /> },
-
-  //benchmarking user
-  { path: "/benchmarking", component: <BenchmarkingDashboard /> },
-  { path: `/benchmarking/:id`, component: <Benchmarking /> },
-  { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
-  //benchmarking admin
-  { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
-  {
-    path: `/adminbenchmarking/summary/:id`,
-    component: <BenchmarkSummaryAdmin />,
-  },
-  {
-    path: `/adminbenchmarking/questions/summary/:id`,
-    component: <BenchmarkSummaryAdmin />,
-  },
-  { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
-  { path: "/adminbenchmarking/compare", component: <Comparison /> },
-  { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
-
-  //User Recomendations pages
-  { path: "/userreport", component: <UserReport /> },
-  { path: "/usersummary", component: <ActionUserSummary /> },
-  //Admin Recomendations pages
-  { path: "/adminreport", component: <AdminReport /> },
-  ,
-  { path: "/adminsummary", component: <ActionAdminSummary /> },
-  { path: "/actioncomparison", component: <ActionComparison /> },
-  { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
-
 ];
 
 const publicRoutes = [
@@ -101,7 +74,7 @@ const publicRoutes = [
   { path: "/login", component: <Login /> },
   { path: "/forgot-password", component: <ForgetPasswordPage /> },
   { path: "/register", component: <Register /> },
-  
+
   //AuthenticationInner pages
   { path: "/auth-signin-basic", component: <BasicSignIn /> },
   { path: "/auth-signin-cover", component: <CoverSignIn /> },
@@ -125,6 +98,37 @@ const publicRoutes = [
   { path: "/auth-pass-change-basic", component: <BasicPasswCreate /> },
   { path: "/auth-pass-change-cover", component: <CoverPasswCreate /> },
   { path: "/auth-offline", component: <Offlinepage /> },
+  { path: "/Profile", component: <Profile /> },
+  { path: "/UsersManagement", component: <UsersManagement /> },
+  //benchmarking user
+  { path: "/benchmarking", component: <BenchmarkingDashboard /> },
+  { path: `/benchmarking/:id`, component: <Benchmarking /> },
+  { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
+  //benchmarking admin
+  { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
+  {
+    path: `/adminbenchmarking/summary/:id`,
+    component: <BenchmarkSummaryAdmin />,
+  },
+  {
+    path: `/adminbenchmarking/questions/summary/:id`,
+    component: <BenchmarkSummaryAdmin />,
+  },
+  { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
+  { path: "/adminbenchmarking/compare", component: <Comparison /> },
+  { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
+
+  //User Recomendations pages
+  { path: "/userreport", component: <UserReport /> },
+  { path: "/usersummary", component: <ActionUserSummary /> },
+  { path: "/actionuserdetail", component: <ActionUserDetail /> },
+  //Admin Recomendations pages
+  { path: "/adminreport", component: <AdminReport /> },
+  ,
+  { path: "/adminsummary", component: <ActionAdminSummary /> },
+  { path: "/actioncomparison", component: <ActionComparison /> },
+  { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
+  { path: "/AdminRelationship", component: <AdminRelation /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

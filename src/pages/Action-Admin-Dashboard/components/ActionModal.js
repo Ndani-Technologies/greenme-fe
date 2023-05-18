@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import * as moment from "moment";
 import {
   Col,
   Label,
@@ -346,9 +345,9 @@ const ActionModal = ({ modal_grid, setmodal_grid }) => {
                       className="form-check-input code-switcher"
                       type="checkbox"
                       value="active"
-                      onChange={handleCheckboxChange5}
+                      onChange={handleCheckboxChange1}
                       style={{
-                        backgroundColor: isChecked5 ? "#88C756" : "#fff",
+                        backgroundColor: isChecked1 ? "#88C756" : "#fff",
                         width: "50px",
                       }}
                     />
