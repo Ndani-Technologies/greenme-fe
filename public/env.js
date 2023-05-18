@@ -6,7 +6,7 @@ window.env = {
   BENCHMARK_URL: "http://localhost:5001/api/v1/benchmarking",
   CATEGORY_URL: "http://localhost:5001/api/v1/category",
   CHROME_CRASHPAD_PIPE_NAME:
-    "\\\\.\\pipe\\LOCAL\\crashpad_1264_CMJNCZASZVRCIQKT",
+    "\\\\.\\pipe\\LOCAL\\crashpad_3840_LEMEIOHSFIHVXHLI",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
@@ -284,7 +284,7 @@ window.env = {
   npm_package_devDependencies__types_lodash: "^4.14.170",
   npm_package_devDependencies__types_react_bootstrap_table2_paginator: "^2.1.1",
   npm_package_devDependencies__types_react_bootstrap_table2_toolkit: "^2.1.4",
-  npm_package_gitHead: "3a1a3a41d557596beb210a86e074831dbd862261",
+  npm_package_gitHead: "9a2808150baa3e8b9dad7830df0060ffc2246d40",
   npm_package_lint_staged____js_jsx_ts_tsx_json_css_scss_md_:
     "prettier --write",
   npm_package_name: "greenme-frontend",

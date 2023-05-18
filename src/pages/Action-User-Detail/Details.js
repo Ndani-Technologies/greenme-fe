@@ -32,3 +32,25 @@ export const Details = [
     Detail: "09 Jan, 2022",
   },
 ];
+export const Links = [
+  {
+    Link: "Send the billing agreement",
+    Icon: <i class="ri-arrow-right-line"></i>,
+  },
+  {
+    Link: "Send over all the documentation.",
+    Icon: <i class="ri-arrow-right-line"></i>,
+  },
+  {
+    Link: "Meeting with daron to review the intake form",
+    Icon: <i class="ri-arrow-right-line"></i>,
+  },
+  {
+    Link: "Check uikings theme and give customer support",
+    Icon: <i class="ri-arrow-right-line"></i>,
+  },
+  {
+    Link: "Start making a presentation",
+    Icon: <i class="ri-arrow-right-line"></i>,
+  },
+];

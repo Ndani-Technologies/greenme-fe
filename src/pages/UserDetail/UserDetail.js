@@ -217,58 +217,7 @@ const Profile = () => {
                     </div>
                   </CardBody>
                 </Card>
-                {/* For Future Use */}
-                {/* <Card>
-                                <CardBody>
-                                    <div className="d-flex align-items-center mb-4">
-                                        <div className="flex-grow-1">
-                                            <h5 className="card-title mb-0">Portfolio</h5>
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                            <Link to="#" className="badge bg-light text-primary fs-12"><i
-                                                className="ri-add-fill align-bottom me-1"></i> Add</Link>
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-dark text-light">
-                                                <i className="ri-github-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="email" className="form-control" id="gitUsername" placeholder="Username"
-                                            defaultValue="@daveadame" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-primary">
-                                                <i className="ri-global-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="websiteInput"
-                                            placeholder="www.example.com" defaultValue="www.velzon.com" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-success">
-                                                <i className="ri-dribbble-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="dribbleName" placeholder="Username"
-                                            defaultValue="@dave_adame" />
-                                    </div>
-                                    <div className="d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-danger">
-                                                <i className="ri-pinterest-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="pinterestName"
-                                            placeholder="Username" defaultValue="Advance Dave" />
-                                    </div>
-                                </CardBody>
-                            </Card> */}
               </Col>
-
               <Col xxl={9}>
                 <div className="mt-xxl-n5 card">
                   <div className="d-flex">

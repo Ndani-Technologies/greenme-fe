@@ -121,6 +121,7 @@ const publicRoutes = [
   //User Recomendations pages
   { path: "/userreport", component: <UserReport /> },
   { path: "/usersummary", component: <ActionUserSummary /> },
+  { path: "/actionuserdetail", component: <ActionUserDetail /> },
   //Admin Recomendations pages
   { path: "/adminreport", component: <AdminReport /> },
   ,
@@ -128,7 +129,6 @@ const publicRoutes = [
   { path: "/actioncomparison", component: <ActionComparison /> },
   { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
   { path: "/AdminRelationship", component: <AdminRelation /> },
-  { path: "/actionuserdetail", component: <ActionUserDetail /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };
