@@ -53,6 +53,7 @@ import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDas
 import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
+import ActionUserDashboard from "../pages/Action-User-Dashboard/ActionUserDashboard";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -122,6 +123,7 @@ const publicRoutes = [
   { path: "/userreport", component: <UserReport /> },
   { path: "/usersummary", component: <ActionUserSummary /> },
   { path: "/actionuserdetail", component: <ActionUserDetail /> },
+  { path: "/actionuserdashboard", component: <ActionUserDashboard /> },
   //Admin Recomendations pages
   { path: "/adminreport", component: <AdminReport /> },
   ,

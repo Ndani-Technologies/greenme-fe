@@ -282,6 +282,12 @@ const Navdata = () => {
           link: "/actionuserdetail",
           parentId: "Recommended Actions",
         },
+        {
+          id: 4,
+          label: "User Dashboard",
+          link: "/actionuserdashboard",
+          parentId: "Recommended Actions",
+        },
       ],
     },
     {

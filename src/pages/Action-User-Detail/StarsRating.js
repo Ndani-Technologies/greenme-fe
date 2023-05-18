@@ -23,7 +23,7 @@ const StarsRating = ({ Title, Rating, validation, value }) => {
             emptyIcon={<i className="far fa-star"></i>}
             halfIcon={<i className="fa fa-star-half-alt"></i>}
             fullIcon={<i className="fa fa-star"></i>}
-            activeColor={value === 0 ? "red" : "#ffd700"}
+            activeColor={value === 0 ? "red" : "#w"}
           />
           <span>{Rating}</span>
         </Col>

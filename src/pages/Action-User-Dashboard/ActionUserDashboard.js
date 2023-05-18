@@ -1,25 +1,12 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import * as moment from "moment";
 import {
   Col,
-  Container,
-  Row,
   Card,
   CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Label,
-  Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  ModalFooter,
-  Table,
-  FormFeedback,
-  Button,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -34,8 +21,6 @@ import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import ActionModal from "./components/ActionModal";
-import CategoryModal from "./components/CategoryModal";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import Layouts from "../../Layouts";
 const arr = [
@@ -154,7 +139,7 @@ const arr = [
     Scale: "intermediate",
   },
 ];
-const ActionAdminDashboard = () => {
+const ActionUserDashboard = () => {
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,
@@ -504,9 +489,7 @@ const ActionAdminDashboard = () => {
     [handleContactClick, checkedAll]
   );
 
-  const [response, setResponse] = useState([]);
   const [assignResponse, setAssignResponse] = useState([]);
-  const [Scale, setScale] = useState([]);
   const [assignScale, setAssignScale] = useState([]);
 
   function handlestag(Scale) {
@@ -535,38 +518,6 @@ const ActionAdminDashboard = () => {
     { label: "Partner", value: "Partner" },
   ];
 
-  const categories = [
-    { id: 1, name: "Avoid" },
-    { id: 2, name: "Shift" },
-    { id: 3, name: "Improve" },
-  ];
-
-  const weight = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "Max" },
-  ];
-  const Status = [
-    { id: 1, name: "Not started" },
-    { id: 2, name: "In progress" },
-    { id: 3, name: "Completed" },
-  ];
-  const Potential = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "High" },
-  ];
-  const Cost = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "High" },
-  ];
-  const scale = [
-    { id: 1, name: "Short term" },
-    { id: 2, name: "Intermediate" },
-    { id: 3, name: "Medium term" },
-  ];
-
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
 
@@ -579,162 +530,19 @@ const ActionAdminDashboard = () => {
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
-  const [data, setData] = useState([]);
-  const handleModal = (e) => {
-    if (e.target.name == "manage_categories") {
-      setData(categories);
-    } else if (e.target.name == "manage_weight") {
-      setData(weight);
-    } else if (e.target.name == "manage_Status") {
-      setData(Status);
-    } else if (e.target.name == "manage_Potential") {
-      setData(Potential);
-    } else if (e.target.name == "manage_Costs") {
-      setData(Cost);
-    } else if (e.target.name == "manage_Scale") {
-      setData(scale);
-    }
-    setmodals_grid(true);
-  };
-  document.title = "Admin Dashboard| GreenMe";
+
+  document.title = "User Dashboard| GreenMe";
   return (
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
           <ActionMain
-            Title={"Recommended Actions - Admin Dashboard"}
+            Title={"Recommended Actions"}
             Text={
               "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
             }
           />
-          <Col xxl={9} className="m-auto">
-            <div className="d-flex align-items-center justify-content-center gap-2 w-100">
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded"
-                  color="white"
-                  onClick={() => setmodal_grid(true)}
-                  style={{ width: "130px" }}
-                >
-                  Add Action
-                  <i class="ri-add-fill"></i>
-                </Button>
-                {modal_grid && (
-                  <ActionModal
-                    modal_grid={modal_grid}
-                    setmodal_grid={setmodal_grid}
-                  />
-                )}
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  name="manage_categories"
-                  style={{ width: "160px" }}
-                  onClick={handleModal}
-                >
-                  Manage Categories
-                  <i class="ri-add-fill"></i>
-                </Button>
-                {data && (
-                  <CategoryModal
-                    modals_grid={modals_grid}
-                    setmodals_grid={setmodals_grid}
-                    categories={data}
-                    setCategories={setData}
-                    Title={"Manage category"}
-                    FieldName={"Add new Category"}
-                    Edit={"Edit category name"}
-                  />
-                )}
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "140px" }}
-                  name="manage_weight"
-                  onClick={handleModal}
-                >
-                  Manage Weight
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage weight"}
-                  FieldName={"Add new Weight"}
-                  Edit={"Edit weight name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "130px" }}
-                  name="manage_Status"
-                  onClick={handleModal}
-                >
-                  Manage Status
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage status"}
-                  FieldName={"Add new Status"}
-                  Edit={"Edit status name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "160px" }}
-                  name="manage_Potential"
-                  onClick={handleModal}
-                >
-                  Manage Potential
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage potential"}
-                  FieldName={"Add new Potential"}
-                  Edit={"Edit potential name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "160px" }}
-                  name="manage_Costs"
-                  onClick={handleModal}
-                >
-                  Manage Costs
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage cost"}
-                  FieldName={"Add new Cost"}
-                  Edit={"Edit sost name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "160px" }}
-                  name="manage_Scale"
-                  onClick={handleModal}
-                >
-                  Manage Scale
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage time scale"}
-                  FieldName={"Add new Scale"}
-                  Edit={"Edit a time scale name"}
-                />
-              </div>
-            </div>
+          <Col xxl={9} className="m-auto mt-5">
             <Card id="contactList">
               <CardBody className="pt-0">
                 <div>
@@ -746,10 +554,10 @@ const ActionAdminDashboard = () => {
                       isGlobalFilter={true}
                       isAddUserList={false}
                       isFilterA={false}
-                      isFooter={true}
-                      customPageSize={8}
-                      isWeightField={true}
                       isFilterActionDashboard={true}
+                      isFooter={true}
+                      isWeightField={false}
+                      customPageSize={8}
                       className="custom-header-css"
                       divClass="table-responsive table-card mb-0"
                       tableClass="align-middle table-nowrap"
@@ -772,4 +580,4 @@ const ActionAdminDashboard = () => {
   );
 };
 
-export default ActionAdminDashboard;
+export default ActionUserDashboard;

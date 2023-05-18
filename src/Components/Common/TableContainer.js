@@ -16,6 +16,7 @@ import {
   ProductsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterActionDashboard,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -47,6 +48,8 @@ function GlobalFilter({
   SearchPlaceholder,
   isFilterA,
   isFilterAction,
+  isFilterActionDashboard,
+  isWeightField,
   isSearchInput,
 }) {
   const [value, setValue] = React.useState(globalFilter);
@@ -96,6 +99,9 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {isFilterActionDashboard && (
+              <FilterActionDashboard isWeightField={isWeightField} />
+            )}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
@@ -117,7 +123,9 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   isFilterA,
+  isWeightField,
   isFilterAction,
+  isFilterActionDashboard,
   isHorzontal,
   isFooter,
   data,
@@ -222,10 +230,12 @@ const TableContainer = ({
         )}
         {isGlobalFilter && (
           <GlobalFilter
+            isWeightField={isWeightField}
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             isFilterA={isFilterA}
             isFilterAction={isFilterAction}
+            isFilterActionDashboard={isFilterActionDashboard}
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}

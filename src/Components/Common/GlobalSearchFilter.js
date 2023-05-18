@@ -31,6 +31,68 @@ const ProductsGlobalFilter = () => {
 function valuetext(value) {
   return `${value}°C`;
 }
+const FilterActionDashboard = ({ isWeightField }) => {
+  return (
+    <div className="d-flex justify-content-between">
+      {" "}
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Action"
+          type="text"
+        />
+      </div>
+      <div className=" d-flex">
+        <Label className="m-2">Filter by</Label>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Category
+            </option>
+          </select>
+        </div>
+      </div>
+      {isWeightField && (
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Weight
+            </option>
+          </select>
+        </div>
+      )}
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Status
+          </option>
+        </select>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Potential
+          </option>
+        </select>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Cost
+          </option>
+        </select>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Time scale
+          </option>
+        </select>
+      </div>
+    </div>
+  );
+};
 const FilterAction = () => {
   const [value, setValue] = React.useState([8, 37]);
 
@@ -704,4 +766,5 @@ export {
   LeadsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterActionDashboard,
 };
