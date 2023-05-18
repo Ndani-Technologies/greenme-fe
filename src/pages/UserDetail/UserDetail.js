@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -17,6 +17,7 @@ import {
   TabPane,
 } from "reactstrap";
 import classnames from "classnames";
+import countryList from "react-select-country-list";
 import Flatpickr from "react-flatpickr";
 
 //import images
@@ -27,10 +28,22 @@ import { Icon } from "leaflet";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { updateUser } from "../../slices/thunks";
+import * as Countries from "./Countries";
+import {
+  Box,
+  Chip,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  useTheme,
+} from "@mui/material";
+import { Padding } from "@mui/icons-material";
 
 const Profile = () => {
   document.title = "Profile | GreenMe";
   const [rightColumn, setRightColumn] = useState(true);
+  const theme = useTheme();
+  const [countryName, setCountryName] = React.useState([]);
   const toggleRightColumn = () => {
     setRightColumn(!rightColumn);
   };
@@ -62,13 +75,51 @@ const Profile = () => {
     //   otherCountries: Yup.string().required("Please Enter Your Password"),
     // }),
     onSubmit: (values) => {
-      console.log("in user handle submit", values);
-      dispatch(updateUser(user._id, values));
+      const mappedData = {
+        otherCountries: countryName && countryName,
+        ...values,
+      };
+      console.log("in user handle submit", mappedData, values, countryName);
+      updateUser(user._id, mappedData);
       // dispatch(loginUser(values, props.router.navigate));
       // dispatch(loginUserReal(props.router.navigate));
     },
   });
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
+  function getStyles(name, countryName, theme) {
+    return {
+      fontWeight:
+        countryName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCountryName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value,
+      () => {
+        validation.setFieldValue(
+          "otherCountries",
+          countryName.map((country) => country)
+        );
+      }
+    );
+  };
   return (
     <React.Fragment>
       {/* <Layouts> */}
@@ -218,58 +269,7 @@ const Profile = () => {
                   </div>
                 </CardBody>
               </Card>
-              {/* For Future Use */}
-              {/* <Card>
-                                <CardBody>
-                                    <div className="d-flex align-items-center mb-4">
-                                        <div className="flex-grow-1">
-                                            <h5 className="card-title mb-0">Portfolio</h5>
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                            <Link to="#" className="badge bg-light text-primary fs-12"><i
-                                                className="ri-add-fill align-bottom me-1"></i> Add</Link>
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-dark text-light">
-                                                <i className="ri-github-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="email" className="form-control" id="gitUsername" placeholder="Username"
-                                            defaultValue="@daveadame" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-primary">
-                                                <i className="ri-global-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="websiteInput"
-                                            placeholder="www.example.com" defaultValue="www.velzon.com" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-success">
-                                                <i className="ri-dribbble-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="dribbleName" placeholder="Username"
-                                            defaultValue="@dave_adame" />
-                                    </div>
-                                    <div className="d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-danger">
-                                                <i className="ri-pinterest-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="pinterestName"
-                                            placeholder="Username" defaultValue="Advance Dave" />
-                                    </div>
-                                </CardBody>
-                            </Card> */}
             </Col>
-
             <Col xxl={9}>
               <div className="mt-xxl-n5 card">
                 <div className="d-flex">
@@ -463,16 +463,6 @@ const Profile = () => {
                               />
                             </div>
                           </Col>
-                          {/* <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="phonenumberInput" className="form-label">Phone
-                                                                Number</Label>
-                                                            <Input type="text" className="form-control"
-                                                                id="phonenumberInput"
-                                                                placeholder="Enter your phone number"
-                                                                defaultValue="+(1) 987 6543" />
-                                                        </div>
-                                                    </Col> */}
                           <Col lg={6}>
                             <div className="mb-3">
                               <Label
@@ -511,18 +501,6 @@ const Profile = () => {
                               />
                             </div>
                           </Col>
-                          {/* <Col lg={12}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="JoiningdatInput" className="form-label">Joining
-                                                                Date</Label>
-                                                            <Flatpickr
-                                                                className="form-control"
-                                                                options={{
-                                                                    dateFormat: "d M, Y"
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </Col> */}
                           <Col lg={6}>
                             <div className="mb-3">
                               <Label
@@ -537,7 +515,7 @@ const Profile = () => {
                                 id="countryInput"
                                 placeholder="Logistics Coordinator"
                                 defaultValue=""
-                                value={validation.values.role}
+                                value={validation.values.role.title}
                                 disabled
                               />
                             </div>
@@ -589,17 +567,58 @@ const Profile = () => {
                               >
                                 Other Countries of Operation
                               </Label>
-                              <select disabled className="form-select mb-3">
-                                <option hidden selected>
-                                  {validation.values.otherCountries[0]}
-                                </option>
-                                {user.otherCountries &&
-                                  user.otherCountries.map((value, index) => (
-                                    <option key={index} value={`${value}`}>
-                                      {value}
-                                    </option>
+                              <Col lg={12}>
+                                <Select
+                                  sx={{ width: "100%" }}
+                                  placeholder=""
+                                  style={{ Padding: "1px" }}
+                                  labelId="demo-multiple-chip-label"
+                                  id="demo-multiple-chip"
+                                  multiple
+                                  value={countryName}
+                                  onChange={handleChange}
+                                  onBlur={() => {
+                                    validation.setFieldValue(
+                                      "otherCountries",
+                                      countryName.map((i) => countryName[i])
+                                    );
+                                  }}
+                                  input={
+                                    <OutlinedInput
+                                      id="select-multiple-chip"
+                                      label="Chip"
+                                    />
+                                  }
+                                  renderValue={(selected) => (
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 0.5,
+                                      }}
+                                    >
+                                      {selected.map((value) => (
+                                        <Chip key={value} label={value} />
+                                      ))}
+                                    </Box>
+                                  )}
+                                  MenuProps={MenuProps}
+                                >
+                                  {Countries.map((value, index) => (
+                                    <MenuItem
+                                      key={index}
+                                      value={value.name}
+                                      style={getStyles(
+                                        value.name,
+                                        countryName,
+                                        theme
+                                      )}
+                                    >
+                                      {value.name}
+                                    </MenuItem>
                                   ))}
-                              </select>
+                                </Select>
+                              </Col>
                             </div>
                           </Col>
                           <Col lg={12}>
