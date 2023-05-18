@@ -11,6 +11,8 @@ const Navdata = () => {
   const [isAuth, setIsAuth] = useState(false);
   const [isPages, setIsPages] = useState(false);
   const [isBanchmarking, setIsBanchmarking] = useState(false);
+  const [isRecommend, setIsRecommend] = useState(false);
+  const [isRecommended, setIsRecommended] = useState(false);
   const [isBaseUi, setIsBaseUi] = useState(false);
   const [isAdvanceUi, setIsAdvanceUi] = useState(false);
   const [isForms, setIsForms] = useState(false);
@@ -147,44 +149,12 @@ const Navdata = () => {
       link: "/",
     },
     {
-      id: "",
+      id: "2",
       icon: "ri-contacts-book-line",
       label: "Users Management",
       link: "/UsersManagement",
     },
-    {
-      id: "Benchmarking Admin",
-      icon: "ri-compasses-2-line",
-      label: "Benchmarking Admin",
-      link: "/#",
-      click: function (e) {
-        e.preventDefault();
-        setIsBanchmarking(!isBanchmarking);
-        setIscurrentState("Benchmarking");
-        updateIconSidebar(e);
-      },
-      stateVariables: isBanchmarking,
-      subItems: [
-        {
-          id: 1,
-          label: "Benchmarking QA",
-          link: "/adminbenchmarking/questions",
-          parentId: "Benchmarking Admin",
-        },
-        {
-          id: 4,
-          label: "Benchmark",
-          link: "/adminbenchmarking",
-          parentId: "Benchmarking Admin",
-        },
-      ],
-    },
-    {
-      id: 3,
-      icon: "ri-pencil-ruler-2-line",
-      label: "Recommended Actions",
-      link: "/",
-    },
+
     {
       id: 4,
       icon: "ri-stack-line",
@@ -254,12 +224,110 @@ const Navdata = () => {
         },
       ],
     },
-
     {
-      id: 3,
+      id: "Benchmarking Admin",
+      icon: "ri-compasses-2-line",
+      label: "Benchmarking Admin",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsBanchmarking(!isBanchmarking);
+        setIscurrentState("Benchmarking");
+        updateIconSidebar(e);
+      },
+      stateVariables: isBanchmarking,
+      subItems: [
+        {
+          id: 1,
+          label: "Benchmarking QA",
+          link: "/adminbenchmarking/questions",
+          parentId: "Benchmarking Admin",
+        },
+        {
+          id: 4,
+          label: "Benchmark",
+          link: "/adminbenchmarking",
+          parentId: "Benchmarking Admin",
+        },
+      ],
+    },
+    {
+      id: "Recommended Actions",
       icon: "ri-pencil-ruler-2-line",
       label: "Recommended Actions",
-      link: "/",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsRecommend(!isRecommend);
+        setIscurrentState("Recommend");
+        updateIconSidebar(e);
+      },
+      stateVariables: isRecommend,
+      subItems: [
+        {
+          id: 1,
+          label: "Report",
+          link: "/userreport",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "User Summary",
+          link: "/usersummary",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 3,
+          label: "User Details",
+          link: "/actionuserdetail",
+          parentId: "Recommended Actions",
+        },
+      ],
+    },
+    {
+      id: "Recommended Actions Admin",
+      icon: "ri-pencil-ruler-2-line",
+      label: "Recommended Actions admin",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsRecommended(!isRecommended);
+        setIscurrentState("Recommend");
+        updateIconSidebar(e);
+      },
+      stateVariables: isRecommended,
+      subItems: [
+        {
+          id: 1,
+          label: "Admin Report",
+          link: "/adminreport",
+          parentId: "Recommended Actions Admin",
+        },
+        {
+          id: 2,
+          label: "Admin Summary",
+          link: "/adminSummary",
+          parentId: "Recommended Actions Admin",
+        },
+        {
+          id: 3,
+          label: "Comparison",
+          link: "/actioncomparison",
+          parentId: "Recommended Actions Admin",
+        },
+        {
+          id: 4,
+          label: "Admin Dashboard",
+          link: "/actionadmindashboard",
+          parentId: "Recommended Actions Admin",
+        },
+        {
+          id: 5,
+          label: "Admin Relation",
+          link: "/AdminRelationship",
+          parentId: "Recommended Actions Admin",
+        },
+      ],
     },
     {
       id: 4,
@@ -295,6 +363,7 @@ const Navdata = () => {
   return (
     <React.Fragment>
       {user?.role?.title == "admin" ? menuItemsAdmin : menuItems}
+
     </React.Fragment>
   );
 };

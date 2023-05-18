@@ -2,11 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import {
   Col,
-  Container,
-  Row,
   Card,
-  CardHeader,
-  CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
@@ -21,6 +17,7 @@ import {
   Table,
   FormFeedback,
   Button,
+  CardBody,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -43,7 +40,6 @@ import TableContainer from "../../Components/Common/TableContainer";
 import SquareRoundedIcon from "@mui/icons-material/SquareRounded";
 import CropSquareIcon from "@mui/icons-material/CropSquare";
 import Select from "react-select";
-import { toast, ToastContainer } from "react-toastify";
 import Layouts from "../../Layouts";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useSelector, useDispatch } from "react-redux";
@@ -56,6 +52,7 @@ import { languages } from "prismjs";
 import { lineHeight } from "@mui/system";
 import { Checkbox, TextField } from "@mui/material";
 import { Link } from "feather-icons-react/build/IconComponents";
+
 
 const BenchmarkingQA = () => {
   // const [isGrey, setIsGrey] = useState(false);
@@ -463,7 +460,6 @@ const BenchmarkingQA = () => {
   const [info, setInfo] = useState([]);
 
   // Export Modal
-  const [isExportCSV, setIsExportCSV] = useState(false);
   const [modal_grid, setmodal_grid] = useState(false);
   function tog_grid() {
     setmodal_grid(!modal_grid);
@@ -481,18 +477,6 @@ const BenchmarkingQA = () => {
   // ]);
   const [editingAnswerId, setEditingAnswerId] = useState(null);
   const [inputFields, setInputFields] = useState("");
-
-  // const handleAdds = () => {
-  //   const newAnswerName = inputFields;
-  //   if (newAnswerName) {
-  //     const newAnswer = {
-  //       id: Answers.length + 1,
-  //       name: newAnswerName,
-  //     };
-  //     setAnswers([newAnswer, ...Answers]);
-  //     setInputFields("");
-  //   }
-  // };
   const handleEdits = (AnswerId) => {
     setEditingAnswerId(AnswerId);
     const Answer = allAnswers.find((c) => c._id === AnswerId);
@@ -535,6 +519,7 @@ const BenchmarkingQA = () => {
 
   const handleDeletes = (AnswerId, id) => {
     setEditingAnswerId(AnswerId);
+
     setDeleteConfirmation(true);
   };
 
@@ -635,8 +620,6 @@ const BenchmarkingQA = () => {
   const handleDelete = (id) => {
     setDeleteId(id);
     setDeleteConfirmation2(true);
-    // setCategories(updatedCategories);
-    // setUpdCategories(updatedCategories);
   };
   const confirmDelete2 = () => {
     deleteCategory(deleteId)
@@ -678,6 +661,7 @@ const BenchmarkingQA = () => {
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
 
   const [deleteId, setDeleteId] = useState(null);
+
 
   const cancelDelete = () => {
     setDeleteConfirmation(false);
@@ -1019,6 +1003,7 @@ const BenchmarkingQA = () => {
                                   {value.answerOption}
                                 </div>
 
+
                                 {value.includeExplanation && (
                                   <div className="form-check form-switch form-switch-right form-switch-md ">
                                     <Label
@@ -1233,7 +1218,7 @@ const BenchmarkingQA = () => {
                                               {Answer.answerOption}
                                             </h5>
                                           </div>
-                                          <div className="d-flex gap-2">
+                                          <div className="d-flex justify-content-end gap-2">
                                             <i
                                               className="ri-pencil-fill fs-18"
                                               style={{ color: "gray" }}
@@ -1602,6 +1587,7 @@ const BenchmarkingQA = () => {
         </Col>
       </div>
       {/* </Layouts> */}
+
     </React.Fragment>
   );
 };

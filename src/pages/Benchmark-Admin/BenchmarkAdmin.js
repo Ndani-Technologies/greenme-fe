@@ -2,29 +2,14 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import {
   Col,
-  Container,
   Row,
   Card,
-  CardHeader,
   CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Label,
-  Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  ModalFooter,
   Table,
-  FormFeedback,
-  Button,
-  Nav,
-  NavItem,
-  TabContent,
-  TabPane,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -36,7 +21,6 @@ import {
 import avatar from "../../assets/images/avatar-6.jpg";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
-import Select from "react-select";
 import { toast, ToastContainer } from "react-toastify";
 import Layouts from "../../Layouts";
 import { useSelector, useDispatch } from "react-redux";
@@ -929,6 +913,7 @@ const BenchmarkAdmin = () => {
                     />
                     <span className="contact-active position-absolute rounded-circle bg-success">
                       <span className="visually-hidden"></span>
+
                     </span>
                   </div>
                   <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>

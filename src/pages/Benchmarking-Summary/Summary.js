@@ -10,8 +10,8 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
-import Layouts from "../../Layouts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
+import Layouts from "../../Layouts";
 const BenhmarkSummary = () => {
   return (
     <React.Fragment>
@@ -26,6 +26,7 @@ const BenhmarkSummary = () => {
               <b>Benchmark title:</b> My bench mark title here
             </span>
             <div className="d-flex align-items-center gap-2">
+
               <span>
                 <b>Country:</b> Kenya
               </span>
@@ -59,6 +60,7 @@ const BenhmarkSummary = () => {
                       Total number of questions answered as ‘YES’
                     </p>
                     <span>10/30</span>
+
                   </div>
                 </Card>
               </Col>

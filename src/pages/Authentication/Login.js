@@ -77,8 +77,8 @@ const Login = (props) => {
     }),
 
     onSubmit: (values) => {
-      // props.router.navigate("/Profile")
-      dispatch(loginUserReal(props.router.navigate));
+      props.router.navigate("/Profile");
+      // dispatch(loginUserReal(props.router.navigate));
     },
   });
 
