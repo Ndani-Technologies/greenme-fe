@@ -17,21 +17,56 @@ import {
   TabPane,
 } from "reactstrap";
 import classnames from "classnames";
-import Flatpickr from "react-flatpickr";
 
 //import images
 import progileBg from "../../../src/assets/images/profile-bg.jpg";
 import avatar1 from "../../../src/assets/images/users/avatar-1.jpg";
 import Layouts from "../../Layouts";
 import { Icon } from "leaflet";
+import { useSelector } from "react-redux";
+import { useFormik } from "formik";
+import { updateUser } from "../../slices/thunks";
 
 const Profile = () => {
   document.title = "Profile | GreenMe";
+  const [rightColumn, setRightColumn] = useState(true);
+  const toggleRightColumn = () => {
+    setRightColumn(!rightColumn);
+  };
   const [activeTab, setActiveTab] = useState("1");
+  // const [userData, setUserData] = useState({firstName, lastName, email, organization, role, scope, country, otherCountries})
+
+  const user = useSelector((state) => state.Login.user);
+  console.log("user", user);
 
   const tabChange = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
+  const validation = useFormik({
+    // enableReinitialize : use this flag when initial values needs to be changed
+    enableReinitialize: true,
+
+    initialValues: {
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      email: user?.email || "",
+      organization: user?.organization || "",
+      role: user?.role || "",
+      scope: user?.scope || [],
+      country: user?.country || "",
+      otherCountries: user?.otherCountries || [],
+    },
+    // validationSchema: Yup.object({
+    //   scope: Array.string().required("Please Select "),
+    //   otherCountries: Yup.string().required("Please Enter Your Password"),
+    // }),
+    onSubmit: (values) => {
+      console.log("in user handle submit", values);
+      dispatch(updateUser(user._id, values));
+      // dispatch(loginUser(values, props.router.navigate));
+      // dispatch(loginUserReal(props.router.navigate));
+    },
+  });
 
   return (
     <React.Fragment>
@@ -78,7 +113,7 @@ const Profile = () => {
                     <div className="text-center">
                       <div className="profile-user position-relative d-inline-block mx-auto  mb-4">
                         <img
-                          src={avatar1}
+                          src={user?.profilePic}
                           className="rounded-circle avatar-xl img-thumbnail user-profile-image"
                           alt="user-profile"
                         />
@@ -98,10 +133,12 @@ const Profile = () => {
                           </Label>
                         </div>
                       </div>
-                      <h5 className="fs-16 mb-1">Dave</h5>
-                      <p className="text-muted mb-0">Global Fleet Manager</p>
-                      <p className="text-muted mb-0">FleetMGT Co. A</p>
-                      <p className="text-muted mb-0">Kenya</p>
+                      <h5 className="fs-16 mb-1">
+                        {user?.firstName} {user?.lastName}{" "}
+                      </h5>
+                      <p className="text-muted mb-0">{user?.position}</p>
+                      <p className="text-muted mb-0">{user?.organization}</p>
+                      <p className="text-muted mb-0">{user?.country}</p>
                     </div>
                   </CardBody>
                 </Card>
@@ -180,58 +217,7 @@ const Profile = () => {
                     </div>
                   </CardBody>
                 </Card>
-                {/* For Future Use */}
-                {/* <Card>
-                                <CardBody>
-                                    <div className="d-flex align-items-center mb-4">
-                                        <div className="flex-grow-1">
-                                            <h5 className="card-title mb-0">Portfolio</h5>
-                                        </div>
-                                        <div className="flex-shrink-0">
-                                            <Link to="#" className="badge bg-light text-primary fs-12"><i
-                                                className="ri-add-fill align-bottom me-1"></i> Add</Link>
-                                        </div>
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-dark text-light">
-                                                <i className="ri-github-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="email" className="form-control" id="gitUsername" placeholder="Username"
-                                            defaultValue="@daveadame" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-primary">
-                                                <i className="ri-global-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="websiteInput"
-                                            placeholder="www.example.com" defaultValue="www.velzon.com" />
-                                    </div>
-                                    <div className="mb-3 d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-success">
-                                                <i className="ri-dribbble-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="dribbleName" placeholder="Username"
-                                            defaultValue="@dave_adame" />
-                                    </div>
-                                    <div className="d-flex">
-                                        <div className="avatar-xs d-block flex-shrink-0 me-3">
-                                            <span className="avatar-title rounded-circle fs-16 bg-danger">
-                                                <i className="ri-pinterest-fill"></i>
-                                            </span>
-                                        </div>
-                                        <Input type="text" className="form-control" id="pinterestName"
-                                            placeholder="Username" defaultValue="Advance Dave" />
-                                    </div>
-                                </CardBody>
-                            </Card> */}
               </Col>
-
               <Col xxl={9}>
                 <div className="mt-xxl-n5 card">
                   <div className="d-flex">
@@ -379,7 +365,13 @@ const Profile = () => {
                   <CardBody className="p-4">
                     <TabContent activeTab={activeTab}>
                       <TabPane tabId="1">
-                        <Form>
+                        <Form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            validation.handleSubmit();
+                            return false;
+                          }}
+                        >
                           <Row>
                             <Col lg={6}>
                               <div className="mb-3">
@@ -395,6 +387,7 @@ const Profile = () => {
                                   id="firstnameInput"
                                   placeholder="Enter your firstname"
                                   defaultValue="Dave"
+                                  value={validation.values.firstName}
                                   disabled
                                 />
                               </div>
@@ -410,6 +403,7 @@ const Profile = () => {
                                 <Input
                                   type="text"
                                   className="form-control"
+                                  value={validation.values.lastName}
                                   id="lastnameInput"
                                   placeholder="Enter your lastname"
                                   defaultValue="Adame"
@@ -437,6 +431,7 @@ const Profile = () => {
                                 </Label>
                                 <Input
                                   type="email"
+                                  value={validation.values.email}
                                   className="form-control"
                                   id="emailInput"
                                   placeholder="Enter your email"
@@ -455,6 +450,7 @@ const Profile = () => {
                                   Orgnaization
                                 </Label>
                                 <Input
+                                  value={validation.values.organization}
                                   type="Orgnaization"
                                   className="form-control"
                                   id="Orgnaization"
@@ -488,7 +484,8 @@ const Profile = () => {
                                   className="form-control"
                                   id="countryInput"
                                   placeholder="Logistics Coordinator"
-                                  defaultValue="Logistics Coordinator"
+                                  defaultValue=""
+                                  value={validation.values.role}
                                   disabled
                                 />
                               </div>
@@ -501,13 +498,16 @@ const Profile = () => {
                                 >
                                   Scope
                                 </Label>
-                                <select disable className="form-select mb-3">
+                                <select disabled className="form-select mb-3">
                                   <option hidden selected>
-                                    National,Global,Regional
+                                    {validation.values.scope[0]}
                                   </option>
-                                  <option value="Choices1">National</option>
-                                  <option value="Choices1">Global</option>
-                                  <option value="Choices2">Regional</option>
+                                  {user.scope &&
+                                    user.scope.map((value, index) => (
+                                      <option key={index} value={`${value}`}>
+                                        {value}
+                                      </option>
+                                    ))}
                                 </select>
                               </div>
                             </Col>
@@ -524,7 +524,7 @@ const Profile = () => {
                                   className="form-control"
                                   id="countryInput"
                                   placeholder=""
-                                  defaultValue=""
+                                  value={validation.values.country}
                                   disabled
                                 />
                               </div>
@@ -537,20 +537,23 @@ const Profile = () => {
                                 >
                                   Other Countries of Operation
                                 </Label>
-                                <select disable className="form-select mb-3">
+                                <select disabled className="form-select mb-3">
                                   <option hidden selected>
-                                    Kenya,Tanzania,Ethopia
+                                    {validation.values.otherCountries[0]}
                                   </option>
-                                  <option value="Choices1">Kenya</option>
-                                  <option value="Choices1">Tanzania</option>
-                                  <option value="Choices2">Ethopia</option>
+                                  {user.otherCountries &&
+                                    user.otherCountries.map((value, index) => (
+                                      <option key={index} value={`${value}`}>
+                                        {value}
+                                      </option>
+                                    ))}
                                 </select>
                               </div>
                             </Col>
                             <Col lg={12}>
                               <div className="hstack gap-2 justify-content-end">
                                 <button
-                                  type="button"
+                                  type="submit"
                                   className="btn btn-primary"
                                 >
                                   Update

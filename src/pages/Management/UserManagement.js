@@ -2,12 +2,10 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { isEmpty } from "lodash";
 import * as moment from "moment";
-
 // Export Modal
 import ExportCSVModal from "../../Components/Common/ExportCSVModal";
 
 // Import Images
-import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
 import avatar from "../../assets/images/avatar-6.jpg";
 
 import {
@@ -15,24 +13,13 @@ import {
   Container,
   Row,
   Card,
-  CardHeader,
   CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Label,
-  Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  ModalFooter,
   Table,
-  FormFeedback,
 } from "reactstrap";
-import Select from "react-select";
-
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import DeleteModal from "../../Components/Common/DeleteModal";
 
@@ -54,7 +41,6 @@ import { useFormik } from "formik";
 import Loader from "../../Components/Common/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Layout } from "feather-icons-react/build/IconComponents";
 import Layouts from "../../Layouts";
 import {
   deleteUserDetails,
@@ -365,17 +351,6 @@ const UsersManagement = () => {
     [toggle]
   );
 
-  // Node API
-  // useEffect(() => {
-  //   if (isContactCreated) {
-  //     setContact(null);
-  //     dispatch(onGetContacts());
-  //   }
-  // }, [
-  //   dispatch,
-  //   isContactCreated,
-  // ]);
-
   const handleValidDate = (date) => {
     const date1 = moment(new Date(date)).format("DD MMM Y");
     return date1;
@@ -518,15 +493,7 @@ const UsersManagement = () => {
       {
         Header: "Status",
         accessor: "state",
-        // Cell: (contact) => (
-        //   <>
-        //     {contact.row.original.tags.map((item, key) => (
-        //       <span className="badge badge-soft-primary me-1" key={key}>
-        //         {item}
-        //       </span>
-        //     ))}
-        //   </>
-        // ),
+
       },
       {
         Header: "Last Seen",
@@ -686,8 +653,7 @@ const UsersManagement = () => {
                         <Loader error={error} />
                       )}
                     </div>
-
-                    <Modal
+              <Modal
                       id="showModal"
                       isOpen={modal}
                       toggle={toggle}
@@ -1028,12 +994,7 @@ const UsersManagement = () => {
                   <CardBody className="text-center">
                     <div className="position-relative d-inline-block">
                       <img
-                        src={
-                          avatar
-                          // process.env.REACT_APP_API_URL +
-                          // "/images/users/" +
-                          // (info.image_src || "avatar-10.jpg")
-                        }
+                        src={avatar}
                         alt=""
                         className="avatar-lg rounded-circle img-thumbnail"
                       />

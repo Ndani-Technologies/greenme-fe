@@ -75,10 +75,9 @@ const Login = (props) => {
       email: Yup.string().required("Please Enter Your Email"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
+
     onSubmit: (values) => {
-      props.router.navigate("/Profile");
-      // dispatch(loginUser(values, props.router.navigate));
-      // dispatch(loginUserReal(props.router.navigate));
+      dispatch(loginUserReal(props.router.navigate));
     },
   });
 
@@ -88,38 +87,38 @@ const Login = (props) => {
     errorMsg: state.Login.errorMsg,
   }));
 
-  const signIn = (res, type) => {
-    if (type === "google" && res) {
-      const postData = {
-        name: res.profileObj.name,
-        email: res.profileObj.email,
-        token: res.tokenObj.access_token,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    } else if (type === "facebook" && res) {
-      const postData = {
-        name: res.name,
-        email: res.email,
-        token: res.accessToken,
-        idToken: res.tokenId,
-      };
-      dispatch(socialLogin(postData, props.history, type));
-    }
-  };
+  // const signIn = (res, type) => {
+  //   if (type === "google" && res) {
+  //     const postData = {
+  //       name: res.profileObj.name,
+  //       email: res.profileObj.email,
+  //       token: res.tokenObj.access_token,
+  //       idToken: res.tokenId,
+  //     };
+  //     dispatch(socialLogin(postData, props.history, type));
+  //   } else if (type === "facebook" && res) {
+  //     const postData = {
+  //       name: res.name,
+  //       email: res.email,
+  //       token: res.accessToken,
+  //       idToken: res.tokenId,
+  //     };
+  //     dispatch(socialLogin(postData, props.history, type));
+  //   }
+  // };
 
   //handleGoogleLoginResponse
-  const googleResponse = (response) => {
-    signIn(response, "google");
-  };
+  // const googleResponse = (response) => {
+  //   signIn(response, "google");
+  // };
 
   //handleTwitterLoginResponse
   // const twitterResponse = e => {}
 
   //handleFacebookLoginResponse
-  const facebookResponse = (response) => {
-    signIn(response, "facebook");
-  };
+  // const facebookResponse = (response) => {
+  //   signIn(response, "facebook");
+  // };
 
   useEffect(() => {
     if (errorMsg) {
@@ -130,6 +129,10 @@ const Login = (props) => {
   }, [dispatch, errorMsg]);
 
   document.title = "Basic SignIn |GreenMe";
+
+  const handleRegister = () => {
+    dispatch(registerUserReal());
+  };
 
   return (
     <React.Fragment>
@@ -245,6 +248,7 @@ const Login = (props) => {
                             style={{ width: "180px" }}
                             color="primary"
                             className="btn"
+                            onClick={handleRegister}
                           >
                             Register
                           </Button>

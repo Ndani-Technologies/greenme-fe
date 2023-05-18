@@ -98,7 +98,9 @@ File: Main Css File
 @import "../../plugins/flag-input";
 
 // Pages
+@import "../../pages/ActionUserDetail.scss";
 @import "../../pages/Banchmarkig.scss";
+@import "../../pages//UserReport.scss";
 @import "../../pages/BanchmarkSummary.scss";
 @import "../../pages/BenchmarkSummaryAdmin.scss";
 @import "../../pages/Comparison.scss";

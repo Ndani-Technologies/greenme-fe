@@ -10,8 +10,8 @@ import {
   UncontrolledDropdown,
 } from "reactstrap";
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
-import Layouts from "../../Layouts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
+import Layouts from "../../Layouts";
 const BenhmarkSummary = () => {
   return (
     <React.Fragment>
@@ -21,15 +21,18 @@ const BenhmarkSummary = () => {
             <h1>Benchmarking Summary</h1>
           </div>
           <div className="bg-white p-2 pb-0 pt-4">
-            <div className="d-flex justify-content-between">
+            <div className="d-flex justify-content-between ">
               <span>
-                <b>Benchmark title:</b> My bench mark title here
+                <b>Benchmark title:</b> My benchmark title here
               </span>
-              <div className="d-flex align-items-center gap-2">
+              <div>
                 <span>
                   <b>Country:</b> Kenya
                 </span>
-                <img style={{ height: "13px" }} src={kenya} />
+                <img
+                  style={{ marginLeft: "8px", height: "13px" }}
+                  src={kenya}
+                />
               </div>
               <span>
                 <b>Status:</b> In Progress
@@ -43,47 +46,47 @@ const BenhmarkSummary = () => {
               </span>
             </div>
             <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
-              <Col xl={7}>
+              <Col xl={7} className="mt-2">
                 <Col xl={12}>
-                  <Card>
+                  <div className="column">
                     <div className="d-flex justify-content-between align-items-center p-2">
                       <p className="m-0">Total number of questions answered</p>
                       <span>5/30</span>
                     </div>
-                  </Card>
+                  </div>
                 </Col>
                 <Col xl={12}>
-                  <Card>
+                  <div className="column">
                     <div className="d-flex justify-content-between align-items-center p-2 m-0">
                       <p className="m-0">
                         Total number of questions answered as ‘YES’
                       </p>
                       <span>10/30</span>
                     </div>
-                  </Card>
+                  </div>
                 </Col>
                 <Col xl={12}>
-                  <Card>
+                  <div className="column">
                     <div className="d-flex justify-content-between align-items-center p-2">
                       <p className="m-0">
                         Total number of questions answered as ‘NO’
                       </p>
                       <span>12/30</span>
                     </div>
-                  </Card>
+                  </div>
                 </Col>
                 <Col xl={12}>
-                  <Card>
+                  <div className="column">
                     <div className="d-flex justify-content-between align-items-center p-2 m-0">
                       <p className="m-0">
                         Total number of questions answered as ‘DON’T KNOW’
                       </p>
                       <span>8/30</span>
                     </div>
-                  </Card>
+                  </div>
                 </Col>
                 <Col xl={12}>
-                  <Card>
+                  <div className="column">
                     <div className="d-flex justify-content-between align-items-center p-2">
                       <p className="m-0">
                         Total number of questions answered as ‘WE DO NOT HAVE A
@@ -91,21 +94,21 @@ const BenhmarkSummary = () => {
                       </p>
                       <span>2/30</span>
                     </div>
-                  </Card>
+                  </div>
                 </Col>
                 <Col xl={12}>
-                  <Card>
+                  <div className="column">
                     <div className="d-flex justify-content-between align-items-center p-2 m-0">
                       <p className="m-0">
                         Total number of questions answered with a comment
                       </p>
                       <span>22/30</span>
                     </div>
-                  </Card>
+                  </div>
                 </Col>
               </Col>
               <Col xl={4}>
-                <Card className="card-height-100">
+                <Card className="card-height-100 mt-2">
                   <CardHeader className="align-items-center d-flex p-3">
                     <h4 className="card-title mb-0 flex-grow-1">View Graph</h4>
                     <div className="flex-shrink-0">
