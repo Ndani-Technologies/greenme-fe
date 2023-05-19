@@ -24,6 +24,9 @@ import {
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
+  getAllBenchmarks,
+  startBenchmark,
+  addBenchmark,
 } from "../../slices/thunks";
 
 import { isEmpty } from "lodash";
@@ -130,29 +133,41 @@ const arr = [
 ];
 const BenchmarkingDashboard = () => {
   const dispatch = useDispatch();
+  const [benchmarks, setBenchmarks] = useState([]);
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
       error: state.Crm.error,
+      // benchmarks: state.Benchmark.benchmarks
     }));
+  const getBenchmarks = () => {
+    getAllBenchmarks()
+      .then((resp) => {
+        console.log("response get all benchamrks", resp);
+        setBenchmarks(resp ?? []);
+      })
+      .catch((err) => {
+        console.log("error get all benchamrks", err);
+      });
+  };
   useEffect(() => {
-    // dispatch()
+    getBenchmarks();
   }, []);
-  useEffect(() => {
-    dispatch(onGetContacts(arr));
-  }, [dispatch, crmcontacts]);
-  useEffect(() => {
-    setContact(crmcontacts);
-  }, [crmcontacts]);
 
   useEffect(() => {
-    if (!isEmpty(crmcontacts)) {
-      setContact(crmcontacts);
+    console.log("benchmarks useeffect", benchmarks);
+
+    benchmarks.length > 0 && setContact(benchmarks);
+  }, [benchmarks]);
+
+  useEffect(() => {
+    if (!isEmpty(benchmarks)) {
+      setContact(benchmarks);
       setIsEdit(false);
     }
-  }, [crmcontacts]);
+  }, [benchmarks]);
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -314,8 +329,8 @@ const BenchmarkingDashboard = () => {
     [toggle]
   );
   const handleValidDate = (date) => {
-    const date1 = moment(new Date(date)).format("DD MMM Y");
-    return date1;
+    const date1 = moment(new Date(date)).format("YYYY MM DD");
+    return date == "" ? date : date1;
   };
 
   const handleValidTime = (time) => {
@@ -393,47 +408,41 @@ const BenchmarkingDashboard = () => {
       },
       {
         Header: "Title of Benchmark",
-        accessor: "name",
+        accessor: "title",
         filterable: false,
-        Cell: (contact) => (
-          <>
-            <div className="d-flex align-items-center">
-              <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
-                {contact.row.original.name}
-              </div>
-            </div>
-          </>
-        ),
       },
       {
         Header: "Country",
-        accessor: "lead_score",
+        accessor: "country",
         filterable: false,
       },
       {
         Header: "Status",
-        accessor: "tags",
+        accessor: "status",
       },
       {
         Header: "Completion Level",
-        accessor: "email",
+        accessor: "completion_level",
         filterable: false,
       },
       {
         Header: "Start Date",
+        accessor: "start_date",
         Cell: (contact) => (
           <>
-            {handleValidDate(contact.row.original.last_contacted)},{" "}
+            {handleValidDate(contact.row.original.start_date)}
             <small className="text-muted"></small>
           </>
         ),
       },
       {
         Header: "End Date",
+        accessor: "end_data",
         Cell: (contact) => (
           <>
-            {handleValidDate(contact.row.original.last_contacted)},{" "}
+            {handleValidDate(
+              contact.row.original.end_date ? contact.row.original.end_date : ""
+            )}
             <small className="text-muted"></small>
           </>
         ),
@@ -540,39 +549,191 @@ const BenchmarkingDashboard = () => {
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
+
+  const validation2 = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      title: "",
+      country: "",
+    },
+    validationSchema: Yup.object({
+      title: Yup.string().required("Title is required"),
+      country: Yup.string().required("Country is required"),
+    }),
+    onSubmit: async (values) => {
+      console.log("values benchmark", values);
+      let resp = await addBenchmark(values);
+      setBenchmarks([...benchmarks, resp]);
+      validation2.resetForm();
+      setmodal_grid(false);
+    },
+  });
+
   return (
     <React.Fragment>
-      <Layouts>
-        <div className="page-content overflow-auto ">
-          <div className="Main-sec mx-n4 mt-n4 w-100">
-            <h1>Benchmarking</h1>
-            <p style={{ color: "#BEC887" }}>
-              This is a page where users can take self-assessment questionnaires
-              and view their results. It will feature the ability for users to
-              save progress and return to the assessment later as well as an
-              option to skip or go back to previous questions. Also the option
-              for the user to view their score and their benchmark results
-            </p>
-          </div>
-          <Col xxl={9} className="m-auto">
-            <div
-              className="d-flex justify-content-between"
-              style={{ paddingRight: "100px" }}
-            >
-              <Col className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between w-25 p-3 bg-white shadow-lg p-3 mb-5 rounded"
-                  color="white"
-                  onClick={() => setmodal_grid(true)}
+      {/* <Layouts> */}
+      <div className="page-content overflow-auto ">
+        <div className="Main-sec mx-n4 mt-n4 w-100">
+          <h1>Benchmarking</h1>
+          <p style={{ color: "#BEC887" }}>
+            This is a page where users can take self-assessment questionnaires
+            and view their results. It will feature the ability for users to
+            save progress and return to the assessment later as well as an
+            option to skip or go back to previous questions. Also the option for
+            the user to view their score and their benchmark results
+          </p>
+        </div>
+        <Col xxl={9} className="m-auto">
+          <div
+            className="d-flex justify-content-between"
+            style={{ paddingRight: "100px" }}
+          >
+            <Col className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between w-25 p-3 bg-white shadow-lg p-3 mb-5 rounded"
+                color="white"
+                onClick={() => setmodal_grid(true)}
+              >
+                Start new Benchmark
+                <i class="ri-add-fill"></i>
+              </Button>
+              <Modal
+                className="postion-relative"
+                isOpen={modal_grid}
+                toggle={() => {
+                  tog_grid();
+                }}
+              >
+                <div
+                  className="postion-absolute top-0 start-0 translate-middle bg-white rounded-circle d-flex justify-content-center align-items-center shadow-lg bg-body rounded"
+                  style={{ width: "35px", height: "35px" }}
                 >
-                  Start new Benchmark
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <Modal
-                  className="postion-relative"
-                  isOpen={modal_grid}
-                  toggle={() => {
-                    tog_grid();
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setmodal_grid(false);
+                    }}
+                    className="btn-close color-black bg-white border border-dark rounded-circle "
+                    aria-label="close"
+                  ></Button>
+                </div>
+                <ModalHeader className="border-bottom border-dark p-4 pt-0">
+                  <h4 className="modal-title">Benchmarking</h4>
+                </ModalHeader>
+                <ModalBody>
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      validation2.handleSubmit();
+                      return false;
+                    }}
+                  >
+                    <div className="row g-3">
+                      <Col xxl={12}>
+                        <div>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter Benchmark title"
+                            name="title"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            onChange={validation2.handleChange}
+                            onBlur={validation2.handleBlur}
+                            value={validation2.values.title || ""}
+                            invalid={
+                              validation2.touched.title &&
+                              validation2.errors.title
+                                ? true
+                                : false
+                            }
+                          />
+                          {validation2.touched.title &&
+                          validation2.errors.title ? (
+                            <FormFeedback type="invalid">
+                              {validation2.errors.title}
+                            </FormFeedback>
+                          ) : null}
+                        </div>
+                      </Col>
+                      <Col>
+                        <select
+                          lg={12}
+                          className="form-select mb-3"
+                          name="country"
+                          onChange={validation2.handleChange}
+                          onBlur={validation2.handleBlur}
+                          value={validation2.values.country || ""}
+                          invalid={
+                            validation2.touched.country &&
+                            Boolean(validation2.errors.country)
+                          }
+                        >
+                          <option>Select Duty Station Country</option>
+                          <option value="kenya">Kenya</option>
+                          <option value="uk">United Kingdom</option>
+                        </select>
+                        {validation2.touched.country &&
+                        validation2.errors.country ? (
+                          <FormFeedback type="invalid">
+                            {validation2.errors.country}
+                          </FormFeedback>
+                        ) : null}
+                      </Col>
+                      <div className="col-lg-12">
+                        <div className="hstack gap-2 justify-content-start">
+                          <Button type="submit" color="primary">
+                            Start Benchmark
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </ModalBody>
+              </Modal>
+            </Col>
+            <div className="pt-2 d-flex gap-3">
+              <i class="ri-share-line"></i>
+              <i class="ri-flag-line"></i>
+            </div>
+          </div>
+          <Card id="contactList">
+            <CardBody className="pt-0">
+              <div>
+                {console.log("benchmar", benchmarks)}
+                {!!benchmarks.length > 0 ? (
+                  <TableContainer
+                    columns={columns}
+                    data={benchmarks || []}
+                    isGlobalFilter={true}
+                    isAddUserList={false}
+                    isFilterA={true}
+                    isFooter={true}
+                    customPageSize={8}
+                    className="custom-header-css"
+                    divClass="table-responsive table-card mb-0"
+                    tableClass="align-middle table-nowrap"
+                    theadClass="table-light"
+                    handleContactClick={handleContactClicks}
+                    isSearchInput={true}
+                    SearchPlaceholder="Search for contact..."
+                  />
+                ) : (
+                  <Loader error={error} />
+                )}
+              </div>
+              <Modal id="showModal" isOpen={modal} toggle={toggle} centered>
+                <ModalHeader className="bg-soft-info p-3" toggle={toggle}>
+                  {!!isEdit ? "Edit Contact" : "Add Contact"}
+                </ModalHeader>
+
+                <Form
+                  className="tablelist-form"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    validation.handleSubmit();
+                    return false;
                   }}
                 >
                   <div

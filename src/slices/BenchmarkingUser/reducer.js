@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { addBenchmark } from "./thunk";
 
 export const initialState = {
   benchmarks: "",
@@ -8,7 +9,7 @@ export const initialState = {
 };
 
 const benchmarkSlice = createSlice({
-  name: "login",
+  name: "benchmark",
   initialState,
   reducers: {
     apiError(state, action) {
@@ -22,6 +23,22 @@ const benchmarkSlice = createSlice({
       state.errorMsg = false;
     },
   },
+  // extraReducers: (builder) => {
+
+  //   builder.addCase(addBenchmark.fulfilled, (state, action) => {
+  //     state.benchmarks.push(action.payload);
+  //     state.isBenchmarkCreated = false;
+  //     state.isBenchmarkSuccess = true;
+  //   });
+
+  //   builder.addCase(addBenchmark.rejected, (state, action) => {
+  //     console.log("action", action.payload)
+  //     state.error = action.payload.error || null;
+  //     state.isBenchmarkCreated = false;
+  //     state.isBenchmarkSuccess = false;
+  //   });
+
+  // },
 });
 
 export const { benchmarkSuccess, apiError } = benchmarkSlice.actions;

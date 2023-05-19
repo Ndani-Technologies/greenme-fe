@@ -1,4 +1,5 @@
-module.exports = {
+import env from "react-dotenv";
+const ob = {
   google: {
     API_KEY: "",
     CLIENT_ID: "",
@@ -8,6 +9,9 @@ module.exports = {
     APP_ID: "",
   },
   api: {
-    API_URL: "https://api-node.themesbrand.website",
+    // USER_URL: env.USER_URL || "",
+    // BENCHMARKING_URL: env.BENCHMARK_BASE_URL || ""
   },
 };
+
+export default ob;

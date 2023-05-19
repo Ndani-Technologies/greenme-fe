@@ -72,7 +72,11 @@ import JobReducer from "./jobs/reducer";
 // API Key
 import APIKeyReducer from "./apiKey/reducer";
 
+//Benchmark
+import BenchmarkReducer from "./BenchmarkingUser/reducer";
+
 const rootReducer = combineReducers({
+  Benchmark: BenchmarkReducer,
   Layout: LayoutReducer,
   Login: LoginReducer,
   Account: AccountReducer,

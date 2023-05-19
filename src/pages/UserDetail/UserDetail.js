@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -17,6 +17,8 @@ import {
   TabPane,
 } from "reactstrap";
 import classnames from "classnames";
+import countryList from "react-select-country-list";
+import Flatpickr from "react-flatpickr";
 
 //import images
 import progileBg from "../../../src/assets/images/profile-bg.jpg";
@@ -26,10 +28,22 @@ import { Icon } from "leaflet";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { updateUser } from "../../slices/thunks";
+import * as Countries from "./Countries";
+import {
+  Box,
+  Chip,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  useTheme,
+} from "@mui/material";
+import { Padding } from "@mui/icons-material";
 
 const Profile = () => {
   document.title = "Profile | GreenMe";
   const [rightColumn, setRightColumn] = useState(true);
+  const theme = useTheme();
+  const [countryName, setCountryName] = React.useState([]);
   const toggleRightColumn = () => {
     setRightColumn(!rightColumn);
   };
@@ -61,13 +75,51 @@ const Profile = () => {
     //   otherCountries: Yup.string().required("Please Enter Your Password"),
     // }),
     onSubmit: (values) => {
-      console.log("in user handle submit", values);
-      dispatch(updateUser(user._id, values));
+      const mappedData = {
+        otherCountries: countryName && countryName,
+        ...values,
+      };
+      console.log("in user handle submit", mappedData, values, countryName);
+      updateUser(user._id, mappedData);
       // dispatch(loginUser(values, props.router.navigate));
       // dispatch(loginUserReal(props.router.navigate));
     },
   });
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
+  function getStyles(name, countryName, theme) {
+    return {
+      fontWeight:
+        countryName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setCountryName(
+      // On autofill we get a stringified value.
+      typeof value === "string" ? value.split(",") : value,
+      () => {
+        validation.setFieldValue(
+          "otherCountries",
+          countryName.map((country) => country)
+        );
+      }
+    );
+  };
   return (
     <React.Fragment>
       <Layouts>
@@ -215,13 +267,17 @@ const Profile = () => {
                         </h5>
                       </div>
                     </div>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col xxl={9}>
-                <div className="mt-xxl-n5 card">
-                  <div className="d-flex">
-                    <div className="d-flex justify-content-between w-25 border-end custom-padding">
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+            <Col xxl={9}>
+              <div className="mt-xxl-n5 card">
+                <div className="d-flex">
+                  <div className="d-flex justify-content-between w-25 border-end custom-padding">
+                    <div>
+                      <span className="fs-7">BENCHMARKING</span>
+
                       <div>
                         <span className="fs-7">BENCHMARKING</span>
                         <div>
@@ -283,292 +339,310 @@ const Profile = () => {
                     </div>
                   </div>
                 </div>
-                <Card className="mt-xxl-n2">
-                  <CardHeader>
-                    <Nav
-                      className="nav-tabs-custom rounded card-header-tabs border-bottom-0 d-flex justify-content-between"
-                      role="tablist"
-                    >
-                      <NavItem>
-                        <NavLink
-                          to="#"
-                          className={classnames({ active: activeTab === "1" })}
-                          onClick={() => {
-                            tabChange("1");
-                          }}
-                        >
-                          Personal Details
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          to="#"
-                          // className={classnames({ active: activeTab === "2" })}
-                          // onClick={() => {
-                          //     tabChange("2");
-                          // }}
-                          type="button"
-                        >
-                          Benchmarking
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          to="#"
-                          // className={classnames({ active: activeTab === "3" })}
-                          // onClick={() => {
-                          //     tabChange("3");
-                          // }}
-                          type="button"
-                        >
-                          Recommended Actions
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          to="#"
-                          // className={classnames({ active: activeTab === "3" })}
-                          // onClick={() => {
-                          //     tabChange("3");
-                          // }}
-                          type="button"
-                        >
-                          Discussions
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          to="#"
-                          // className={classnames({ active: activeTab === "3" })}
-                          // onClick={() => {
-                          //     tabChange("3");
-                          // }}
-                          type="button"
-                        >
-                          Collaborations
-                        </NavLink>
-                      </NavItem>
-                      <NavItem>
-                        <NavLink
-                          to="#"
-                          // className={classnames({ active: activeTab === "3" })}
-                          // onClick={() => {
-                          //     tabChange("3");
-                          // }}
-                          type="button"
-                        >
-                          Leaderboard
-                        </NavLink>
-                      </NavItem>
-                    </Nav>
-                  </CardHeader>
-                  <CardBody className="p-4">
-                    <TabContent activeTab={activeTab}>
-                      <TabPane tabId="1">
-                        <Form
-                          onSubmit={(e) => {
-                            e.preventDefault();
-                            validation.handleSubmit();
-                            return false;
-                          }}
-                        >
-                          <Row>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="firstnameInput"
-                                  className="form-label"
-                                >
-                                  First Name
-                                </Label>
-                                <Input
-                                  type="text"
-                                  className="form-control"
-                                  id="firstnameInput"
-                                  placeholder="Enter your firstname"
-                                  defaultValue="Dave"
-                                  value={validation.values.firstName}
-                                  disabled
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="lastnameInput"
-                                  className="form-label"
-                                >
-                                  Last Name
-                                </Label>
-                                <Input
-                                  type="text"
-                                  className="form-control"
-                                  value={validation.values.lastName}
-                                  id="lastnameInput"
-                                  placeholder="Enter your lastname"
-                                  defaultValue="Adame"
-                                  disabled
-                                />
-                              </div>
-                            </Col>
-                            {/* <Col lg={6}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="phonenumberInput" className="form-label">Phone
-                                                                Number</Label>
-                                                            <Input type="text" className="form-control"
-                                                                id="phonenumberInput"
-                                                                placeholder="Enter your phone number"
-                                                                defaultValue="+(1) 987 6543" />
-                                                        </div>
-                                                    </Col> */}
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="emailInput"
-                                  className="form-label"
-                                >
-                                  Email Address
-                                </Label>
-                                <Input
-                                  type="email"
-                                  value={validation.values.email}
-                                  className="form-control"
-                                  id="emailInput"
-                                  placeholder="Enter your email"
-                                  defaultValue="daveadame@velzon.com"
-                                  disabled
-                                />
-                              </div>
-                            </Col>
+              </div>
+              <Card className="mt-xxl-n2">
+                <CardHeader>
+                  <Nav
+                    className="nav-tabs-custom rounded card-header-tabs border-bottom-0 d-flex justify-content-between"
+                    role="tablist"
+                  >
+                    <NavItem>
+                      <NavLink
+                        to="#"
+                        className={classnames({ active: activeTab === "1" })}
+                        onClick={() => {
+                          tabChange("1");
+                        }}
+                      >
+                        Personal Details
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        to="#"
+                        // className={classnames({ active: activeTab === "2" })}
+                        // onClick={() => {
+                        //     tabChange("2");
+                        // }}
+                        type="button"
+                      >
+                        Benchmarking
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        to="#"
+                        // className={classnames({ active: activeTab === "3" })}
+                        // onClick={() => {
+                        //     tabChange("3");
+                        // }}
+                        type="button"
+                      >
+                        Recommended Actions
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        to="#"
+                        // className={classnames({ active: activeTab === "3" })}
+                        // onClick={() => {
+                        //     tabChange("3");
+                        // }}
+                        type="button"
+                      >
+                        Discussions
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        to="#"
+                        // className={classnames({ active: activeTab === "3" })}
+                        // onClick={() => {
+                        //     tabChange("3");
+                        // }}
+                        type="button"
+                      >
+                        Collaborations
+                      </NavLink>
+                    </NavItem>
+                    <NavItem>
+                      <NavLink
+                        to="#"
+                        // className={classnames({ active: activeTab === "3" })}
+                        // onClick={() => {
+                        //     tabChange("3");
+                        // }}
+                        type="button"
+                      >
+                        Leaderboard
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                </CardHeader>
+                <CardBody className="p-4">
+                  <TabContent activeTab={activeTab}>
+                    <TabPane tabId="1">
+                      <Form
+                        onSubmit={(e) => {
+                          e.preventDefault();
+                          validation.handleSubmit();
+                          return false;
+                        }}
+                      >
+                        <Row>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="firstnameInput"
+                                className="form-label"
+                              >
+                                First Name
+                              </Label>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                id="firstnameInput"
+                                placeholder="Enter your firstname"
+                                defaultValue="Dave"
+                                value={validation.values.firstName}
+                                disabled
+                              />
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="lastnameInput"
+                                className="form-label"
+                              >
+                                Last Name
+                              </Label>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                value={validation.values.lastName}
+                                id="lastnameInput"
+                                placeholder="Enter your lastname"
+                                defaultValue="Adame"
+                                disabled
+                              />
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="emailInput"
+                                className="form-label"
+                              >
+                                Email Address
+                              </Label>
+                              <Input
+                                type="email"
+                                value={validation.values.email}
+                                className="form-control"
+                                id="emailInput"
+                                placeholder="Enter your email"
+                                defaultValue="daveadame@velzon.com"
+                                disabled
+                              />
+                            </div>
+                          </Col>
 
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="Orgnaization"
-                                  className="form-label"
-                                >
-                                  Orgnaization
-                                </Label>
-                                <Input
-                                  value={validation.values.organization}
-                                  type="Orgnaization"
-                                  className="form-control"
-                                  id="Orgnaization"
-                                  placeholder="FleetMGT Co. X"
-                                  disabled
-                                />
-                              </div>
-                            </Col>
-                            {/* <Col lg={12}>
-                                                        <div className="mb-3">
-                                                            <Label htmlFor="JoiningdatInput" className="form-label">Joining
-                                                                Date</Label>
-                                                            <Flatpickr
-                                                                className="form-control"
-                                                                options={{
-                                                                    dateFormat: "d M, Y"
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </Col> */}
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="skillsInput"
-                                  className="form-label"
-                                >
-                                  Role
-                                </Label>
-                                <Input
-                                  type="text"
-                                  className="form-control"
-                                  id="countryInput"
-                                  placeholder="Logistics Coordinator"
-                                  defaultValue=""
-                                  value={validation.values.role}
-                                  disabled
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="skillsInput"
-                                  className="form-label"
-                                >
-                                  Scope
-                                </Label>
-                                <select disabled className="form-select mb-3">
-                                  <option hidden selected>
-                                    {validation.values.scope[0]}
-                                  </option>
-                                  {user.scope &&
-                                    user.scope.map((value, index) => (
-                                      <option key={index} value={`${value}`}>
-                                        {value}
-                                      </option>
-                                    ))}
-                                </select>
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="countryInput"
-                                  className="form-label"
-                                >
-                                  Duty Station Country
-                                </Label>
-                                <Input
-                                  type="text"
-                                  className="form-control"
-                                  id="countryInput"
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="Orgnaization"
+                                className="form-label"
+                              >
+                                Orgnaization
+                              </Label>
+                              <Input
+                                value={validation.values.organization}
+                                type="Orgnaization"
+                                className="form-control"
+                                id="Orgnaization"
+                                placeholder="FleetMGT Co. X"
+                                disabled
+                              />
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="skillsInput"
+                                className="form-label"
+                              >
+                                Role
+                              </Label>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                id="countryInput"
+                                placeholder="Logistics Coordinator"
+                                defaultValue=""
+                                value={validation.values.role.title}
+                                disabled
+                              />
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="skillsInput"
+                                className="form-label"
+                              >
+                                Scope
+                              </Label>
+                              <select disabled className="form-select mb-3">
+                                <option hidden selected>
+                                  {validation.values.scope[0]}
+                                </option>
+                                {user.scope &&
+                                  user.scope.map((value, index) => (
+                                    <option key={index} value={`${value}`}>
+                                      {value}
+                                    </option>
+                                  ))}
+                              </select>
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="countryInput"
+                                className="form-label"
+                              >
+                                Duty Station Country
+                              </Label>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                id="countryInput"
+                                placeholder=""
+                                value={validation.values.country}
+                                disabled
+                              />
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div className="mb-3">
+                              <Label
+                                htmlFor="skillsInput"
+                                className="form-label"
+                              >
+                                Other Countries of Operation
+                              </Label>
+                              <Col lg={12}>
+                                <Select
+                                  sx={{ width: "100%" }}
                                   placeholder=""
-                                  value={validation.values.country}
-                                  disabled
-                                />
-                              </div>
-                            </Col>
-                            <Col lg={6}>
-                              <div className="mb-3">
-                                <Label
-                                  htmlFor="skillsInput"
-                                  className="form-label"
+                                  style={{ Padding: "1px" }}
+                                  labelId="demo-multiple-chip-label"
+                                  id="demo-multiple-chip"
+                                  multiple
+                                  value={countryName}
+                                  onChange={handleChange}
+                                  onBlur={() => {
+                                    validation.setFieldValue(
+                                      "otherCountries",
+                                      countryName.map((i) => countryName[i])
+                                    );
+                                  }}
+                                  input={
+                                    <OutlinedInput
+                                      id="select-multiple-chip"
+                                      label="Chip"
+                                    />
+                                  }
+                                  renderValue={(selected) => (
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 0.5,
+                                      }}
+                                    >
+                                      {selected.map((value) => (
+                                        <Chip key={value} label={value} />
+                                      ))}
+                                    </Box>
+                                  )}
+                                  MenuProps={MenuProps}
                                 >
-                                  Other Countries of Operation
-                                </Label>
-                                <select disabled className="form-select mb-3">
-                                  <option hidden selected>
-                                    {validation.values.otherCountries[0]}
-                                  </option>
-                                  {user.otherCountries &&
-                                    user.otherCountries.map((value, index) => (
-                                      <option key={index} value={`${value}`}>
-                                        {value}
-                                      </option>
-                                    ))}
-                                </select>
-                              </div>
-                            </Col>
-                            <Col lg={12}>
-                              <div className="hstack gap-2 justify-content-end">
-                                <button
-                                  type="submit"
-                                  className="btn btn-primary"
-                                >
-                                  Update
-                                </button>
-                                <button
-                                  type="button"
-                                  className="btn btn-soft-info $primary"
-                                >
-                                  Cancel
-                                </button>
-                              </div>
-                            </Col>
-                          </Row>
-                        </Form>
-                      </TabPane>
+                                  {Countries.map((value, index) => (
+                                    <MenuItem
+                                      key={index}
+                                      value={value.name}
+                                      style={getStyles(
+                                        value.name,
+                                        countryName,
+                                        theme
+                                      )}
+                                    >
+                                      {value.name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                              </Col>
+                            </div>
+                          </Col>
+                          <Col lg={12}>
+                            <div className="hstack gap-2 justify-content-end">
+                              <button type="submit" className="btn btn-primary">
+                                Update
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-soft-info $primary"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Form>
+                    </TabPane>
+
 
                       <TabPane tabId="2">
                         <Form>

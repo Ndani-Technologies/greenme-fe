@@ -30,6 +30,7 @@ export const loginUserReal = (history) => async (dispatch) => {
       "width=500,height=500"
     );
     const messagePromise = new Promise((resolve, reject) => {
+      console.log("event1");
       window.addEventListener("message", (event) => {
         console.log("event", event);
 
@@ -103,17 +104,11 @@ export const registerUserReal = (history) => async (dispatch) => {
     console.error(error);
   }
 };
-export const updateUser = (userId, user) => async (dispatch, getState) => {
+export const updateUser = async (userId, user) => {
   try {
-    // Open a popup window to initiate the SSO process
     let resp = await axios.patch(env.USER_URL + `user/${userId}`, user);
-
-    console.log("resp", resp);
-    if (resp.success) {
-      const { data } = resp;
-      console.log("user updated", data);
-      // const currentState = getState().Login.user
-    }
+    console.log("update user resp", resp);
+    return resp;
   } catch (error) {
     console.error(error);
   }
@@ -124,7 +119,10 @@ export const logoutUser = () => async (dispatch) => {
     sessionStorage.removeItem("authUser");
 
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      const response = fireBaseBackend.logout;
+      let response = await axios.get(
+        "http://localhost:5000/api/v1/user/logout"
+      );
+      // const response = fireBaseBackend.logout;
       dispatch(logoutUserSuccess(response));
     } else {
       dispatch(logoutUserSuccess(true));

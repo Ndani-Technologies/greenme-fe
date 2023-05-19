@@ -60,12 +60,7 @@ function GlobalFilter({
         <form>
           <Row className="g-3">
             <Col className="d-flex align-items-center justify-content-between w-100">
-              {console.log(
-                "searchInput",
-                isSearchInput,
-                !isSearchInput,
-                !isSearchInput || isSearchInput == undefined ? "hi" : "no"
-              )}
+
               {true && (
                 <div
                   className={

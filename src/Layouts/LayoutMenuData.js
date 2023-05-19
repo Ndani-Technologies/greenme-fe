@@ -362,8 +362,8 @@ const Navdata = () => {
   ];
   return (
     <React.Fragment>
-      {/* {user?.role?.title == "admin" ? menuItemsAdmin : menuItems} */}
-      {menuItems}
+      {user?.role?.title == "admin" ? menuItemsAdmin : menuItems}
+
     </React.Fragment>
   );
 };
