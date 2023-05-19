@@ -66,6 +66,37 @@ const authProtectedRoutes = [
     component: <Navigate to="/dashboard" />,
   },
   { path: "*", component: <Navigate to="/dashboard" /> },
+  { path: "/Profile", component: <Profile /> },
+  { path: "/UsersManagement", component: <UsersManagement /> },
+  //benchmarking user
+  { path: "/benchmarking", component: <BenchmarkingDashboard /> },
+  { path: `/benchmarking/:id`, component: <Benchmarking /> },
+  { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
+  //benchmarking admin
+  { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
+  {
+    path: `/adminbenchmarking/summary/:id`,
+    component: <BenchmarkSummaryAdmin />,
+  },
+  {
+    path: `/adminbenchmarking/questions/summary/:id`,
+    component: <BenchmarkSummaryAdmin />,
+  },
+  { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
+  { path: "/adminbenchmarking/compare", component: <Comparison /> },
+  { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
+
+  //User Recomendations pages
+  { path: "/userreport", component: <UserReport /> },
+  { path: "/usersummary", component: <ActionUserSummary /> },
+  { path: "/actionuserdetail", component: <ActionUserDetail /> },
+  //Admin Recomendations pages
+  { path: "/adminreport", component: <AdminReport /> },
+  ,
+  { path: "/adminsummary", component: <ActionAdminSummary /> },
+  { path: "/actioncomparison", component: <ActionComparison /> },
+  { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
+  { path: "/AdminRelationship", component: <AdminRelation /> },
 ];
 
 const publicRoutes = [
@@ -98,37 +129,6 @@ const publicRoutes = [
   { path: "/auth-pass-change-basic", component: <BasicPasswCreate /> },
   { path: "/auth-pass-change-cover", component: <CoverPasswCreate /> },
   { path: "/auth-offline", component: <Offlinepage /> },
-  { path: "/Profile", component: <Profile /> },
-  { path: "/UsersManagement", component: <UsersManagement /> },
-  //benchmarking user
-  { path: "/benchmarking", component: <BenchmarkingDashboard /> },
-  { path: `/benchmarking/:id`, component: <Benchmarking /> },
-  { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
-  //benchmarking admin
-  { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
-  {
-    path: `/adminbenchmarking/summary/:id`,
-    component: <BenchmarkSummaryAdmin />,
-  },
-  {
-    path: `/adminbenchmarking/questions/summary/:id`,
-    component: <BenchmarkSummaryAdmin />,
-  },
-  { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
-  { path: "/adminbenchmarking/compare", component: <Comparison /> },
-  { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
-
-  //User Recomendations pages
-  { path: "/userreport", component: <UserReport /> },
-  { path: "/usersummary", component: <ActionUserSummary /> },
-  { path: "/actionuserdetail", component: <ActionUserDetail /> },
-  //Admin Recomendations pages
-  { path: "/adminreport", component: <AdminReport /> },
-  ,
-  { path: "/adminsummary", component: <ActionAdminSummary /> },
-  { path: "/actioncomparison", component: <ActionComparison /> },
-  { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
-  { path: "/AdminRelationship", component: <AdminRelation /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

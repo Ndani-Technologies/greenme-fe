@@ -52,7 +52,7 @@ import { languages } from "prismjs";
 import { lineHeight } from "@mui/system";
 import { Checkbox, TextField } from "@mui/material";
 import { Link } from "feather-icons-react/build/IconComponents";
-
+import { ToastContainer } from "react-toastify";
 
 const BenchmarkingQA = () => {
   // const [isGrey, setIsGrey] = useState(false);
@@ -662,7 +662,6 @@ const BenchmarkingQA = () => {
 
   const [deleteId, setDeleteId] = useState(null);
 
-
   const cancelDelete = () => {
     setDeleteConfirmation(false);
     setDeleteId(null);
@@ -1002,7 +1001,6 @@ const BenchmarkingQA = () => {
                                   />
                                   {value.answerOption}
                                 </div>
-
 
                                 {value.includeExplanation && (
                                   <div className="form-check form-switch form-switch-right form-switch-md ">
@@ -1560,7 +1558,7 @@ const BenchmarkingQA = () => {
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
-                {qa.length > 0 ? (
+                {qa?.length > 0 ? (
                   <TableContainer
                     columns={columns}
                     data={qa || []}
@@ -1587,7 +1585,6 @@ const BenchmarkingQA = () => {
         </Col>
       </div>
       {/* </Layouts> */}
-
     </React.Fragment>
   );
 };
