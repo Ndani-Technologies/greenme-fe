@@ -1,6 +1,9 @@
 // Front
 export * from "./layouts/thunk";
 
+//my thunks
+export * from "./usermanagement/thunk";
+
 // Authentication
 export * from "./auth/login/thunk";
 export * from "./auth/register/thunk";

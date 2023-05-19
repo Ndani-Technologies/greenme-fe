@@ -1,5 +1,8 @@
 import { combineReducers } from "redux";
 
+//my reducers
+import userDetailReducer from "./usermanagement/reducer";
+
 // Front
 import LayoutReducer from "./layouts/reducer";
 
@@ -100,6 +103,7 @@ const rootReducer = combineReducers({
   Todos: TodosReducer,
   Jobs: JobReducer,
   APIKey: APIKeyReducer,
+  UserDetail: userDetailReducer,
 });
 
 export default rootReducer;
