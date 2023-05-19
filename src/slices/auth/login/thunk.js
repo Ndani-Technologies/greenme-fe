@@ -24,13 +24,11 @@ export const loginUserReal = (history) => async (dispatch) => {
     // Open a popup window to initiate the SSO process
 
     const popup = window.open(
-
       env.USER_URL + "user/login",
       "",
       "width=500,height=500"
     );
     const messagePromise = new Promise((resolve, reject) => {
-      console.log("event1");
       window.addEventListener("message", (event) => {
         console.log("event", event);
 
