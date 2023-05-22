@@ -49,12 +49,13 @@ const BenhmarkSummary = () => {
               <b>Status:</b> {summary && summary?.status}
             </span>
             <span>
-              <b>Start date:</b> {summary && summary?.start_date}
+              <b>Start date:</b> {summary && summary?.startDate}
             </span>
             <span>
               {" "}
               <span className="fw-light">End date:</span>{" "}
-              {summary && summary?.end_date}
+              {summary && summary?.endDate}
+
             </span>
           </div>
           <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
