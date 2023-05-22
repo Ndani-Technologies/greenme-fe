@@ -7,7 +7,7 @@ window.env = {
     "https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking",
   CATEGORY_URL: "https://backend.greenme.fleetforum.org/api/v1/bench/category",
   CHROME_CRASHPAD_PIPE_NAME:
-    "\\\\.\\pipe\\LOCAL\\crashpad_12144_LFYBFKUMQEWVJUUT",
+    "\\\\.\\pipe\\LOCAL\\crashpad_12324_GEBYZWVHQEOZADWK",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
@@ -292,7 +292,7 @@ window.env = {
   npm_package_devDependencies__types_lodash: "^4.14.170",
   npm_package_devDependencies__types_react_bootstrap_table2_paginator: "^2.1.1",
   npm_package_devDependencies__types_react_bootstrap_table2_toolkit: "^2.1.4",
-  npm_package_gitHead: "860cf3878433b985c17b636e86fe314c129f8385",
+  npm_package_gitHead: "fab75e138570edde4b01499a822f7aecea28374f",
   npm_package_lint_staged____js_jsx_ts_tsx_json_css_scss_md_:
     "prettier --write",
   npm_package_name: "greenme-frontend",
