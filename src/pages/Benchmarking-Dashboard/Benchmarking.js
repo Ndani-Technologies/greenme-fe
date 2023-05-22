@@ -21,6 +21,7 @@ import {
   Table,
   FormFeedback,
   Button,
+  Toast,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -30,6 +31,7 @@ import {
   getAllBenchmarks,
   startBenchmark,
   addBenchmark,
+  deleteBenchmark,
 } from "../../slices/thunks";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { TooltipModalExample } from "../BaseUi/UiModals/UiModalCode";
@@ -519,6 +521,17 @@ const BenchmarkingDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         onClickDelete(contactData);
+                        deleteBenchmark(cellProps.row.original._id)
+                          .then(() => {
+                            setBenchmarks((prev) =>
+                              prev.filter(
+                                (value) =>
+                                  value._id !== cellProps.row.original._id
+                              )
+                            );
+                            Toast("Benchmark is deleted");
+                          })
+                          .catch(() => Toast("Error in Benchmark deletion."));
                       }}
                     >
                       Delete
@@ -562,7 +575,7 @@ const BenchmarkingDashboard = () => {
     enableReinitialize: true,
     initialValues: {
       title: "",
-      country: "",
+      country: "uk",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
@@ -665,7 +678,7 @@ const BenchmarkingDashboard = () => {
                           ) : null}
                         </div>
                       </Col>
-                      <Col>
+                      {/* <Col>
                         <select
                           lg={12}
                           className="form-select mb-3"
@@ -688,7 +701,7 @@ const BenchmarkingDashboard = () => {
                             {validation2.errors.country}
                           </FormFeedback>
                         ) : null}
-                      </Col>
+                      </Col> */}
                       <div className="col-lg-12">
                         <div className="hstack gap-2 justify-content-start">
                           <Button type="submit" color="primary">

@@ -19,118 +19,25 @@ import Layouts from "../../Layouts";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getSingleBenchmark, updateUserResp } from "../../slices/thunks";
-
-const column = [
-  {
-    id: 1,
-    Title: "Question 1.",
-    Question: "Does your organisation have environmental commitments?",
-    Info: "Information point: Environmental commitment depicts the methods, tasks, principles, and standards implemented by a business to minimise its negative impacts on the natural environment (Colwell and Joshi, 2013)",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 4,
-    Title: "Question 4.",
-    Question:
-      "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
-    btnArray: ["Yes", "No", "  WE DON’T HAVE A POLICY", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 2,
-    Title: "Question 2.",
-    Question: "Does your organisation have have a ‘green’ strategy?",
-    Info: "Information point: By Green strategy, carbon reduction strategy, environmental roadmap/action plan…we mean a stream of actions adopted by your organization to realize green indicators and actions of environmental footprint reduction.",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 5,
-    Title: "Question 5.",
-    Question:
-      "Do you have standardised fleet procurement (global framework agreement…)??",
-    Info: "Define: standardised",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 3,
-    Title: "Question 3.",
-    Question:
-      "Does your fleet policy contain references to a green strategy or environmental sustainability? For example, how to reduce emissions or waste?",
-    btnArray: ["Yes", "No", "WE DON’T HAVE A POLICY", "Don't Know"],
-    description: false,
-  },
-
-  {
-    id: 6,
-    Title: "Question 6.",
-    Question: "Do you use sustainability criteria to assess/ select suppliers?",
-    Info: "(ex: rental car providers, garage waste management, engine technology…)Information point: Define sustainability criteria",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 7,
-    Title: "Question 7.",
-    Question: "Does your organisation have environmental commitments?",
-    Info: "Information point: Environmental commitment depicts the methods, tasks, principles, and standards implemented by a business to minimise its negative impacts on the natural environment (Colwell and Joshi, 2013)",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 8,
-    Title: "Question 8.",
-    Question:
-      "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
-    btnArray: ["Yes", "No", "  WE DON’T HAVE A POLICY", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 9,
-    Title: "Question 9.",
-    Question: "Does your organisation have have a ‘green’ strategy?",
-    Info: "Information point: By Green strategy, carbon reduction strategy, environmental roadmap/action plan…we mean a stream of actions adopted by your organization to realize green indicators and actions of environmental footprint reduction.",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 10,
-    Title: "Question 10.",
-    Question:
-      "Do you have standardised fleet procurement (global framework agreement…)??",
-    Info: "Define: standardised",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-  {
-    id: 11,
-    Title: "Question 11.",
-    Question:
-      "Does your fleet policy contain references to a green strategy or environmental sustainability? For example, how to reduce emissions or waste?",
-    btnArray: ["Yes", "No", "WE DON’T HAVE A POLICY", "Don't Know"],
-    description: false,
-  },
-
-  {
-    id: 12,
-    Title: "Question 12.",
-    Question: "Do you use sustainability criteria to assess/ select suppliers?",
-    Info: "(ex: rental car providers, garage waste management, engine technology…)Information point: Define sustainability criteria",
-    btnArray: ["Yes", "No", "Don't Know"],
-    description: false,
-  },
-];
+import { BottomNavigation } from "@mui/material";
 
 const Benchmarking = () => {
   let params = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [benchmark, setBenchmark] = useState(null);
+  const [category, setCategory] = useState([]);
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
+    const arr = [];
+    bench.questionnaire.forEach((element) => {
+      arr.push(element.category);
+    });
+    const uniqueArr = Array.from(new Set(arr.map((item) => item.titleEng))).map(
+      (titleEng) => arr.find((item) => item.titleEng === titleEng)
+    );
+    setCategory(uniqueArr);
   };
   useEffect(() => {
     callApi();
@@ -139,7 +46,6 @@ const Benchmarking = () => {
   const [justifyPillsTab, setjustifyPillsTab] = useState("1");
   const [currentPage, setCurrentPage] = useState(1);
   const numPages = 6; // total number of pages
-  const [col, setCol] = useState(column);
 
   const justifyPillsToggle = (tab) => {
     if (justifyPillsTab !== tab) {
@@ -175,53 +81,179 @@ const Benchmarking = () => {
     console.log("mapdata user resp", mapData);
     // Your other logic here
   };
+
+  // const renderedQuestions = benchmark?.questionnaire
+  // .slice((currentPage - 1) * numPages, currentPage * numPages)
+  // .map((item, index) => {
+  //   const activeButtonIndex = activeIndexes[index];
+
+  //   // Find the user response for the current question
+  //   const userResponse = benchmark.user_resp.find(
+  //     (resp) => resp.questionId === item._id
+  //   );
+
+  //   // Get the index of the selected option
+  //   const selectedOptionIndex = item.answerOptions.findIndex(
+  //     (option) => option._id === userResponse?.selectedOption
+  //   );
+
+  //   return (
+  //     <div className="row w-50" key={index}>
+  //       <h5>Question {item.index}</h5>
+  //       <p className="w-75 fs-5">{item.title}</p>
+  //       <p>{item.description}</p>
+  //       {item.answerOptions &&
+  //         item.answerOptions.map((btn, btnIndex) => (
+  //           <>
+  //             {btn.includeExplanation && activeButtonIndex === btnIndex && (
+  //               <textarea
+  //                 type="text"
+  //                 className="w-75 p-2"
+  //                 rows={3}
+  //                 key={btnIndex}
+  //                 placeholder="Comments"
+  //                 onChange={handleExplanationChange}
+  //               />
+  //             )}
+  //           </>
+  //         ))}
+  //       <div className="d-flex mt-4">
+  //         {item.answerOptions &&
+  //           item.answerOptions.map((btn, btnIndex) => (
+  //             <div className="buttons-container" key={btnIndex}>
+  //               <button
+  //                 className={`button ${
+  //                   selectedOptionIndex === btnIndex ? "active" : ""
+  //                 }`}
+  //                 onClick={() =>
+  //                   handleButtonClick(
+  //                     (currentPage - 1) * numPages + index,
+  //                     btnIndex,
+  //                     btn.answerOption,
+  //                     item._id,
+  //                     btn._id
+  //                   )
+  //                 }
+  //               >
+  //                 {btn.answerOption}
+  //               </button>
+  //             </div>
+  //           ))}
+  //       </div>
+  //     </div>
+  //   );
+  // });
+
+  /* working code */
   const renderedQuestions = benchmark?.questionnaire
     .slice((currentPage - 1) * numPages, currentPage * numPages)
     .map((item, index) => {
       const activeButtonIndex = activeIndexes[index];
+
+      // Find the user response for the current question
+      const userResponse = benchmark.user_resp.find(
+        (resp) => resp.questionId === item._id
+      );
+
+      // Get the index of the selected option
+      const selectedOptionIndex = item.answerOptions.findIndex(
+        (option) => option._id === userResponse?.selectedOption
+      );
 
       return (
         <div className="row w-50" key={index}>
           <h5>Question {item.index}</h5>
           <p className="w-75 fs-5">{item.title}</p>
           <p>{item.description}</p>
-          {item.answerOptions &&
-            item.answerOptions.map((btn, btnIndex) => (
-              <>
-                {btn.includeExplanation && activeButtonIndex === btnIndex && (
-                  <textarea
-                    type="text"
-                    className="w-75 p-2"
-                    rows={3}
-                    placeholder="Comments"
-                    onChange={handleExplanationChange}
-                  />
-                )}
-              </>
-            ))}
-          <div className="d-flex mt-4">
-            {item.answerOptions &&
+          {benchmark.user_resp?.length > 0
+            ? item.answerOptions &&
               item.answerOptions.map((btn, btnIndex) => (
-                <div className="buttons-container" key={btnIndex}>
-                  <button
-                    className={`button ${
-                      activeButtonIndex === btnIndex ? "active" : ""
-                    }`}
-                    onClick={() =>
-                      handleButtonClick(
-                        (currentPage - 1) * numPages + index,
-                        btnIndex,
-                        btn.answerOption,
-                        item._id,
-                        btn._id
-                      )
-                    }
-                  >
-                    {btn.answerOption}
-                  </button>
-                </div>
+                <>
+                  {btn.includeExplanation && activeButtonIndex === btnIndex && (
+                    <textarea
+                      type="text"
+                      className="w-75 p-2"
+                      rows={3}
+                      key={btnIndex}
+                      placeholder="Comments"
+                      onChange={handleExplanationChange}
+                    />
+                  )}
+                </>
+              ))
+            : item.answerOptions.map((btn, btnIndex) => (
+                <>
+                  {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
+                  {console.log(
+                    "answeroption for include explan",
+                    BottomNavigation
+                  )}
+                  {btn.includeExplanation && (
+                    <textarea
+                      type="text"
+                      className="w-75 p-2"
+                      rows={3}
+                      placeholder="Comments"
+                      onChange={handleExplanationChange}
+                    />
+                  )}
+                </>
               ))}
-          </div>
+
+          {benchmark.user_resp?.length > 0 ? (
+            <div className="d-flex mt-4">
+              {item.answerOptions &&
+                item.answerOptions.map((btn, btnIndex) => {
+                  const isSelected = selectedOptionIndex === btnIndex;
+                  const isUserResponse =
+                    userResponse?.selectedOption === btn._id;
+                  const buttonClass = isSelected ? "button active" : "button";
+
+                  return (
+                    <div className="buttons-container" key={btnIndex}>
+                      <button
+                        className={buttonClass}
+                        onClick={() =>
+                          handleButtonClick(
+                            (currentPage - 1) * numPages + index,
+                            btnIndex,
+                            btn.answerOption,
+                            item._id,
+                            btn._id
+                          )
+                        }
+                      >
+                        {btn.answerOption}
+                      </button>
+                    </div>
+                  );
+                })}
+            </div>
+          ) : (
+            <div className="d-flex mt-4">
+              {item.answerOptions &&
+                item.answerOptions.map((btn, btnIndex) => (
+                  <div className="buttons-container" key={btnIndex}>
+                    <button
+                      className={`button ${
+                        activeButtonIndex === btnIndex ? "active" : ""
+                      }`}
+                      onClick={() =>
+                        handleButtonClick(
+                          (currentPage - 1) * numPages + index,
+                          btnIndex,
+                          btn.answerOption,
+                          item._id,
+                          btn._id
+                        )
+                      }
+                    >
+                      {btn.answerOption}
+                    </button>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       );
     });
@@ -249,20 +281,29 @@ const Benchmarking = () => {
           <Card style={{ marginTop: "50px" }}>
             <CardBody className="pl-1 pr-1">
               <Nav pills className="nav-justified mb-3 mt-3">
-                <NavItem>
-                  <NavLink
-                    style={{ fontSize: "14px", cursor: "pointer" }}
-                    className={classnames({
-                      active: justifyPillsTab === "1",
-                    })}
-                    onClick={() => {
-                      justifyPillsToggle("1");
-                    }}
-                  >
-                    General
-                  </NavLink>
-                </NavItem>
-                <NavItem>
+                {category.length > 0 &&
+                  category.map((value, index) => {
+                    return (
+                      <NavItem key={index}>
+                        <NavLink
+                          style={{ fontSize: "14px", cursor: "pointer" }}
+                          className={classnames({
+                            active:
+                              (justifyPillsTab === "1" && index === 0) ||
+                              (justifyPillsTab !== "1" &&
+                                index === justifyPillsTab),
+                          })}
+                          onClick={() => {
+                            justifyPillsToggle(index);
+                          }}
+                        >
+                          {value.titleEng}
+                        </NavLink>
+                      </NavItem>
+                    );
+                  })}
+
+                {/* <NavItem>
                   <NavLink
                     style={{ fontSize: "14px", cursor: "pointer" }}
                     className={classnames({
@@ -345,7 +386,7 @@ const Benchmarking = () => {
                   >
                     Transport/ Mobility demand management
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
               </Nav>
               <TabContent
                 activeTab={justifyPillsTab}
@@ -464,7 +505,19 @@ const Benchmarking = () => {
                           </div>
                         </div>
                         <div className="hstack gap-2 justify-content-end">
-                          <button type="button" className="btn btn-primary">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => {
+                              dispatch(
+                                updateUserResp(
+                                  benchmark._id,
+                                  user_resp,
+                                  navigate
+                                )
+                              );
+                            }}
+                          >
                             SAVE
                           </button>
                           <button

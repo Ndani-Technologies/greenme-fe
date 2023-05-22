@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardBody,
@@ -12,7 +12,21 @@ import {
 import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceCharts";
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
 import Layouts from "../../Layouts";
+import { useParams } from "react-router-dom";
+import { getSummaryBenchmarking } from "../../slices/thunks";
 const BenhmarkSummary = () => {
+  const [summary, setSummary] = useState([]);
+  let params = useParams();
+  const getSummary = () => {
+    getSummaryBenchmarking(params.id)
+      .then((resp) => {
+        setSummary(resp);
+      })
+      .catch((err) => console.error(err, "error in bench summary"));
+  };
+  useEffect(() => {
+    getSummary();
+  }, [summary, setSummary]);
   return (
     <React.Fragment>
       {/* <Layouts> */}
@@ -23,24 +37,25 @@ const BenhmarkSummary = () => {
         <div className="bg-white p-2 pb-0 pt-4">
           <div className="d-flex justify-content-between">
             <span>
-              <b>Benchmark title:</b> My bench mark title here
+              <b>Benchmark title:</b> {summary && summary?.title}
             </span>
             <div className="d-flex align-items-center gap-2">
-
               <span>
-                <b>Country:</b> Kenya
+                <b>Country:</b> {summary && summary?.country}
               </span>
               <img style={{ height: "13px" }} src={kenya} />
             </div>
             <span>
-              <b>Status:</b> In Progress
+              <b>Status:</b> {summary && summary?.status}
             </span>
             <span>
-              <b>Start date:</b> 17June, 2021
+              <b>Start date:</b> {summary && summary?.startDate}
             </span>
             <span>
               {" "}
-              <span className="fw-light">End date:</span> DD / MM /YY
+              <span className="fw-light">End date:</span>{" "}
+              {summary && summary?.endDate}
+
             </span>
           </div>
           <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
@@ -49,7 +64,10 @@ const BenhmarkSummary = () => {
                 <Card>
                   <div className="d-flex justify-content-between align-items-center p-2">
                     <p className="m-0">Total number of questions answered</p>
-                    <span>5/30</span>
+                    <span>
+                      {summary && summary?.attemptQuestions}/
+                      {summary && summary?.noOfQuestions}
+                    </span>
                   </div>
                 </Card>
               </Col>
@@ -59,8 +77,10 @@ const BenhmarkSummary = () => {
                     <p className="m-0">
                       Total number of questions answered as ‘YES’
                     </p>
-                    <span>10/30</span>
-
+                    <span>
+                      {summary && summary?.answerYes}/
+                      {summary && summary?.noOfQuestions}
+                    </span>
                   </div>
                 </Card>
               </Col>
@@ -70,7 +90,10 @@ const BenhmarkSummary = () => {
                     <p className="m-0">
                       Total number of questions answered as ‘NO’
                     </p>
-                    <span>12/30</span>
+                    <span>
+                      {summary && summary?.answerNo}/
+                      {summary && summary?.noOfQuestions}
+                    </span>
                   </div>
                 </Card>
               </Col>
@@ -80,7 +103,10 @@ const BenhmarkSummary = () => {
                     <p className="m-0">
                       Total number of questions answered as ‘DON’T KNOW’
                     </p>
-                    <span>8/30</span>
+                    <span>
+                      {summary && summary?.answerDontKnow}/
+                      {summary && summary?.noOfQuestions}
+                    </span>
                   </div>
                 </Card>
               </Col>
@@ -91,7 +117,10 @@ const BenhmarkSummary = () => {
                       Total number of questions answered as ‘WE DO NOT HAVE A
                       POLICY’
                     </p>
-                    <span>2/30</span>
+                    <span>
+                      {summary && summary?.answerWeDontHavePolicy}/
+                      {summary && summary?.noOfQuestions}
+                    </span>
                   </div>
                 </Card>
               </Col>
@@ -101,7 +130,10 @@ const BenhmarkSummary = () => {
                     <p className="m-0">
                       Total number of questions answered with a comment
                     </p>
-                    <span>22/30</span>
+                    <span>
+                      {summary && summary?.answersComments}/
+                      {summary && summary?.noOfQuestions}
+                    </span>
                   </div>
                 </Card>
               </Col>
@@ -147,7 +179,8 @@ const BenhmarkSummary = () => {
                 <div className="d-flex align-items-center mb-2 mt-4">
                   <div className="flex-grow-1 d-flex justify-content-between w-100">
                     <h5 className="card-title mb-0">
-                      <span>60% </span> Overall Benchmarking progress...
+                      <span>{summary && summary?.completionLevel} </span>{" "}
+                      Overall Benchmarking progress...
                     </h5>
                   </div>
                 </div>
@@ -155,8 +188,8 @@ const BenhmarkSummary = () => {
                   <div
                     className="progress-bar bg- "
                     role="progressbar"
-                    style={{ width: "60%" }}
-                    aria-valuenow="30"
+                    style={{ width: "100%" }}
+                    aria-valuenow={summary && summary?.completionLevel}
                     aria-valuemin="0"
                     aria-valuemax="100"
                   ></div>
@@ -164,7 +197,13 @@ const BenhmarkSummary = () => {
               </CardBody>
             </Card>
             <div className="hstack gap-2 justify-content-end">
-              <button type="button" className="btn btn-secondary">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => {
+                  getSummary();
+                }}
+              >
                 REFRESH
               </button>
             </div>
