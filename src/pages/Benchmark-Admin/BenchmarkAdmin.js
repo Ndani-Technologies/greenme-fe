@@ -10,6 +10,13 @@ import {
   DropdownMenu,
   DropdownItem,
   Table,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Form,
+  Input,
+  Label,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -29,108 +36,8 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
 import { Link, NavLink } from "react-router-dom";
-const arr = [
-  {
-    _id: "625d3cd5923ccd040209ebf1",
-    name: "Michael Morris",
-    email: "45%",
-    Email: "Benchmark 1",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. A",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf3",
-    name: "Kevin Dawson",
-    email: "10%",
-    Email: "Benchmark 2",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. B",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebee",
-    name: "James Price",
-    email: "100%",
-    Email: "Benchmark 3",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. C",
-    tags: "Completed",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf0",
-    name: "Herbert Stokes",
-    email: "80%",
-    Email: "Benchmark 4",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. D",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf2",
-    name: "Timothy Smith",
-    email: "0%",
-    Email: "Benchmark 5",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. E",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebeb",
-    name: "Thomas Taylor",
-    company: "iTest Factory",
-    designation: "UI / UX Designer",
-    email: "45%",
-    Email: "Benchmark 6",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. F",
-    tags: "progress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebec",
-    name: "Nancy Martino",
-    company: "Force Medicines",
-    designation: "PHP Developer",
-    email: "70%",
-    Email: "Benchmark 7",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. G",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebea",
-    name: "Tonya Noble 123",
-    company: "Nesta Technologies",
-    designation: "Lead Designer / Developer",
-    email: "100%",
-    Email: "Benchmark 8",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. H",
-    tags: "Completed",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebef",
-    name: "Mary Cousar",
-    company: "Micro Design",
-    designation: "Asp.Net Developer",
-    email: "20%",
-    Email: "Benchmark 9",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. I",
-    tags: "inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebed",
-    name: "Alexis Clarke",
-    company: "Digitech Galaxy",
-    designation: "Full Stack Developer",
-    email: "10%",
-    Email: "Benchmark 10",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "FleetMGT Co. J",
-    tags: "Inprogress",
-  },
-];
+import { Select } from "@mui/material";
+
 const BenchmarkAdmin = () => {
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
@@ -913,7 +820,6 @@ const BenchmarkAdmin = () => {
                     />
                     <span className="contact-active position-absolute rounded-circle bg-success">
                       <span className="visually-hidden"></span>
-
                     </span>
                   </div>
                   <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>

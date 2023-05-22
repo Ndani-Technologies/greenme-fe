@@ -42,6 +42,8 @@ import { Padding } from "@mui/icons-material";
 const Profile = () => {
   document.title = "Profile | GreenMe";
   const [rightColumn, setRightColumn] = useState(true);
+  const [coverPhoto, setCoverPhoto] = useState(progileBg);
+
   const theme = useTheme();
   const [countryName, setCountryName] = React.useState([]);
   const toggleRightColumn = () => {
@@ -51,7 +53,6 @@ const Profile = () => {
   // const [userData, setUserData] = useState({firstName, lastName, email, organization, role, scope, country, otherCountries})
 
   const user = useSelector((state) => state.Login.user);
-  console.log("user", user);
 
   const tabChange = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -70,19 +71,14 @@ const Profile = () => {
       country: user?.country || "",
       otherCountries: user?.otherCountries || [],
     },
-    // validationSchema: Yup.object({
-    //   scope: Array.string().required("Please Select "),
-    //   otherCountries: Yup.string().required("Please Enter Your Password"),
-    // }),
+
     onSubmit: (values) => {
       const mappedData = {
-        otherCountries: countryName && countryName,
         ...values,
+        otherCountries: countryName && countryName,
+        banner: coverPhoto && coverPhoto,
       };
-      console.log("in user handle submit", mappedData, values, countryName);
       updateUser(user._id, mappedData);
-      // dispatch(loginUser(values, props.router.navigate));
-      // dispatch(loginUserReal(props.router.navigate));
     },
   });
   const ITEM_HEIGHT = 48;
@@ -109,16 +105,16 @@ const Profile = () => {
     const {
       target: { value },
     } = event;
-    setCountryName(
-      // On autofill we get a stringified value.
-      typeof value === "string" ? value.split(",") : value,
-      () => {
-        validation.setFieldValue(
-          "otherCountries",
-          countryName.map((country) => country)
-        );
-      }
-    );
+    setCountryName(typeof value === "string" ? value.split(",") : value, () => {
+      validation.setFieldValue(
+        "otherCountries",
+        countryName.map((country) => country)
+      );
+    });
+  };
+  const handleCoverPhotoChange = (event) => {
+    const file = event.target.files[0];
+    setCoverPhoto(URL.createObjectURL(file));
   };
   return (
     <React.Fragment>
@@ -126,7 +122,9 @@ const Profile = () => {
         <Container fluid>
           <div className="position-relative mx-n4 mt-n4">
             <div className="profile-wid-bg profile-setting-img">
-              <img src={progileBg} className="profile-wid-img" alt="" />
+              {coverPhoto && (
+                <img src={coverPhoto} className="profile-wid-img" alt="" />
+              )}
               <div className="overlay-content">
                 <div className="text-end p-3">
                   <div className="p-0 ms-auto rounded-circle profile-photo-edit">
@@ -134,6 +132,7 @@ const Profile = () => {
                       id="profile-foreground-img-file-input"
                       type="file"
                       className="profile-foreground-img-file-input"
+                      onChange={handleCoverPhotoChange}
                     />
                     <Label
                       htmlFor="profile-foreground-img-file-input"
@@ -235,7 +234,7 @@ const Profile = () => {
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >
-                      <div className="label">40%</div>
+                      <div className="label">0%</div>
                     </div>
                   </div>
                   <div className="d-flex align-items-center mb-4 mt-3">
@@ -257,7 +256,7 @@ const Profile = () => {
                         aria-valuemin="0"
                         aria-valuemax="100"
                       >
-                        <div className="label">30%</div>
+                        <div className="label">0%</div>
                       </div>
                     </div>
                     <div className="d-flex align-items-center mb-4 mt-3">
@@ -342,7 +341,7 @@ const Profile = () => {
                     <div>
                       <span className="fs-7">BENCHMARKING</span>
                       <div>
-                        <span className="fs-3">5/10</span>
+                        <span className="fs-3">0/0</span>
                       </div>
                     </div>
                     <i
@@ -354,7 +353,7 @@ const Profile = () => {
                     <div>
                       <span className="fs-7">RECOMMENDED ACTIONS</span>
                       <div>
-                        <span className="fs-3">39/48</span>
+                        <span className="fs-3">0/0</span>
                       </div>
                     </div>
                     <i
@@ -366,7 +365,7 @@ const Profile = () => {
                     <div>
                       <span className="fs-7">DISCUSSIONS</span>
                       <div>
-                        <span className="fs-3">4 Active</span>
+                        <span className="fs-3">0 Active</span>
                       </div>
                     </div>
                     <i
@@ -378,7 +377,7 @@ const Profile = () => {
                     <div>
                       <span className="fs-7">COLLABORATIONS</span>
                       <div>
-                        <span className="fs-3">5 Active</span>
+                        <span className="fs-3">0 Active</span>
                       </div>
                     </div>
                     <i
@@ -390,7 +389,7 @@ const Profile = () => {
                     <div>
                       <span className="fs-7">LEADERBOARD</span>
                       <div>
-                        <span className="fs-3">200 points</span>
+                        <span className="fs-3">0 points</span>
                       </div>
                     </div>
                     <i

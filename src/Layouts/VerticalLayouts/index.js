@@ -324,8 +324,11 @@ const VerticalLayout = (props) => {
             ) : (
               <li className="nav-item">
                 <Link
-                  className="nav-link menu-link"
+                  className={`nav-link menu-link ${
+                    item.disable ? "disabled" : ""
+                  }`}
                   to={item.link ? item.link : "/#"}
+                  disbaled={item.disbaled}
                 >
                   <i className={item.icon}></i>{" "}
                   <span>{props.t(item.label)}</span>

@@ -8,7 +8,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const getAllBenchmarks = async () => {
   try {
     let resp = await axios.get(env.BENCHMARK_URL);
-    // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
 
     let data;
     data = resp.map((value) => {

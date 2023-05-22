@@ -1558,7 +1558,7 @@ const BenchmarkingQA = () => {
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
-                {qa?.length > 0 ? (
+                {qa?.length >= 0 ? (
                   <TableContainer
                     columns={columns}
                     data={qa || []}
