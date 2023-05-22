@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
+import axios from "axios";
 import {
   Col,
   Card,
@@ -34,6 +35,7 @@ import {
   deleteCategory,
   updateCategory,
   addQuestion,
+  updateQuestion,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -60,7 +62,7 @@ const BenchmarkingQA = () => {
   // const [isGrey3, setIsGrey3] = useState(false);
   // const [isGrey4, setIsGrey4] = useState(false);
   // const [isGrey5, setIsGrey5] = useState(false);
-
+  const [questionId, setQuestionId] = useState(null);
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
@@ -69,9 +71,12 @@ const BenchmarkingQA = () => {
       isContactSuccess: state.Crm.isContactSuccess,
       error: state.Crm.error,
     }));
+
+  console.log(crmcontacts, "crmcontacts");
   const [qa, setQA] = useState([]);
   const [allAnswers, setAllAnswers] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
+  const [isDataUpdated, setIsDataUpdated] = useState(false);
   const allQA = () => {
     getAllQA()
       .then((resp) => setQA(resp))
@@ -83,12 +88,13 @@ const BenchmarkingQA = () => {
       .then((resp) => setAllCategories(resp))
       .catch((err) => console.log("category all error", err));
   };
+
   useEffect(() => {
     allQA();
   }, []);
-  // useEffect(() => {
-  //   dispatch(onGetContacts(arr));
-  // }, [dispatch, crmcontacts]);
+  useEffect(() => {
+    dispatch(onGetContacts(crmcontacts));
+  }, [dispatch, crmcontacts]);
   useEffect(() => {
     setContact(qa);
   }, [crmcontacts]);
@@ -99,6 +105,8 @@ const BenchmarkingQA = () => {
       setIsEdit(false);
     }
   }, [crmcontacts]);
+
+  console.log(allCategories, "All the categories in the QA file");
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -120,12 +128,12 @@ const BenchmarkingQA = () => {
   }, [modal]);
 
   // Delete Data
-  const handleDeleteContact = () => {
-    if (contact) {
-      dispatch(onDeleteContact(contact._id));
-      setDeleteModal(false);
-    }
-  };
+  // const handleDeleteContact = (contact) => {
+  //   if (contact) {
+  //     dispatch(onDeleteContact(contact._id));
+  //     setDeleteModal(true);
+  //   }
+  // };
 
   const onClickDelete = (contact) => {
     setContact(contact);
@@ -184,14 +192,14 @@ const BenchmarkingQA = () => {
       description: "",
       category: "",
       answerOption: [],
-      includeExplanation: true,
+      includeExplanation: false,
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
       description: Yup.string().required("Please Enter description"),
       category: Yup.string().required("Please select category"),
     }),
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const cd = allCategories.find(
         (value) => value.titleEng == values.category
       );
@@ -201,21 +209,34 @@ const BenchmarkingQA = () => {
           if (value === val.answerOption) {
             answerIds.push(val._id);
           }
+          validation.setValues(answerIds);
         });
       });
       const mappedData = {
         ...values,
         category: cd._id,
         answerOptions: answerIds,
+        status: "active" ? true : false,
+        visibility: "True" ? true : false,
       };
+      if (isDataUpdated) {
+        updateQuestion(questionId, mappedData)
+          .then((resp) => {
+            allQA();
+          })
+          .catch((err) => console.log("error in update question"));
+      } else {
+        // let resp = await axios.post(`${env.ANSWER_URL}/${id}`, data);
+        addQuestion(mappedData)
+          .then((resp) => {
+            setQA([...qa, resp]);
+            setSelectedIndexes([]);
+            validation.resetForm();
+          })
+          .catch((err) => console.log("error in adding question"));
+      }
       console.log("values formik", mappedData);
-      addQuestion(mappedData)
-        .then((resp) => {
-          setQA([...qa, resp]);
-          setSelectedIndexes([]);
-          validation.resetForm();
-        })
-        .catch((err) => console.log("error in adding question"));
+
       toggle();
     },
   });
@@ -393,10 +414,17 @@ const BenchmarkingQA = () => {
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
-                      href="/QAComparison"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
+                        validation.setValues(contactData);
+                        console.log(
+                          "on edit click",
+                          cellProps.row.original._id
+                        );
+                        setQuestionId(cellProps.row.original._id);
+                        setIsDataUpdated(!isDataUpdated);
+                        setmodal_grid(true);
                       }}
                     >
                       Edit
@@ -478,13 +506,7 @@ const BenchmarkingQA = () => {
   function tog_Answer() {
     setmodals_Answer(!modals_grid);
   }
-  // const [Answers, setAnswers] = useState([
-  //   { id: 1, name: "Yes" },
-  //   { id: 2, name: "NO" },
-  //   { id: 3, name: "We don't have a policy" },
-  //   { id: 4, name: "Don't Know" },
-  //   { id: 5, name: "Sell privately,Auction, Scrap Donate, Return to supplier" },
-  // ]);
+
   const [editingAnswerId, setEditingAnswerId] = useState(null);
   const [inputFields, setInputFields] = useState("");
   const handleEdits = (AnswerId) => {
@@ -518,7 +540,7 @@ const BenchmarkingQA = () => {
       };
       addAnswer(newAnswer)
         .then((resp) => {
-          setAllAnswers([resp, ...allAnswers]);
+          setAllAnswers([...allAnswers, resp]);
         })
         .catch((err) => console.log("adding in answer", err));
       setInputFields("");
@@ -596,7 +618,7 @@ const BenchmarkingQA = () => {
       };
       addCategory(newCategory)
         .then((resp) => {
-          setAllCategories([resp, ...allCategories]);
+          setAllCategories([...allCategories, resp]);
         })
         .catch((err) => console.log("error in adding category", err));
       setInputField("");
@@ -1047,36 +1069,37 @@ const BenchmarkingQA = () => {
                                                   {value.answerOption}
                                                 </div>
 
-                                                {/* {value.includeExplanation && ( */}
-                                                <div className="form-check form-switch form-switch-right form-switch-md ">
+                                                <div className="form-check form-switch form-switch-right form-switch-md">
                                                   <Label
-                                                    htmlFor="form-grid-showcode"
+                                                    htmlFor={`form-grid-showcode-${index}`}
                                                     className="form-label text-muted"
                                                   >
                                                     Include Explanation
                                                   </Label>
                                                   <Input
+                                                    id={`form-grid-showcode-${index}`}
                                                     className="form-check-input code-switcher"
                                                     type="checkbox"
                                                     value="active"
                                                     checked={
-                                                      validation.values
-                                                        .includeExplanation
-                                                    }
+                                                      value.includeExplanation
+                                                    } // Access includeExplanation from value object
                                                     onChange={(e) => {
+                                                      const updatedAnswers = [
+                                                        ...allAnswers,
+                                                      ];
+                                                      updatedAnswers[
+                                                        index
+                                                      ].includeExplanation =
+                                                        e.target.checked;
                                                       validation.setFieldValue(
-                                                        "includeExplanation",
-                                                        selectedIndexes.map(
-                                                          (i) =>
-                                                            allAnswers[i]
-                                                              .includeExplanation
-                                                        )
+                                                        "answerOptions",
+                                                        updatedAnswers
                                                       );
                                                     }}
                                                     style={{
                                                       backgroundColor:
-                                                        validation.values
-                                                          .includeExplanation
+                                                        value.includeExplanation
                                                           ? "#88C756"
                                                           : "#fff",
                                                       width: "50px",
@@ -1084,7 +1107,6 @@ const BenchmarkingQA = () => {
                                                     }}
                                                   />
                                                 </div>
-                                                {/* // )} */}
                                               </div>
                                             </div>
                                           )}
@@ -1190,6 +1212,7 @@ const BenchmarkingQA = () => {
                             type="submit"
                             className="p-4 pt-2 pb-2"
                             color="secondary"
+                            onCl
                           >
                             Save
                           </Button>
