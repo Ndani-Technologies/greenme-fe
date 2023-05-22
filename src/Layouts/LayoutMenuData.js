@@ -75,6 +75,7 @@ const Navdata = () => {
     }
   }
 
+  const obj = JSON.parse(sessionStorage.getItem("authUser"));
   useEffect(() => {
     document.body.classList.remove("twocolumn-panel");
     if (iscurrentState !== "Dashboard") {
@@ -147,6 +148,7 @@ const Navdata = () => {
       icon: "ri-dashboard-2-line",
       label: "MY Dashboard",
       link: "/",
+      disable: true,
     },
     {
       id: "",
@@ -227,41 +229,39 @@ const Navdata = () => {
       ],
     },
     {
-      id: "2",
-      icon: "ri-contacts-book-line",
-      label: "Users Management",
-      link: "/UsersManagement",
-    },
-
-    {
       id: 4,
       icon: "ri-stack-line",
       label: "Document sharing",
       link: "/",
+      disable: true,
     },
     {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
       link: "/",
+      disable: true,
     },
     {
       id: 6,
       icon: "ri-apps-2-line",
       label: "Discussions",
       link: "/",
+      disable: true,
     },
     {
       id: 7,
       icon: "ri-rocket-line",
       label: "Leaderboard",
       link: "/",
+      disable: true,
     },
     {
       id: 8,
       icon: "ri-pie-chart-line",
       label: "Reports",
       link: "/",
+      disable: true,
     },
   ];
   const menuItems = [
@@ -274,6 +274,7 @@ const Navdata = () => {
       icon: "ri-dashboard-2-line",
       label: "MY Dashboard",
       link: "/",
+      disable: true,
     },
 
     {
@@ -337,36 +338,41 @@ const Navdata = () => {
       icon: "ri-stack-line",
       label: "Document sharing",
       link: "/",
+      disable: true,
     },
     {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
       link: "/",
+      disable: true,
     },
     {
       id: 6,
       icon: "ri-apps-2-line",
       label: "Discussions",
       link: "/",
+      disable: true,
     },
     {
       id: 7,
       icon: "ri-rocket-line",
       label: "Leaderboard",
       link: "/",
+      disable: true,
     },
     {
       id: 8,
       icon: "ri-pie-chart-line",
       label: "Reports",
       link: "/",
+      disable: true,
     },
   ];
   console.log("user role", user?.role, user);
   return (
     <React.Fragment>
-      {user?.role?.title == "admin" ? menuItemsAdmin : menuItems}
+      {obj?.role?.title == "admin" ? menuItemsAdmin : menuItems}
     </React.Fragment>
   );
 };

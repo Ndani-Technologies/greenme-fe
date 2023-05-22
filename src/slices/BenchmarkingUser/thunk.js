@@ -4,11 +4,9 @@ import { toast } from "react-toastify";
 import env from "react-dotenv";
 import { addBenchmarkApi } from "../../helpers/Benchmark_helper/benchmark_user_helper";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
 export const getAllBenchmarks = async () => {
   try {
     let resp = await axios.get(env.BENCHMARK_URL);
-    // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
 
     let data;
     data = resp.map((value) => {
@@ -30,15 +28,20 @@ export const getAllBenchmarks = async () => {
   }
 };
 export const getSingleBenchmark = async (id) => {
-  // let resp = await axios.get(`http://localhost:5001/api/v1/benchmarking/${id}`);
-  let resp = await axios.get(`${env.BENCHMARK_URL}/${id}`);
-  console.log("benchmark get single", resp);
+  let resp = await axios.get(
+    `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
+  );
+  // let resp = await axios.get(env.BENCHMARK_URL);
+  console.log("benchmark get single", resp && resp);
   return resp;
 };
 export const updateUserResp =
   (id, user_resp, history) => async (dispatch, getState) => {
-    // let resp = await axios.patch(`http://localhost:5001/api/v1/benchmarking/update_user_resp/${id}`, { user_resp });
-    let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
+    let resp = await axios.patch(
+      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/update_user_resp/${id}`,
+      { user_resp }
+    );
+    // let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };

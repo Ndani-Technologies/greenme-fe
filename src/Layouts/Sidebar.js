@@ -46,19 +46,19 @@ const Sidebar = ({ layoutType }) => {
         <div className="navbar-brand-box">
           <Link to="/" className="logo logo-dark">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={logoSm} alt="" height="50" />
             </span>
             <span className="logo-lg">
-              <img src={logoDark} alt="" height="37" />
+              <img src={logoDark} alt="" height="42" />
             </span>
           </Link>
 
           <Link to="/" className="logo logo-light">
             <span className="logo-sm">
-              <img src={logoSm} alt="" height="22" />
+              <img src={logoSm} alt="" height="50" />
             </span>
             <span className="logo-lg">
-              <img src={logoLight} alt="" height="37" />
+              <img src={logoLight} alt="" height="42" />
             </span>
           </Link>
           <button

@@ -44,6 +44,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
 import { Height } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -480,6 +481,7 @@ const BenchmarkingDashboard = () => {
                     >
                       View
                     </DropdownItem>
+                    {/* <Link to={`/benchmarking/${_id}`}> */}
                     <DropdownItem
                       className="dropdown-item"
                       href={`/benchmarking/${_id}`}
@@ -490,6 +492,7 @@ const BenchmarkingDashboard = () => {
                     >
                       Edit
                     </DropdownItem>
+                    {/* </Link> */}
                     <DropdownItem
                       className="dropdown-item edit-item-btn"
                       href="#"
@@ -707,7 +710,7 @@ const BenchmarkingDashboard = () => {
             <CardBody className="pt-0">
               <div>
                 {console.log("benchmar", benchmarks)}
-                {!!benchmarks.length > 0 ? (
+                {!!benchmarks.length >= 0 ? (
                   <TableContainer
                     columns={columns}
                     data={benchmarks || []}
@@ -723,6 +726,7 @@ const BenchmarkingDashboard = () => {
                     handleContactClick={handleContactClicks}
                     isSearchInput={true}
                     SearchPlaceholder="Search for contact..."
+                    setInfo={setInfo}
                   />
                 ) : (
                   <Loader error={error} />

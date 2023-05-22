@@ -7,10 +7,11 @@ import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./slices";
 import { persistReducer } from "redux-persist";
-import localStorage from "redux-persist/lib/storage";
+import storage from "redux-persist/lib/storage";
 const persistConfig = {
   key: "root",
-  storage: localStorage,
+  storage: storage,
+  whitelist: ["Login"],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
