@@ -599,173 +599,171 @@ const ActionAdminDashboard = () => {
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
-      <Layouts>
-        <div className="page-content overflow-auto ">
-          <ActionMain
-            Title={"Recommended Actions - Admin Dashboard"}
-            Text={
-              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-            }
-          />
-          <Col xxl={9} className="m-auto">
-            <div className="d-flex align-items-center justify-content-center gap-2 w-100">
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded"
-                  color="white"
-                  onClick={() => setmodal_grid(true)}
-                  style={{ width: "130px" }}
-                >
-                  Add Action
-                  <i class="ri-add-fill"></i>
-                </Button>
-                {modal_grid && (
-                  <ActionModal
-                    modal_grid={modal_grid}
-                    setmodal_grid={setmodal_grid}
-                  />
-                )}
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  name="manage_categories"
-                  style={{ width: "160px" }}
-                  onClick={handleModal}
-                >
-                  Manage Categories
-                  <i class="ri-add-fill"></i>
-                </Button>
-                {data && (
-                  <CategoryModal
-                    modals_grid={modals_grid}
-                    setmodals_grid={setmodals_grid}
-                    categories={data}
-                    setCategories={setData}
-                    Title={"Manage category"}
-                    FieldName={"Add new Category"}
-                    Edit={"Edit category name"}
-                  />
-                )}
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "140px" }}
-                  name="manage_weight"
-                  onClick={handleModal}
-                >
-                  Manage Weight
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage weight"}
-                  FieldName={"Add new Weight"}
-                  Edit={"Edit weight name"}
+      <div className="page-content overflow-auto ">
+        <ActionMain
+          Title={"Recommended Actions - Admin Dashboard"}
+          Text={
+            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+          }
+        />
+        <Col xxl={9} className="m-auto">
+          <div className="d-flex align-items-center justify-content-center gap-2 w-100">
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded"
+                color="white"
+                onClick={() => setmodal_grid(true)}
+                style={{ width: "130px" }}
+              >
+                Add Action
+                <i class="ri-add-fill"></i>
+              </Button>
+              {modal_grid && (
+                <ActionModal
+                  modal_grid={modal_grid}
+                  setmodal_grid={setmodal_grid}
                 />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "130px" }}
-                  name="manage_Status"
-                  onClick={handleModal}
-                >
-                  Manage Status
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage status"}
-                  FieldName={"Add new Status"}
-                  Edit={"Edit status name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "160px" }}
-                  name="manage_Potential"
-                  onClick={handleModal}
-                >
-                  Manage Potential
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage potential"}
-                  FieldName={"Add new Potential"}
-                  Edit={"Edit potential name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "160px" }}
-                  name="manage_Costs"
-                  onClick={handleModal}
-                >
-                  Manage Costs
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage cost"}
-                  FieldName={"Add new Cost"}
-                  Edit={"Edit sost name"}
-                />
-              </div>
-              <div className="pt-5">
-                <Button
-                  className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
-                  color="white"
-                  style={{ width: "160px" }}
-                  name="manage_Scale"
-                  onClick={handleModal}
-                >
-                  Manage Scale
-                  <i class="ri-add-fill"></i>
-                </Button>
-                <CategoryModal
-                  Title={"Manage time scale"}
-                  FieldName={"Add new Scale"}
-                  Edit={"Edit a time scale name"}
-                />
-              </div>
+              )}
             </div>
-            <Card id="contactList">
-              <CardBody className="pt-0">
-                <div>
-                  {console.log("contact", crmcontacts)}
-                  {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                    <TableContainer
-                      columns={columns}
-                      data={crmcontacts || []}
-                      isGlobalFilter={true}
-                      isAddUserList={false}
-                      isFilterA={false}
-                      isFooter={true}
-                      customPageSize={8}
-                      className="custom-header-css"
-                      divClass="table-responsive table-card mb-0"
-                      tableClass="align-middle table-nowrap"
-                      theadClass="table-light"
-                      handleContactClick={handleContactClicks}
-                      isContactsFilter={false}
-                      SearchPlaceholder="Search by  title "
-                    />
-                  ) : (
-                    <Loader error={error} />
-                  )}
-                </div>
-                <ToastContainer closeButton={false} limit={1} />
-              </CardBody>
-            </Card>
-          </Col>
-        </div>
-      </Layouts>
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
+                color="white"
+                name="manage_categories"
+                style={{ width: "160px" }}
+                onClick={handleModal}
+              >
+                Manage Categories
+                <i class="ri-add-fill"></i>
+              </Button>
+              {data && (
+                <CategoryModal
+                  modals_grid={modals_grid}
+                  setmodals_grid={setmodals_grid}
+                  categories={data}
+                  setCategories={setData}
+                  Title={"Manage category"}
+                  FieldName={"Add new Category"}
+                  Edit={"Edit category name"}
+                />
+              )}
+            </div>
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
+                color="white"
+                style={{ width: "140px" }}
+                name="manage_weight"
+                onClick={handleModal}
+              >
+                Manage Weight
+                <i class="ri-add-fill"></i>
+              </Button>
+              <CategoryModal
+                Title={"Manage weight"}
+                FieldName={"Add new Weight"}
+                Edit={"Edit weight name"}
+              />
+            </div>
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
+                color="white"
+                style={{ width: "130px" }}
+                name="manage_Status"
+                onClick={handleModal}
+              >
+                Manage Status
+                <i class="ri-add-fill"></i>
+              </Button>
+              <CategoryModal
+                Title={"Manage status"}
+                FieldName={"Add new Status"}
+                Edit={"Edit status name"}
+              />
+            </div>
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
+                color="white"
+                style={{ width: "160px" }}
+                name="manage_Potential"
+                onClick={handleModal}
+              >
+                Manage Potential
+                <i class="ri-add-fill"></i>
+              </Button>
+              <CategoryModal
+                Title={"Manage potential"}
+                FieldName={"Add new Potential"}
+                Edit={"Edit potential name"}
+              />
+            </div>
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
+                color="white"
+                style={{ width: "160px" }}
+                name="manage_Costs"
+                onClick={handleModal}
+              >
+                Manage Costs
+                <i class="ri-add-fill"></i>
+              </Button>
+              <CategoryModal
+                Title={"Manage cost"}
+                FieldName={"Add new Cost"}
+                Edit={"Edit sost name"}
+              />
+            </div>
+            <div className="pt-5">
+              <Button
+                className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
+                color="white"
+                style={{ width: "160px" }}
+                name="manage_Scale"
+                onClick={handleModal}
+              >
+                Manage Scale
+                <i class="ri-add-fill"></i>
+              </Button>
+              <CategoryModal
+                Title={"Manage time scale"}
+                FieldName={"Add new Scale"}
+                Edit={"Edit a time scale name"}
+              />
+            </div>
+          </div>
+          <Card id="contactList">
+            <CardBody className="pt-0">
+              <div>
+                {console.log("contact", crmcontacts)}
+                {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                  <TableContainer
+                    columns={columns}
+                    data={crmcontacts || []}
+                    isGlobalFilter={true}
+                    isAddUserList={false}
+                    isFilterA={false}
+                    isFooter={true}
+                    customPageSize={8}
+                    className="custom-header-css"
+                    divClass="table-responsive table-card mb-0"
+                    tableClass="align-middle table-nowrap"
+                    theadClass="table-light"
+                    handleContactClick={handleContactClicks}
+                    isContactsFilter={false}
+                    SearchPlaceholder="Search by  title "
+                  />
+                ) : (
+                  <Loader error={error} />
+                )}
+              </div>
+              <ToastContainer closeButton={false} limit={1} />
+            </CardBody>
+          </Card>
+        </Col>
+      </div>
     </React.Fragment>
   );
 };
