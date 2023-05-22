@@ -7,7 +7,8 @@ window.env = {
     "https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking",
   CATEGORY_URL: "https://backend.greenme.fleetforum.org/api/v1/bench/category",
   CHROME_CRASHPAD_PIPE_NAME:
-    "\\\\.\\pipe\\LOCAL\\crashpad_10948_OFQFGKPWNVZPKKFW",
+
+    "\\\\.\\pipe\\LOCAL\\crashpad_12324_GEBYZWVHQEOZADWK",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
