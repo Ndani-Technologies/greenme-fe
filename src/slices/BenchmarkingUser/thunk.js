@@ -198,7 +198,11 @@ export const addCategory = async (data) => {
 export const addQuestion = async (data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    let resp = await axios.post(env.QUESTION_URL, data);
+    // let resp = await axios.post(env.QUESTION_URL, data);
+    let resp = await axios.post(
+      "https://backend.greenme.fleetforum.org/api/v1/bench/questionnaire",
+      data
+    );
     console.log("add question", resp);
     return resp;
   } catch (error) {
@@ -249,6 +253,20 @@ export const deleteQuestion = async (id) => {
       `https://backend.greenme.fleetforum.org/api/v1/bench/questionnaire/${id}`
     );
     console.log("delete question", resp);
+    // return resp;
+  } catch (error) {
+    console.error(error);
+  }
+};
+export const deleteBenchmark = async (id) => {
+  try {
+    // console.log(data, "Data inside updatequestionaiire");
+    // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
+    // let resp = await axios.put(`{${env.QUESTION_URL}/${id}}`, data);
+    let resp = await axios.delete(
+      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
+    );
+    console.log("delete benchmark", resp);
     // return resp;
   } catch (error) {
     console.error(error);

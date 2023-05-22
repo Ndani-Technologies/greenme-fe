@@ -19,6 +19,7 @@ import Layouts from "../../Layouts";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getSingleBenchmark, updateUserResp } from "../../slices/thunks";
+import { BottomNavigation } from "@mui/material";
 
 const Benchmarking = () => {
   let params = useParams();
@@ -182,7 +183,12 @@ const Benchmarking = () => {
               ))
             : item.answerOptions.map((btn, btnIndex) => (
                 <>
-                  {btn.includeExplanation && activeButtonIndex === btnIndex && (
+                  {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
+                  {console.log(
+                    "answeroption for include explan",
+                    BottomNavigation
+                  )}
+                  {btn.includeExplanation && (
                     <textarea
                       type="text"
                       className="w-75 p-2"
@@ -499,7 +505,19 @@ const Benchmarking = () => {
                           </div>
                         </div>
                         <div className="hstack gap-2 justify-content-end">
-                          <button type="button" className="btn btn-primary">
+                          <button
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => {
+                              dispatch(
+                                updateUserResp(
+                                  benchmark._id,
+                                  user_resp,
+                                  navigate
+                                )
+                              );
+                            }}
+                          >
                             SAVE
                           </button>
                           <button
