@@ -36,6 +36,7 @@ import {
   updateCategory,
   addQuestion,
   updateQuestion,
+  deleteQuestion,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -54,7 +55,7 @@ import { languages } from "prismjs";
 import { lineHeight } from "@mui/system";
 import { Checkbox, TextField } from "@mui/material";
 import { Link } from "feather-icons-react/build/IconComponents";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 
 const BenchmarkingQA = () => {
   // const [isGrey, setIsGrey] = useState(false);
@@ -455,6 +456,17 @@ const BenchmarkingQA = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         onClickDelete(contactData);
+                        deleteQuestion(cellProps.row.original._id)
+                          .then(() => {
+                            setQA((prev) =>
+                              prev.filter(
+                                (value) =>
+                                  value._id !== cellProps.row.original._id
+                              )
+                            );
+                            toast.done("Question deleted");
+                          })
+                          .catch((err) => toast.error("Error in deletion"));
                       }}
                     >
                       Delete
