@@ -46,25 +46,6 @@ export const updateUserResp =
     if (resp) history("/benchmarking");
   };
 
-// export const addBenchmark = createAsyncThunk(
-//   "benchmark/addBenchmark",
-//   async (benchmark, {getState}) => {
-//     try {
-//       const { _id } = getState().Login.user;
-//       const mapData = {
-//         title: benchmark.title,
-//         country: benchmark.country,
-//         userId: _id
-//       }
-//       const response = await addBenchmarkApi(mapData);
-//       return response;
-//     } catch (error) {
-//       console.log("Error bench", error)
-//       toast.error("Benchmark Added Failed", { autoClose: 3000 });
-//       throw error; // throw the error to trigger the `rejected` action
-//     }
-//   }
-// );
 export const addBenchmark = async (benchmark) => {
   let resp;
   try {
@@ -93,6 +74,14 @@ export const addBenchmark = async (benchmark) => {
     console.log(err);
     toast.error(err, { autoClose: 3000 });
   }
+};
+export const getSummaryBenchmarking = async (id) => {
+  let resp = await axios.get(
+    `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/summary/${id}`
+  );
+  // let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
+  console.log("benchmark getSummary", resp);
+  return resp;
 };
 
 //admin
