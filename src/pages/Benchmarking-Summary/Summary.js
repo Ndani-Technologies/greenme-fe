@@ -55,6 +55,7 @@ const BenhmarkSummary = () => {
               {" "}
               <span className="fw-light">End date:</span>{" "}
               {summary && summary?.endDate}
+
             </span>
           </div>
           <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
