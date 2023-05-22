@@ -3,7 +3,7 @@ import api from "../../config";
 
 // default
 // axios.defaults.baseURL = api.api.BENCHMARKING_URL;
-axios.defaults.baseURL = "http://localhost:5001/api/v1/";
+// axios.defaults.baseURL = "http://localhost:5001/api/v1/";
 // content type
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
