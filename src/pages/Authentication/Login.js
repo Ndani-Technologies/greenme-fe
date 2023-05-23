@@ -34,6 +34,7 @@ import {
   socialLogin,
   resetLoginFlag,
   loginUserReal,
+  registerUserReal,
 } from "../../slices/thunks";
 
 import logoLight from "../../assets/images/logo-light.png";

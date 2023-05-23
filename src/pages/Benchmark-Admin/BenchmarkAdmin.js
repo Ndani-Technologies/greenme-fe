@@ -378,7 +378,7 @@ const BenchmarkAdmin = () => {
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
-                      href="/adminbenchmarking/compare"
+                      href={`/adminbenchmarking/${cellProps.row.original._id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
@@ -461,6 +461,7 @@ const BenchmarkAdmin = () => {
                         isGlobalFilter={true}
                         isAddUserList={false}
                         isFilterA={true}
+                        setInfo={setInfo}
                         isFooter={true}
                         isSearchInput={false}
                         customPageSize={8}
