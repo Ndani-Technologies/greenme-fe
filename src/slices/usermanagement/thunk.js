@@ -1,10 +1,9 @@
 import axios from "axios";
 import { apiError, userDetailFailure, userDetailSuccess } from "./reducer";
-import env from "react-dotenv";
 export const getUserDetails = (history) => async (dispatch) => {
   try {
     // const resp = await axios.get("http://localhost:5000/api/v1/user/");
-    const resp = await axios.get(env.USER_URL + "user");
+    const resp = await axios.get(process.env.REACT_APP_USER_URL + "user");
     if (resp.success) {
       let data = resp.data;
       console.log("response post", data);
@@ -38,7 +37,9 @@ export const deleteUserDetails = (userId) => async (dispatch, getState) => {
     // const resp = await axios.delete(
     //   `http://localhost:5000/api/v1/user/${userId}`
     // );
-    const resp = await axios.delete(`${env.USER_URL}user/${userId}`);
+    const resp = await axios.delete(
+      `${process.env.REACT_APP_USER_URL}user/${userId}`
+    );
     if (resp.success) {
       const userDetail = getState().UserDetail.userDetail;
       // console.log("Current state", userDetail);
@@ -62,7 +63,9 @@ export const updatedUserDetails = (user) => async (dispatch, getState) => {
     //   `http://localhost:5000/api/v1/user/${user._id}`,
     //   user
     // );
-    const resp = await axios.delete(`${env.USER_URL}user/${user._Id}`);
+    const resp = await axios.delete(
+      `${process.env.REACT_APP_USER_URL}user/${user._Id}`
+    );
     if (resp.success) {
       console.log("updated users", resp, user);
 
