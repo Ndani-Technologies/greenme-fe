@@ -35,14 +35,24 @@ export const getSingleBenchmark = async (id) => {
 export const updateUserResp =
   (id, user_resp, history) => async (dispatch, getState) => {
     let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`,
+      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+      { user_resp }
+    );
+    // let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
+    console.log("benchmark  user_resp_update", resp);
+    if (resp) history("/benchmarking");
+  };
+export const updateUserRespSave =
+  (id, user_resp, history) => async (dispatch, getState) => {
+    let resp = await axios.patch(
+      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_save/${id}`,
+
       { user_resp }
     );
     // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };
-
 export const addBenchmark = async (benchmark) => {
   let resp;
   try {

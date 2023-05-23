@@ -38,6 +38,7 @@ import UsersManagement from "../pages/Management/UserManagement";
 import Profile from "../pages/UserDetail/UserDetail";
 import BenchmarkingQA from "../pages/BenchmarkingQA/BenchmarkingQA";
 import Comparison from "../pages/Authentication/Benchmarking-Comparison/Comparison";
+import BenchmarkingEdit from "../pages/Benchmarking_Edit_Question/Benchmarking";
 import BenchmarkAdmin from "../pages/Benchmark-Admin/BenchmarkAdmin";
 import QAComparison from "../pages/Benchmark-QA-Comparison/QAComparison";
 import BenchmarkingDashboard from "../pages/Benchmarking-Dashboard/Benchmarking";
@@ -71,6 +72,7 @@ const authProtectedRoutes = [
   //benchmarking user
   { path: "/benchmarking", component: <BenchmarkingDashboard /> },
   { path: `/benchmarking/:id`, component: <Benchmarking /> },
+  { path: `/adminbenchmarking/:id`, component: <BenchmarkingEdit /> },
   { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
   //benchmarking admin
   { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
