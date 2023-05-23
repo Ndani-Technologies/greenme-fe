@@ -1,4 +1,3 @@
-import env from "react-dotenv";
 const ob = {
   google: {
     API_KEY: "",
@@ -9,8 +8,8 @@ const ob = {
     APP_ID: "",
   },
   api: {
-    // USER_URL: env.USER_URL || "",
-    // BENCHMARKING_URL: env.BENCHMARK_BASE_URL || ""
+    // USER_URL: process.env.USER_URL || "",
+    // BENCHMARKING_URL: process.env.BENCHMARK_BASE_URL || ""
   },
 };
 

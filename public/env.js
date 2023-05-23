@@ -7,8 +7,7 @@ window.env = {
     "https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking",
   CATEGORY_URL: "https://backend.greenme.fleetforum.org/api/v1/bench/category",
   CHROME_CRASHPAD_PIPE_NAME:
-
-    "\\\\.\\pipe\\LOCAL\\crashpad_12324_GEBYZWVHQEOZADWK",
+    "\\\\.\\pipe\\LOCAL\\crashpad_1244_YLFZYIKSJRJQWSTL",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
@@ -161,7 +160,7 @@ window.env = {
   npm_execpath:
     "C:\\Users\\DELL\\AppData\\Roaming\\nvm\\v14.17.3\\node_modules\\npm\\bin\\npm-cli.js",
   npm_lifecycle_event: "start",
-  npm_lifecycle_script: "react-dotenv && react-scripts start",
+  npm_lifecycle_script: "dotenv && react-scripts start",
   npm_node_execpath: "C:\\Program Files\\nodejs\\node.exe",
   npm_package_browserslist_development_0: "last 1 chrome version",
   npm_package_browserslist_development_1: "last 1 firefox version",
@@ -290,7 +289,7 @@ window.env = {
   npm_package_devDependencies__types_lodash: "^4.14.170",
   npm_package_devDependencies__types_react_bootstrap_table2_paginator: "^2.1.1",
   npm_package_devDependencies__types_react_bootstrap_table2_toolkit: "^2.1.4",
-  npm_package_gitHead: "fab75e138570edde4b01499a822f7aecea28374f",
+  npm_package_gitHead: "9b7f71f1c9b496bb7cd2c45e6c5a188bd161051d",
   npm_package_lint_staged____js_jsx_ts_tsx_json_css_scss_md_:
     "prettier --write",
   npm_package_name: "greenme-frontend",
@@ -305,7 +304,7 @@ window.env = {
   npm_package_scripts_format_check:
     'prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"',
   npm_package_scripts_prepare: "husky install",
-  npm_package_scripts_start: "react-dotenv && react-scripts start",
+  npm_package_scripts_start: "dotenv && react-scripts start",
   npm_package_scripts_test: "react-scripts test",
   npm_package_version: "2.4.0",
   NPM_PREFIX_NPM_CLI_JS:
