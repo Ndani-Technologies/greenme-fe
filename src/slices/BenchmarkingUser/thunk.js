@@ -1,13 +1,15 @@
 import axios from "axios";
 import { benchmarkSuccess } from "./reducer";
 import { toast } from "react-toastify";
-import env from "react-dotenv";
 import { addBenchmarkApi } from "../../helpers/Benchmark_helper/benchmark_user_helper";
 import { createAsyncThunk } from "@reduxjs/toolkit";
+
 export const getAllBenchmarks = async () => {
   try {
-    let resp = await axios.get(env.BENCHMARK_URL);
-
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    let resp = await axios.get(
+      `${process.env.REACT_APP_BENCHMARK_URL}/getBenchmarksById/${obj._id}`
+    );
     let data;
     data = resp.map((value) => {
       return {
@@ -28,20 +30,37 @@ export const getAllBenchmarks = async () => {
   }
 };
 export const getSingleBenchmark = async (id) => {
-  let resp = await axios.get(
-    `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
-  );
-  // let resp = await axios.get(env.BENCHMARK_URL);
+  let resp = await axios.get(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`);
+  // let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
   console.log("benchmark get single", resp && resp);
   return resp;
 };
 export const updateUserResp =
   (id, user_resp, history) => async (dispatch, getState) => {
+    // let resp = await axios.patch(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+    //   { user_resp }
+    // );
     let resp = await axios.patch(
-      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/update_user_resp/${id}`,
+      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
       { user_resp }
     );
-    // let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
+    console.log("benchmark  user_resp_update", resp);
+    if (resp) history("/benchmarking");
+  };
+
+export const updateUserRespSave =
+  (id, user_resp, history) => async (dispatch, getState) => {
+    // let resp = await axios.patch(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_save/${id}`,
+
+    //   { user_resp }
+    // );
+    let resp = await axios.patch(
+      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
+      { user_resp }
+    );
+
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };
@@ -57,7 +76,7 @@ export const addBenchmark = async (benchmark) => {
       country: benchmark.country,
       userId: _id,
     };
-    resp = await axios.post(env.BENCHMARK_URL, mapData);
+    resp = await axios.post(process.env.REACT_APP_BENCHMARK_URL, mapData);
     // resp = await axios.post("http://localhost:5001/api/v1/benchmarking", mapData);
     console.log("benchmark add", mapData, resp);
     if (resp) {
@@ -77,9 +96,10 @@ export const addBenchmark = async (benchmark) => {
 };
 export const getSummaryBenchmarking = async (id) => {
   let resp = await axios.get(
-    `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/summary/${id}`
+    `${process.env.REACT_APP_BENCHMARK_URL}/summary/${id}`
   );
-  // let resp = await axios.patch(`${env.BENCHMARK_URL}/${id}`, { user_resp });
+  // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
+
   console.log("benchmark getSummary", resp);
   return resp;
 };
@@ -87,8 +107,7 @@ export const getSummaryBenchmarking = async (id) => {
 //admin
 export const getAllQA = async () => {
   try {
-    // let resp = await axios.get("http://localhost:5001/api/v1/questionnaire");
-    let resp = await axios.get(env.QUESTION_URL);
+    let resp = await axios.get(process.env.REACT_APP_QUESTION_URL);
 
     let data;
     data = resp.map((value) => {
@@ -112,7 +131,7 @@ export const getAllQA = async () => {
 export const getAllAnswers = async () => {
   try {
     // let resp = await axios.get("http://localhost:5001/api/v1/answer");
-    let resp = await axios.get(env.ANSWER_URL);
+    let resp = await axios.get(process.env.REACT_APP_ANSWER_URL);
 
     console.log("get all answers", resp);
     return resp;
@@ -123,7 +142,7 @@ export const getAllAnswers = async () => {
 export const addAnswer = async (data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/answer", data);
-    let resp = await axios.post(env.ANSWER_URL, data);
+    let resp = await axios.post(process.env.REACT_APP_ANSWER_URL, data);
     console.log("add answers", resp);
     return resp;
   } catch (error) {
@@ -133,7 +152,10 @@ export const addAnswer = async (data) => {
 export const updateAnswer = async (id, data) => {
   try {
     // let resp = await axios.put(`http://localhost:5001/api/v1/answer/${id}`, data);
-    let resp = await axios.put(`${env.ANSWER_URL}/${id}`, data);
+    let resp = await axios.put(
+      `${process.env.REACT_APP_ANSWER_URL}/${id}`,
+      data
+    );
 
     console.log("update answers", resp);
     return resp;
@@ -144,7 +166,7 @@ export const updateAnswer = async (id, data) => {
 export const deleteAnswer = async (id) => {
   try {
     // let resp = await axios.delete(`http://localhost:5001/api/v1/answer/${id}`);
-    let resp = await axios.delete(`${env.ANSWER_URL}/${id}`);
+    let resp = await axios.delete(`${process.env.REACT_APP_ANSWER_URL}/${id}`);
 
     console.log("delete answers", resp);
     return resp;
@@ -155,7 +177,7 @@ export const deleteAnswer = async (id) => {
 export const getAllCategories = async () => {
   try {
     // let resp = await axios.get("http://localhost:5001/api/v1/category");
-    let resp = await axios.get(env.CATEGORY_URL);
+    let resp = await axios.get(process.env.REACT_APP_CATEGORY_URL);
 
     console.log("get all categories", resp);
     return resp;
@@ -166,7 +188,10 @@ export const getAllCategories = async () => {
 export const updateCategory = async (id, data) => {
   try {
     // let resp = await axios.put(`http://localhost:5001/api/v1/category/${id}`, data);
-    let resp = await axios.put(`${env.CATEGORY_URL}/${id}`, data);
+    let resp = await axios.put(
+      `${process.env.REACT_APP_CATEGORY_URL}/${id}`,
+      data
+    );
 
     console.log("update categories", resp);
     return resp;
@@ -177,7 +202,9 @@ export const updateCategory = async (id, data) => {
 export const deleteCategory = async (id) => {
   try {
     // let resp = await axios.delete(`http://localhost:5001/api/v1/category/${id}`);
-    let resp = await axios.delete(`${env.CATEGORY_URL}/${id}`);
+    let resp = await axios.delete(
+      `${process.env.REACT_APP_CATEGORY_URL}/${id}`
+    );
 
     console.log("delete category", resp);
     return resp;
@@ -188,7 +215,7 @@ export const deleteCategory = async (id) => {
 export const addCategory = async (data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/category", data);
-    let resp = await axios.post(env.CATEGORY_URL, data);
+    let resp = await axios.post(process.env.REACT_APP_CATEGORY_URL, data);
     console.log("add category", resp);
     return resp;
   } catch (error) {
@@ -198,11 +225,10 @@ export const addCategory = async (data) => {
 export const addQuestion = async (data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    // let resp = await axios.post(env.QUESTION_URL, data);
-    let resp = await axios.post(
-      "https://backend.greenme.fleetforum.org/api/v1/bench/questionnaire",
-      data
-    );
+
+    let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
+
+
     console.log("add question", resp);
     return resp;
   } catch (error) {
@@ -211,7 +237,7 @@ export const addQuestion = async (data) => {
 };
 export const getAllAdminBenchmarks = async () => {
   try {
-    let resp = await axios.get(env.BENCHMARK_URL);
+    let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
     // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
 
     let data;
@@ -233,9 +259,10 @@ export const updateQuestion = async (id, data) => {
   try {
     console.log(data, "Data inside updatequestionaiire");
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    // let resp = await axios.put(`{${env.QUESTION_URL}/${id}}`, data);
+    // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.put(
-      `https://backend.greenme.fleetforum.org/api/v1/bench/questionnaire/${id}`,
+      `${process.env.REACT_APP_QUESTION_URL}/${id}`,
+
       data
     );
     console.log("update question", resp);
@@ -248,9 +275,10 @@ export const deleteQuestion = async (id) => {
   try {
     // console.log(data, "Data inside updatequestionaiire");
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    // let resp = await axios.put(`{${env.QUESTION_URL}/${id}}`, data);
+    // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.delete(
-      `https://backend.greenme.fleetforum.org/api/v1/bench/questionnaire/${id}`
+      `${process.env.REACT_APP_QUESTION_URL}/${id}`
+
     );
     console.log("delete question", resp);
     // return resp;
@@ -260,11 +288,12 @@ export const deleteQuestion = async (id) => {
 };
 export const deleteBenchmark = async (id) => {
   try {
-    // console.log(data, "Data inside updatequestionaiire");
-    // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    // let resp = await axios.put(`{${env.QUESTION_URL}/${id}}`, data);
+    // let resp = await axios.delete(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
+    // );
     let resp = await axios.delete(
-      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
+      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
+
     );
     console.log("delete benchmark", resp);
     // return resp;

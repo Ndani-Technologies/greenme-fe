@@ -164,7 +164,7 @@ window.env = {
   npm_execpath:
     "C:\\Users\\HM.Store\\AppData\\Roaming\\nvm\\v14.17.3\\node_modules\\npm\\bin\\npm-cli.js",
   npm_lifecycle_event: "start",
-  npm_lifecycle_script: "react-dotenv && react-scripts start",
+  npm_lifecycle_script: "dotenv && react-scripts start",
   npm_node_execpath: "C:\\Program Files\\nodejs\\node.exe",
   npm_package_browserslist_development_0: "last 1 chrome version",
   npm_package_browserslist_development_1: "last 1 firefox version",
@@ -309,7 +309,7 @@ window.env = {
   npm_package_scripts_format_check:
     'prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}"',
   npm_package_scripts_prepare: "husky install",
-  npm_package_scripts_start: "react-dotenv && react-scripts start",
+  npm_package_scripts_start: "dotenv && react-scripts start",
   npm_package_scripts_test: "react-scripts test",
   npm_package_version: "2.4.0",
   NPM_PREFIX_NPM_CLI_JS:

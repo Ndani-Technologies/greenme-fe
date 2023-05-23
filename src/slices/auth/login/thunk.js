@@ -6,7 +6,6 @@ import {
   postLogin,
   postSocialLogin,
 } from "../../../helpers/fakebackend_helper";
-import env from "react-dotenv";
 import {
   loginSuccess,
   logoutUserSuccess,
@@ -21,12 +20,11 @@ const fireBaseBackend = getFirebaseBackend();
 
 export const loginUserReal = (history) => async (dispatch) => {
   try {
-    // Open a popup window to initiate the SSO process
-
+    // Open a popup window to initiate the SSO
     const popup = window.open(
       env.USER_URL + "user/login",
       "",
-      "width=500,height=500"
+      "width=500,height=700"
     );
     const messagePromise = new Promise((resolve, reject) => {
       window.addEventListener("message", (event) => {
@@ -42,7 +40,7 @@ export const loginUserReal = (history) => async (dispatch) => {
     const resp = await messagePromise;
     if (resp) {
       sessionStorage.setItem("authUser", JSON.stringify(resp));
-      if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
+      if (env.REACT_APP_DEFAULTAUTH === "fake") {
         var finallogin = JSON.stringify(resp);
         finallogin = JSON.parse(finallogin);
         resp = finallogin.data;
@@ -67,7 +65,7 @@ export const registerUserReal = (history) => async (dispatch) => {
     const popup = window.open(
       env.USER_URL + "user/signup",
       "",
-      "width=500,height=500"
+      "width=500,height=700"
     );
     const messagePromise = new Promise((resolve, reject) => {
       window.addEventListener("message", (event) => {
@@ -83,7 +81,7 @@ export const registerUserReal = (history) => async (dispatch) => {
     const resp = await messagePromise;
     if (resp) {
       sessionStorage.setItem("authUser", JSON.stringify(resp));
-      if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
+      if (env.REACT_APP_DEFAULTAUTH === "fake") {
         var finallogin = JSON.stringify(resp);
         finallogin = JSON.parse(finallogin);
         resp = finallogin.data;
@@ -104,7 +102,10 @@ export const registerUserReal = (history) => async (dispatch) => {
 };
 export const updateUser = async (userId, user) => {
   try {
-    let resp = await axios.patch(env.USER_URL + `user/${userId}`, user);
+    let resp = await axios.patch(
+      process.env.REACT_APP_USER_URL + `user/${userId}`,
+      user
+    );
     console.log("update user resp", resp);
     return resp;
   } catch (error) {
@@ -116,9 +117,12 @@ export const logoutUser = () => async (dispatch) => {
   try {
     sessionStorage.removeItem("authUser");
 
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
+    if (env.REACT_APP_DEFAULTAUTH === "firebase") {
+      // let response = await axios.get(
+      //   "http://localhost:5000/api/v1/user/logout"
+      // );
       let response = await axios.get(
-        "http://localhost:5000/api/v1/user/logout"
+        `${process.env.REACT_APP_USER_URL}user/logout`
       );
       // const response = fireBaseBackend.logout;
       dispatch(logoutUserSuccess(response));
@@ -134,7 +138,7 @@ export const socialLogin = (data, history, type) => async (dispatch) => {
   try {
     let response;
 
-    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
+    if (env.REACT_APP_DEFAULTAUTH === "firebase") {
       const fireBaseBackend = getFirebaseBackend();
       response = fireBaseBackend.socialLoginUser(data, type);
     } else {
