@@ -118,8 +118,11 @@ export const logoutUser = () => async (dispatch) => {
     sessionStorage.removeItem("authUser");
 
     if (env.REACT_APP_DEFAULTAUTH === "firebase") {
+      // let response = await axios.get(
+      //   "http://localhost:5000/api/v1/user/logout"
+      // );
       let response = await axios.get(
-        "http://localhost:5000/api/v1/user/logout"
+        `${process.env.REACT_APP_USER_URL}user/logout`
       );
       // const response = fireBaseBackend.logout;
       dispatch(logoutUserSuccess(response));
