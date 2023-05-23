@@ -339,31 +339,31 @@ const Navdata = () => {
       id: 4,
       icon: "ri-stack-line",
       label: "Document sharing",
-      link: "/",
+      link: "#",
     },
     {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "/",
+      link: "#",
     },
     {
       id: 6,
       icon: "ri-apps-2-line",
       label: "Discussions",
-      link: "/",
+      link: "#",
     },
     {
       id: 7,
       icon: "ri-rocket-line",
       label: "Leaderboard",
-      link: "/",
+      link: "#",
     },
     {
       id: 8,
       icon: "ri-pie-chart-line",
       label: "Reports",
-      link: "/",
+      link: "#",
     },
   ];
   return (

@@ -739,7 +739,7 @@ const BenchmarkingQA = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main  mx-n4 mt-n4 w-100 pb-4">
+          <div className="Main  mx-n2 mt-n4 w-100 pb-4">
             <h1>
               Benchmarking Q&A Management <span className="fs-5">Admin</span>
             </h1>
@@ -749,7 +749,7 @@ const BenchmarkingQA = () => {
               criteria for users.
             </p>
           </div>
-          <Col xxl={9} className="m-auto">
+          <Col xxl={12} className="m-auto">
             <div className="d-flex justify-content-between align-items-center w-100">
               <Col className="pt-5">
                 <Button

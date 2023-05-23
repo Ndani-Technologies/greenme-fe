@@ -544,7 +544,7 @@ const BenchmarkingDashboard = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main-sec mx-n4 mt-n4 w-100">
+          <div className="Main-sec mx-n2 mt-n4 w-100">
             <h1>Benchmarking</h1>
             <p style={{ color: "#BEC887" }}>
               This is a page where users can take self-assessment questionnaires
@@ -554,7 +554,7 @@ const BenchmarkingDashboard = () => {
               for the user to view their score and their benchmark results
             </p>
           </div>
-          <Col xxl={9} className="m-auto">
+          <Col xxl={12} className="m-auto">
             <div
               className="d-flex justify-content-between"
               style={{ paddingRight: "100px" }}

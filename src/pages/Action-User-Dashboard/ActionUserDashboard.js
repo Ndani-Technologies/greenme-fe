@@ -542,7 +542,7 @@ const ActionUserDashboard = () => {
               "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
             }
           />
-          <Col xxl={9} className="m-auto mt-5">
+          <Col xxl={12} className="m-auto mt-5">
             <Card id="contactList">
               <CardBody className="pt-0">
                 <div>

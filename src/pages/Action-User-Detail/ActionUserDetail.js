@@ -12,7 +12,6 @@ const ActionUserDetail = () => {
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
-
     initialValues: {
       relevant: 0,
       difficult: 0,

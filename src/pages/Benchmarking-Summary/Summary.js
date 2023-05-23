@@ -17,7 +17,7 @@ const BenhmarkSummary = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main  mx-n4 mt-n4 w-100">
+          <div className="Main  mx-n2 mt-n4 w-100">
             <h1>Benchmarking Summary</h1>
           </div>
           <div className="bg-white p-2 pb-0 pt-4">

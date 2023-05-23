@@ -37,7 +37,9 @@
     color: $white !important;
   }
 }
-
+.apexcharts-legend {
+  flex-direction: column;
+}
 .apexcharts-legend-series {
   font-weight: $font-weight-medium;
 }

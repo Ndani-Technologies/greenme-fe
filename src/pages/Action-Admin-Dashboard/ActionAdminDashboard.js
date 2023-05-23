@@ -607,7 +607,7 @@ const ActionAdminDashboard = () => {
               "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
             }
           />
-          <Col xxl={9} className="m-auto">
+          <Col xxl={12} className="m-auto">
             <div className="d-flex align-items-center justify-content-center gap-2 w-100">
               <div className="pt-5">
                 <Button

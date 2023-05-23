@@ -120,10 +120,6 @@ const CategoryModal = ({
     setDeleteConfirmation(false);
     setDeleteId(null);
   };
-  // const [modals_grid, setmodals_grid] = useState(false);
-  // function tog_grids() {
-  //   setmodals_grid(!modals_grid);
-  // }
   return (
     <Modal
       size="lg p-5"

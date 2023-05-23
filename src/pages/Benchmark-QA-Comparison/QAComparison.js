@@ -7,7 +7,7 @@ const QAComparison = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main  mx-n4 mt-n4 w-100 Comparison">
+          <div className="Main  mx-n2 mt-n4 w-100 Comparison">
             <h1>Benchmarking Q&A Comparison</h1>
             <p>
               Lorem ipsum dolor sit amet consectetur. Aliquam placerat enim

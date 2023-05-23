@@ -113,7 +113,7 @@ const CircleRadialbar = ({ dataColors }) => {
       show: true,
       floating: true,
       fontSize: "16px",
-      //   position: "left",
+      position: "fixed",
       offsetX: 90,
       offsetY: 15,
       labels: {

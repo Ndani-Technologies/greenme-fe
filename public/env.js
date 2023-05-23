@@ -6,7 +6,7 @@ window.env = {
   BENCHMARK_URL: "http://localhost:5001/api/v1/benchmarking",
   CATEGORY_URL: "http://localhost:5001/api/v1/category",
   CHROME_CRASHPAD_PIPE_NAME:
-    "\\\\.\\pipe\\LOCAL\\crashpad_3840_LEMEIOHSFIHVXHLI",
+    "\\\\.\\pipe\\LOCAL\\crashpad_2700_MUBUNNEDMTPQAXCT",
   COLORTERM: "truecolor",
   CommonProgramFiles: "C:\\Program Files\\Common Files",
   "CommonProgramFiles(x86)": "C:\\Program Files (x86)\\Common Files",
@@ -232,6 +232,7 @@ window.env = {
   npm_package_dependencies_react_quilljs: "^1.3.3",
   npm_package_dependencies_react_rangeslider: "^2.2.0",
   npm_package_dependencies_react_rating: "^2.0.5",
+  npm_package_dependencies_react_rating_stars_component: "^2.2.0",
   npm_package_dependencies_react_redux: "^8.0.5",
   npm_package_dependencies_react_responsive_carousel: "^3.2.23",
   npm_package_dependencies_react_router_dom: "^6.6.2",
@@ -240,6 +241,7 @@ window.env = {
   npm_package_dependencies_react_select: "^5.7.3",
   npm_package_dependencies_react_select_country_list: "^2.2.3",
   npm_package_dependencies_react_shepherd: "^4.1.0",
+  npm_package_dependencies_react_simple_star_rating: "^5.1.7",
   npm_package_dependencies_react_switch: "^7.0.0",
   npm_package_dependencies_react_table: "^7.8.0",
   npm_package_dependencies_react_toastify: "^9.1.1",
@@ -284,7 +286,7 @@ window.env = {
   npm_package_devDependencies__types_lodash: "^4.14.170",
   npm_package_devDependencies__types_react_bootstrap_table2_paginator: "^2.1.1",
   npm_package_devDependencies__types_react_bootstrap_table2_toolkit: "^2.1.4",
-  npm_package_gitHead: "9a2808150baa3e8b9dad7830df0060ffc2246d40",
+  npm_package_gitHead: "615a3a6cde0971a7e4cb42dd9b1ed97198073d58",
   npm_package_lint_staged____js_jsx_ts_tsx_json_css_scss_md_:
     "prettier --write",
   npm_package_name: "greenme-frontend",

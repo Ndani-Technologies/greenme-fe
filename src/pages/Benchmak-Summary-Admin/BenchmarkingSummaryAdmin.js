@@ -18,7 +18,7 @@ const BenchmarkSummaryAdmin = () => {
     <React.Fragment>
       <Layouts>
         <div className="page-content overflow-auto ">
-          <div className="Main  mx-n4 mt-n4 w-100">
+          <div className="Main  mx-n2 mt-n4 w-100">
             <h1>Benchmarking Summary</h1>
             <div className="d-flex gap-4">
               <div>Username: Tonya B</div>
