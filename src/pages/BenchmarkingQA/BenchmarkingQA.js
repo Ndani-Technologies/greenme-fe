@@ -79,6 +79,7 @@ const BenchmarkingQA = () => {
   const [allCategories, setAllCategories] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const allQA = () => {
+    console.log("Inside All QA");
     getAllQA()
       .then((resp) => setQA(resp))
       .catch((err) => console.log("qa all error", err));
@@ -225,18 +226,26 @@ const BenchmarkingQA = () => {
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
           .then((resp) => {
+            toast.success("Successfully Updated");
             allQA();
           })
-          .catch((err) => console.log("error in update question"));
+          .catch((err) => {
+            toast.error(`Error in updating question`);
+            console.log("error in update question");
+          });
       } else {
         // let resp = await axios.post(`${env.ANSWER_URL}/${id}`, data);
         addQuestion(mappedData)
           .then((resp) => {
+            toast.success("Successfully Added");
             setQA([...qa, resp]);
             setSelectedIndexes([]);
             validation.resetForm();
           })
-          .catch((err) => console.log("error in adding question"));
+          .catch((err) => {
+            toast.error(`Error in adding question ${err}`);
+            console.log("error in adding question");
+          });
       }
       console.log("values formik", mappedData);
 
@@ -457,19 +466,10 @@ const BenchmarkingQA = () => {
                       className="dropdown-item remove-item-btn"
                       href="#"
                       onClick={() => {
-                        const contactData = cellProps.row.original;
-                        onClickDelete(contactData);
-                        deleteQuestion(cellProps.row.original._id)
-                          .then(() => {
-                            setQA((prev) =>
-                              prev.filter(
-                                (value) =>
-                                  value._id !== cellProps.row.original._id
-                              )
-                            );
-                            toast.done("Question deleted");
-                          })
-                          .catch((err) => toast.error("Error in deletion"));
+                        setDeleteId(cellProps.row.original._id);
+                        setDeleteConfirmation3(true);
+                        // const contactData = cellProps.row.original;
+                        // onClickDelete(contactData);
                       }}
                     >
                       Delete
@@ -540,12 +540,20 @@ const BenchmarkingQA = () => {
           }
           return c;
         });
+        toast.success("successfully Updated");
         setAllAnswers(updatedAnswers);
       })
-      .catch((err) => console.log("error in updating answer", err));
+      .catch((err) => {
+        toast.error("Error in updating answer");
+        console.log("error in updating answer", err);
+      });
     setEditingAnswerId(null);
     setInputFields("");
   };
+
+  // const [updAnswers, setUpdAnswers] = useState([]);
+  // const [updCategories, setUpdCategories] = useState([]);
+
   const handleAnswerAdd = () => {
     const newName = inputFields;
     if (newName) {
@@ -555,14 +563,16 @@ const BenchmarkingQA = () => {
       };
       addAnswer(newAnswer)
         .then((resp) => {
+          toast.success("Aded successfully");
           setAllAnswers([...allAnswers, resp]);
         })
-        .catch((err) => console.log("adding in answer", err));
+        .catch((err) => {
+          toast.error("Unable to update");
+          console.log("adding in answer", err);
+        });
       setInputFields("");
     }
   };
-  // const [updAnswers, setUpdAnswers] = useState([]);
-  // const [updCategories, setUpdCategories] = useState([]);
 
   const handleDeletes = (AnswerId, id) => {
     setEditingAnswerId(AnswerId);
@@ -633,9 +643,13 @@ const BenchmarkingQA = () => {
       };
       addCategory(newCategory)
         .then((resp) => {
+          toast.success("Successfully Added");
           setAllCategories([...allCategories, resp]);
         })
-        .catch((err) => console.log("error in adding category", err));
+        .catch((err) => {
+          toast.error("Unable to Update");
+          console.log("error in adding category", err);
+        });
       setInputField("");
     }
   };
@@ -658,9 +672,13 @@ const BenchmarkingQA = () => {
           }
           return c;
         });
+        toast.success("Successfully Updated");
         setAllCategories(updatedCategories);
       })
-      .catch((err) => console.log("err in updating category", err));
+      .catch((err) => {
+        toast.error("Unable to Update");
+        console.log("err in updating category", err);
+      });
     setEditingCategoryId(null);
     setInputField("");
   };
@@ -678,6 +696,15 @@ const BenchmarkingQA = () => {
       })
       .catch((err) => console.log("err in deleteing category", err));
     setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
+  const confirmDelete3 = () => {
+    deleteQuestion(deleteId)
+      .then(() => {
+        setQA((prev) => prev.filter((value) => value._id !== deleteId));
+      })
+      .catch((err) => toast.error("Error in deletion"));
+    setDeleteConfirmation3(false);
     setDeleteId(null);
   };
   const handleDragEnd = (result) => {
@@ -706,6 +733,7 @@ const BenchmarkingQA = () => {
   };
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
+  const [deleteConfirmation3, setDeleteConfirmation3] = useState(false);
 
   const [deleteId, setDeleteId] = useState(null);
 
@@ -714,7 +742,11 @@ const BenchmarkingQA = () => {
     setDeleteId(null);
   };
   const cancelDelete2 = () => {
-    setDeleteConfirmation(false);
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
+  const cancelDelete3 = () => {
+    setDeleteConfirmation3(false);
     setDeleteId(null);
   };
   const [selectedIndexes, setSelectedIndexes] = useState([]);
@@ -1232,7 +1264,6 @@ const BenchmarkingQA = () => {
                             type="submit"
                             className="p-4 pt-2 pb-2"
                             color="secondary"
-                            onCl
                           >
                             Save
                           </Button>
@@ -1474,6 +1505,7 @@ const BenchmarkingQA = () => {
                               <div className="d-flex gap-3 col-lg-12 mt-3">
                                 <div className="d-flex gap-2">
                                   <Button onClick={handleUpdates}>Save</Button>
+
                                   <Button
                                     color="primary"
                                     onClick={handleAnswerAdd}
@@ -1777,6 +1809,20 @@ const BenchmarkingQA = () => {
           </Card>
         </Col>
       </div>
+      <Modal isOpen={deleteConfirmation3} toggle={cancelDelete3}>
+        <ModalHeader toggle={cancelDelete3}>Confirm Deletion</ModalHeader>
+        <ModalBody>
+          Are you sure you want to delete this answer variation?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={confirmDelete3}>
+            Delete
+          </Button>
+          <Button color="secondary" onClick={cancelDelete3}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
       {/* </Layouts> */}
     </React.Fragment>
   );
