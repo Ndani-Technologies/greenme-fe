@@ -64,6 +64,7 @@ export const updateUserRespSave =
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };
+
 export const addBenchmark = async (benchmark) => {
   let resp;
   try {
@@ -98,6 +99,7 @@ export const getSummaryBenchmarking = async (id) => {
     `${process.env.REACT_APP_BENCHMARK_URL}/summary/${id}`
   );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
+
   console.log("benchmark getSummary", resp);
   return resp;
 };
@@ -226,6 +228,7 @@ export const addQuestion = async (data) => {
 
     let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
 
+
     console.log("add question", resp);
     return resp;
   } catch (error) {
@@ -259,6 +262,7 @@ export const updateQuestion = async (id, data) => {
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.put(
       `${process.env.REACT_APP_QUESTION_URL}/${id}`,
+
       data
     );
     console.log("update question", resp);
@@ -274,6 +278,7 @@ export const deleteQuestion = async (id) => {
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.delete(
       `${process.env.REACT_APP_QUESTION_URL}/${id}`
+
     );
     console.log("delete question", resp);
     // return resp;
@@ -288,6 +293,7 @@ export const deleteBenchmark = async (id) => {
     // );
     let resp = await axios.delete(
       `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
+
     );
     console.log("delete benchmark", resp);
     // return resp;

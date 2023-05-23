@@ -23,6 +23,7 @@ import {
   updateUserResp,
   updateUserRespSave,
 } from "../../slices/thunks";
+
 import { BottomNavigation } from "@mui/material";
 
 const Benchmarking = () => {
@@ -31,6 +32,7 @@ const Benchmarking = () => {
   const navigate = useNavigate();
   const [benchmark, setBenchmark] = useState([]);
   const [questions, setQuestions] = useState([]);
+
   const [category, setCategory] = useState([]);
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
@@ -49,6 +51,7 @@ const Benchmarking = () => {
     });
     console.log("benchmark by cateogry", benchmarkByCategory);
     setQuestions(benchmarkByCategory);
+
   };
   useEffect(() => {
     callApi();
@@ -260,6 +263,7 @@ const Benchmarking = () => {
                         className={`button ${
                           activeButtonIndex === btnIndex ? "active" : ""
                         }`}
+
                         onClick={() =>
                           handleButtonClick(
                             (currentPage - 1) * numPages + index,
@@ -279,6 +283,7 @@ const Benchmarking = () => {
           </div>
         );
       });
+
 
   const handleSubmit = () => {
     console.log("here");
@@ -304,6 +309,7 @@ const Benchmarking = () => {
             <CardBody className="pl-1 pr-1">
               <Nav pills className="nav-justified mb-3 mt-3">
                 {category.length >= 0 &&
+
                   category.map((value, index) => {
                     return (
                       <NavItem key={index}>
@@ -314,6 +320,7 @@ const Benchmarking = () => {
                           })}
                           onClick={() => {
                             justifyPillsToggle(value._id);
+
                           }}
                         >
                           {value.titleEng}
@@ -321,6 +328,7 @@ const Benchmarking = () => {
                       </NavItem>
                     );
                   })}
+
               </Nav>
 
               <TabContent
@@ -446,6 +454,7 @@ const Benchmarking = () => {
                             onClick={() => {
                               dispatch(
                                 updateUserRespSave(
+
                                   benchmark._id,
                                   user_resp,
                                   navigate

@@ -195,6 +195,7 @@ const BenchmarkingQA = () => {
       category: "",
       answerOption: [],
       includeExplanation: false,
+
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -214,6 +215,7 @@ const BenchmarkingQA = () => {
             }
             validation.setValues(answerIds);
           });
+
         });
       const mappedData = {
         ...values,
@@ -222,6 +224,7 @@ const BenchmarkingQA = () => {
         status: "active" ? true : false,
         visibility: "True" ? true : false,
         response: parseInt(values.response.split("%")[0]),
+
       };
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
@@ -233,11 +236,13 @@ const BenchmarkingQA = () => {
             toast.error(`Error in updating question`);
             console.log("error in update question");
           });
+
       } else {
         // let resp = await axios.post(`${env.ANSWER_URL}/${id}`, data);
         addQuestion(mappedData)
           .then((resp) => {
             toast.success("Successfully Added");
+
             setQA([...qa, resp]);
             setSelectedIndexes([]);
             validation.resetForm();
@@ -250,6 +255,7 @@ const BenchmarkingQA = () => {
 
       console.log("values formik", mappedData);
       setmodal_grid(false);
+
 
       toggle();
     },
@@ -471,6 +477,7 @@ const BenchmarkingQA = () => {
                         setDeleteConfirmation3(true);
                         // const contactData = cellProps.row.original;
                         // onClickDelete(contactData);
+
                       }}
                     >
                       Delete
@@ -645,6 +652,7 @@ const BenchmarkingQA = () => {
       addCategory(newCategory)
         .then((resp) => {
           toast.success("Successfully Added");
+
           setAllCategories([...allCategories, resp]);
         })
         .catch((err) => {
@@ -1120,12 +1128,14 @@ const BenchmarkingQA = () => {
                                                 <div className="form-check form-switch form-switch-right form-switch-md">
                                                   <Label
                                                     htmlFor={`form-grid-showcode-${index}`}
+
                                                     className="form-label text-muted"
                                                   >
                                                     Include Explanation
                                                   </Label>
                                                   <Input
                                                     id={`form-grid-showcode-${index}`}
+
                                                     className="form-check-input code-switcher"
                                                     type="checkbox"
                                                     value="active"
@@ -1143,11 +1153,13 @@ const BenchmarkingQA = () => {
                                                       validation.setFieldValue(
                                                         "answerOptions",
                                                         updatedAnswers
+
                                                       );
                                                     }}
                                                     style={{
                                                       backgroundColor:
                                                         value.includeExplanation
+
                                                           ? "#88C756"
                                                           : "#fff",
                                                       width: "50px",
@@ -1155,6 +1167,7 @@ const BenchmarkingQA = () => {
                                                     }}
                                                   />
                                                 </div>
+
                                               </div>
                                             </div>
                                           )}
@@ -1260,6 +1273,7 @@ const BenchmarkingQA = () => {
                             type="submit"
                             className="p-4 pt-2 pb-2"
                             color="secondary"
+                            onCl
                           >
                             Save
                           </Button>
