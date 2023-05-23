@@ -810,7 +810,7 @@ const BenchmarkAdmin = () => {
               </Card>
             </Col>
 
-            <Col xxl={3}>
+            {/* <Col xxl={3}>
               <Card id="contact-view-detail">
                 <CardBody className="text-center">
                   <div className="position-relative d-inline-block">
@@ -889,7 +889,7 @@ const BenchmarkAdmin = () => {
                   </div>
                 </CardBody>
               </Card>
-            </Col>
+            </Col> */}
           </Row>
         </Col>
       </div>

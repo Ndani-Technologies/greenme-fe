@@ -195,7 +195,6 @@ const BenchmarkingQA = () => {
       category: "",
       answerOption: [],
       includeExplanation: false,
-
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -207,21 +206,22 @@ const BenchmarkingQA = () => {
         (value) => value.titleEng == values.category
       );
       const answerIds = [];
-      values.answerOption.forEach((value) => {
-        allAnswers.forEach((val) => {
-          if (value === val.answerOption) {
-            answerIds.push(val._id);
-          }
-          validation.setValues(answerIds);
-
+      values?.answerOption.length &&
+        values?.answerOption.forEach((value) => {
+          allAnswers.forEach((val) => {
+            if (value === val.answerOption) {
+              answerIds.push(val._id);
+            }
+            validation.setValues(answerIds);
+          });
         });
-      });
       const mappedData = {
         ...values,
         category: cd._id,
         answerOptions: answerIds,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
+        response: parseInt(values.response.split("%")[0]),
       };
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
@@ -247,8 +247,9 @@ const BenchmarkingQA = () => {
             console.log("error in adding question");
           });
       }
-      console.log("values formik", mappedData);
 
+      console.log("values formik", mappedData);
+      setmodal_grid(false);
 
       toggle();
     },
@@ -1119,14 +1120,12 @@ const BenchmarkingQA = () => {
                                                 <div className="form-check form-switch form-switch-right form-switch-md">
                                                   <Label
                                                     htmlFor={`form-grid-showcode-${index}`}
-
                                                     className="form-label text-muted"
                                                   >
                                                     Include Explanation
                                                   </Label>
                                                   <Input
                                                     id={`form-grid-showcode-${index}`}
-
                                                     className="form-check-input code-switcher"
                                                     type="checkbox"
                                                     value="active"
@@ -1144,13 +1143,11 @@ const BenchmarkingQA = () => {
                                                       validation.setFieldValue(
                                                         "answerOptions",
                                                         updatedAnswers
-
                                                       );
                                                     }}
                                                     style={{
                                                       backgroundColor:
                                                         value.includeExplanation
-
                                                           ? "#88C756"
                                                           : "#fff",
                                                       width: "50px",
@@ -1158,7 +1155,6 @@ const BenchmarkingQA = () => {
                                                     }}
                                                   />
                                                 </div>
-
                                               </div>
                                             </div>
                                           )}

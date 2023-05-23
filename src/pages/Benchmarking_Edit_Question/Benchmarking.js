@@ -35,9 +35,10 @@ const Benchmarking = () => {
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
     });
-    const uniqueArr = Array.from(new Set(arr.map((item) => item.titleEng))).map(
-      (titleEng) => arr.find((item) => item.titleEng === titleEng)
-    );
+    debugger;
+    const uniqueArr = Array.from(
+      new Set(arr.map((item) => item?.titleEng))
+    ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
     // console.log("benchmark single", bench, benchmark)
     setCategory(uniqueArr);
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
