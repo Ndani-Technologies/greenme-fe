@@ -195,6 +195,7 @@ const BenchmarkingQA = () => {
       category: "",
       answerOption: [],
       includeExplanation: false,
+
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -212,6 +213,7 @@ const BenchmarkingQA = () => {
             answerIds.push(val._id);
           }
           validation.setValues(answerIds);
+
         });
       });
       const mappedData = {
@@ -246,6 +248,7 @@ const BenchmarkingQA = () => {
           });
       }
       console.log("values formik", mappedData);
+
 
       toggle();
     },
@@ -1116,12 +1119,14 @@ const BenchmarkingQA = () => {
                                                 <div className="form-check form-switch form-switch-right form-switch-md">
                                                   <Label
                                                     htmlFor={`form-grid-showcode-${index}`}
+
                                                     className="form-label text-muted"
                                                   >
                                                     Include Explanation
                                                   </Label>
                                                   <Input
                                                     id={`form-grid-showcode-${index}`}
+
                                                     className="form-check-input code-switcher"
                                                     type="checkbox"
                                                     value="active"
@@ -1139,11 +1144,13 @@ const BenchmarkingQA = () => {
                                                       validation.setFieldValue(
                                                         "answerOptions",
                                                         updatedAnswers
+
                                                       );
                                                     }}
                                                     style={{
                                                       backgroundColor:
                                                         value.includeExplanation
+
                                                           ? "#88C756"
                                                           : "#fff",
                                                       width: "50px",
@@ -1151,6 +1158,7 @@ const BenchmarkingQA = () => {
                                                     }}
                                                   />
                                                 </div>
+
                                               </div>
                                             </div>
                                           )}
