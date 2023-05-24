@@ -22,15 +22,13 @@ export const loginUserReal = (history) => async (dispatch) => {
   try {
     // Open a popup window to initiate the SSO
     const popup = window.open(
-      env.USER_URL + "user/login",
+      process.env.REACT_APP_USER_URL + "user/login",
       "",
       "width=500,height=700"
     );
     const messagePromise = new Promise((resolve, reject) => {
       window.addEventListener("message", (event) => {
-        console.log("event", event);
-
-        if (event.origin !== env.BASE_URL) return;
+        if (event.origin !== process.env.REACT_APP_BASE_URL) return;
 
         resolve(event.data);
 
@@ -61,9 +59,10 @@ export const loginUserReal = (history) => async (dispatch) => {
 };
 
 export const registerUserReal = (history) => async (dispatch) => {
+  axios.defaults.baseURL;
   try {
     const popup = window.open(
-      env.USER_URL + "user/signup",
+      process.env.REACT_APP_USER_URL + "user/signup",
       "",
       "width=500,height=700"
     );
@@ -71,7 +70,7 @@ export const registerUserReal = (history) => async (dispatch) => {
       window.addEventListener("message", (event) => {
         console.log("event", event);
 
-        if (event.origin !== env.BASE_URL) return;
+        if (event.origin !== process.env.REACT_APP_BASE_URL) return;
 
         resolve(event.data);
 
