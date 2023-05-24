@@ -283,8 +283,6 @@ const Benchmarking = () => {
           </div>
         );
       });
-
-
   const handleSubmit = () => {
     console.log("here");
     dispatch(updateUserResp(benchmark._id, user_resp, navigate));
@@ -320,7 +318,6 @@ const Benchmarking = () => {
                           })}
                           onClick={() => {
                             justifyPillsToggle(value._id);
-
                           }}
                         >
                           {value.titleEng}
@@ -328,7 +325,6 @@ const Benchmarking = () => {
                       </NavItem>
                     );
                   })}
-
               </Nav>
 
               <TabContent

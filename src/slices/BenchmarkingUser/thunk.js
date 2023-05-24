@@ -61,6 +61,7 @@ export const updateUserRespSave =
       { user_resp }
     );
 
+
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };
@@ -111,11 +112,10 @@ export const getAllQA = async () => {
 
     let data;
     data = resp.map((value) => {
-      console.log(value, "value");
       return {
         ...value,
-        response: "50%",
-        answered: 2,
+        response: 0,
+        answered: value.whoHasAnswer?.totalUsers,
         category: value?.category?.titleEng,
         status: value?.status ? "active" : "In-active",
         visibility: value?.visibility ? "True" : "False",
@@ -223,12 +223,11 @@ export const addCategory = async (data) => {
   }
 };
 export const addQuestion = async (data) => {
+  console.log(data, "Inside add question thunk");
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
 
     let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
-
-
     console.log("add question", resp);
     return resp;
   } catch (error) {
@@ -278,7 +277,6 @@ export const deleteQuestion = async (id) => {
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.delete(
       `${process.env.REACT_APP_QUESTION_URL}/${id}`
-
     );
     console.log("delete question", resp);
     // return resp;
@@ -293,7 +291,6 @@ export const deleteBenchmark = async (id) => {
     // );
     let resp = await axios.delete(
       `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
-
     );
     console.log("delete benchmark", resp);
     // return resp;

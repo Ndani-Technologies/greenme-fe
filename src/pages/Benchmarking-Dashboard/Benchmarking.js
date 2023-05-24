@@ -444,7 +444,7 @@ const BenchmarkingDashboard = () => {
                       className="dropdown-item remove-item-btn"
                       onClick={() => {
                         setDeleteConfirmation(true);
-                         setDeleteId(cellProps.row.original._id)
+                        setDeleteId(cellProps.row.original._id);
                         // onClickDelete(contactData);
 
                       }}
