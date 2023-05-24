@@ -2,23 +2,12 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import {
   Col,
-  Container,
-  Row,
   Card,
   CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Label,
-  Input,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  ModalFooter,
-  Table,
-  FormFeedback,
   Button,
 } from "reactstrap";
 import {
@@ -606,8 +595,8 @@ const ActionAdminDashboard = () => {
             "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
           }
         />
-        <Col xxl={9} className="m-auto">
-          <div className="d-flex align-items-center justify-content-center gap-2 w-100">
+        <Col xxl={12}>
+          <div className="d-flex align-items-center justify-content-between gap-2 w-100">
             <div className="pt-5">
               <Button
                 className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded"
