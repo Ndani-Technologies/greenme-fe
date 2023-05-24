@@ -22,6 +22,7 @@ import {
   getSingleBenchmark,
   updateUserResp,
   updateUserRespSave,
+  getUserProgress,
 } from "../../slices/thunks";
 
 import { BottomNavigation } from "@mui/material";
@@ -32,6 +33,7 @@ const Benchmarking = () => {
   const navigate = useNavigate();
   const [benchmark, setBenchmark] = useState([]);
   const [questions, setQuestions] = useState([]);
+  const [progressPercentage, setProgressPercentage] = useState(0);
 
   const [category, setCategory] = useState([]);
   const callApi = async () => {
@@ -41,22 +43,31 @@ const Benchmarking = () => {
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
     });
-    const uniqueArr = Array.from(new Set(arr.map((item) => item.titleEng))).map(
-      (titleEng) => arr.find((item) => item.titleEng === titleEng)
-    );
+    const uniqueArr = Array.from(
+      new Set(arr.map((item) => item?.titleEng))
+    ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
     // console.log("benchmark single", bench, benchmark)
     setCategory(uniqueArr);
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
-      if (value.category._id === arr[0]._id) return value;
+      if (value.category?._id === arr[0]._id) return value;
     });
     console.log("benchmark by cateogry", benchmarkByCategory);
     setQuestions(benchmarkByCategory);
-
   };
   useEffect(() => {
     callApi();
+    getProgressPercentage();
+
     // setBenchmark(benchmarkByCategory);
   }, []);
+
+  const getProgressPercentage = async () => {
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    console.log(obj, "user object");
+    const res = await getUserProgress(obj._id);
+    console.log(res, "percentage API result");
+    setProgressPercentage(res);
+  };
 
   const [justifyPillsTab, setjustifyPillsTab] = useState(
     category.length > 0 ? category[0]._id : null
@@ -68,7 +79,7 @@ const Benchmarking = () => {
     if (justifyPillsTab !== tab) {
       const benchmarkByCategory = benchmark.questionnaire.filter(
         (value, index) => {
-          if (value.category._id === tab) return value;
+          if (value.category?._id === tab) return value;
         }
       );
       console.log("benchmark by cateogry", benchmarkByCategory);
@@ -179,12 +190,12 @@ const Benchmarking = () => {
 
         // Find the user response for the current question
         const userResponse = benchmark.user_resp.find(
-          (resp) => resp.questionId === item._id
+          (resp) => resp.questionId === item?._id
         );
 
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
-          (option) => option._id === userResponse?.selectedOption
+          (option) => option?._id === userResponse?.selectedOption
         );
 
         return (
@@ -231,7 +242,7 @@ const Benchmarking = () => {
                   item.answerOptions.map((btn, btnIndex) => {
                     const isSelected = selectedOptionIndex === btnIndex;
                     const isUserResponse =
-                      userResponse?.selectedOption === btn._id;
+                      userResponse?.selectedOption === btn?._id;
                     const buttonClass = isSelected ? "button active" : "button";
 
                     return (
@@ -243,8 +254,8 @@ const Benchmarking = () => {
                               (currentPage - 1) * numPages + index,
                               btnIndex,
                               btn.answerOption,
-                              item._id,
-                              btn._id
+                              item?._id,
+                              btn?._id
                             )
                           }
                         >
@@ -263,14 +274,13 @@ const Benchmarking = () => {
                         className={`button ${
                           activeButtonIndex === btnIndex ? "active" : ""
                         }`}
-
                         onClick={() =>
                           handleButtonClick(
                             (currentPage - 1) * numPages + index,
                             btnIndex,
                             btn.answerOption,
-                            item._id,
-                            btn._id
+                            item?._id,
+                            btn?._id
                           )
                         }
                       >
@@ -285,7 +295,7 @@ const Benchmarking = () => {
       });
   const handleSubmit = () => {
     console.log("here");
-    dispatch(updateUserResp(benchmark._id, user_resp, navigate));
+    dispatch(updateUserResp(benchmark?._id, user_resp, navigate));
   };
 
   return (
@@ -307,17 +317,16 @@ const Benchmarking = () => {
             <CardBody className="pl-1 pr-1">
               <Nav pills className="nav-justified mb-3 mt-3">
                 {category.length >= 0 &&
-
                   category.map((value, index) => {
                     return (
                       <NavItem key={index}>
                         <NavLink
                           style={{ fontSize: "14px", cursor: "pointer" }}
                           className={classnames({
-                            active: justifyPillsTab === value._id,
+                            active: justifyPillsTab === value?._id,
                           })}
                           onClick={() => {
-                            justifyPillsToggle(value._id);
+                            justifyPillsToggle(value?._id);
                           }}
                         >
                           {value.titleEng}
@@ -402,17 +411,20 @@ const Benchmarking = () => {
                             <div className="d-flex align-items-center mb-2 mt-4">
                               <div className="flex-grow-1 d-flex justify-content-between w-100">
                                 <h5 className="card-title mb-0">
-                                  <span>60% </span> Benchmark progress
+                                  <span>{progressPercentage?.percentage}</span>{" "}
+                                  Benchmark progress
                                 </h5>
-                                <h5>40% to go!</h5>
+                                <h5>
+                                  {100 - progressPercentage?.percentage} to go!
+                                </h5>
                               </div>
                             </div>
                             <div className="progress animated-progress custom-progress progress-label mt-3">
                               <div
                                 className="progress-bar bg- "
                                 role="progressbar"
-                                style={{ width: "60%" }}
-                                aria-valuenow="30"
+                                style={{ width: { progressPercentage } }}
+                                aria-valuenow={progressPercentage.percentage}
                                 aria-valuemin="0"
                                 aria-valuemax="100"
                               >
@@ -450,8 +462,7 @@ const Benchmarking = () => {
                             onClick={() => {
                               dispatch(
                                 updateUserRespSave(
-
-                                  benchmark._id,
+                                  benchmark?._id,
                                   user_resp,
                                   navigate
                                 )
