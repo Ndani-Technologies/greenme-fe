@@ -203,6 +203,7 @@ const BenchmarkingQA = () => {
       });
 
       const answerIds = [];
+
       values?.answerOption.length &&
         values?.answerOption.forEach((value) => {
           allAnswers.forEach((val) => {
