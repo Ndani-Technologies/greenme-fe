@@ -198,6 +198,7 @@ const BenchmarkingQA = () => {
       });
 
       const answerIds = [];
+
       values?.answerOption.length &&
         values?.answerOption.forEach((value) => {
           allAnswers.forEach((val) => {
@@ -699,7 +700,7 @@ const BenchmarkingQA = () => {
             criteria for users.
           </p>
         </div>
-        <Col xxl={9} className="m-auto">
+        <Col xxl={12}>
           <div className="d-flex justify-content-between align-items-center w-100">
             <Col className="pt-5">
               <Button

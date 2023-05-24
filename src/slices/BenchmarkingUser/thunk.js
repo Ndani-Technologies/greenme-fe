@@ -35,6 +35,15 @@ export const getSingleBenchmark = async (id) => {
   console.log("benchmark get single", resp && resp);
   return resp;
 };
+
+export const getUserProgress = async (id) => {
+  let resp = await axios.get(
+    `${process.env.REACT_APP_BENCHMARK_URL}/percentage/percentageOfBenchmarks/${id}`
+  );
+  console.log(resp, "user percentage");
+  return resp;
+};
+
 export const updateUserResp =
   (id, user_resp, history) => async (dispatch, getState) => {
     // let resp = await axios.patch(
@@ -94,6 +103,7 @@ export const addBenchmark = async (benchmark) => {
     toast.error(err, { autoClose: 3000 });
   }
 };
+
 export const getSummaryBenchmarking = async (id) => {
   let resp = await axios.get(
     `${process.env.REACT_APP_BENCHMARK_URL}/summary/${id}`
