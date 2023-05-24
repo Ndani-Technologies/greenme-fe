@@ -60,7 +60,6 @@ function GlobalFilter({
         <form>
           <Row className="g-3">
             <Col className="d-flex align-items-center justify-content-between w-100">
-
               {true && (
                 <div
                   className={
@@ -343,7 +342,6 @@ const TableContainer = ({
                               key={cell.id}
                               {...cell.getCellProps()}
                               onClick={() => {
-                                console.log("row1", cell?.row?.original);
                                 setInfo(cell?.row?.original);
                               }}
                             >
@@ -366,7 +364,6 @@ const TableContainer = ({
                               key={cell.id}
                               {...cell.getCellProps()}
                               onClick={() => {
-                                console.log("row2", cell?.row?.original);
                                 setInfo(cell?.row?.original);
                               }}
                             >

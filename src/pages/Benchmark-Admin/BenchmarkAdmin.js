@@ -437,7 +437,7 @@ const BenchmarkAdmin = () => {
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
           <h1>
-            Benchmarking `<span className="fs-5">Admin</span>
+            Benchmarking <span className="fs-5">Admin</span>
           </h1>
           <p style={{ color: "#BEC887" }}>
             This is a page where users can take self-assessment questionnaires
@@ -447,10 +447,10 @@ const BenchmarkAdmin = () => {
             the user to view their score and their benchmark results
           </p>
         </div>
-        <Col xxl={9} className="m-auto">
-          <Col className="d-flex justify-content-between mt-0 p-5 pt-3 pb-2"></Col>
+        <Col xxl={12}>
+          <Col className="d-flex justify-content-between mt-4 p-5 pt-3 pb-2"></Col>
           <Row>
-            <Col xxl={9}>
+            <Col xxl={12}>
               <Card id="contactList">
                 <CardBody className="pt-0">
                   <div>
