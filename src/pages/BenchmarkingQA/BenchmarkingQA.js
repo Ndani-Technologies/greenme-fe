@@ -212,7 +212,7 @@ const BenchmarkingQA = () => {
             }
             validation.setValues(answerIds);
           });
-
+        });
       values?.answerOption.length &&
         values?.answerOption.forEach((value) => {
           allAnswers.forEach((val) => {
@@ -229,7 +229,6 @@ const BenchmarkingQA = () => {
         status: "active" ? true : false,
         visibility: "True" ? true : false,
         // response: parseInt(values.response.split("%")[0]),
-
       };
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
@@ -242,7 +241,6 @@ const BenchmarkingQA = () => {
           .catch((err) => {
             toast.error(`Error in updating question`);
           });
-
       } else {
         addQuestion(mappedData)
           .then((resp) => {
@@ -256,7 +254,6 @@ const BenchmarkingQA = () => {
             toast.error(`Error in adding question ${err}`);
           });
       }
-
 
       setIsDataUpdated(false);
       console.log("values formik", mappedData);
