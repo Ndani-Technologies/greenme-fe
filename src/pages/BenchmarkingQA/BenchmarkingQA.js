@@ -203,16 +203,6 @@ const BenchmarkingQA = () => {
       });
 
       const answerIds = [];
-
-      values?.answerOption.length &&
-        values?.answerOption.forEach((value) => {
-          allAnswers.forEach((val) => {
-            if (value === val.answerOption) {
-              answerIds.push(val._id);
-            }
-            validation.setValues(answerIds);
-          });
-        });
       values?.answerOption.length &&
         values?.answerOption.forEach((value) => {
           allAnswers.forEach((val) => {
