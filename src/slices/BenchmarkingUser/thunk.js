@@ -231,14 +231,22 @@ export const addCategory = async (data) => {
     console.error(error);
   }
 };
-export const addQuestion = async (data) => {
+export const addQuestion = async (data, category) => {
   console.log(data, "Inside add question thunk");
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
 
     let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
     console.log("add question", resp);
-    return resp;
+    const updatedResp = {
+      ...resp,
+      response: 0,
+      answered: resp.whoHasAnswer?.totalUsers,
+      category: category,
+      status: resp?.status ? "active" : "Inactive",
+      visibility: resp?.visibility ? "True" : "False",
+    };
+    return updatedResp;
   } catch (error) {
     console.error(error);
   }
