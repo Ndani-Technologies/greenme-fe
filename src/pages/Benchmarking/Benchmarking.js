@@ -438,6 +438,7 @@ const Benchmarking = () => {
                                 >
                                   {/* <div className="label">40%</div> */}
                                 </div>
+
                               </div>
                             </CardBody>
                           )}

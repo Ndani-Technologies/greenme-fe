@@ -60,6 +60,7 @@ const Profile = () => {
     getUserProgress(userObj._id)
       .then((res) => setProgressPercentage(res))
       .catch((err) => console.log("error in percentage benchmarking"));
+
   };
 
   useEffect(() => {
@@ -254,6 +255,7 @@ const Profile = () => {
                         </div>
                       </div>
                     )}
+
                   </div>
                   <div className="d-flex align-items-center mb-4 mt-3">
                     <div className="flex-grow-1">
