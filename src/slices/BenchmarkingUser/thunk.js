@@ -83,12 +83,10 @@ export const getSummaryBenchmarking = async (id) => {
 export const getAllQA = async () => {
   try {
     // let resp = await axios.get("http://localhost:5001/api/v1/questionnaire");
-    console.log(process.env.REACT_APP_QUESTION_URL, "console API value");
     let resp = await axios.get(process.env.REACT_APP_QUESTION_URL);
 
     let data;
     data = resp.map((value) => {
-      console.log(value, "value");
       return {
         ...value,
         response: "50%",
@@ -205,7 +203,6 @@ export const addQuestion = async (data) => {
 
     let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
 
-    console.log("add question", resp);
     return resp;
   } catch (error) {
     console.error(error);

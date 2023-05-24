@@ -72,14 +72,11 @@ const BenchmarkingQA = () => {
       isContactSuccess: state.Crm.isContactSuccess,
       error: state.Crm.error,
     }));
-
-  console.log(crmcontacts, "crmcontacts");
   const [qa, setQA] = useState([]);
   const [allAnswers, setAllAnswers] = useState([]);
   const [allCategories, setAllCategories] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const allQA = () => {
-    console.log("Inside All QA");
     getAllQA()
       .then((resp) => setQA(resp))
       .catch((err) => console.log("qa all error", err));
@@ -107,8 +104,6 @@ const BenchmarkingQA = () => {
       setIsEdit(false);
     }
   }, [crmcontacts]);
-
-  console.log(allCategories, "All the categories in the QA file");
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -195,7 +190,6 @@ const BenchmarkingQA = () => {
       category: "",
       answerOption: [],
       includeExplanation: false,
-
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -213,7 +207,6 @@ const BenchmarkingQA = () => {
             answerIds.push(val._id);
           }
           validation.setValues(answerIds);
-
         });
       });
       const mappedData = {
@@ -224,7 +217,7 @@ const BenchmarkingQA = () => {
         visibility: "True" ? true : false,
       };
       if (isDataUpdated) {
-        updateQuestion(questionId, mappedData)
+        await updateQuestion(questionId, mappedData)
           .then((resp) => {
             toast.success("Successfully Updated");
             allQA();
@@ -235,7 +228,9 @@ const BenchmarkingQA = () => {
           });
       } else {
         // let resp = await axios.post(`${env.ANSWER_URL}/${id}`, data);
-        addQuestion(mappedData)
+
+        setIsDataUpdated(false);
+        await addQuestion(mappedData)
           .then((resp) => {
             toast.success("Successfully Added");
             setQA([...qa, resp]);
@@ -248,7 +243,6 @@ const BenchmarkingQA = () => {
           });
       }
       console.log("values formik", mappedData);
-
 
       toggle();
     },
@@ -1119,14 +1113,12 @@ const BenchmarkingQA = () => {
                                                 <div className="form-check form-switch form-switch-right form-switch-md">
                                                   <Label
                                                     htmlFor={`form-grid-showcode-${index}`}
-
                                                     className="form-label text-muted"
                                                   >
                                                     Include Explanation
                                                   </Label>
                                                   <Input
                                                     id={`form-grid-showcode-${index}`}
-
                                                     className="form-check-input code-switcher"
                                                     type="checkbox"
                                                     value="active"
@@ -1144,13 +1136,11 @@ const BenchmarkingQA = () => {
                                                       validation.setFieldValue(
                                                         "answerOptions",
                                                         updatedAnswers
-
                                                       );
                                                     }}
                                                     style={{
                                                       backgroundColor:
                                                         value.includeExplanation
-
                                                           ? "#88C756"
                                                           : "#fff",
                                                       width: "50px",
@@ -1158,7 +1148,6 @@ const BenchmarkingQA = () => {
                                                     }}
                                                   />
                                                 </div>
-
                                               </div>
                                             </div>
                                           )}
