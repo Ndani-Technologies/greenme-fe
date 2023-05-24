@@ -39,7 +39,6 @@ import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
 import Select from "react-select";
 import { toast, ToastContainer } from "react-toastify";
-import Layouts from "../../Layouts";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
@@ -446,7 +445,6 @@ const BenchmarkingDashboard = () => {
                         setDeleteConfirmation(true);
                         setDeleteId(cellProps.row.original._id);
                         // onClickDelete(contactData);
-
                       }}
                     >
                       Delete
@@ -508,7 +506,6 @@ const BenchmarkingDashboard = () => {
 
   return (
     <React.Fragment>
-      {/* <Layouts> */}
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
           <h1>Benchmarking</h1>
@@ -594,30 +591,6 @@ const BenchmarkingDashboard = () => {
                           ) : null}
                         </div>
                       </Col>
-                      {/* <Col>
-                        <select
-                          lg={12}
-                          className="form-select mb-3"
-                          name="country"
-                          onChange={validation2.handleChange}
-                          onBlur={validation2.handleBlur}
-                          value={validation2.values.country || ""}
-                          invalid={
-                            validation2.touched.country &&
-                            Boolean(validation2.errors.country)
-                          }
-                        >
-                          <option>Select Duty Station Country</option>
-                          <option value="kenya">Kenya</option>
-                          <option value="uk">United Kingdom</option>
-                        </select>
-                        {validation2.touched.country &&
-                        validation2.errors.country ? (
-                          <FormFeedback type="invalid">
-                            {validation2.errors.country}
-                          </FormFeedback>
-                        ) : null}
-                      </Col> */}
                       <div className="col-lg-12">
                         <div className="hstack gap-2 justify-content-start">
                           <Button type="submit" color="primary">
@@ -997,7 +970,6 @@ const BenchmarkingDashboard = () => {
           </Button>
         </ModalFooter>
       </Modal>
-      {/* </Layouts> */}
     </React.Fragment>
   );
 };

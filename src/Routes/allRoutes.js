@@ -54,6 +54,7 @@ import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDas
 import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
+import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
 
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
@@ -99,6 +100,8 @@ const authProtectedRoutes = [
   { path: "/actioncomparison", component: <ActionComparison /> },
   { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
   { path: "/AdminRelationship", component: <AdminRelation /> },
+  //User Collaboration
+  { path: "/UserCollaboration", component: <UserCollaboration /> },
 ];
 
 const publicRoutes = [
