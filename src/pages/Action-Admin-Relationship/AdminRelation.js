@@ -7,6 +7,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Button,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -23,6 +24,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import Layouts from "../../Layouts";
+import RelationModal from "./RelationModal";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -140,6 +142,10 @@ const arr = [
   },
 ];
 const AdminRelation = () => {
+  const [modal_grid, setmodal_grid] = useState(false);
+  function tog_grid() {
+    setmodal_grid(!modal_grid);
+  }
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,
@@ -490,7 +496,16 @@ const AdminRelation = () => {
         <ActionMain
           Title={"Recommended Actions - Benchmark to Action Relationships"}
         />
-        <Col xxl={9} className="m-auto mt-5">
+        <Button className="mt-4 " onClick={() => setmodal_grid(true)}>
+          <i class="ri-add-fill mt-2"></i>Add New Relationship
+        </Button>
+        {modal_grid && (
+          <RelationModal
+            modal_grid={modal_grid}
+            setmodal_grid={setmodal_grid}
+          />
+        )}
+        <Col xxl={12} className="m-auto mt-5">
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
