@@ -57,8 +57,10 @@ const Profile = () => {
   const userObj = JSON.parse(sessionStorage.getItem("authUser"));
 
   const getProgressPercentage = async () => {
-    const res = await getUserProgress(userObj._id);
-    setProgressPercentage(res);
+    getUserProgress(userObj._id)
+      .then((res) => setProgressPercentage(res))
+      .catch((err) => console.log("error in percentage benchmarking"));
+
   };
 
   useEffect(() => {
@@ -237,20 +239,23 @@ const Profile = () => {
               <Card>
                 <CardBody>
                   <div className="progress animated-progress custom-progress progress-label mt-4">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{
-                        width: progressPercentage.percentage.toString() + "%",
-                      }}
-                      aria-valuenow={progressPercentage.percentage}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">
-                        {progressPercentage.percentage}
+                    {progressPercentage?.percentage >= 0 && (
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{
+                          width: progressPercentage.percentage + "%",
+                        }}
+                        aria-valuenow={progressPercentage.percentage}
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">
+                          {progressPercentage.percentage}
+                        </div>
                       </div>
-                    </div>
+                    )}
+
                   </div>
                   <div className="d-flex align-items-center mb-4 mt-3">
                     <div className="flex-grow-1">
