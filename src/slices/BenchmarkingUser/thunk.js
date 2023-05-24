@@ -6,7 +6,10 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const getAllBenchmarks = async () => {
   try {
-    let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    let resp = await axios.get(
+      `${process.env.REACT_APP_BENCHMARK_URL}/getBenchmarksById/${obj._id}`
+    );
     let data;
     data = resp.map((value) => {
       return {
@@ -34,11 +37,30 @@ export const getSingleBenchmark = async (id) => {
 };
 export const updateUserResp =
   (id, user_resp, history) => async (dispatch, getState) => {
+    // let resp = await axios.patch(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+    //   { user_resp }
+    // );
     let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`,
+      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
       { user_resp }
     );
-    // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
+    console.log("benchmark  user_resp_update", resp);
+    if (resp) history("/benchmarking");
+  };
+
+export const updateUserRespSave =
+  (id, user_resp, history) => async (dispatch, getState) => {
+    // let resp = await axios.patch(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_save/${id}`,
+
+    //   { user_resp }
+    // );
+    let resp = await axios.patch(
+      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
+      { user_resp }
+    );
+
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };
@@ -73,8 +95,11 @@ export const addBenchmark = async (benchmark) => {
   }
 };
 export const getSummaryBenchmarking = async (id) => {
-  let resp = await axios.get(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`);
+  let resp = await axios.get(
+    `${process.env.REACT_APP_BENCHMARK_URL}/summary/${id}`
+  );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
+
   console.log("benchmark getSummary", resp);
   return resp;
 };
@@ -82,15 +107,14 @@ export const getSummaryBenchmarking = async (id) => {
 //admin
 export const getAllQA = async () => {
   try {
-    // let resp = await axios.get("http://localhost:5001/api/v1/questionnaire");
     let resp = await axios.get(process.env.REACT_APP_QUESTION_URL);
 
     let data;
     data = resp.map((value) => {
       return {
         ...value,
-        response: "50%",
-        answered: 2,
+        response: 0,
+        answered: value.whoHasAnswer?.totalUsers,
         category: value?.category?.titleEng,
         status: value?.status ? "active" : "In-active",
         visibility: value?.visibility ? "True" : "False",
@@ -198,11 +222,13 @@ export const addCategory = async (data) => {
   }
 };
 export const addQuestion = async (data) => {
+  console.log(data, "Inside add question thunk");
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
 
     let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
 
+    console.log("add question", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -235,6 +261,7 @@ export const updateQuestion = async (id, data) => {
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.put(
       `${process.env.REACT_APP_QUESTION_URL}/${id}`,
+
       data
     );
     console.log("update question", resp);
@@ -259,11 +286,11 @@ export const deleteQuestion = async (id) => {
 };
 export const deleteBenchmark = async (id) => {
   try {
-    // console.log(data, "Data inside updatequestionaiire");
-    // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    // let resp = await axios.put(`{${env.QUESTION_URL}/${id}}`, data);
+    // let resp = await axios.delete(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
+    // );
     let resp = await axios.delete(
-      `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/${id}`
+      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
     );
     console.log("delete benchmark", resp);
     // return resp;

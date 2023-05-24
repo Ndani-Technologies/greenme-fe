@@ -46,101 +46,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
 import { Height } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-const arr = [
-  {
-    _id: "625d3cd5923ccd040209ebf1",
-    name: "Michael Morris",
-    email: "45%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Japan",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf3",
-    name: "Kevin Dawson",
-    email: "10%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Kenya",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebee",
-    name: "James Price",
-    email: "100%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Nigeria",
-    tags: "Completed",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf0",
-    name: "Herbert Stokes",
-    email: "80%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Malaysia",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf2",
-    name: "Timothy Smith",
-    email: "0%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Japan",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebeb",
-    name: "Thomas Taylor",
-    company: "iTest Factory",
-    designation: "UI / UX Designer",
-    email: "45%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Poland",
-    tags: "Completed",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebec",
-    name: "Nancy Martino",
-    company: "Force Medicines",
-    designation: "PHP Developer",
-    email: "70%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Japan",
-    tags: "Inprogress",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebea",
-    name: "Tonya Noble 123",
-    company: "Nesta Technologies",
-    designation: "Lead Designer / Developer",
-    email: "100%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Russia",
-    tags: "Progess",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebef",
-    name: "Mary Cousar",
-    company: "Micro Design",
-    designation: "Asp.Net Developer",
-    email: "20%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Poland",
-    tags: "Completed",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebed",
-    name: "Alexis Clarke",
-    company: "Digitech Galaxy",
-    designation: "Full Stack Developer",
-    email: "10%",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Japan",
-    tags: "Inprogress",
-  },
-];
+import { Link, useNavigate } from "react-router-dom";
+
 const BenchmarkingDashboard = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [benchmarks, setBenchmarks] = useState([]);
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
@@ -165,8 +75,6 @@ const BenchmarkingDashboard = () => {
   }, []);
 
   useEffect(() => {
-    console.log("benchmarks useeffect", benchmarks);
-
     benchmarks.length > 0 && setContact(benchmarks);
   }, [benchmarks]);
 
@@ -184,7 +92,24 @@ const BenchmarkingDashboard = () => {
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteModalMulti, setDeleteModalMulti] = useState(false);
   const [modal, setModal] = useState(false);
-
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+  const cancelDelete = () => {
+    setDeleteConfirmation(false);
+    setDeleteId(null);
+  };
+  const confirmDelete = () => {
+    deleteBenchmark(deleteId)
+      .then(() => {
+        setBenchmarks((prev) => prev.filter((value) => value._id !== deleteId));
+        toast.success("Benchmark is deleted");
+        setDeleteConfirmation(false);
+      })
+      .catch(() => {
+        toast.error("Error in Benchmark deletion.");
+        setDeleteConfirmation(false);
+      });
+  };
   const toggle = useCallback(() => {
     if (modal) {
       setModal(false);
@@ -517,21 +442,10 @@ const BenchmarkingDashboard = () => {
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
-                      href="#"
                       onClick={() => {
-                        const contactData = cellProps.row.original;
-                        onClickDelete(contactData);
-                        deleteBenchmark(cellProps.row.original._id)
-                          .then(() => {
-                            setBenchmarks((prev) =>
-                              prev.filter(
-                                (value) =>
-                                  value._id !== cellProps.row.original._id
-                              )
-                            );
-                            Toast("Benchmark is deleted");
-                          })
-                          .catch(() => Toast("Error in Benchmark deletion."));
+                        setDeleteConfirmation(true);
+                        setDeleteId(cellProps.row.original._id);
+                        // onClickDelete(contactData);
                       }}
                     >
                       Delete
@@ -587,6 +501,7 @@ const BenchmarkingDashboard = () => {
       setBenchmarks([...benchmarks, resp]);
       validation2.resetForm();
       setmodal_grid(false);
+      navigate(`/benchmarking/${resp._id}`);
     },
   });
 
@@ -1067,6 +982,20 @@ const BenchmarkingDashboard = () => {
           </Card>
         </Col>
       </div>
+      <Modal isOpen={deleteConfirmation} toggle={cancelDelete}>
+        <ModalHeader toggle={cancelDelete}>Confirm Deletion</ModalHeader>
+        <ModalBody>
+          Are you sure you want to delete this answer variation?
+        </ModalBody>
+        <ModalFooter>
+          <Button color="danger" onClick={confirmDelete}>
+            Delete
+          </Button>
+          <Button color="secondary" onClick={cancelDelete}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </Modal>
       {/* </Layouts> */}
     </React.Fragment>
   );

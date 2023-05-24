@@ -328,7 +328,8 @@ const VerticalLayout = (props) => {
                     item.disable ? "disabled" : ""
                   }`}
                   to={item.link ? item.link : "/#"}
-                  disbaled={item.disbaled}
+                  disbaled={item.disbale}
+                  style={{ color: item.disable ? "#ced4da" : "grey" }}
                 >
                   <i className={item.icon}></i>{" "}
                   <span>{props.t(item.label)}</span>

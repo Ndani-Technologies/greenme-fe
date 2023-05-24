@@ -24,7 +24,7 @@ export const loginUserReal = (history) => async (dispatch) => {
     const popup = window.open(
       env.USER_URL + "user/login",
       "",
-      "width=500,height=500"
+      "width=500,height=700"
     );
     const messagePromise = new Promise((resolve, reject) => {
       window.addEventListener("message", (event) => {
@@ -65,7 +65,7 @@ export const registerUserReal = (history) => async (dispatch) => {
     const popup = window.open(
       env.USER_URL + "user/signup",
       "",
-      "width=500,height=500"
+      "width=500,height=700"
     );
     const messagePromise = new Promise((resolve, reject) => {
       window.addEventListener("message", (event) => {
@@ -118,8 +118,11 @@ export const logoutUser = () => async (dispatch) => {
     sessionStorage.removeItem("authUser");
 
     if (env.REACT_APP_DEFAULTAUTH === "firebase") {
+      // let response = await axios.get(
+      //   "http://localhost:5000/api/v1/user/logout"
+      // );
       let response = await axios.get(
-        "http://localhost:5000/api/v1/user/logout"
+        `${process.env.REACT_APP_USER_URL}user/logout`
       );
       // const response = fireBaseBackend.logout;
       dispatch(logoutUserSuccess(response));

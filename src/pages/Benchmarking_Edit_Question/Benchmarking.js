@@ -18,12 +18,7 @@ import classnames from "classnames";
 import Layouts from "../../Layouts";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {
-  getSingleBenchmark,
-  updateUserResp,
-  updateUserRespSave,
-} from "../../slices/thunks";
-
+import { getSingleBenchmark, updateUserResp } from "../../slices/thunks";
 import { BottomNavigation } from "@mui/material";
 
 const Benchmarking = () => {
@@ -32,7 +27,6 @@ const Benchmarking = () => {
   const navigate = useNavigate();
   const [benchmark, setBenchmark] = useState([]);
   const [questions, setQuestions] = useState([]);
-
   const [category, setCategory] = useState([]);
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
@@ -41,9 +35,10 @@ const Benchmarking = () => {
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
     });
-    const uniqueArr = Array.from(new Set(arr.map((item) => item.titleEng))).map(
-      (titleEng) => arr.find((item) => item.titleEng === titleEng)
-    );
+    debugger;
+    const uniqueArr = Array.from(
+      new Set(arr.map((item) => item?.titleEng))
+    ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
     // console.log("benchmark single", bench, benchmark)
     setCategory(uniqueArr);
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
@@ -187,7 +182,7 @@ const Benchmarking = () => {
         );
 
         return (
-          <div className="row w-50" key={index}>
+          <div className="row w-50 " disabled key={index}>
             <h5>Question {item.index}</h5>
             <p className="w-75 fs-5">{item.title}</p>
             <p>{item.description}</p>
@@ -284,7 +279,8 @@ const Benchmarking = () => {
 
   const handleSubmit = () => {
     console.log("here");
-    dispatch(updateUserResp(benchmark._id, user_resp, navigate));
+    navigate("/benchmarking");
+    // dispatch(updateUserResp(benchmark._id, user_resp, navigate));
   };
 
   return (
@@ -327,74 +323,20 @@ const Benchmarking = () => {
 
               <TabContent
                 activeTab={justifyPillsTab}
-                className="text-muted p-4 pt-0"
+                className="text-muted p-4 pt-0 "
+                disabled
               >
-                <TabPane tabId={justifyPillsTab} id="pill-justified-home-1">
+                <TabPane
+                  tabId={justifyPillsTab}
+                  id="pill-justified-home-1"
+                  style={{ pointerEvents: "none" }}
+                >
                   <div className="row d-flex gap-5 justify-content-between w-100 mt-4 pt-4 pb-4 border-top border-dark">
                     {renderedQuestions}
                   </div>
                   <div>
                     <div className="d-flex align-items-center border-top border-dark">
                       <div className="w-50">
-                        {/* <Pagination className="mt-4">
-                          <PaginationItem>
-                            <PaginationItem disabled={currentPage === 1}>
-                              {" "}
-                              <PaginationLink
-                                to="#"
-                                onClick={() =>
-                                  setCurrentPage(() => currentPage - 1)
-                                }
-                              >
-                                {" "}
-                                ← &nbsp; prev{" "}
-                              </PaginationLink>{" "}
-                            </PaginationItem>
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(1)}
-                            >
-                              {" "}
-                              1{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(2)}
-                            >
-                              {" "}
-                              2{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(3)}
-                            >
-                              {" "}
-                              3{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              disabled={currentPage === numPages}
-                              onClick={() =>
-                                setCurrentPage(() => currentPage + 1)
-                              }
-                            >
-                              {" "}
-                              Next &nbsp; →{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                        </Pagination> */}
                         <Card className=" border-none mt-3">
                           <CardBody className="p-0">
                             <div className="d-flex align-items-center mb-2 mt-4">
@@ -446,13 +388,7 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              dispatch(
-                                updateUserRespSave(
-                                  benchmark._id,
-                                  user_resp,
-                                  navigate
-                                )
-                              );
+                              navigate("/benchmarking");
                             }}
                           >
                             SAVE

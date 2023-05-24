@@ -197,52 +197,57 @@ const BenchmarkingQA = () => {
       category: Yup.string().required("Please select category"),
     }),
     onSubmit: async (values) => {
-      const cd = allCategories.find(
-        (value) => value.titleEng == values.category
-      );
-      const answerIds = [];
-      values.answerOption.forEach((value) => {
-        allAnswers.forEach((val) => {
-          if (value === val.answerOption) {
-            answerIds.push(val._id);
-          }
-          validation.setValues(answerIds);
-        });
+      const cd = allCategories.find((value) => {
+        if (value.titleEng === values.category) return value;
       });
+
+      const answerIds = [];
+
+      values?.answerOption.length &&
+        values?.answerOption.forEach((value) => {
+          allAnswers.forEach((val) => {
+            if (value === val.answerOption) {
+              answerIds.push(val._id);
+            }
+            validation.setValues(answerIds);
+          });
+        });
       const mappedData = {
         ...values,
-        category: cd._id,
+        category: cd?._id,
         answerOptions: answerIds,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
+        // response: parseInt(values.response.split("%")[0]),
       };
       if (isDataUpdated) {
-        await updateQuestion(questionId, mappedData)
+        updateQuestion(questionId, mappedData)
           .then((resp) => {
+            getAllQA()
+              .then((resp) => setQA(resp))
+              .catch((err) => console.log("qa all error", err));
             toast.success("Successfully Updated");
-            allQA();
           })
           .catch((err) => {
             toast.error(`Error in updating question`);
-            console.log("error in update question");
           });
       } else {
-        // let resp = await axios.post(`${env.ANSWER_URL}/${id}`, data);
-
-        setIsDataUpdated(false);
-        await addQuestion(mappedData)
+        addQuestion(mappedData)
           .then((resp) => {
             toast.success("Successfully Added");
+
             setQA([...qa, resp]);
             setSelectedIndexes([]);
             validation.resetForm();
           })
           .catch((err) => {
             toast.error(`Error in adding question ${err}`);
-            console.log("error in adding question");
           });
       }
+
+      setIsDataUpdated(false);
       console.log("values formik", mappedData);
+      setmodal_grid(false);
 
       toggle();
     },
@@ -638,6 +643,7 @@ const BenchmarkingQA = () => {
       addCategory(newCategory)
         .then((resp) => {
           toast.success("Successfully Added");
+
           setAllCategories([...allCategories, resp]);
         })
         .catch((err) => {
@@ -787,6 +793,7 @@ const BenchmarkingQA = () => {
                   <Button
                     type="button"
                     onClick={() => {
+                      setIsDataUpdated(false);
                       setmodal_grid(false);
                     }}
                     className="btn-close color-black bg-white border border-dark rounded-circle "
@@ -1162,89 +1169,16 @@ const BenchmarkingQA = () => {
                             )}
                           </Droppable>
                         </DragDropContext>
-                        {/* {allAnswers &&
-                          allAnswers.map((value, index) => {
-                            const isSelected = selectedIndexes.includes(index);
-                            return (
-                              <div
-                                className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center   "
-                                style={{
-                                  color: isSelected ? "black" : "#cccccc",
-                                }}
-                                key={index}
-                              >
-                                <div>
-                                  <Checkbox
-                                    name="answerOption"
-                                    onBlur={() => {
-                                      validation.setFieldValue(
-                                        "answerOption",
-                                        selectedIndexes.map(
-                                          (i) => allAnswers[i].answerOption
-                                        )
-                                      );
-                                    }}
-                                    value={index}
-                                    checked={selectedIndexes.includes(index)}
-                                    onChange={(e) => {
-                                      e.preventDefault();
-                                      const { checked } = e.target;
-                                      if (checked) {
-                                        setSelectedIndexes([
-                                          ...selectedIndexes,
-                                          index,
-                                        ]);
-                                      } else {
-                                        setSelectedIndexes(
-                                          selectedIndexes.filter(
-                                            (i) => i !== index
-                                          )
-                                        );
-                                      }
-                                      validation.setFieldValue(
-                                        "answerOption",
-                                        selectedIndexes.map(
-                                          (i) => allAnswers[i].answerOption
-                                        )
-                                      );
-                                    }}
-                                    icon={<CropSquareIcon />}
-                                    checkedIcon={<SquareRoundedIcon />}
-                                  />
-                                  {value.answerOption}
-                                </div>
-
-                                {value.includeExplanation && (
-                                  <div className="form-check form-switch form-switch-right form-switch-md ">
-                                    <Label
-                                      htmlFor="form-grid-showcode"
-                                      className="form-label text-muted"
-                                    >
-                                      Include Explanation
-                                    </Label>
-                                    <Input
-                                      className="form-check-input code-switcher"
-                                      type="checkbox"
-                                      value="active"
-                                      checked={isChecked2}
-                                      onChange={handleCheckboxChange2}
-                                      style={{
-                                        backgroundColor: isChecked2
-                                          ? "#88C756"
-                                          : "#fff",
-                                        width: "50px",
-                                        border: "0",
-                                      }}
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })} */}
                       </Col>
                       <div className="col-lg-12 d-flex gap-3">
                         <div className="hstack gap-2 justify-content-start">
-                          <Button className="btn btn-danger p-4 pt-2 pb-2">
+                          <Button
+                            className="btn btn-danger p-4 pt-2 pb-2"
+                            onClick={() => {
+                              setIsDataUpdated(false);
+                              setmodal_grid(false);
+                            }}
+                          >
                             Cancel
                           </Button>
                         </div>
