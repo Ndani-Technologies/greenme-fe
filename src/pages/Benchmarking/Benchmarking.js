@@ -407,35 +407,40 @@ const Benchmarking = () => {
                           </PaginationItem>
                         </Pagination> */}
                         <Card className=" border-none mt-3">
-                          <CardBody className="p-0">
-                            <div className="d-flex align-items-center mb-2 mt-4">
-                              <div className="flex-grow-1 d-flex justify-content-between w-100">
-                                <h5 className="card-title mb-0">
-                                  <span>{progressPercentage?.percentage}</span>{" "}
-                                  Benchmark progress
-                                </h5>
-                                <h5>
-                                  {100 - progressPercentage?.percentage} to go!
-                                </h5>
+                          {progressPercentage.percentage && (
+                            <CardBody className="p-0">
+                              <div className="d-flex align-items-center mb-2 mt-4">
+                                <div className="flex-grow-1 d-flex justify-content-between w-100">
+                                  <h5 className="card-title mb-0">
+                                    <span>
+                                      {progressPercentage?.percentage}
+                                    </span>{" "}
+                                    Benchmark progress
+                                  </h5>
+                                  <h5>
+                                    {100 - progressPercentage?.percentage} to
+                                    go!
+                                  </h5>
+                                </div>
                               </div>
-                            </div>
-                            <div className="progress animated-progress custom-progress progress-label mt-3">
-                              <div
-                                className="progress-bar bg- "
-                                role="progressbar"
-                                style={{
-                                  width:
-                                    progressPercentage.percentage.toString() +
-                                    "%",
-                                }}
-                                aria-valuenow={progressPercentage.percentage}
-                                aria-valuemin="0"
-                                aria-valuemax="100"
-                              >
-                                {/* <div className="label">40%</div> */}
+                              <div className="progress animated-progress custom-progress progress-label mt-3">
+                                <div
+                                  className="progress-bar bg- "
+                                  role="progressbar"
+                                  style={{
+                                    width:
+                                      progressPercentage.percentage.toString() +
+                                      "%",
+                                  }}
+                                  aria-valuenow={progressPercentage.percentage}
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"
+                                >
+                                  {/* <div className="label">40%</div> */}
+                                </div>
                               </div>
-                            </div>
-                          </CardBody>
+                            </CardBody>
+                          )}
                         </Card>
                       </div>
                       <Col>
