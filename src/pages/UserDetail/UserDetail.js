@@ -240,7 +240,9 @@ const Profile = () => {
                     <div
                       className="progress-bar bg- "
                       role="progressbar"
-                      style={{ width: { progressPercentage } }}
+                      style={{
+                        width: progressPercentage.percentage.toString() + "%",
+                      }}
                       aria-valuenow={progressPercentage.percentage}
                       aria-valuemin="0"
                       aria-valuemax="100"

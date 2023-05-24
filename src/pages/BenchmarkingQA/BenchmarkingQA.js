@@ -405,6 +405,19 @@ const BenchmarkingQA = () => {
                       className="dropdown-item"
                       onClick={() => {
                         const contactData = cellProps.row.original;
+                        const answerOptions = contactData.answerOptions.map(
+                          (answerId) => {
+                            const answer = allAnswers.find(
+                              (item) => item._id === answerId
+                            );
+                            return answer ? answer.answerOption : "";
+                          }
+                        );
+
+                        const result = {
+                          ...contactData,
+                          answerOptions: answerOptions,
+                        };
                         setInfo(contactData.answerOptions);
                         console.log("contact row", contactData);
                         // const data = contactData.map((value)=>{
@@ -413,8 +426,8 @@ const BenchmarkingQA = () => {
                         //     answerOption
                         //   }
                         // })
-                        validation.setValues(contactData);
-                        setSelectedIndexes(contactData.answerOptions);
+                        validation.setValues(result);
+                        // setSelectedIndexes(contactData.answerOptions);
                         setQuestionId(cellProps.row.original._id);
                         setIsDataUpdated(true);
                         setmodal_grid(true);
