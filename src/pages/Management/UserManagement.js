@@ -19,6 +19,13 @@ import {
   DropdownMenu,
   DropdownItem,
   Table,
+  ModalHeader,
+  Form,
+  ModalBody,
+  Input,
+  Label,
+  Modal,
+  ModalFooter,
 } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import DeleteModal from "../../Components/Common/DeleteModal";
@@ -42,151 +49,27 @@ import Loader from "../../Components/Common/Loader";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Layouts from "../../Layouts";
-const arr = [
-  {
-    _id: "625d3cd5923ccd040209ebf1",
-    name: "Michael Morris",
-    company: "Syntyce Solutions",
-    designation: "NodeJS Developer",
-    email: "michaelmorris@velzon.com",
-    phone: "484-606-3104",
-    lead_score: "Sweden",
-    last_contacted: "2022-08-15T00:00:01.991Z",
-    image_src: "avatar-6.jpg",
-    tags: "active",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf3",
-    name: "Kevin Dawson",
-    company: "Meta4Systems",
-    designation: "Senoir Developer",
-    email: "kevindawson@velzon.com",
-    phone: "745-321-9874",
-    lead_score: "Kenya",
-    last_contacted: "2012-01-01T00:00:02.001Z",
-    image_src: "avatar-5.jpg",
-    tags: "Active",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebee",
-    name: "James Price",
-    company: "Themesbrand",
-    designation: "Assitant Develope",
-    email: "jamesprice@velzon.com",
-    phone: "646-276-2274",
-    lead_score: "Nigeria",
-    last_contacted: "2021-07-14T00:00:01.997Z",
-    image_src: "avatar-8.jpg",
-    tags: "Banned",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf0",
-    name: "Herbert Stokes",
-    company: "Themesbrand",
-    designation: "Lead Developer",
-    email: "herbertstokes@velzon.com",
-    phone: "949-791-0614",
-    lead_score: "Malaysia",
-    last_contacted: "1970-01-01T00:00:02.001Z",
-    image_src: "avatar-4.jpg",
-    tags: "Banned",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf2",
-    name: "Timothy Smith",
-    company: "Digitech Galaxy",
-    designation: "Mean Stack Developer",
-    email: "timothysmith@velzon.com",
-    phone: "231-480-8536",
-    lead_score: "Japan",
-    last_contacted: "2021-10-21T00:00:01.993Z",
-    image_src: "avatar-8.jpg",
-    tags: "Active",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebeb",
-    name: "Thomas Taylor",
-    company: "iTest Factory",
-    designation: "UI / UX Designer",
-    email: "thomastaylor@velzon.com",
-    phone: "580-464-4694",
-    lead_score: "Poland",
-    last_contacted: "2022-02-22T00:00:01.994Z",
-    image_src: "avatar-9.jpg",
-    tags: "Banned",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebec",
-    name: "Nancy Martino",
-    company: "Force Medicines",
-    designation: "PHP Developer",
-    email: "nancymartino@velzon.com",
-    phone: "786-253-9927",
-    lead_score: "UK",
-    last_contacted: "1970-02-02T00:00:02.004Z",
-    image_src: "avatar-1.jpg",
-    tags: "Active",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebea",
-    name: "Tonya Noble 123",
-    company: "Nesta Technologies",
-    designation: "Lead Designer / Developer",
-    email: "tonyanoble@velzon.com",
-    phone: "414-453-5725",
-    lead_score: "Russia",
-    last_contacted: "2022-05-09T18:30:00.000Z",
-    image_src: "avatar-7.jpg",
-    tags: "Active",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebef",
-    name: "Mary Cousar",
-    company: "Micro Design",
-    designation: "Asp.Net Developer",
-    email: "marycousar@velzon.com",
-    phone: "540-575-0991",
-    lead_score: "Poland",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    image_src: "avatar-3.jpg",
-    tags: "Banned",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebed",
-    name: "Alexis Clarke",
-    company: "Digitech Galaxy",
-    designation: "Full Stack Developer",
-    email: "alexisclarke@velzon.com",
-    phone: "515-395-1069",
-    lead_score: "Japan",
-    last_contacted: "1970-01-01T00:00:01.996Z",
-    image_src: "avatar-6.jpg",
-    tags: "Active",
-  },
-];
+import {
+  deleteUserDetails,
+  getUserDetails,
+  updatedUserDetails,
+} from "../../slices/usermanagement/thunk";
+import { Select } from "@mui/material";
+
 const UsersManagement = () => {
   const dispatch = useDispatch();
-  const { crmcontacts, isContactCreated, isContactSuccess, error } =
+  const { userDetail, crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
+
+      userDetail: state.UserDetail.userDetail,
       error: state.Crm.error,
     }));
   useEffect(() => {
-    dispatch(onGetContacts(arr));
-  }, [dispatch, crmcontacts]);
-
-  useEffect(() => {
-    setContact(crmcontacts);
-  }, [crmcontacts]);
-
-  useEffect(() => {
-    if (!isEmpty(crmcontacts)) {
-      setContact(crmcontacts);
-      setIsEdit(false);
-    }
-  }, [crmcontacts]);
+    dispatch(getUserDetails());
+  }, []);
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -215,9 +98,11 @@ const UsersManagement = () => {
     }
   };
 
-  const onClickDelete = (contact) => {
-    setContact(contact);
-    setDeleteModal(true);
+  const onClickDelete = (user) => {
+    console.log("selected row", user, user._id);
+    dispatch(deleteUserDetails(user?._id));
+    // setContact(contact);
+    // setDeleteModal(true);
   };
 
   // Add Data
@@ -266,13 +151,14 @@ const UsersManagement = () => {
     enableReinitialize: true,
 
     initialValues: {
-      // img: (contact && contact.img) || '',
+      img: (contact && contact.profilePic) || "",
+      _id: (contact && contact._id) || "",
       name: (contact && contact.name) || "",
       company: (contact && contact.company) || "",
       designation: (contact && contact.designation) || "",
       email: (contact && contact.email) || "",
       phone: (contact && contact.phone) || "",
-      lead_score: (contact && contact.lead_score) || "",
+      leadScore: (contact && contact.leadScore) || "",
       tags: (contact && contact.tags) || [],
     },
     validationSchema: Yup.object({
@@ -281,25 +167,28 @@ const UsersManagement = () => {
       designation: Yup.string().required("Please Enter Designation"),
       email: Yup.string().required("Please Enter Email"),
       phone: Yup.string().required("Please Enter Phone"),
-      lead_score: Yup.string().required("Please Enter lead_score"),
+      leadScore: Yup.string().required("Please Enter leadScore"),
     }),
     onSubmit: (values) => {
       if (isEdit) {
         const updateContact = {
           _id: contact ? contact._id : 0,
           // img: values.img,
-          name: values.name,
-          company: values.company,
-          designation: values.designation,
+          firstName: values.name.split(" ")[0],
+          lastName: values.name.split(" ")[1],
+          organization: values.company,
+          position: values.designation,
           email: values.email,
           phone: values.phone,
-          lead_score: values.lead_score,
+          leadScore: values.leadScore,
           last_contacted: dateFormat(),
           // time: timeFormat(),
-          tags: assignTag,
+          tags: tags.value,
         };
+        console.log("on submit", updateContact);
         // update Contact
-        dispatch(onUpdateContact(updateContact));
+        // dispatch(onUpdateContact(updateContact));
+        dispatch(updatedUserDetails(updateContact));
         validation.resetForm();
       } else {
         const newContact = {
@@ -310,7 +199,7 @@ const UsersManagement = () => {
           designation: values["designation"],
           email: values["email"],
           phone: values["phone"],
-          lead_score: values["lead_score"],
+          leadScore: values["leadScore"],
           last_contacted: dateFormat(),
           // time: timeFormat(),
           tags: assignTag,
@@ -327,19 +216,20 @@ const UsersManagement = () => {
   const handleContactClick = useCallback(
     (arg) => {
       const contact = arg;
-
+      console.log("arg contact", contact);
       setContact({
-        contactId: contact.contactId,
+        _id: contact._id,
         // img: contact.img,
         name: contact.name,
         company: contact.company,
         email: contact.email,
         designation: contact.designation,
         phone: contact.phone,
-        lead_score: contact.lead_score,
+        leadScore: contact.leadScore,
         last_contacted: contact.date,
         // time: contact.time,
-        tags: contact.tags,
+        tags: tag.value,
+        // contact,
       });
 
       setIsEdit(true);
@@ -352,6 +242,7 @@ const UsersManagement = () => {
     const date1 = moment(new Date(date)).format("DD MMM Y");
     return date1;
   };
+  const handelUpdate = () => {};
 
   const handleValidTime = (time) => {
     const time1 = new Date(time);
@@ -483,12 +374,12 @@ const UsersManagement = () => {
       },
       {
         Header: "Country",
-        accessor: "lead_score",
+        accessor: "country",
         filterable: false,
       },
       {
         Header: "Status",
-        accessor: "tags",
+        accessor: "state",
       },
       {
         Header: "Last Seen",
@@ -544,6 +435,7 @@ const UsersManagement = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         handleContactClick(contactData);
+                        // console.log("contactDatas", contactData);
                       }}
                     >
                       {/* <i className="ri-pencil-fill align-bottom me-2 text-muted"></i>{" "} */}
@@ -570,7 +462,12 @@ const UsersManagement = () => {
     ],
     [handleContactClick, checkedAll]
   );
-
+  const tags = [
+    { label: "Exiting", value: "Exiting" },
+    { label: "Lead", value: "Lead" },
+    { label: "Long-term", value: "Long-term" },
+    { label: "Partner", value: "Partner" },
+  ];
   const [tag, setTag] = useState([]);
   const [assignTag, setAssignTag] = useState([]);
 
@@ -579,13 +476,6 @@ const UsersManagement = () => {
     const assigned = tags.map((item) => item.value);
     setAssignTag(assigned);
   }
-
-  const tags = [
-    { label: "Exiting", value: "Exiting" },
-    { label: "Lead", value: "Lead" },
-    { label: "Long-term", value: "Long-term" },
-    { label: "Partner", value: "Partner" },
-  ];
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
@@ -596,165 +486,495 @@ const UsersManagement = () => {
   document.title = "UsersManagement | GreenMe";
   return (
     <React.Fragment>
-      <Layouts>
-        <div className="page-content">
-          <ExportCSVModal
-            show={isExportCSV}
-            onCloseClick={() => setIsExportCSV(false)}
-            data={crmcontacts}
-          />
-          <DeleteModal
-            show={deleteModal}
-            onDeleteClick={handleDeleteContact}
-            onCloseClick={() => setDeleteModal(false)}
-          />
-          <DeleteModal
-            show={deleteModalMulti}
-            onDeleteClick={() => {
-              deleteMultiple();
-              setDeleteModalMulti(false);
+      <div className="page-content">
+        <ExportCSVModal
+          show={isExportCSV}
+          onCloseClick={() => setIsExportCSV(false)}
+          data={crmcontacts}
+        />
+        <DeleteModal
+          show={deleteModal}
+          onDeleteClick={handleDeleteContact}
+          onCloseClick={() => setDeleteModal(false)}
+        />
+        <DeleteModal
+          show={deleteModalMulti}
+          onDeleteClick={() => {
+            deleteMultiple();
+            setDeleteModalMulti(false);
+          }}
+          onCloseClick={() => setDeleteModalMulti(false)}
+        />
+        <Container fluid>
+          <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
+          <Row
+            onClick={() => {
+              // const contactData = cellProps.row.original;
+              // setInfo(contactData);
             }}
-            onCloseClick={() => setDeleteModalMulti(false)}
-          />
-          <Container fluid>
-            <BreadCrumb title="USER MANAGEMENT" pageTitle="CRM" />
-            <Row>
-              <Col xxl={9}>
-                <Card id="contactList">
-                  <CardBody className="pt-0">
-                    <div>
-                      {console.log("contact", crmcontacts)}
-                      {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                        <TableContainer
-                          columns={columns}
-                          data={crmcontacts || []}
-                          isGlobalFilter={true}
-                          isAddUserList={false}
-                          isFooter={true}
-                          customPageSize={8}
-                          className="custom-header-css"
-                          divClass="table-responsive table-card mb-0"
-                          tableClass="align-middle table-nowrap"
-                          theadClass="table-light"
-                          handleContactClick={handleContactClicks}
-                          isContactsFilter={true}
-                          SearchPlaceholder="Search for contact..."
-                        />
-                      ) : (
-                        <Loader error={error} />
-                      )}
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-
-              <Col xxl={3}>
-                <Card id="contact-view-detail">
-                  <CardBody className="text-center">
-                    <div className="position-relative d-inline-block">
-                      <img
-                        src={avatar}
-                        alt=""
-                        className="avatar-lg rounded-circle img-thumbnail"
+          >
+            <Col xxl={9}>
+              <Card id="contactList">
+                <CardBody className="pt-0">
+                  <div>
+                    {userDetail.length >= 0 ? (
+                      <TableContainer
+                        columns={columns}
+                        data={userDetail || []}
+                        isGlobalFilter={true}
+                        isAddUserList={false}
+                        isFooter={true}
+                        setInfo={setInfo}
+                        customPageSize={8}
+                        className="custom-header-css"
+                        divClass="table-responsive table-card mb-0"
+                        tableClass="align-middle table-nowrap"
+                        theadClass="table-light"
+                        handleContactClick={handleContactClicks}
+                        isContactsFilter={true}
+                        SearchPlaceholder="Search for contact..."
                       />
-                      <span className="contact-active position-absolute rounded-circle bg-success">
-                        <span className="visually-hidden"></span>
-                      </span>
+                    ) : (
+                      <Loader error={error} />
+                    )}
+                  </div>
+                  <Modal id="showModal" isOpen={modal} toggle={toggle} centered>
+                    <ModalHeader className="bg-soft-info p-3" toggle={toggle}>
+                      {!!isEdit ? "Edit Contact" : "Add Contact"}
+                    </ModalHeader>
+
+                    <Form
+                      className="tablelist-form"
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        validation.handleSubmit();
+                        return false;
+                      }}
+                    >
+                      <ModalBody>
+                        <Input type="hidden" id="id-field" />
+                        <Row className="g-3">
+                          <Col lg={12}>
+                            <div className="text-center">
+                              <div className="position-relative d-inline-block">
+                                <div className="position-absolute  bottom-0 end-0">
+                                  <Label
+                                    htmlFor="customer-image-input"
+                                    className="mb-0"
+                                  >
+                                    <div className="avatar-xs cursor-pointer">
+                                      <div className="avatar-title bg-light border rounded-circle text-muted">
+                                        <i className="ri-image-fill"></i>
+                                      </div>
+                                    </div>
+                                  </Label>
+                                  <Input
+                                    className="form-control d-none"
+                                    id="customer-image-input"
+                                    type="file"
+                                    accept="image/png, image/gif, image/jpeg"
+                                    onChange={validation.handleChange}
+                                    onBlur={validation.handleBlur}
+                                    value={validation.values.img || ""}
+                                    invalid={
+                                      validation.touched.img &&
+                                      validation.errors.img
+                                        ? true
+                                        : false
+                                    }
+                                  />
+                                </div>
+                                <div className="avatar-lg p-1">
+                                  <div className="avatar-title bg-light rounded-circle">
+                                    <img
+                                      src={validation.values.img}
+                                      alt="dummyImg"
+                                      id="customer-img"
+                                      className="avatar-md rounded-circle object-cover"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div>
+                              <Label
+                                htmlFor="name-field"
+                                className="form-label"
+                              >
+                                Name
+                              </Label>
+                              <Input
+                                name="name"
+                                id="customername-field"
+                                className="form-control"
+                                placeholder="Enter Name"
+                                type="text"
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.name || ""}
+                                invalid={
+                                  validation.touched.name &&
+                                  validation.errors.name
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.name &&
+                              validation.errors.name ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.name}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+                          <Col lg={12}>
+                            <div>
+                              <Label
+                                htmlFor="company_name-field"
+                                className="form-label"
+                              >
+                                Company Name
+                              </Label>
+                              <Input
+                                name="company"
+                                id="company_name-field"
+                                className="form-control"
+                                placeholder="Enter Company Name"
+                                type="text"
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.company || ""}
+                                invalid={
+                                  validation.touched.company &&
+                                  validation.errors.company
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.company &&
+                              validation.errors.company ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.company}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+
+                          <Col lg={12}>
+                            <div>
+                              <Label
+                                htmlFor="designation-field"
+                                className="form-label"
+                              >
+                                Designation
+                              </Label>
+
+                              <Input
+                                name="designation"
+                                id="designation-field"
+                                className="form-control"
+                                placeholder="Enter Designation"
+                                type="text"
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.designation || ""}
+                                invalid={
+                                  validation.touched.designation &&
+                                  validation.errors.designation
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.designation &&
+                              validation.errors.designation ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.designation}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+
+                          <Col lg={12}>
+                            <div>
+                              <Label
+                                htmlFor="email_id-field"
+                                className="form-label"
+                              >
+                                Email ID
+                              </Label>
+
+                              <Input
+                                name="email"
+                                id="email_id-field"
+                                className="form-control"
+                                placeholder="Enter Email"
+                                type="text"
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.email || ""}
+                                invalid={
+                                  validation.touched.email &&
+                                  validation.errors.email
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.email &&
+                              validation.errors.email ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.email}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div>
+                              <Label
+                                htmlFor="phone-field"
+                                className="form-label"
+                              >
+                                Phone
+                              </Label>
+
+                              <Input
+                                name="phone"
+                                id="phone-field"
+                                className="form-control"
+                                placeholder="Enter Phone No."
+                                type="text"
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.phone || ""}
+                                invalid={
+                                  validation.touched.phone &&
+                                  validation.errors.phone
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.phone &&
+                              validation.errors.phone ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.phone}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+                          <Col lg={6}>
+                            <div>
+                              <Label
+                                htmlFor="leadScore-field"
+                                className="form-label"
+                              >
+                                Lead Score
+                              </Label>
+
+                              <Input
+                                name="leadScore"
+                                id="leadScore-field"
+                                className="form-control"
+                                placeholder="Enter Lead Score"
+                                type="text"
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                onChange={validation.handleChange}
+                                onBlur={validation.handleBlur}
+                                value={validation.values.leadScore || ""}
+                                invalid={
+                                  validation.touched.leadScore &&
+                                  validation.errors.leadScore
+                                    ? true
+                                    : false
+                                }
+                              />
+                              {validation.touched.leadScore &&
+                              validation.errors.leadScore ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.leadScore}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+                          <Col lg={12}>
+                            <div>
+                              <Label
+                                htmlFor="taginput-choices"
+                                className="form-label font-size-13 text-muted"
+                              >
+                                Tags
+                              </Label>
+                              <Select
+                                isMulti
+                                value={tag}
+                                onChange={(e) => {
+                                  handlestag(e);
+                                }}
+                                className="mb-0"
+                                options={tags}
+                                id="taginput-choices"
+                              ></Select>
+
+                              {validation.touched.tags &&
+                              validation.errors.tags ? (
+                                <FormFeedback type="invalid">
+                                  {validation.errors.tags}
+                                </FormFeedback>
+                              ) : null}
+                            </div>
+                          </Col>
+                        </Row>
+                      </ModalBody>
+                      <ModalFooter>
+                        <div className="hstack gap-2 justify-content-end">
+                          <button
+                            type="button"
+                            className="btn btn-light"
+                            onClick={() => {
+                              setModal(false);
+                            }}
+                          >
+                            {" "}
+                            Close{" "}
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn btn-success"
+                            id="add-btn"
+                          >
+                            {!!isEdit ? "Update" : "Add Contact"}{" "}
+                          </button>
+                        </div>
+                      </ModalFooter>
+                    </Form>
+                  </Modal>
+                  <ToastContainer closeButton={false} limit={1} />
+                </CardBody>
+              </Card>
+            </Col>
+
+            <Col xxl={3}>
+              <Card id="contact-view-detail">
+                <CardBody className="text-center">
+                  <div className="position-relative d-inline-block">
+                    <img
+                      src={avatar}
+                      alt=""
+                      className="avatar-lg rounded-circle img-thumbnail"
+                    />
+                    <span className="contact-active position-absolute rounded-circle bg-success">
+                      <span className="visually-hidden"></span>
+                    </span>
+                  </div>
+                  <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
+                  <p className="text-muted">
+                    {info.company || "FleetMGT Co. Z"}
+                  </p>
+                </CardBody>
+                <CardBody>
+                  <div className="table-responsive table-card">
+                    <Table className="table table-borderless mb-0">
+                      <tbody>
+                        <tr>
+                          <td className="fw-medium">Country</td>
+                          <td>UK</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Designation</td>
+                          <td>Global Fleet Manager</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Email ID</td>
+                          <td>{info.email || "tonyanoble@velzon.com"}</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Points</td>
+                          <td>235</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Leaderboard points</td>
+                          <td>{info.leadScore || "154"}</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Area of Expertise</td>
+                          <td>Tracking, Management.</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </CardBody>
+                <CardBody>
+                  <div className="progress animated-progress custom-progress progress-label mt-4">
+                    <div
+                      className="progress-bar bg- "
+                      role="progressbar"
+                      style={{ width: "40%" }}
+                      aria-valuenow="30"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      <div className="label">40%</div>
                     </div>
-                    <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
-                    <p className="text-muted">
-                      {info.company || "FleetMGT Co. Z"}
-                    </p>
-                  </CardBody>
-                  <CardBody>
-                    <div className="table-responsive table-card">
-                      <Table className="table table-borderless mb-0">
-                        <tbody>
-                          <tr>
-                            <td className="fw-medium">Country</td>
-                            <td>UK</td>
-                          </tr>
-                          <tr>
-                            <td className="fw-medium">Designation</td>
-                            <td>Global Fleet Manager</td>
-                          </tr>
-                          <tr>
-                            <td className="fw-medium">Email ID</td>
-                            <td>{info.email || "tonyanoble@velzon.com"}</td>
-                          </tr>
-                          <tr>
-                            <td className="fw-medium">Points</td>
-                            <td>235</td>
-                          </tr>
-                          <tr>
-                            <td className="fw-medium">Leaderboard points</td>
-                            <td>{info.lead_score || "154"}</td>
-                          </tr>
-                          <tr>
-                            <td className="fw-medium">Area of Expertise</td>
-                            <td>Tracking, Management.</td>
-                          </tr>
-                        </tbody>
-                      </Table>
+                  </div>
+                  <div className="d-flex align-items-center mb-4 mt-3">
+                    <div className="flex-grow-1">
+                      <h5 className="card-title mb-0">Benchmark progress</h5>
                     </div>
-                  </CardBody>
-                  <CardBody>
-                    <div className="progress animated-progress custom-progress progress-label mt-4">
-                      <div
-                        className="progress-bar bg- "
-                        role="progressbar"
-                        style={{ width: "40%" }}
-                        aria-valuenow="30"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
+                  </div>
+                </CardBody>
+                <CardBody>
+                  <div className="progress animated-progress custom-progress progress-label mt-0">
+                    <div
+                      className="progress-bar bg- "
+                      role="progressbar"
+                      style={{ width: "30%" }}
+                      aria-valuenow="30"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      <div className="label">30%</div>
+                    </div>
+                  </div>
+                  <div className="d-flex align-items-center mb-4 mt-3">
+                    <div className="flex-grow-1">
+                      <h5 className="card-title mb-0">
+                        Recommended actions progress
+                      </h5>
+                    </div>
+                  </div>
+                  <div className="d-flex gap-2 ">
+                    <span className="mt-2">Chat</span>
+                    <span className="avatar-xs">
+                      <Link
+                        to="#"
+                        className="avatar-title bg-soft-warning text-warning fs-15 rounded"
                       >
-                        <div className="label">40%</div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center mb-4 mt-3">
-                      <div className="flex-grow-1">
-                        <h5 className="card-title mb-0">Benchmark progress</h5>
-                      </div>
-                    </div>
-                  </CardBody>
-                  <CardBody>
-                    <div className="progress animated-progress custom-progress progress-label mt-0">
-                      <div
-                        className="progress-bar bg- "
-                        role="progressbar"
-                        style={{ width: "30%" }}
-                        aria-valuenow="30"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <div className="label">30%</div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center mb-4 mt-3">
-                      <div className="flex-grow-1">
-                        <h5 className="card-title mb-0">
-                          Recommended actions progress
-                        </h5>
-                      </div>
-                    </div>
-                    <div className="d-flex gap-2 ">
-                      <span className="mt-2">Chat</span>
-                      <span className="avatar-xs">
-                        <Link
-                          to="#"
-                          className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                        >
-                          <i className="ri-question-answer-line"></i>
-                        </Link>
-                      </span>
-                    </div>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
-          </Container>
-        </div>
-      </Layouts>
+                        <i className="ri-question-answer-line"></i>
+                      </Link>
+                    </span>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </React.Fragment>
   );
 };

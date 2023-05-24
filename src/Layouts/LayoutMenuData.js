@@ -75,6 +75,7 @@ const Navdata = () => {
     }
   }
 
+  const obj = JSON.parse(sessionStorage.getItem("authUser"));
   useEffect(() => {
     document.body.classList.remove("twocolumn-panel");
     if (iscurrentState !== "Dashboard") {
@@ -147,82 +148,13 @@ const Navdata = () => {
       icon: "ri-dashboard-2-line",
       label: "MY Dashboard",
       link: "/",
+      disable: true,
     },
     {
       id: "2",
       icon: "ri-contacts-book-line",
       label: "Users Management",
       link: "/UsersManagement",
-    },
-
-    {
-      id: 4,
-      icon: "ri-stack-line",
-      label: "Document sharing",
-      link: "/",
-    },
-    {
-      id: 5,
-      icon: "ri-layout-grid-line",
-      label: "Collaboration",
-      link: "/",
-    },
-    {
-      id: 6,
-      icon: "ri-apps-2-line",
-      label: "Discussions",
-      link: "/",
-    },
-    {
-      id: 7,
-      icon: "ri-rocket-line",
-      label: "Leaderboard",
-      link: "/",
-    },
-    {
-      id: 8,
-      icon: "ri-pie-chart-line",
-      label: "Reports",
-      link: "/",
-    },
-  ];
-  const menuItems = [
-    {
-      label: "Menu",
-      isHeader: true,
-    },
-    {
-      id: 1,
-      icon: "ri-dashboard-2-line",
-      label: "MY Dashboard",
-      link: "/",
-    },
-    {
-      id: "",
-      icon: "ri-contacts-book-line",
-      label: "Users Management",
-      link: "/UsersManagement",
-    },
-    {
-      id: "Benchmarking",
-      icon: "ri-compasses-2-line",
-      label: "Benchmarking",
-      link: "/#",
-      click: function (e) {
-        e.preventDefault();
-        setIsApps(!isApps);
-        setIscurrentState("Apps");
-        updateIconSidebar(e);
-      },
-      stateVariables: isApps,
-      subItems: [
-        {
-          id: 1,
-          label: "Dashboard",
-          link: "/benchmarking",
-          parentId: "Benchmarking",
-        },
-      ],
     },
     {
       id: "Benchmarking Admin",
@@ -248,45 +180,6 @@ const Navdata = () => {
           label: "Benchmark",
           link: "/adminbenchmarking",
           parentId: "Benchmarking Admin",
-        },
-      ],
-    },
-    {
-      id: "Recommended Actions",
-      icon: "ri-pencil-ruler-2-line",
-      label: "Recommended Actions",
-      link: "/#",
-      click: function (e) {
-        e.preventDefault();
-        setIsRecommend(!isRecommend);
-        setIscurrentState("Recommend");
-        updateIconSidebar(e);
-      },
-      stateVariables: isRecommend,
-      subItems: [
-        {
-          id: 1,
-          label: "Report",
-          link: "/userreport",
-          parentId: "Recommended Actions",
-        },
-        {
-          id: 2,
-          label: "User Summary",
-          link: "/usersummary",
-          parentId: "Recommended Actions",
-        },
-        {
-          id: 3,
-          label: "User Details",
-          link: "/actionuserdetail",
-          parentId: "Recommended Actions",
-        },
-        {
-          id: 4,
-          label: "User Dashboard",
-          link: "/actionuserdashboard",
-          parentId: "Recommended Actions",
         },
       ],
     },
@@ -339,37 +232,146 @@ const Navdata = () => {
       id: 4,
       icon: "ri-stack-line",
       label: "Document sharing",
-      link: "#",
+      link: "/",
+      disable: true,
     },
     {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "#",
+      link: "/",
+      disable: true,
     },
     {
       id: 6,
       icon: "ri-apps-2-line",
       label: "Discussions",
-      link: "#",
+      link: "/",
+      disable: true,
     },
     {
       id: 7,
       icon: "ri-rocket-line",
       label: "Leaderboard",
-      link: "#",
+      link: "/",
+      disable: true,
     },
     {
       id: 8,
       icon: "ri-pie-chart-line",
       label: "Reports",
-      link: "#",
+      link: "/",
+      disable: true,
     },
   ];
+  const menuItems = [
+    {
+      label: "Menu",
+      isHeader: true,
+    },
+    {
+      id: 1,
+      icon: "ri-dashboard-2-line",
+      label: "MY Dashboard",
+      link: "/",
+      disable: true,
+    },
+
+    {
+      id: "Benchmarking",
+      icon: "ri-compasses-2-line",
+      label: "Benchmarking",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsApps(!isApps);
+        setIscurrentState("Apps");
+        updateIconSidebar(e);
+      },
+      stateVariables: isApps,
+      subItems: [
+        {
+          id: 1,
+          label: "Dashboard",
+          link: "/benchmarking",
+          parentId: "Benchmarking",
+        },
+      ],
+    },
+    {
+      id: "Recommended Actions",
+      icon: "ri-pencil-ruler-2-line",
+      label: "Recommended Actions",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsRecommend(!isRecommend);
+        setIscurrentState("Recommend");
+        updateIconSidebar(e);
+      },
+      stateVariables: isRecommend,
+      subItems: [
+        {
+          id: 1,
+          label: "Report",
+          link: "/userreport",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "User Summary",
+          link: "/usersummary",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 3,
+          label: "User Details",
+          link: "/actionuserdetail",
+          parentId: "Recommended Actions",
+        },
+      ],
+    },
+
+    {
+      id: 4,
+      icon: "ri-stack-line",
+      label: "Document sharing",
+      link: "/",
+      disable: true,
+    },
+    {
+      id: 5,
+      icon: "ri-layout-grid-line",
+      label: "Collaboration",
+      link: "/",
+      disable: true,
+    },
+    {
+      id: 6,
+      icon: "ri-apps-2-line",
+      label: "Discussions",
+      link: "/",
+      disable: true,
+    },
+    {
+      id: 7,
+      icon: "ri-rocket-line",
+      label: "Leaderboard",
+      link: "/",
+      disable: true,
+    },
+    {
+      id: 8,
+      icon: "ri-pie-chart-line",
+      label: "Reports",
+      link: "/",
+      disable: true,
+    },
+  ];
+  console.log("user role", user?.role, user);
   return (
     <React.Fragment>
-      {/* {user?.role?.title == "admin" ? menuItemsAdmin : menuItems} */}
-      {menuItems}
+      {obj?.role?.title == "admin" ? menuItemsAdmin : menuItems}
     </React.Fragment>
   );
 };

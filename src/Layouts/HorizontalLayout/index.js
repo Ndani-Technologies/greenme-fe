@@ -304,13 +304,29 @@ const HorizontalLayout = (props) => {
                 </li>
               ) : (
                 <li className="nav-item">
-                  <Link
+                  {/* <Link
                     className="nav-link menu-link"
                     to={item.link ? item.link : "/#"}
+                    disabled
                   >
                     <i className={item.icon}></i>{" "}
                     <span>{props.t(item.label)}</span>
-                  </Link>
+                  </Link> */}
+                  {console.log("item nav data", item)}
+                  {item.disable ? (
+                    <span className="nav-link menu-link disabled">
+                      <i className={item.icon}></i>
+                      <span>{props.t(item.label)}</span>
+                    </span>
+                  ) : (
+                    <Link
+                      className="nav-link menu-link"
+                      to={item.link ? item.link : "/#"}
+                    >
+                      <i className={item.icon}></i>
+                      <span>{props.t(item.label)}</span>
+                    </Link>
+                  )}
                 </li>
               )
             ) : (

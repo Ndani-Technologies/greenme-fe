@@ -1,5 +1,8 @@
 import { combineReducers } from "redux";
 
+//my reducers
+import userDetailReducer from "./usermanagement/reducer";
+
 // Front
 import LayoutReducer from "./layouts/reducer";
 
@@ -69,7 +72,11 @@ import JobReducer from "./jobs/reducer";
 // API Key
 import APIKeyReducer from "./apiKey/reducer";
 
+//Benchmark
+import BenchmarkReducer from "./BenchmarkingUser/reducer";
+
 const rootReducer = combineReducers({
+  Benchmark: BenchmarkReducer,
   Layout: LayoutReducer,
   Login: LoginReducer,
   Account: AccountReducer,
@@ -96,6 +103,7 @@ const rootReducer = combineReducers({
   Todos: TodosReducer,
   Jobs: JobReducer,
   APIKey: APIKeyReducer,
+  UserDetail: userDetailReducer,
 });
 
 export default rootReducer;

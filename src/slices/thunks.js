@@ -1,6 +1,9 @@
 // Front
 export * from "./layouts/thunk";
 
+//my thunks
+export * from "./usermanagement/thunk";
+
 // Authentication
 export * from "./auth/login/thunk";
 export * from "./auth/register/thunk";
@@ -41,6 +44,9 @@ export * from "./dashboardCRM/thunk";
 
 // Dashboard Ecommerce
 export * from "./dashboardEcommerce/thunk";
+
+//Benchmark user
+export * from "./BenchmarkingUser/thunk";
 
 // Dashboard Cryto
 export * from "./dashboardCrypto/thunk";

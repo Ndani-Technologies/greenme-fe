@@ -1,3 +1,10 @@
+//Benchmark
+export const ADD_BENCHMARK = "/";
+export const GET_ALL_BENCHMARK = "/";
+export const GET_SINGLE_BENCHMARK = "/:id";
+export const UPDATE_BENCHMARK = "/:id";
+export const DELETE_BENCHMARK = "/:id";
+
 //REGISTER
 export const POST_FAKE_REGISTER = "/auth/signup";
 

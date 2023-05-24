@@ -67,38 +67,6 @@ const authProtectedRoutes = [
     component: <Navigate to="/dashboard" />,
   },
   { path: "*", component: <Navigate to="/dashboard" /> },
-];
-
-const publicRoutes = [
-  // Authentication Page
-  { path: "/logout", component: <Logout /> },
-  { path: "/login", component: <Login /> },
-  { path: "/forgot-password", component: <ForgetPasswordPage /> },
-  { path: "/register", component: <Register /> },
-
-  //AuthenticationInner pages
-  { path: "/auth-signin-basic", component: <BasicSignIn /> },
-  { path: "/auth-signin-cover", component: <CoverSignIn /> },
-  { path: "/auth-signup-basic", component: <BasicSignUp /> },
-  { path: "/auth-signup-cover", component: <CoverSignUp /> },
-  { path: "/auth-pass-reset-basic", component: <BasicPasswReset /> },
-  { path: "/auth-pass-reset-cover", component: <CoverPasswReset /> },
-  { path: "/auth-lockscreen-basic", component: <BasicLockScreen /> },
-  { path: "/auth-lockscreen-cover", component: <CoverLockScreen /> },
-  { path: "/auth-logout-basic", component: <BasicLogout /> },
-  { path: "/auth-logout-cover", component: <CoverLogout /> },
-  { path: "/auth-success-msg-basic", component: <BasicSuccessMsg /> },
-  { path: "/auth-success-msg-cover", component: <CoverSuccessMsg /> },
-  { path: "/auth-twostep-basic", component: <BasicTwosVerify /> },
-  { path: "/auth-twostep-cover", component: <CoverTwosVerify /> },
-  { path: "/auth-404-basic", component: <Basic404 /> },
-  { path: "/auth-404-cover", component: <Cover404 /> },
-  { path: "/auth-404-alt", component: <Alt404 /> },
-  { path: "/auth-500", component: <Error500 /> },
-
-  { path: "/auth-pass-change-basic", component: <BasicPasswCreate /> },
-  { path: "/auth-pass-change-cover", component: <CoverPasswCreate /> },
-  { path: "/auth-offline", component: <Offlinepage /> },
   { path: "/Profile", component: <Profile /> },
   { path: "/UsersManagement", component: <UsersManagement /> },
   //benchmarking user
@@ -131,6 +99,57 @@ const publicRoutes = [
   { path: "/actioncomparison", component: <ActionComparison /> },
   { path: "/actionadmindashboard", component: <ActionAdminDashboard /> },
   { path: "/AdminRelationship", component: <AdminRelation /> },
+];
+
+const publicRoutes = [
+  // Authentication Page
+  { path: "/logout", component: <Logout /> },
+  { path: "/login", component: <Login /> },
+  { path: "/forgot-password", component: <ForgetPasswordPage /> },
+  { path: "/register", component: <Register /> },
+
+  //AuthenticationInner pages
+  { path: "/auth-signin-basic", component: <BasicSignIn /> },
+  { path: "/auth-signin-cover", component: <CoverSignIn /> },
+  { path: "/auth-signup-basic", component: <BasicSignUp /> },
+  { path: "/auth-signup-cover", component: <CoverSignUp /> },
+  { path: "/auth-pass-reset-basic", component: <BasicPasswReset /> },
+  { path: "/auth-pass-reset-cover", component: <CoverPasswReset /> },
+  { path: "/auth-lockscreen-basic", component: <BasicLockScreen /> },
+  { path: "/auth-lockscreen-cover", component: <CoverLockScreen /> },
+  { path: "/auth-logout-basic", component: <BasicLogout /> },
+  { path: "/auth-logout-cover", component: <CoverLogout /> },
+  { path: "/auth-success-msg-basic", component: <BasicSuccessMsg /> },
+  { path: "/auth-success-msg-cover", component: <CoverSuccessMsg /> },
+  { path: "/auth-twostep-basic", component: <BasicTwosVerify /> },
+  { path: "/auth-twostep-cover", component: <CoverTwosVerify /> },
+  { path: "/auth-404-basic", component: <Basic404 /> },
+  { path: "/auth-404-cover", component: <Cover404 /> },
+  { path: "/auth-404-alt", component: <Alt404 /> },
+  { path: "/auth-500", component: <Error500 /> },
+
+  { path: "/auth-pass-change-basic", component: <BasicPasswCreate /> },
+  { path: "/auth-pass-change-cover", component: <CoverPasswCreate /> },
+  { path: "/auth-offline", component: <Offlinepage /> },
+  // { path: "/Profile", component: <Profile /> },
+  // { path: "/UsersManagement", component: <UsersManagement /> },
+  // //benchmarking user
+  // { path: "/benchmarking", component: <BenchmarkingDashboard /> },
+  // { path: `/benchmarking/:id`, component: <Benchmarking /> },
+  // { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
+  // //benchmarking admin
+  // { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
+  // {
+  //   path: `/adminbenchmarking/summary/:id`,
+  //   component: <BenchmarkSummaryAdmin />,
+  // },
+  // {
+  //   path: `/adminbenchmarking/questions/summary/:id`,
+  //   component: <BenchmarkSummaryAdmin />,
+  // },
+  // { path: "/adminbenchmarking/questions", component: <BenchmarkingQA /> },
+  // { path: "/adminbenchmarking/compare", component: <Comparison /> },
+  // { path: "/adminbenchmarking/questions/compare", component: <QAComparison /> },
 ];
 
 export { authProtectedRoutes, publicRoutes };

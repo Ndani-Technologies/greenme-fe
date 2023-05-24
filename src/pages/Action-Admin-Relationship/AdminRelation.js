@@ -492,52 +492,50 @@ const AdminRelation = () => {
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
-      <Layouts>
-        <div className="page-content overflow-auto ">
-          <ActionMain
-            Title={"Recommended Actions - Benchmark to Action Relationships"}
+      <div className="page-content overflow-auto ">
+        <ActionMain
+          Title={"Recommended Actions - Benchmark to Action Relationships"}
+        />
+        <Button className="mt-4 " onClick={() => setmodal_grid(true)}>
+          <i class="ri-add-fill mt-2"></i>Add New Relationship
+        </Button>
+        {modal_grid && (
+          <RelationModal
+            modal_grid={modal_grid}
+            setmodal_grid={setmodal_grid}
           />
-          <Button className="mt-4" onClick={() => setmodal_grid(true)}>
-            <i class="ri-add-fill"></i>Add New Relationship
-          </Button>
-          {modal_grid && (
-            <RelationModal
-              modal_grid={modal_grid}
-              setmodal_grid={setmodal_grid}
-            />
-          )}
-          <Col xxl={12} className="m-auto mt-5">
-            <Card id="contactList">
-              <CardBody className="pt-0">
-                <div>
-                  {console.log("contact", crmcontacts)}
-                  {isContactSuccess && crmcontacts && crmcontacts.length ? (
-                    <TableContainer
-                      columns={columns}
-                      data={crmcontacts || []}
-                      isGlobalFilter={true}
-                      isAddUserList={false}
-                      isFilterA={false}
-                      isFilterAction={true}
-                      isFooter={true}
-                      customPageSize={8}
-                      className="custom-header-css"
-                      divClass="table-responsive table-card mb-0"
-                      tableClass="align-middle table-nowrap"
-                      theadClass="table-light"
-                      handleContactClick={handleContactClicks}
-                      isContactsFilter={false}
-                      SearchPlaceholder="Search by  title "
-                    />
-                  ) : (
-                    <Loader error={error} />
-                  )}
-                </div>
-              </CardBody>
-            </Card>
-          </Col>
-        </div>
-      </Layouts>
+        )}
+        <Col xxl={12} className="m-auto mt-5">
+          <Card id="contactList">
+            <CardBody className="pt-0">
+              <div>
+                {console.log("contact", crmcontacts)}
+                {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                  <TableContainer
+                    columns={columns}
+                    data={crmcontacts || []}
+                    isGlobalFilter={true}
+                    isAddUserList={false}
+                    isFilterA={false}
+                    isFilterAction={true}
+                    isFooter={true}
+                    customPageSize={8}
+                    className="custom-header-css"
+                    divClass="table-responsive table-card mb-0"
+                    tableClass="align-middle table-nowrap"
+                    theadClass="table-light"
+                    handleContactClick={handleContactClicks}
+                    isContactsFilter={false}
+                    SearchPlaceholder="Search by  title "
+                  />
+                ) : (
+                  <Loader error={error} />
+                )}
+              </div>
+            </CardBody>
+          </Card>
+        </Col>
+      </div>
     </React.Fragment>
   );
 };

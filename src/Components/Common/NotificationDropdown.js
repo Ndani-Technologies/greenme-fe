@@ -52,7 +52,7 @@ const NotificationDropdown = () => {
         >
           <i className="bx bx-bell fs-22"></i>
           <span className="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">
-            3<span className="visually-hidden">unread messages</span>
+            0<span className="visually-hidden">unread messages</span>
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-lg dropdown-menu-end p-0">

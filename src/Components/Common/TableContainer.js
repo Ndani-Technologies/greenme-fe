@@ -63,12 +63,6 @@ function GlobalFilter({
         <form>
           <Row className="g-3">
             <Col className="d-flex align-items-center justify-content-between w-100">
-              {console.log(
-                "searchInput",
-                isSearchInput,
-                !isSearchInput,
-                !isSearchInput || isSearchInput == undefined ? "hi" : "no"
-              )}
               {true && (
                 <div
                   className={
@@ -122,6 +116,7 @@ function GlobalFilter({
 
 const TableContainer = ({
   columns,
+  setInfo,
   isFilterA,
   isWeightField,
   isFilterAction,
@@ -353,7 +348,14 @@ const TableContainer = ({
                       <th>
                         {row.cells.map((cell) => {
                           return (
-                            <tr key={cell.id} {...cell.getCellProps()}>
+                            <tr
+                              key={cell.id}
+                              {...cell.getCellProps()}
+                              onClick={() => {
+                                console.log("row1", cell?.row?.original);
+                                setInfo(cell?.row?.original);
+                              }}
+                            >
                               {cell.render("Cell")}
                             </tr>
                           );
@@ -369,7 +371,14 @@ const TableContainer = ({
                       <tr>
                         {row.cells.map((cell) => {
                           return (
-                            <td key={cell.id} {...cell.getCellProps()}>
+                            <td
+                              key={cell.id}
+                              {...cell.getCellProps()}
+                              onClick={() => {
+                                console.log("row2", cell?.row?.original);
+                                setInfo(cell?.row?.original);
+                              }}
+                            >
                               {cell.render("Cell")}
                             </td>
                           );

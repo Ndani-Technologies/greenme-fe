@@ -6,8 +6,17 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./slices";
+import { persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
-const store = configureStore({ reducer: rootReducer, devTools: true });
+const persistConfig = {
+  key: "root",
+  storage: storage,
+  whitelist: ["Login"],
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+const store = configureStore({ reducer: persistedReducer, devTools: true });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
