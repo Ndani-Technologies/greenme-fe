@@ -51,6 +51,7 @@ const Benchmarking = () => {
     });
     console.log("benchmark by cateogry", benchmarkByCategory);
     setQuestions(benchmarkByCategory);
+
   };
   useEffect(() => {
     callApi();
@@ -262,6 +263,7 @@ const Benchmarking = () => {
                         className={`button ${
                           activeButtonIndex === btnIndex ? "active" : ""
                         }`}
+
                         onClick={() =>
                           handleButtonClick(
                             (currentPage - 1) * numPages + index,
@@ -281,7 +283,6 @@ const Benchmarking = () => {
           </div>
         );
       });
-
   const handleSubmit = () => {
     console.log("here");
     dispatch(updateUserResp(benchmark._id, user_resp, navigate));
@@ -306,6 +307,7 @@ const Benchmarking = () => {
             <CardBody className="pl-1 pr-1">
               <Nav pills className="nav-justified mb-3 mt-3">
                 {category.length >= 0 &&
+
                   category.map((value, index) => {
                     return (
                       <NavItem key={index}>
@@ -448,6 +450,7 @@ const Benchmarking = () => {
                             onClick={() => {
                               dispatch(
                                 updateUserRespSave(
+
                                   benchmark._id,
                                   user_resp,
                                   navigate

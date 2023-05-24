@@ -446,6 +446,7 @@ const BenchmarkingDashboard = () => {
                         setDeleteConfirmation(true);
                         setDeleteId(cellProps.row.original._id);
                         // onClickDelete(contactData);
+
                       }}
                     >
                       Delete

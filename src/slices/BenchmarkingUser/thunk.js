@@ -61,6 +61,7 @@ export const updateUserRespSave =
       { user_resp }
     );
 
+
     console.log("benchmark  user_resp_update", resp);
     if (resp) history("/benchmarking");
   };
@@ -227,7 +228,6 @@ export const addQuestion = async (data) => {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
 
     let resp = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
-
     console.log("add question", resp);
     return resp;
   } catch (error) {
