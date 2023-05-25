@@ -508,7 +508,7 @@ const BenchmarkingDashboard = () => {
           }
         })
         .catch((err) => {
-          toast.error(err);
+          // toast.error(err);
           console.log(err, "this is error");
         });
     },

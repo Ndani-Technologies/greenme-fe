@@ -100,7 +100,7 @@ export const addBenchmark = async (benchmark) => {
     }
   } catch (err) {
     console.log(err);
-    toast.error(err, { autoClose: 3000 });
+    // toast.error(err, { autoClose: 3000 });
   }
 };
 
