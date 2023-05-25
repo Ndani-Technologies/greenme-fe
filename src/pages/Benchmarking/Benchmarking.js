@@ -116,183 +116,424 @@ const Benchmarking = () => {
     console.log("mapdata user resp", mapData);
     // Your other logic here
   };
+  const [flag, setFlag] = useState(true);
+  const [activeButtonIndexes, setActiveButtonIndexes] = useState([]);
 
-  // const renderedQuestions = benchmark?.questionnaire
-  // .slice((currentPage - 1) * numPages, currentPage * numPages)
-  // .map((item, index) => {
-  //   const activeButtonIndex = activeIndexes[index];
+  let [benchmark2, setBenchmark2] = useState({
+    title: "Benchmark",
+    status: "Active",
+    completion_level: 100,
+    country: "uk",
+    start_date: "2023-05-24T13:46:12.874Z",
+    end_data: "2023-05-24T17:48:52.227Z",
+    _id: "646e1524d4faa913432362b3",
+    user: {
+      _id: "6468d0ebe01631c2604a2376",
+      email: "info@ndani.co.ke",
+      organization: "Fleet Forum",
+      firstName: "Ndani",
+      lastName: "Tester 1",
+      scope: [],
+      otherCountries: [],
+      areaOfExpertise: [],
+      profilePic:
+        "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+      uid: 1380,
+      role: {
+        _id: "6467ade8a992a3cf078ac815",
+        title: "user",
+        permissions: [
+          {
+            _id: "6467adbfa992a3cf078ac810",
+            title: "get user",
+            route: "can get users",
+            createdAt: "2023-05-19T17:11:27.244Z",
+            updatedAt: "2023-05-19T17:11:27.244Z",
+            __v: 0,
+          },
+        ],
+        createdAt: "2023-05-19T17:12:08.959Z",
+        updatedAt: "2023-05-19T17:12:08.959Z",
+        __v: 0,
+      },
+      timezone: "GMT",
+      state: "active",
+      createdAt: "2023-05-20T13:53:47.519Z",
+      updatedAt: "2023-05-22T13:12:21.765Z",
+      __v: 0,
+      country: "",
+    },
+    questionnaire: [
+      {
+        whoHasAnswer: {
+          userId: [],
+          totalUsers: 0,
+        },
+        _id: "646debeea8104724da361852",
+        languageSelector: "English",
+        status: true,
+        visibility: true,
+        title:
+          "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) contain references to a green strategy or environmental sustainability? ",
+        description: "For example, how to reduce emissions or waste?",
+        category: {
+          _id: "646ba306f9cf2ce9b1d5669d",
+          language: "English",
+          titleEng: "Data",
+          __v: 0,
+        },
+        answerOptions: [
+          {
+            _id: "646d05b2a8104724da360f73",
+            language: "English",
+            answerOption: "Yes",
+            includeExplanation: false,
+            __v: 0,
+          },
+          {
+            _id: "646d05b5a8104724da360f75",
+            language: "English",
+            answerOption: "No",
+            includeExplanation: false,
+            __v: 0,
+          },
+          {
+            _id: "646b4ba4be4f8222b0b44b8d",
+            language: "English",
+            answerOption: "We don't have a policy",
+            includeExplanation: false,
+            __v: 0,
+          },
+        ],
+        __v: 1,
+      },
+      {
+        whoHasAnswer: {
+          userId: [],
+          totalUsers: 0,
+        },
+        _id: "646decb2a8104724da36186f",
+        languageSelector: "English",
+        status: true,
+        visibility: true,
+        title:
+          "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) include guidance to use the best option vehicle with the lowest environmental impact? ",
+        description:
+          "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) include guidance to use the best option vehicle with the lowest environmental impact? ",
+        category: {
+          _id: "646ba306f9cf2ce9b1d5669d",
+          language: "English",
+          titleEng: "Data",
+          __v: 0,
+        },
+        answerOptions: [
+          {
+            _id: "646d05b2a8104724da360f73",
+            language: "English",
+            answerOption: "Yes",
+            includeExplanation: false,
+            __v: 0,
+          },
+          {
+            _id: "646d05b5a8104724da360f75",
+            language: "English",
+            answerOption: "No",
+            includeExplanation: false,
+            __v: 0,
+          },
+          {
+            _id: "646b4ba4be4f8222b0b44b8d",
+            language: "English",
+            answerOption: "We don't have a policy",
+            includeExplanation: false,
+            __v: 0,
+          },
+        ],
+        __v: 0,
+      },
+    ],
+    completionLevel: 100,
+    user_resp: [
+      {
+        questionId: "646debeea8104724da361852",
+        selectedOption: "646d05b5a8104724da360f75",
+        comment: "",
+        _id: "646e4e04d4faa9134323699a",
+      },
+      {
+        questionId: "646decb2a8104724da36186f",
+        selectedOption: "646b4ba4be4f8222b0b44b8d",
+        comment: "",
+        _id: "646e4e04d4faa9134323699b",
+      },
+    ],
+    __v: 0,
+    end_date: "2023-05-24T17:48:52.227Z",
+  });
+  //   const renderedQuestions =
+  //     questions?.length >= 0 &&
+  //     questions
+  //       .slice((currentPage - 1) * numPages, currentPage * numPages)
+  //       .map((item, index) => {
+  //         const activeButtonIndex =   [index];
 
-  //   // Find the user response for the current question
-  //   const userResponse = benchmark.user_resp.find(
-  //     (resp) => resp.questionId === item._id
-  //   );
+  //         // Find the user response for the current question
+  //         const userResponse = benchmark.user_resp.find(
+  //           (resp) => resp.questionId === item?._id
+  //         );
+  // console.log("userResponse", userResponse)
+  //         // Get the index of the selected option
+  //         const selectedOptionIndex = item.answerOptions.findIndex(
+  //           (option) => option?._id === userResponse?.selectedOption
+  //         );
 
-  //   // Get the index of the selected option
-  //   const selectedOptionIndex = item.answerOptions.findIndex(
-  //     (option) => option._id === userResponse?.selectedOption
-  //   );
+  //         return (
+  //           <div className="row w-50" key={index}>
+  //             <h5>Question {item.index}</h5>
+  //             <p className="w-75 fs-5">{item.title}</p>
+  //             <p>{item.description}</p>
+  //             {benchmark.user_resp?.length > 0
+  //               ? item.answerOptions &&
+  //                 item.answerOptions.map((btn, btnIndex) => (
+  //                   <>
+  //                     {btn.includeExplanation &&
+  //                       activeButtonIndex === btnIndex && (
+  //                         <textarea
+  //                           type="text"
+  //                           className="w-75 p-2"
+  //                           rows={3}
+  //                           key={btnIndex}
+  //                           placeholder="Comments"
+  //                           onChange={handleExplanationChange}
+  //                         />
+  //                       )}
+  //                   </>
+  //                 ))
+  //               : item.answerOptions.map((btn, btnIndex) => (
+  //                   <>
+  //                     {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
 
-  //   return (
-  //     <div className="row w-50" key={index}>
-  //       <h5>Question {item.index}</h5>
-  //       <p className="w-75 fs-5">{item.title}</p>
-  //       <p>{item.description}</p>
-  //       {item.answerOptions &&
-  //         item.answerOptions.map((btn, btnIndex) => (
-  //           <>
-  //             {btn.includeExplanation && activeButtonIndex === btnIndex && (
-  //               <textarea
-  //                 type="text"
-  //                 className="w-75 p-2"
-  //                 rows={3}
-  //                 key={btnIndex}
-  //                 placeholder="Comments"
-  //                 onChange={handleExplanationChange}
-  //               />
+  //                     {btn.includeExplanation && (
+  //                       <textarea
+  //                         type="text"
+  //                         className="w-75 p-2"
+  //                         rows={3}
+  //                         placeholder="Comments"
+  //                         onChange={handleExplanationChange}
+  //                       />
+  //                     )}
+  //                   </>
+  //                 ))}
+
+  //             {benchmark.user_resp?.length > 0 ? (
+  //               <div className="d-flex mt-4">
+  //                 {item.answerOptions &&
+  //                   item.answerOptions.map((btn, btnIndex) => {
+  //                     let isSelected ;
+  //                     let isCheck =!seletectedArrayIndexes.includes(index)
+  //                     if( flag) {
+  //                       console.log("question", index, "button", btn.answerOption,btnIndex, "selected", selectedOptionIndex )
+  //                       isSelected = selectedOptionIndex === btnIndex;
+  //                       seletectedArrayIndexes.push(index)
+  //                     }
+  //                     console.log("isSelected", isSelected)
+  //                     // const isUserResponse =
+  //                     //   userResponse?.selectedOption === btn?._id;
+  //                     let buttonClass = isSelected  ? `button active` :  "button" && activeButtonIndex == btnIndex ? "button active"  : "button";
+  //                     // let buttonClass = index == btnIndex ? "button active" : "button"
+
+  //                     return (
+  //                       <div className="buttons-container" key={btnIndex}>
+  //                         <button
+  //                           onClick={() =>{
+  //                             setFlag(selectedOptionIndex == userResponse?.selectedOption)
+  //                             isSelected = false
+  //                             handleButtonClick(
+  //                               (currentPage - 1) * numPages + index,
+  //                               btnIndex,
+  //                               btn.answerOption,
+  //                               item?._id,
+  //                               btn?._id
+  //                               )
+
+  //                               console.log("isSelected2", isSelected, isCheck, seletectedArrayIndexes)
+  //                             }
+  //                           }
+  //                           className={buttonClass}
+  //                         >
+  //                           {btn.answerOption}
+  //                         </button>
+  //                       </div>
+  //                     );
+  //                   })}
+
+  //               </div>
+  //             ) : (
+  //               <div className="d-flex mt-4">
+  //                 {item.answerOptions &&
+  //                   item.answerOptions.map((btn, btnIndex) => (
+  //                     <div className="buttons-container" key={btnIndex}>
+  //                       <button
+  //                         className={`button ${
+  //                           activeButtonIndex === btnIndex ? "active" : ""
+  //                         }`}
+  //                         onClick={() =>
+  //                           handleButtonClick(
+  //                             (currentPage - 1) * numPages + index,
+  //                             btnIndex,
+  //                             btn.answerOption,
+  //                             item?._id,
+  //                             btn?._id
+  //                           )
+  //                         }
+  //                       >
+  //                         {btn.answerOption}
+  //                       </button>
+  //                     </div>
+  //                   ))}
+  //               </div>
   //             )}
-  //           </>
-  //         ))}
-  //       <div className="d-flex mt-4">
-  //         {item.answerOptions &&
-  //           item.answerOptions.map((btn, btnIndex) => (
-  //             <div className="buttons-container" key={btnIndex}>
-  //               <button
-  //                 className={`button ${
-  //                   selectedOptionIndex === btnIndex ? "active" : ""
-  //                 }`}
-  //                 onClick={() =>
-  //                   handleButtonClick(
-  //                     (currentPage - 1) * numPages + index,
-  //                     btnIndex,
-  //                     btn.answerOption,
-  //                     item._id,
-  //                     btn._id
-  //                   )
-  //                 }
-  //               >
-  //                 {btn.answerOption}
-  //               </button>
-  //             </div>
-  //           ))}
-  //       </div>
-  //     </div>
-  //   );
-  // });
+  //           </div>
+  //         );
+  //       });
 
-  /* working code */
-  // const renderedQuestions = benchmark.questionnaire?.length>=0 &&  benchmark?.questionnaire
   const renderedQuestions =
-    questions?.length >= 0 &&
-    questions
-      .slice((currentPage - 1) * numPages, currentPage * numPages)
-      .map((item, index) => {
-        const activeButtonIndex = activeIndexes[index];
+    benchmark?.questionnaire?.length > 0 &&
+    benchmark.questionnaire.map((item, qid) => {
+      let isHighlighted;
+      const activeButtonIndex = activeIndexes[qid];
 
-        // Find the user response for the current question
-        const userResponse = benchmark.user_resp.find(
-          (resp) => resp.questionId === item?._id
-        );
-
-        // Get the index of the selected option
-        const selectedOptionIndex = item.answerOptions.findIndex(
-          (option) => option?._id === userResponse?.selectedOption
-        );
-
-        return (
-          <div className="row w-50" key={index}>
-            <h5>Question {item.index}</h5>
-            <p className="w-75 fs-5">{item.title}</p>
-            <p>{item.description}</p>
-            {benchmark.user_resp?.length > 0
-              ? item.answerOptions &&
-                item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {btn.includeExplanation &&
-                      activeButtonIndex === btnIndex && (
+      const userResponse = benchmark.user_resp.find(
+        (resp) => resp.questionId === item?._id
+      );
+      const selectedOptionIndex = item.answerOptions.findIndex(
+        (option) => option?._id === userResponse?.selectedOption
+      );
+      const selectedOption = item.answerOptions.find(
+        (option) => option?._id === userResponse?.selectedOption
+      );
+      return (
+        <div className="row w-50 " key={qid}>
+          <h5>Question {qid + 1}</h5>
+          <p className="w-75 fs-5">{item.title}</p>
+          <p>{item.description}</p>
+          <div className="d-flex gap-2">
+            {benchmark.user_resp.length > 0
+              ? item.answerOptions.length > 0 &&
+                item.answerOptions.map((btn, buttonIndex) => {
+                  let buttonClass =
+                    selectedOption?._id === btn._id
+                      ? "button active"
+                      : "button ";
+                  return (
+                    <div>
+                      {btn.includeExplanation && (
                         <textarea
                           type="text"
                           className="w-75 p-2"
                           rows={3}
-                          key={btnIndex}
                           placeholder="Comments"
-                          onChange={handleExplanationChange}
                         />
                       )}
-                  </>
-                ))
-              : item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
+                      <div className="d-flex mt-4">
+                        <div className="buttons-container" key={buttonIndex}>
+                          {console.log(
+                            "button checks",
+                            selectedOptionIndex,
+                            buttonIndex,
+                            selectedOptionIndex === buttonIndex
+                          )}
 
-                    {btn.includeExplanation && (
-                      <textarea
-                        type="text"
-                        className="w-75 p-2"
-                        rows={3}
-                        placeholder="Comments"
-                        onChange={handleExplanationChange}
-                      />
-                    )}
-                  </>
-                ))}
-
-            {benchmark.user_resp?.length > 0 ? (
-              <div className="d-flex mt-4">
-                {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => {
-                    const isSelected = selectedOptionIndex === btnIndex;
-                    const isUserResponse =
-                      userResponse?.selectedOption === btn?._id;
-                    const buttonClass = isSelected ? "button active" : "button";
-
-                    return (
-                      <div className="buttons-container" key={btnIndex}>
-                        <button
-                          className={buttonClass}
-                          onClick={() =>
-                            handleButtonClick(
-                              (currentPage - 1) * numPages + index,
-                              btnIndex,
-                              btn.answerOption,
-                              item?._id,
-                              btn?._id
-                            )
-                          }
-                        >
-                          {btn.answerOption}
-                        </button>
+                          <button
+                            className={buttonClass}
+                            onClick={() => {
+                              setBenchmark((prevState) => {
+                                // find index of the current user response
+                                const userRespIndex =
+                                  prevState.user_resp.findIndex(
+                                    (resp) => resp.questionId === item._id
+                                  );
+                                // copy previous state
+                                const newUserResp = [...prevState.user_resp];
+                                // update selectedOption of the current user response
+                                newUserResp[userRespIndex] = {
+                                  ...newUserResp[userRespIndex],
+                                  selectedOption: btn._id,
+                                };
+                                // return new state
+                                return {
+                                  ...prevState,
+                                  user_resp: newUserResp,
+                                };
+                              });
+                              const mapData = {
+                                questionId: item._id,
+                                selectedOption: btn._id,
+                                comment: "",
+                              };
+                              setUser_resp([...user_resp, mapData]);
+                            }}
+                          >
+                            {btn.answerOption}
+                          </button>
+                        </div>
                       </div>
-                    );
-                  })}
-              </div>
-            ) : (
-              <div className="d-flex mt-4">
-                {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => (
-                    <div className="buttons-container" key={btnIndex}>
-                      <button
-                        className={`button ${
-                          activeButtonIndex === btnIndex ? "active" : ""
-                        }`}
-                        onClick={() =>
-                          handleButtonClick(
-                            (currentPage - 1) * numPages + index,
-                            btnIndex,
-                            btn.answerOption,
-                            item?._id,
-                            btn?._id
-                          )
-                        }
-                      >
-                        {btn.answerOption}
-                      </button>
                     </div>
-                  ))}
-              </div>
-            )}
+                  );
+                })
+              : item.answerOptions.length > 0 &&
+                item.answerOptions.map((btn, buttonIndex) => {
+                  let buttonClass =
+                    selectedOption?._id === btn._id
+                      ? "button active"
+                      : "button ";
+                  return (
+                    <div>
+                      {btn.includeExplanation && (
+                        <textarea
+                          type="text"
+                          className="w-75 p-2"
+                          rows={3}
+                          placeholder="Comments"
+                        />
+                      )}
+                      <div className="d-flex mt-4">
+                        <div className="buttons-container" key={buttonIndex}>
+                          {console.log(
+                            "button checks",
+                            selectedOptionIndex,
+                            buttonIndex,
+                            selectedOptionIndex === buttonIndex
+                          )}
+
+                          <button
+                            className={`button ${
+                              activeButtonIndex === buttonIndex ? "active" : ""
+                            }`}
+                            onClick={() => {
+                              setActiveIndexes((prevState) => ({
+                                ...prevState,
+                                [qid]: buttonIndex,
+                              }));
+                              const mapData = {
+                                questionId: item._id,
+                                selectedOption: btn._id,
+                                comment: "",
+                              };
+                              setUser_resp([...user_resp, mapData]);
+                            }}
+                          >
+                            {btn.answerOption}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
           </div>
-        );
-      });
+        </div>
+      );
+    });
   const handleSubmit = () => {
     console.log("here");
     dispatch(updateUserResp(benchmark?._id, user_resp, navigate));
@@ -438,7 +679,6 @@ const Benchmarking = () => {
                                 >
                                   {/* <div className="label">40%</div> */}
                                 </div>
-
                               </div>
                             </CardBody>
                           )}
