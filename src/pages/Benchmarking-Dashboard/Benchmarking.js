@@ -495,12 +495,22 @@ const BenchmarkingDashboard = () => {
       country: Yup.string().required("Country is required"),
     }),
     onSubmit: async (values) => {
-      console.log("values benchmark", values);
-      let resp = await addBenchmark(values);
-      setBenchmarks([...benchmarks, resp]);
-      validation2.resetForm();
-      setmodal_grid(false);
-      navigate(`/benchmarking/${resp._id}`);
+      await addBenchmark(values)
+        .then((resp) => {
+          if (resp) {
+            toast.success("Successfully added");
+            setBenchmarks([...benchmarks, resp]);
+            validation2.resetForm();
+            setmodal_grid(false);
+            navigate(`/benchmarking/${resp._id}`);
+          } else {
+            toast.error("Name already exists");
+          }
+        })
+        .catch((err) => {
+          toast.error(err);
+          console.log(err, "this is error");
+        });
     },
   });
 
