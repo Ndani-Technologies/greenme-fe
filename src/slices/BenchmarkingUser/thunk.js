@@ -65,6 +65,8 @@ export const updateUserRespSave =
 
     //   { user_resp }
     // );
+    console.log("benchmark  user_resp_update req", user_resp);
+
     let resp = await axios.patch(
       `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
       { user_resp }
