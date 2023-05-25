@@ -63,9 +63,7 @@ const Benchmarking = () => {
 
   const getProgressPercentage = async () => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
-    console.log(obj, "user object");
     const res = await getUserProgress(obj._id);
-    console.log(res, "percentage API result");
     setProgressPercentage(res);
   };
 
@@ -679,7 +677,6 @@ const Benchmarking = () => {
                                 >
                                   {/* <div className="label">40%</div> */}
                                 </div>
-
                               </div>
                             </CardBody>
                           )}

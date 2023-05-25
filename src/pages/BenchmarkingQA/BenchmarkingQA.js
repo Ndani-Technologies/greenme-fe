@@ -77,7 +77,6 @@ const BenchmarkingQA = () => {
   const [allCategories, setAllCategories] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const allQA = () => {
-    console.log("Inside All QA");
     getAllQA()
       .then((resp) => setQA(resp))
       .catch((err) => console.log("qa all error", err));
@@ -199,7 +198,7 @@ const BenchmarkingQA = () => {
 
       const answerIds = [];
 
-      values?.answerOption.length &&
+      values?.answerOption?.length &&
         values?.answerOption.forEach((value) => {
           allAnswers.forEach((val) => {
             if (value === val.answerOption) {
@@ -1030,7 +1029,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                .answerOption
+                                                                ?.answerOption
                                                           )
                                                         );
                                                       }}
@@ -1062,7 +1061,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                .answerOption
+                                                                ?.answerOption
                                                           )
                                                         );
                                                       }}
