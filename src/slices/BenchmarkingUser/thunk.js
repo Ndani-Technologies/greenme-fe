@@ -40,7 +40,6 @@ export const getUserProgress = async (id) => {
   let resp = await axios.get(
     `${process.env.REACT_APP_BENCHMARK_URL}/percentage/percentageOfBenchmarks/${id}`
   );
-  console.log(resp, "user percentage");
   return resp;
 };
 
@@ -102,7 +101,6 @@ export const addBenchmark = async (benchmark) => {
     }
   } catch (err) {
     console.log(err);
-    // toast.error(err, { autoClose: 3000 });
   }
 };
 
@@ -234,7 +232,6 @@ export const addCategory = async (data) => {
   }
 };
 export const addQuestion = async (data, category) => {
-  console.log(data, "Inside add question thunk");
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
 
@@ -275,7 +272,6 @@ export const getAllAdminBenchmarks = async () => {
 };
 export const updateQuestion = async (id, data) => {
   try {
-    console.log(data, "Data inside updatequestionaiire");
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.put(
@@ -291,7 +287,6 @@ export const updateQuestion = async (id, data) => {
 };
 export const deleteQuestion = async (id) => {
   try {
-    // console.log(data, "Data inside updatequestionaiire");
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
     let resp = await axios.delete(
