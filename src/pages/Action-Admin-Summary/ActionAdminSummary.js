@@ -35,7 +35,7 @@ const ActionAdminSummary = () => {
         />
         <div
           className="d-flex justify-content-between align-items-center bg-white p-3 pt-4 pb-4 rounded"
-          style={{ marginTop: "-20px" }}
+          style={{ marginTop: "-20px", width: "98%" }}
         >
           <div className=" d-flex">
             <Label className="m-2">Filter by</Label>
@@ -78,7 +78,7 @@ const ActionAdminSummary = () => {
             <b>Org:</b> FleetMGT Co. C
           </span>
         </div>
-        <div className=" mt-4 p-2 pb-0 pt-4">
+        <div className=" mt-4 p-2 pb-0 pt-4" style={{ width: "98%" }}>
           <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
             <Col xl={7} className="mt-2">
               <Col xl={12}>

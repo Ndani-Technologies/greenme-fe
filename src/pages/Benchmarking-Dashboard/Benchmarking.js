@@ -326,12 +326,21 @@ const BenchmarkingDashboard = () => {
   const columns = useMemo(
     () => [
       {
+        Header: (
+          <input
+            type="checkbox"
+            id="checkBoxAll"
+            className="form-check-input"
+            onClick={() => checkedAll()}
+          />
+        ),
+
         Cell: (cellProps) => {
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original._id}
+              value={cellProps.row.original}
               onChange={() => deleteCheckbox()}
             />
           );
@@ -508,7 +517,6 @@ const BenchmarkingDashboard = () => {
           }
         })
         .catch((err) => {
-
           toast.error(err);
           console.log(err, "this is error");
         });
@@ -645,6 +653,7 @@ const BenchmarkingDashboard = () => {
                 ) : (
                   <Loader error={error} />
                 )}
+                <Button onClick={() => deleteMultiple()}>Delete All</Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>

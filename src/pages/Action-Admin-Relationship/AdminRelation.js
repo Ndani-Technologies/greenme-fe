@@ -355,12 +355,21 @@ const AdminRelation = () => {
   };
   const columns = useMemo(() => [
     {
+      Header: (
+        <input
+          type="checkbox"
+          id="checkBoxAll"
+          className="form-check-input"
+          onClick={() => checkedAll()}
+        />
+      ),
+
       Cell: (cellProps) => {
         return (
           <input
             type="checkbox"
             className="contactCheckBox form-check-input"
-            value={cellProps.row.original._id}
+            value={cellProps.row.original}
             onChange={() => deleteCheckbox()}
           />
         );
@@ -506,7 +515,7 @@ const AdminRelation = () => {
           />
         )}
         <Col xxl={12} className="m-auto mt-5">
-          <Card id="contactList">
+          <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
                 {console.log("contact", crmcontacts)}
@@ -531,6 +540,7 @@ const AdminRelation = () => {
                 ) : (
                   <Loader error={error} />
                 )}
+                <Button onClick={() => deleteMultiple()}>Delete All</Button>
               </div>
             </CardBody>
           </Card>

@@ -39,7 +39,7 @@ const AdminReport = () => {
     <React.Fragment>
       <div className="page-content overflow-hidden ">
         <ActionMain Title={"Recommended Actions - Report"} />
-        <div className="card">
+        <div className="card" style={{ width: "98%" }}>
           <div className="d-flex">
             <div className="d-flex justify-content-between w-25 border-end custom-padding">
               <div>
@@ -133,7 +133,7 @@ const AdminReport = () => {
             </div>
           </div>
         </div>
-        <Col className="bg-white  p-2">
+        <Col className="bg-white  p-2" style={{ width: "98%" }}>
           <Col className="d-flex justify-content-between">
             <Col lg={2}>
               <div className="mb-5">
