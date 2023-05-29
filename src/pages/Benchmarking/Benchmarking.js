@@ -63,7 +63,9 @@ const Benchmarking = () => {
 
   const getProgressPercentage = async () => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    console.log(obj, "user object");
     const res = await getUserProgress(obj._id);
+    console.log(res, "percentage API result");
     setProgressPercentage(res);
   };
 
@@ -298,22 +300,32 @@ const Benchmarking = () => {
                   <>
                     {btn.includeExplanation &&
                       activeButtonIndex === btnIndex && (
-
                         <textarea
                           type="text"
                           className="w-75 p-2"
                           rows={3}
+                          key={btnIndex}
                           placeholder="Comments"
+                          onChange={handleExplanationChange}
                         />
                       )}
-                      <div className="d-flex mt-4">
-                        <div className="buttons-container" key={buttonIndex}>
-                          {console.log(
-                            "button checks",
-                            selectedOptionIndex,
-                            buttonIndex,
-                            selectedOptionIndex === buttonIndex
-                          )}
+                  </>
+                ))
+              : item.answerOptions.map((btn, btnIndex) => (
+                  <>
+                    {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
+
+                    {btn.includeExplanation && (
+                      <textarea
+                        type="text"
+                        className="w-75 p-2"
+                        rows={3}
+                        placeholder="Comments"
+                        onChange={handleExplanationChange}
+                      />
+                    )}
+                  </>
+                ))}
 
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
@@ -389,15 +401,169 @@ const Benchmarking = () => {
                         >
                           {btn.answerOption}
                         </button>
-
                       </div>
+                    );
+                  })}
+              </div>
+            ) : (
+              <div className="d-flex mt-4">
+                {item.answerOptions &&
+                  item.answerOptions.map((btn, btnIndex) => (
+                    <div className="buttons-container" key={btnIndex}>
+                      <button
+                        className={`button ${
+                          activeButtonIndex === btnIndex ? "active" : ""
+                        }`}
+                        onClick={() =>
+                          handleButtonClick(
+                            (currentPage - 1) * numPages + index,
+                            btnIndex,
+                            btn.answerOption,
+                            item?._id,
+                            btn?._id
+                          )
+                        }
+                      >
+                        {btn.answerOption}
+                      </button>
                     </div>
-                  );
-                })}
+                  ))}
+              </div>
+            )}
           </div>
         );
       });
 
+  // const renderedQuestions =
+  //   benchmark?.questionnaire?.length > 0 &&
+  //   benchmark.questionnaire.map((item, qid) => {
+  //     let isHighlighted;
+  //     const activeButtonIndex = activeIndexes[qid];
+
+  //     const userResponse = benchmark.user_resp.find(
+  //       (resp) => resp.questionId === item?._id
+  //     );
+  //     const selectedOptionIndex = item.answerOptions.findIndex(
+  //       (option) => option?._id === userResponse?.selectedOption
+  //     );
+  //     const selectedOption = item.answerOptions.find(
+  //       (option) => option?._id === userResponse?.selectedOption
+  //     );
+  //     return (
+  //       <div className="row w-50 " key={qid}>
+  //         <h5>Question {qid + 1}</h5>
+  //         <p className="w-75 fs-5">{item.title}</p>
+  //         <p>{item.description}</p>
+  //         <div className="d-flex gap-2">
+  //           {benchmark.user_resp.length > 0
+  //             ? item.answerOptions.length > 0 &&
+  //               item.answerOptions.map((btn, buttonIndex) => {
+  //                 let buttonClass =
+  //                   selectedOption?._id === btn._id
+  //                     ? "button active"
+  //                     : "button ";
+  //                 return (
+  //                   <div>
+  //                     {btn.includeExplanation && (
+  //                       <textarea
+  //                         type="text"
+  //                         className="w-75 p-2"
+  //                         rows={3}
+  //                         placeholder="Comments"
+  //                       />
+  //                     )}
+  //                     <div className="d-flex mt-4">
+  //                       <div className="buttons-container" key={buttonIndex}>
+  //                         {console.log(
+  //                           "button checks",
+  //                           selectedOptionIndex,
+  //                           buttonIndex,
+  //                           selectedOptionIndex === buttonIndex
+  //                         )}
+
+  //                         <button
+  //                           className={buttonClass}
+  //                           onClick={() => {
+  //                             setBenchmark((prevState) => {
+  //                               // find index of the current user response
+  //                               const userRespIndex =
+  //                                 prevState.user_resp.findIndex(
+  //                                   (resp) => resp.questionId === item._id
+  //                                 );
+  //                               // copy previous state
+  //                               const newUserResp = [...prevState.user_resp];
+  //                               // update selectedOption of the current user response
+  //                               newUserResp[userRespIndex] = {
+  //                                 ...newUserResp[userRespIndex],
+  //                                 selectedOption: btn._id,
+  //                               };
+  //                               // return new state
+  //                               return {
+  //                                 ...prevState,
+  //                                 user_resp: newUserResp,
+  //                               };
+  //                             });
+  //                             const mapData = {
+  //                               questionId: item._id,
+  //                               selectedOption: btn._id,
+  //                               comment: "",
+  //                             };
+  //                             setUser_resp([...user_resp, mapData]);
+  //                           }}
+  //                         >
+  //                           {btn.answerOption}
+  //                         </button>
+  //                       </div>
+  //                     </div>
+  //                   </div>
+  //                 );
+  //               })
+  //             : item.answerOptions.length > 0 &&
+  //               item.answerOptions.map((btn, buttonIndex) => {
+  //                 let buttonClass =
+  //                   selectedOption?._id === btn._id
+  //                     ? "button active"
+  //                     : "button ";
+  //                 return (
+  //                   <div>
+  //                     {btn.includeExplanation && (
+  //                       <textarea
+  //                         type="text"
+  //                         className="w-75 p-2"
+  //                         rows={3}
+  //                         placeholder="Comments"
+  //                       />
+  //                     )}
+  //                     <div className="d-flex mt-4">
+  //                       <div className="buttons-container" key={buttonIndex}>
+  //                         <button
+  //                           className={`button ${
+  //                             activeButtonIndex === buttonIndex ? "active" : ""
+  //                           }`}
+  //                           onClick={() => {
+  //                             setActiveIndexes((prevState) => ({
+  //                               ...prevState,
+  //                               [qid]: buttonIndex,
+  //                             }));
+  //                             const mapData = {
+  //                               questionId: item._id,
+  //                               selectedOption: btn._id,
+  //                               comment: "",
+  //                             };
+  //                             setUser_resp([...user_resp, mapData]);
+  //                           }}
+  //                         >
+  //                           {btn.answerOption}
+  //                         </button>
+  //                       </div>
+  //                     </div>
+  //                   </div>
+  //                 );
+  //               })}
+  //         </div>
+  //       </div>
+  //     );
+  //   });
   const handleSubmit = () => {
     console.log("here");
     dispatch(updateUserResp(benchmark?._id, user_resp, navigate));
