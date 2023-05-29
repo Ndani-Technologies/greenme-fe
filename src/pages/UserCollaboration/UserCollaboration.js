@@ -1,6 +1,7 @@
 import React from "react";
-import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
-import Vectormap from "../VectorMaps/MapVector";
+import Map from "./Map";
+import { Col } from "reactstrap";
+import Tabs from "./Tabs";
 
 const UserCollaboration = () => {
   return (
@@ -8,18 +9,8 @@ const UserCollaboration = () => {
       <div className="page-content overflow-auto ">
         <h1>User Mapping and Collaboration </h1>
         <Col className="bg-white">
-          <Row className="pt-3">
-            <Col lg={12}>
-              <CardBody>
-                <div
-                  id="world-map-line-markers"
-                  style={{ height: "420px", position: "relative" }}
-                >
-                  <Vectormap value="world_mill" width="500" color="grey" />
-                </div>
-              </CardBody>
-            </Col>
-          </Row>
+          <Map />
+          <Tabs />
         </Col>
       </div>
     </React.Fragment>

@@ -485,31 +485,8 @@ const BenchmarkingQA = () => {
     [handleContactClick, checkedAll]
   );
 
-  // const [response, setResponse] = useState([]);
-  // const [assignResponse, setAssignResponse] = useState([]);
-
-  // function handlestag(response) {
-  //   setResponse(response);
-  //   const assigned = tags.map((item) => item.value);
-  //   setAssignResponse(assigned);
-  // }
-  // const [tag, setTag] = useState([]);
   const [assignTag, setAssignTag] = useState([]);
 
-  // function handlestag(tags) {
-  //   setTag(tags);
-  //   const assigned = tags.map((item) => item.value);
-  //   setAssignTag(assigned);
-  // }
-
-  // const tags = [
-  //   { label: "Exiting", value: "Exiting" },
-  //   { label: "Lead", value: "Lead" },
-  //   { label: "Long-term", value: "Long-term" },
-  //   { label: "Partner", value: "Partner" },
-  // ];
-
-  // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
 
   // Export Modal
@@ -600,31 +577,6 @@ const BenchmarkingQA = () => {
   const handleClick = (language) => {
     setSelectedLanguage(language);
   };
-  // const [isChecked1, setIsChecked1] = useState(false);
-  // const [isChecked2, setIsChecked2] = useState(false);
-  // const [isChecked3, setIsChecked3] = useState(false);
-  // const [isChecked4, setIsChecked4] = useState(false);
-  // const [isStatusCheckedQue, setIsStatusCheckedQue] = useState(true);
-  // const [isVisibilityCheckedQue, setIsVisibilityCheckedQue] = useState(true);
-
-  // const handleCheckboxChange1 = (event) => {
-  //   setIsChecked1(!isChecked1);
-  // };
-  // const handleCheckboxChange2 = (event) => {
-  //   setIsChecked2(!isChecked2);
-  // };
-  // const handleCheckboxChange3 = (event) => {
-  //   setIsChecked3(!isChecked3);
-  // };
-  // const handleCheckboxChange4 = (event) => {
-  //   setIsChecked4(!isChecked4);
-  // };
-  // const handleCheckboxChange5 = (event) => {
-  //   setIsStatusCheckedQue(!isStatusCheckedQue);
-  // };
-  // const handleCheckboxChange6 = (event) => {
-  //   setIsVisibilityCheckedQue(!isVisibilityCheckedQue);
-  // };
   const [categories, setCategories] = useState([
     { id: 1, name: "General" },
     { id: 2, name: "Data Section" },
