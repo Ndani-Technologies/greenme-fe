@@ -108,6 +108,7 @@ export const addBenchmark = async (benchmark) => {
     }
   } catch (err) {
     console.log(err);
+
   }
 };
 
