@@ -233,27 +233,19 @@ export const addCategory = async (data) => {
 };
 export const addQuestion = async (data, category) => {
   try {
-    // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
-    // debugger;
-    console.log(data, "DATA insid tHUNK");
-    axios
-      .post(process.env.REACT_APP_QUESTION_URL, data)
-      .then((res) => {
-        const updatedResp = {
-          ...res,
-          response: 0,
-          answered: res.whoHasAnswer?.totalUsers,
-          category: category,
-          status: res?.status ? "active" : "Inactive",
-          visibility: res?.visibility ? "True" : "False",
-        };
-        console.log(updatedResp, "updated resp");
-        return updatedResp;
-      })
-      .catch((err) => {
-        console.log(err);
-        return err;
-      });
+    const res = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
+    if (res !== undefined) {
+      const updatedResp = {
+        ...res,
+        response: 0,
+        answered: res.whoHasAnswer?.totalUsers,
+        category: category,
+        status: res?.status ? "active" : "Inactive",
+        visibility: res?.visibility ? "True" : "False",
+      };
+      return updatedResp;
+    }
+    return res;
   } catch (error) {
     console.error(error);
     return {};

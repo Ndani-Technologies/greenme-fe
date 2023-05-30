@@ -178,6 +178,7 @@ const BenchmarkingQA = () => {
       description: "",
       category: "",
       includeExplanation: false,
+      answerOption: [],
       arr: [{ includeExplanation: false, answerOption: "" }],
     },
     validationSchema: Yup.object({
@@ -192,59 +193,51 @@ const BenchmarkingQA = () => {
 
       const answerIds = [];
 
-      // values?.answerOption?.length &&
-      //   values?.answerOption.forEach((value) => {
-      //     allAnswers.forEach((val) => {
-      //       if (value === val?.answerOption) {
-      //         // console.log(value, "VLAUW")
-      //         const ob = {
-      //           // includeExplanation: value?.includeExplanation,
-      //           answerOption: val._id
-      //         }
-      //         answerIds.push(ob);
-      //       }
-      //       validation.setValues(answerIds);
-      //     })
-      //   });
-
-      console.log(answerIds, "Answer IDS");
+      values?.answerOption.length &&
+        values?.answerOption.forEach((value) => {
+          allAnswers.forEach((val) => {
+            if (value === val.answerOption) {
+              answerIds.push(val._id);
+            }
+            validation.setValues(answerIds);
+          });
+        });
       const mappedData = {
         ...values,
         category: cd?._id,
-        answerOptions: values.arr,
+        answerOptions: answerIds,
         status: "active" ? true : false,
-        visibility: "True" ? true : false,
+        visibility: "Yes" ? true : false,
         // response: parseInt(values.response.split("%")[0]),
       };
       console.log(mappedData, "Mapped Data", values);
-      // if (isDataUpdated) {
-      //   updateQuestion(questionId, mappedData)
-      //     .then((resp) => {
-      //       getAllQA()
-      //         .then((resp) => setQA(resp))
-      //         .catch((err) => console.log("qa all error", err));
-      //       toast.success("Successfully Updated");
-      //     })
-      //     .catch((err) => {
-      //       toast.error(`Error in updating question`);
-      //     });
-      // } else {
-      //   addQuestion(mappedData, values.category)
-      //     .then((resp) => {
-      //       if(resp === undefined ) {
-      //       setQA([...qa]);
-      //       toast.error(`Error in adding question `);
-      //       }
-      //       else{
-
-      //         setQA([...qa, resp]);
-      //         toast.success("Successfully Added");
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       toast.error(`Error in adding question ${err}`);
-      //     });
-      //   }
+      if (isDataUpdated) {
+        updateQuestion(questionId, mappedData)
+          .then((resp) => {
+            getAllQA()
+              .then((resp) => setQA(resp))
+              .catch((err) => console.log("qa all error", err));
+            toast.success("Successfully Updated");
+          })
+          .catch((err) => {
+            toast.error(`Error in updating question`);
+          });
+      } else {
+        addQuestion(mappedData, values.category)
+          .then((resp) => {
+            console.log("resp in formik", resp);
+            if (resp === undefined) {
+              setQA([...qa]);
+              toast.error(`Error in adding question `);
+            } else {
+              setQA([...qa, resp]);
+              toast.success("Successfully Added");
+            }
+          })
+          .catch((err) => {
+            toast.error(`Error in adding question ${err}`);
+          });
+      }
       setSelectedIndexes([]);
       validation.resetForm();
       setIsDataUpdated(false);
