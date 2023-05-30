@@ -16,6 +16,7 @@ import {
   ProductsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterBenchmarkAction,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -51,6 +52,7 @@ function GlobalFilter({
   SearchPlaceholder,
   isFilterA,
   isFilterAction,
+  isFilterBenchmarkAction,
   isSearchInput,
 }) {
   const [value, setValue] = React.useState(globalFilter);
@@ -93,9 +95,17 @@ function GlobalFilter({
               )}
               {isAllQaFilters && <AllQaFilters />}
               {isFilterA && <FilterA />}
+              {isFilterBenchmarkAction && (
+                <FilterBenchmarkAction
+                  globalFilter={globalFilter}
+                  useAsyncDebounce={useAsyncDebounce}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
@@ -120,6 +130,7 @@ const TableContainer = ({
   isBenchmarkingQASearch,
   isFilterA,
   isFilterAction,
+  isFilterBenchmarkAction,
   isAllQaFilters,
   isHorzontal,
   isFooter,
@@ -230,6 +241,7 @@ const TableContainer = ({
             isBenchmarkingQASearch={isBenchmarkingQASearch}
             isFilterA={isFilterA}
             isFilterAction={isFilterAction}
+            isFilterBenchmarkAction={isFilterBenchmarkAction}
             isAllQaFilters={isAllQaFilters}
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}

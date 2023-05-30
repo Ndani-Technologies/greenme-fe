@@ -502,7 +502,7 @@ const BenchmarkAdmin = () => {
                         data={benchmark || []}
                         isGlobalFilter={true}
                         isAddUserList={false}
-                        isAllQaFilters={true}
+                        isFilterBenchmarkAction={true}
                         setInfo={setInfo}
                         isFooter={true}
                         isSearchInput={false}
@@ -512,8 +512,9 @@ const BenchmarkAdmin = () => {
                         tableClass="align-middle table-nowrap"
                         theadClass="table-light"
                         handleContactClick={handleContactClicks}
+                        // isBenchmarkingQASearch={true}
+                        SearchPlaceholder="Search"
                         isContactsFilter={false}
-                        SearchPlaceholder={false}
                       />
                     ) : (
                       <Loader error={error} />
