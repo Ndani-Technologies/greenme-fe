@@ -91,6 +91,7 @@ function GlobalFilter({
                   <i className="bx bx-search-alt search-icon"></i>
                 </div>
               )}
+              {isAllQaFilters && <AllQaFilters />}
               {isFilterA && <FilterA />}
               {/* <FilterA /> */}
             </Col>
@@ -106,7 +107,6 @@ function GlobalFilter({
             {isTicketsListFilter && <TicketsListGlobalFilter />}
             {isNFTRankingFilter && <NFTRankingGlobalFilter />}
             {isTaskListFilter && <TaskListGlobalFilter />}
-            {isAllQaFilters && <AllQaFilters />}
           </Row>
         </form>
       </CardBody>

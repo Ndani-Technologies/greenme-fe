@@ -1935,7 +1935,6 @@ const BenchmarkingQA = () => {
                     setInfo={setInfo}
                     isGlobalFilter={true}
                     isAddUserList={false}
-                    // isFilterA={true}
                     isFooter={true}
                     customPageSize={8}
                     className="custom-header-css"
@@ -1944,7 +1943,7 @@ const BenchmarkingQA = () => {
                     theadClass="table-light"
                     handleContactClick={handleContactClicks}
                     isContactsFilter={false}
-                    // isBenchmarkingQASearch={true}
+                    isBenchmarkingQASearch={true}
                     SearchPlaceholder="Search"
                     isAllQaFilters={true}
                   />

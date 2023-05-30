@@ -33,17 +33,9 @@ function valuetext(value) {
 }
 
 const AllQaFilters = () => {
-  const [value, setValue] = React.useState([8, 37]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   return (
     <div className="d-flex align-items-center justify-content-between w-100 p-0">
-      <div className="d-flex align-items-center border border-dark p-1  rounded">
-        <i className="bx bx-search-alt search-icon"></i>
-        <input className="border-0" placeholder="Search" type="text" />
-      </div>
+      <div className={"search-box me-2 mb-0 d-inline-block"}></div>
 
       <div className="col-xxl-3 col-sm-4">
         <Flatpickr
