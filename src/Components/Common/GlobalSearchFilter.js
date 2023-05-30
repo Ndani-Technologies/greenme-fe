@@ -78,7 +78,95 @@ const AllQaFilters = () => {
     </div>
   );
 };
+const FilterBenchmarkAction = ({
+  setGlobalFilter,
+  globalFilter,
+  useAsyncDebounce,
+}) => {
+  const [value, setValue] = React.useState(globalFilter);
+  const [value1, setValue1] = React.useState(globalFilter);
 
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const onChange1 = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  return (
+    <div className="d-flex align-items-center justify-content-between w-100 p-0">
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Title"
+          type="text"
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          value={value || ""}
+        />
+      </div>
+
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Organization
+          </option>
+          <option>NO</option>
+          <option>I DON'T KNOW</option>
+        </select>
+      </div>
+
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Title"
+          type="text"
+          onChange={(e) => {
+            setValue1(e.target.value);
+            onChange1(e.target.value);
+          }}
+          value={value1 || ""}
+        />
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={value}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Country
+          </option>
+        </select>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Status
+          </option>
+          <option>Completed</option>
+          <option>Completed</option>
+          <option>Completed</option>
+        </select>
+      </div>
+    </div>
+  );
+};
 const FilterAction = () => {
   const [value, setValue] = React.useState([8, 37]);
 
@@ -755,4 +843,5 @@ export {
   FilterA,
   FilterAction,
   AllQaFilters,
+  FilterBenchmarkAction,
 };
