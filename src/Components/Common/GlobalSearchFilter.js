@@ -31,6 +31,62 @@ const ProductsGlobalFilter = () => {
 function valuetext(value) {
   return `${value}°C`;
 }
+
+const AllQaFilters = () => {
+  const [value, setValue] = React.useState([8, 37]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  return (
+    <div className="d-flex align-items-center justify-content-between w-100 p-0">
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input className="border-0" placeholder="Search" type="text" />
+      </div>
+
+      <div className="col-xxl-3 col-sm-4">
+        <Flatpickr
+          placeholder="Select date range"
+          className="form-control bg-light border-light"
+          options={{
+            mode: "range",
+            dateFormat: "d M, Y",
+          }}
+        />
+      </div>
+      <div className="flex-shrink-0">
+        <div className="form-check form-switch form-switch-right form-switch-md">
+          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
+            Status:
+          </Label>
+          <Input
+            className="form-check-input code-switcher"
+            type="checkbox"
+            value="active"
+            defaultValue="Incomplete"
+          />
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center gap-4"
+        style={{ width: "220px" }}
+      >
+        <span style={{ color: "black" }}>Filter by </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span style={{ color: "black" }}>Country</span>
+          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const FilterAction = () => {
   const [value, setValue] = React.useState([8, 37]);
 
@@ -95,6 +151,7 @@ const FilterAction = () => {
     </div>
   );
 };
+
 const FilterA = () => {
   return (
     <div className="d-flex justify-content-between align-items-center w-100">
@@ -137,6 +194,7 @@ const FilterA = () => {
             className="form-check-input code-switcher"
             type="checkbox"
             value="active"
+            defaultValue="Incomplete"
           />
         </div>
       </div>
@@ -704,4 +762,5 @@ export {
   LeadsGlobalFilter,
   FilterA,
   FilterAction,
+  AllQaFilters,
 };

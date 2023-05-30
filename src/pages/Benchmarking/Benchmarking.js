@@ -26,6 +26,7 @@ import {
 } from "../../slices/thunks";
 
 import { BottomNavigation } from "@mui/material";
+import { toast, ToastContainer } from "react-toastify";
 
 const Benchmarking = () => {
   let params = useParams();
@@ -565,7 +566,7 @@ const Benchmarking = () => {
   //     );
   //   });
   const handleSubmit = () => {
-    console.log("here");
+    toast.success("benchmark is successfully submitted");
     dispatch(updateUserResp(benchmark?._id, user_resp, navigate));
   };
 
@@ -741,11 +742,7 @@ const Benchmarking = () => {
                             className="btn btn-primary"
                             onClick={() => {
                               dispatch(
-                                updateUserRespSave(
-                                  benchmark?._id,
-                                  user_resp,
-                                  navigate
-                                )
+                                updateUserRespSave(benchmark?._id, user_resp)
                               );
                             }}
                           >
@@ -764,6 +761,7 @@ const Benchmarking = () => {
                   </div>
                 </TabPane>
               </TabContent>
+              <ToastContainer closeButton={false} limit={1} />
             </CardBody>
           </Card>
         </Col>
