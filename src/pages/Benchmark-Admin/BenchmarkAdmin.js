@@ -502,7 +502,7 @@ const BenchmarkAdmin = () => {
                         data={benchmark || []}
                         isGlobalFilter={true}
                         isAddUserList={false}
-                        isFilterA={true}
+                        isAllQaFilters={true}
                         setInfo={setInfo}
                         isFooter={true}
                         isSearchInput={false}

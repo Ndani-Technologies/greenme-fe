@@ -26,6 +26,7 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
   getAllQA,
+  removeAllQA,
   getAllAnswers,
   getAllCategories,
   updateAnswer,
@@ -64,6 +65,7 @@ const BenchmarkingQA = () => {
   // const [isGrey4, setIsGrey4] = useState(false);
   // const [isGrey5, setIsGrey5] = useState(false);
   const [questionId, setQuestionId] = useState(null);
+  const [allChecked, setAllChecked] = useState(false);
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
@@ -280,7 +282,73 @@ const BenchmarkingQA = () => {
     [toggle]
   );
 
+  // Delete Multiple
+  const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
+  const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
+  const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
+  const deletedArr = [];
+  // const deleteMultiple = () => {
+  //   // const checkall = document.getElementById("checkBoxAll");
+  //   // console.log(selectedCheckBoxDelete, "SELECTED")
+  //   // selectedCheckBoxDelete.forEach((element) => {
+  //   //   console.log(element, "VAL")
+  //   //   dispatch(onDeleteContact(element.value));
+  //   //   // setTimeout(() => {
+  //   //   //   toast.clearWaitingQueue();
+  //   //   // }, 3000);
+  //   // });
+  //   // setIsMultiDeleteButton(false);
+  //   console.log("tobedeleted", toBeDeleted);
+  //   toBeDeleted.forEach((value) => {
+  //     setQA((prev) => prev.filter((element) => element._id !== value));
+  //   });
+  //   // checkall.checked = false;
+  // };
+
   // Checked All
+
+  // const checkedAll = useCallback(() => {
+  //   const checkall = document.getElementById("checkBoxAll");
+  //   const ele = document.querySelectorAll(".contactCheckBox");
+
+  //   if (checkall.checked) {
+  //     ele.forEach((ele) => {
+  //       ele.checked = true;
+  //       setAllChecked(true)
+  //     });
+  //   } else {
+  //     ele.forEach((ele) => {
+  //       ele.checked = false;
+  //       setAllChecked(false)
+  //     });
+  //   }
+  //   deleteCheckbox();
+  // }, []);
+
+  // const checkedAll = useCallback(() => {
+  //   const checkall = document.getElementById("checkBoxAll");
+  //   const ele = document.querySelectorAll(".contactCheckBox");
+
+  //   if (checkall.checked) {
+  //     ele.forEach((ele) => {
+  //             ele.checked = true;
+  //             setAllChecked(true)
+  //     });
+  //     const allIds = Array.from(ele).map((el) => el.value._id);
+  //     setToBeDeleted(allIds);
+  //     setAllChecked(true);
+  //   } else {
+  //     ele.forEach((ele) => {
+  //             ele.checked = false;
+  //             setAllChecked(false)
+  //           });
+  //     setToBeDeleted([]);
+  //     setAllChecked(false);
+  //   }
+
+  //   deleteCheckbox();
+  // }, []);
+
   const checkedAll = useCallback(() => {
     const checkall = document.getElementById("checkBoxAll");
     const ele = document.querySelectorAll(".contactCheckBox");
@@ -288,37 +356,22 @@ const BenchmarkingQA = () => {
     if (checkall.checked) {
       ele.forEach((ele) => {
         ele.checked = true;
+        setAllChecked(true);
       });
+      const allIds = Array.from(ele).map((el) => el.value._id);
+      setToBeDeleted(allIds);
+      setAllChecked(true);
     } else {
       ele.forEach((ele) => {
         ele.checked = false;
+        setAllChecked(false);
       });
+      setToBeDeleted([]);
+      setAllChecked(false);
     }
+
     deleteCheckbox();
   }, []);
-
-  // Delete Multiple
-  const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
-  const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
-  const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
-  const deletedArr = [];
-  const deleteMultiple = () => {
-    // const checkall = document.getElementById("checkBoxAll");
-    // console.log(selectedCheckBoxDelete, "SELECTED")
-    // selectedCheckBoxDelete.forEach((element) => {
-    //   console.log(element, "VAL")
-    //   dispatch(onDeleteContact(element.value));
-    //   // setTimeout(() => {
-    //   //   toast.clearWaitingQueue();
-    //   // }, 3000);
-    // });
-    // setIsMultiDeleteButton(false);
-    console.log("tobedeleted", toBeDeleted);
-    toBeDeleted.forEach((value) => {
-      setQA((prev) => prev.filter((element) => element._id !== value));
-    });
-    // checkall.checked = false;
-  };
 
   const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
@@ -338,13 +391,31 @@ const BenchmarkingQA = () => {
             type="checkbox"
             id="checkBoxAll"
             className="form-check-input"
+            checked={allChecked}
             onClick={() => checkedAll()}
           />
         ),
 
         Cell: (cellProps) => {
+          // const handleCheckboxChange = () => {
+          //   const isChecked = toBeDeleted.includes(cellProps.row.original._id);
+          //   if (isChecked) {
+          //     setToBeDeleted((prevToBeDeleted) =>
+          //       prevToBeDeleted.filter(
+          //         (id) => id !== cellProps.row.original._id
+          //       )
+          //     );
+          //   } else {
+          //     setToBeDeleted((prevToBeDeleted) => [
+          //       ...prevToBeDeleted,
+          //       cellProps.row.original._id,
+          //     ]);
+          //   }
+          //   deleteCheckbox();
+          // };
           const handleCheckboxChange = () => {
             const isChecked = toBeDeleted.includes(cellProps.row.original._id);
+
             if (isChecked) {
               setToBeDeleted((prevToBeDeleted) =>
                 prevToBeDeleted.filter(
@@ -357,6 +428,7 @@ const BenchmarkingQA = () => {
                 cellProps.row.original._id,
               ]);
             }
+
             deleteCheckbox();
           };
 
@@ -1863,7 +1935,7 @@ const BenchmarkingQA = () => {
                     setInfo={setInfo}
                     isGlobalFilter={true}
                     isAddUserList={false}
-                    isFilterA={false}
+                    // isFilterA={true}
                     isFooter={true}
                     customPageSize={8}
                     className="custom-header-css"
@@ -1872,18 +1944,32 @@ const BenchmarkingQA = () => {
                     theadClass="table-light"
                     handleContactClick={handleContactClicks}
                     isContactsFilter={false}
-                    SearchPlaceholder="Search by the Question title"
+                    // isBenchmarkingQASearch={true}
+                    SearchPlaceholder="Search"
+                    isAllQaFilters={true}
                   />
                 ) : (
                   <Loader error={error} />
                 )}
+
                 <Button
                   onClick={() => {
-                    setQA((prev) =>
-                      prev.filter(
-                        (element) => !toBeDeleted.includes(element._id)
-                      )
-                    );
+                    if (allChecked) {
+                      setQA([]);
+                      setToBeDeleted([]);
+                      removeAllQA([]);
+                    } else {
+                      setQA((prev) =>
+                        prev.filter(
+                          (element) => !toBeDeleted.includes(element._id)
+                        )
+                      );
+                      const uniqueIds = Array.from(new Set(toBeDeleted)); // Remove duplicates
+
+                      setToBeDeleted([]);
+                      console.log(uniqueIds, "TO BE DELETED");
+                      removeAllQA(uniqueIds);
+                    }
                   }}
                 >
                   Delete All
