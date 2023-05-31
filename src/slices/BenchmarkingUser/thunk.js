@@ -108,13 +108,33 @@ export const addBenchmark = async (benchmark) => {
     }
   } catch (err) {
     console.log(err);
-
   }
 };
 
-export const getSummaryBenchmarking = async (id) => {
+//ADMIN BENCHMARK SUMMARY
+
+export const getAdminSummaryBenchmarking = async (id) => {
+  // let resp = await axios.get(
+  //   `${process.env.REACT_APP_BENCHMARK_URL}/summaryByAdmin/${id}`
+  // );
+
   let resp = await axios.get(
-    `${process.env.REACT_APP_BENCHMARK_URL}/summary/${id}`
+    `${process.env.REACT_APP_BENCHMARK_URL}/summaryByAdmin/${id}`
+  );
+  // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
+
+  console.log("benchmark getSummary", resp);
+  return resp;
+};
+
+//USER BENCHMARK SUMMARY
+
+export const getUserSummaryBenchmarking = async (id) => {
+  // let resp = await axios.get(
+  //   `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`
+  // );
+  let resp = await axios.get(
+    `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`
   );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
 
@@ -143,6 +163,23 @@ export const getAllQA = async () => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getQAComparison = async (id) => {
+  console.log(id, "ID inside comparison");
+
+  const body = {
+    id: id,
+  };
+  let resp = await axios.post(
+    `${process.env.REACT_APP_BENCHMARK_URL}/compare/benchmarkcomparison`,
+    {
+      data: body,
+    }
+  );
+
+  console.log("benchmark get QA Comparison", resp);
+  return resp;
 };
 
 export const removeAllQA = async (idsArr) => {
