@@ -14,7 +14,10 @@ const ActionComparison = () => {
             "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
           }
         />
-        <Col className="table-responsive table-card mt-5 w-100 ">
+        <Col
+          className="table-responsive table-card mt-5"
+          style={{ width: "97%" }}
+        >
           <table className="table align-middle table-nowrap table-striped-columns mb-0">
             <tbody className="d-flex justify-content-between align-items-center">
               <thead>

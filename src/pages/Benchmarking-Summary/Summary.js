@@ -13,12 +13,12 @@ import { StoreVisitsCharts } from "../DashboardEcommerce/DashboardEcommerceChart
 import kenya from "../../assets/images/Banchmarking/Kenya.png";
 import Layouts from "../../Layouts";
 import { useParams } from "react-router-dom";
-import { getSummaryBenchmarking } from "../../slices/thunks";
+import { getUserSummaryBenchmarking } from "../../slices/thunks";
 const BenhmarkSummary = () => {
   const [summary, setSummary] = useState([]);
   let params = useParams();
   const getSummary = () => {
-    getSummaryBenchmarking(params.id)
+    getUserSummaryBenchmarking(params.id)
       .then((resp) => {
         setSummary(resp);
       })
@@ -26,10 +26,9 @@ const BenhmarkSummary = () => {
   };
   useEffect(() => {
     getSummary();
-  }, [summary, setSummary]);
+  }, []);
   return (
     <React.Fragment>
-      {/* <Layouts> */}
       <div className="page-content overflow-auto ">
         <div className="Main  mx-n4 mt-n4 w-100">
           <h1>Benchmarking Summary</h1>
@@ -55,7 +54,6 @@ const BenhmarkSummary = () => {
               {" "}
               <span className="fw-light">End date:</span>{" "}
               {summary && summary?.endDate}
-
             </span>
           </div>
           <div className="d-flex gap-5 justify-content-center w-100 mt-4 pt-4 pb-3 border-top border-dark border-bottom border-dark">
@@ -210,7 +208,6 @@ const BenhmarkSummary = () => {
           </div>
         </div>
       </div>
-      {/* </Layouts> */}
     </React.Fragment>
   );
 };

@@ -26,6 +26,7 @@ import {
   Label,
   Modal,
   ModalFooter,
+  Button,
 } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import DeleteModal from "../../Components/Common/DeleteModal";
@@ -58,18 +59,23 @@ import { Select } from "@mui/material";
 
 const UsersManagement = () => {
   const dispatch = useDispatch();
-  const { userDetail, crmcontacts, isContactCreated, isContactSuccess, error } =
+
+  const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
-
-      userDetail: state.UserDetail.userDetail,
       error: state.Crm.error,
     }));
+  const getAllUsers = () => {
+    getUserDetails()
+      .then((res) => setUserNewDetails(res))
+      .catch((err) => toast.error("Error in getting user"));
+  };
   useEffect(() => {
-    dispatch(getUserDetails());
+    getAllUsers();
   }, []);
+  const [userNewDetails, setUserNewDetails] = useState();
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -293,13 +299,15 @@ const UsersManagement = () => {
     checkall.checked = false;
   };
 
-  const deleteCheckbox = () => {
+  const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
+    console.log("id", id);
     ele.length > 0
       ? setIsMultiDeleteButton(true)
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
+  const [toBeDeleted, setToBeDeleted] = useState([]);
 
   // Column
   const columns = useMemo(
@@ -314,12 +322,35 @@ const UsersManagement = () => {
           />
         ),
         Cell: (cellProps) => {
+          const handleCheckboxChange = () => {
+            const isChecked = toBeDeleted.includes(cellProps.row.original._id);
+            if (isChecked) {
+              setToBeDeleted((prevToBeDeleted) =>
+                prevToBeDeleted.filter(
+                  (id) => id !== cellProps.row.original._id
+                )
+              );
+            } else {
+              setToBeDeleted((prevToBeDeleted) => [
+                ...prevToBeDeleted,
+                cellProps.row.original._id,
+              ]);
+            }
+            deleteCheckbox();
+          };
+
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original._id}
-              onChange={() => deleteCheckbox()}
+              value={cellProps.row.original}
+              onBlur={() => {
+                setToBeDeleted((prevToBeDeleted) => [
+                  ...prevToBeDeleted,
+                  cellProps.row.original._id,
+                ]);
+              }}
+              onChange={handleCheckboxChange}
             />
           );
         },
@@ -517,10 +548,10 @@ const UsersManagement = () => {
               <Card id="contactList">
                 <CardBody className="pt-0">
                   <div>
-                    {userDetail.length >= 0 ? (
+                    {userNewDetails?.length >= 0 ? (
                       <TableContainer
                         columns={columns}
-                        data={userDetail || []}
+                        data={userNewDetails || []}
                         isGlobalFilter={true}
                         isAddUserList={false}
                         isFooter={true}
@@ -537,6 +568,17 @@ const UsersManagement = () => {
                     ) : (
                       <Loader error={error} />
                     )}
+                    <Button
+                      onClick={() => {
+                        setUserNewDetails((prev) =>
+                          prev.filter(
+                            (element) => !toBeDeleted.includes(element._id)
+                          )
+                        );
+                      }}
+                    >
+                      Delete All
+                    </Button>
                   </div>
                   <ToastContainer closeButton={false} limit={1} />
                 </CardBody>

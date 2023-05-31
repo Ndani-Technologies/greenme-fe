@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Col,
   Card,
@@ -26,6 +27,8 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
   getAllQA,
+  getQAComparison,
+  removeAllQA,
   getAllAnswers,
   getAllCategories,
   updateAnswer,
@@ -64,6 +67,7 @@ const BenchmarkingQA = () => {
   // const [isGrey4, setIsGrey4] = useState(false);
   // const [isGrey5, setIsGrey5] = useState(false);
   const [questionId, setQuestionId] = useState(null);
+  const [allChecked, setAllChecked] = useState(false);
   const dispatch = useDispatch();
   const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
@@ -77,7 +81,6 @@ const BenchmarkingQA = () => {
   const [allCategories, setAllCategories] = useState([]);
   const [isDataUpdated, setIsDataUpdated] = useState(false);
   const allQA = () => {
-    console.log("Inside All QA");
     getAllQA()
       .then((resp) => setQA(resp))
       .catch((err) => console.log("qa all error", err));
@@ -178,8 +181,8 @@ const BenchmarkingQA = () => {
       visibility: true,
       description: "",
       category: "",
-      answerOption: [],
       includeExplanation: false,
+      arr: [{ includeExplanation: false, answerOption: "" }],
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -188,61 +191,67 @@ const BenchmarkingQA = () => {
     }),
     onSubmit: async (values) => {
       const cd = allCategories.find((value) => {
-        console.log(
-          "categories",
-          value.titleEng,
-          values.category,
-          value.titleEng.toString().includes(values.category)
-        );
         if (value.titleEng.toString().includes(values.category)) return value;
       });
 
       const answerIds = [];
 
-      values?.answerOption.length &&
-        values?.answerOption.forEach((value) => {
-          allAnswers.forEach((val) => {
-            if (value === val.answerOption) {
-              answerIds.push(val._id);
-            }
-            validation.setValues(answerIds);
-          });
-        });
+      // values?.answerOption?.length &&
+      //   values?.answerOption.forEach((value) => {
+      //     allAnswers.forEach((val) => {
+      //       if (value === val?.answerOption) {
+      //         // console.log(value, "VLAUW")
+      //         const ob = {
+      //           // includeExplanation: value?.includeExplanation,
+      //           answerOption: val._id
+      //         }
+      //         answerIds.push(ob);
+      //       }
+      //       validation.setValues(answerIds);
+      //     })
+      //   });
+
+      console.log(answerIds, "Answer IDS");
       const mappedData = {
         ...values,
         category: cd?._id,
-        answerOptions: answerIds,
+        answerOptions: values.arr,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
         // response: parseInt(values.response.split("%")[0]),
       };
-      if (isDataUpdated) {
-        updateQuestion(questionId, mappedData)
-          .then((resp) => {
-            getAllQA()
-              .then((resp) => setQA(resp))
-              .catch((err) => console.log("qa all error", err));
-            toast.success("Successfully Updated");
-          })
-          .catch((err) => {
-            toast.error(`Error in updating question`);
-          });
-      } else {
-        addQuestion(mappedData, values.category)
-          .then((resp) => {
-            toast.success("Successfully Added");
+      console.log(mappedData, "Mapped Data", values);
+      // if (isDataUpdated) {
+      //   updateQuestion(questionId, mappedData)
+      //     .then((resp) => {
+      //       getAllQA()
+      //         .then((resp) => setQA(resp))
+      //         .catch((err) => console.log("qa all error", err));
+      //       toast.success("Successfully Updated");
+      //     })
+      //     .catch((err) => {
+      //       toast.error(`Error in updating question`);
+      //     });
+      // } else {
+      //   addQuestion(mappedData, values.category)
+      //     .then((resp) => {
+      //       if(resp === undefined ) {
+      //       setQA([...qa]);
+      //       toast.error(`Error in adding question `);
+      //       }
+      //       else{
 
-            setQA([...qa, resp]);
-            setSelectedIndexes([]);
-            validation.resetForm();
-          })
-          .catch((err) => {
-            toast.error(`Error in adding question ${err}`);
-          });
-      }
-
+      //         setQA([...qa, resp]);
+      //         toast.success("Successfully Added");
+      //       }
+      //     })
+      //     .catch((err) => {
+      //       toast.error(`Error in adding question ${err}`);
+      //     });
+      //   }
+      setSelectedIndexes([]);
+      validation.resetForm();
       setIsDataUpdated(false);
-      console.log("values formik", mappedData);
       setmodal_grid(false);
 
       toggle();
@@ -275,7 +284,73 @@ const BenchmarkingQA = () => {
     [toggle]
   );
 
+  // Delete Multiple
+  const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
+  const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
+  const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
+  const deletedArr = [];
+  // const deleteMultiple = () => {
+  //   // const checkall = document.getElementById("checkBoxAll");
+  //   // console.log(selectedCheckBoxDelete, "SELECTED")
+  //   // selectedCheckBoxDelete.forEach((element) => {
+  //   //   console.log(element, "VAL")
+  //   //   dispatch(onDeleteContact(element.value));
+  //   //   // setTimeout(() => {
+  //   //   //   toast.clearWaitingQueue();
+  //   //   // }, 3000);
+  //   // });
+  //   // setIsMultiDeleteButton(false);
+  //   console.log("tobedeleted", toBeDeleted);
+  //   toBeDeleted.forEach((value) => {
+  //     setQA((prev) => prev.filter((element) => element._id !== value));
+  //   });
+  //   // checkall.checked = false;
+  // };
+
   // Checked All
+
+  // const checkedAll = useCallback(() => {
+  //   const checkall = document.getElementById("checkBoxAll");
+  //   const ele = document.querySelectorAll(".contactCheckBox");
+
+  //   if (checkall.checked) {
+  //     ele.forEach((ele) => {
+  //       ele.checked = true;
+  //       setAllChecked(true)
+  //     });
+  //   } else {
+  //     ele.forEach((ele) => {
+  //       ele.checked = false;
+  //       setAllChecked(false)
+  //     });
+  //   }
+  //   deleteCheckbox();
+  // }, []);
+
+  // const checkedAll = useCallback(() => {
+  //   const checkall = document.getElementById("checkBoxAll");
+  //   const ele = document.querySelectorAll(".contactCheckBox");
+
+  //   if (checkall.checked) {
+  //     ele.forEach((ele) => {
+  //             ele.checked = true;
+  //             setAllChecked(true)
+  //     });
+  //     const allIds = Array.from(ele).map((el) => el.value._id);
+  //     setToBeDeleted(allIds);
+  //     setAllChecked(true);
+  //   } else {
+  //     ele.forEach((ele) => {
+  //             ele.checked = false;
+  //             setAllChecked(false)
+  //           });
+  //     setToBeDeleted([]);
+  //     setAllChecked(false);
+  //   }
+
+  //   deleteCheckbox();
+  // }, []);
+
   const checkedAll = useCallback(() => {
     const checkall = document.getElementById("checkBoxAll");
     const ele = document.querySelectorAll(".contactCheckBox");
@@ -283,51 +358,89 @@ const BenchmarkingQA = () => {
     if (checkall.checked) {
       ele.forEach((ele) => {
         ele.checked = true;
+        setAllChecked(true);
       });
+      const allIds = Array.from(ele).map((el) => el.value._id);
+      setToBeDeleted(allIds);
+      setAllChecked(true);
     } else {
       ele.forEach((ele) => {
         ele.checked = false;
+        setAllChecked(false);
       });
+      setToBeDeleted([]);
+      setAllChecked(false);
     }
+
     deleteCheckbox();
   }, []);
 
-  // Delete Multiple
-  const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
-  const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
-  const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
-
-  const deleteMultiple = () => {
-    const checkall = document.getElementById("checkBoxAll");
-    selectedCheckBoxDelete.forEach((element) => {
-      dispatch(onDeleteContact(element.value));
-      setTimeout(() => {
-        toast.clearWaitingQueue();
-      }, 3000);
-    });
-    setIsMultiDeleteButton(false);
-    checkall.checked = false;
-  };
-
-  const deleteCheckbox = () => {
+  const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
+    console.log("id", id);
     ele.length > 0
       ? setIsMultiDeleteButton(true)
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
 
+  const [toBeDeleted, setToBeDeleted] = useState([]);
+  const [paramString, setParamString] = useState("");
+
+  const navigate = useNavigate();
+  const handleComparisonClick = () => {
+    const uniqueIds = Array.from(new Set(toBeDeleted));
+    navigate("/adminbenchmarking/questions/compare", { state: uniqueIds });
+  };
+
   // Column
   const columns = useMemo(
     () => [
       {
+        Header: (
+          <input
+            type="checkbox"
+            id="checkBoxAll"
+            className="form-check-input"
+            checked={allChecked}
+            onClick={() => checkedAll()}
+          />
+        ),
+
         Cell: (cellProps) => {
+          const handleCheckboxChange = () => {
+            const isChecked = toBeDeleted.includes(cellProps.row.original._id);
+
+            if (isChecked) {
+              setToBeDeleted((prevToBeDeleted) =>
+                prevToBeDeleted.filter(
+                  (id) => id !== cellProps.row.original._id
+                )
+              );
+            } else {
+              setToBeDeleted((prevToBeDeleted) => [
+                ...prevToBeDeleted,
+                cellProps.row.original._id,
+              ]);
+            }
+
+            deleteCheckbox();
+          };
+
+          console.log(toBeDeleted, "TO BE DELETED");
+
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original._id}
-              onChange={() => deleteCheckbox()}
+              value={cellProps.row.original}
+              onBlur={() => {
+                setToBeDeleted((prevToBeDeleted) => [
+                  ...prevToBeDeleted,
+                  cellProps.row.original._id,
+                ]);
+              }}
+              onChange={handleCheckboxChange}
             />
           );
         },
@@ -337,16 +450,48 @@ const BenchmarkingQA = () => {
         Header: "Question title",
         accessor: "title",
         filterable: false,
-        // Cell: (contact) => (
-        //   <>
-        //     <div className="d-flex align-items-center">
-        //       <div className="flex-shrink-0"></div>
-        //       <div className="flex-grow-1 ms-2 name">
-        //         {contact.row.original.name}
-        //       </div>
-        //     </div>
-        //   </>
-        // ),
+
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div
+                className="flex-grow-1 ms-2 name"
+                onClick={() => {
+                  const contactData = cellProps.row.original;
+                  const answerOptions = contactData.answerOptions.map(
+                    (answerId) => {
+                      const answer = allAnswers.find(
+                        (item) => item._id === answerId
+                      );
+                      return answer ? answer.answerOption : "";
+                    }
+                  );
+
+                  const result = {
+                    ...contactData,
+                    answerOptions: answerOptions,
+                  };
+                  setInfo(contactData.answerOptions);
+                  console.log("contact row", contactData);
+                  // const data = contactData.map((value)=>{
+                  //   return {
+                  //     ...value,
+                  //     answerOption
+                  //   }
+                  // })
+                  validation.setValues(result);
+                  // setSelectedIndexes(contactData.answerOptions);
+                  setQuestionId(cellProps.row.original._id);
+                  setIsDataUpdated(true);
+                  setmodal_grid(true);
+                }}
+              >
+                {cellProps.row.original.title}
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Category",
@@ -366,9 +511,19 @@ const BenchmarkingQA = () => {
         accessor: "status",
       },
       {
-        Header: "Question Visibility",
+        Header: "Visibility",
         accessor: "visibility",
         // filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div className="flex-grow-1 ms-2 name">
+                {cellProps.row.original.visibility == "True" ? "Yes" : "No"}
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Response %",
@@ -393,9 +548,10 @@ const BenchmarkingQA = () => {
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem
                       className="dropdown-item"
-                      href={`/adminbenchmarking/questions/summary/${_id}`}
+                      // href={`/adminbenchmarking/questions/summary/${_id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
+                        console.log("contact ", contactData);
                         setInfo(contactData);
                       }}
                     >
@@ -434,26 +590,6 @@ const BenchmarkingQA = () => {
                       }}
                     >
                       Edit
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Reset
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Complete
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
@@ -699,6 +835,7 @@ const BenchmarkingQA = () => {
   const [selectedIndexes2, setSelectedIndexes2] = useState(info);
 
   document.title = "Benchmaking QA | GreenMe";
+  const [ob, setOb] = useState([]);
   return (
     <React.Fragment>
       {/* <Layouts> */}
@@ -1030,7 +1167,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                .answerOption
+                                                                ?.answerOption
                                                           )
                                                         );
                                                       }}
@@ -1062,7 +1199,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                .answerOption
+                                                                ?.answerOption
                                                           )
                                                         );
                                                       }}
@@ -1778,14 +1915,11 @@ const BenchmarkingQA = () => {
                 </ModalBody>
               </Modal>
             </div>
-            <Button
-              className="m-3 p-3"
-              href="/adminbenchmarking/questions/compare"
-            >
+            <Button className="m-3 p-3" onClick={handleComparisonClick}>
               View Comparison
             </Button>
           </div>
-          <Card id="contactList">
+          <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
                 {qa?.length >= 0 ? (
@@ -1795,7 +1929,6 @@ const BenchmarkingQA = () => {
                     setInfo={setInfo}
                     isGlobalFilter={true}
                     isAddUserList={false}
-                    isFilterA={false}
                     isFooter={true}
                     customPageSize={8}
                     className="custom-header-css"
@@ -1804,11 +1937,35 @@ const BenchmarkingQA = () => {
                     theadClass="table-light"
                     handleContactClick={handleContactClicks}
                     isContactsFilter={false}
-                    SearchPlaceholder="Search by the Question title"
+                    isBenchmarkingQASearch={true}
+                    SearchPlaceholder="Search"
+                    isAllQaFilters={true}
                   />
                 ) : (
                   <Loader error={error} />
                 )}
+
+                <Button
+                  onClick={() => {
+                    if (allChecked) {
+                      setQA([]);
+                      setToBeDeleted([]);
+                      removeAllQA([]);
+                    } else {
+                      setQA((prev) =>
+                        prev.filter(
+                          (element) => !toBeDeleted.includes(element._id)
+                        )
+                      );
+                      const uniqueIds = Array.from(new Set(toBeDeleted)); // Remove duplicates
+
+                      setToBeDeleted([]);
+                      removeAllQA(uniqueIds);
+                    }
+                  }}
+                >
+                  Delete All
+                </Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>

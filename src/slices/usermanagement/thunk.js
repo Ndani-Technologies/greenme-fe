@@ -1,34 +1,34 @@
 import axios from "axios";
 import { apiError, userDetailFailure, userDetailSuccess } from "./reducer";
-export const getUserDetails = (history) => async (dispatch) => {
+export const getUserDetails = async () => {
   try {
     // const resp = await axios.get("http://localhost:5000/api/v1/user/");
     const resp = await axios.get(process.env.REACT_APP_USER_URL + "user");
-    if (resp.success) {
-      let data = resp.data;
-      console.log("response post", data);
-      data = data.map((value) => {
-        return {
-          _id: value?._id,
-          name: value?.firstName + " " + value?.lastName,
-          company: value?.organization,
-          designation: value?.position,
-          email: value?.email,
-          phone: value?.phone,
-          country: value?.country,
-          last_contacted: value?.updatedAt,
-          image_src: value?.profilePic,
-          state: value?.state,
-          ...value,
-        };
-      });
-      dispatch(userDetailSuccess(data));
-    } else {
-      dispatch(userDetailFailure());
-    }
+    // if (resp.success) {
+    let data = resp;
+    console.log("response post", data);
+    data = data.map((value) => {
+      return {
+        _id: value?._id,
+        name: value?.firstName + " " + value?.lastName,
+        company: value?.organization,
+        designation: value?.position,
+        email: value?.email,
+        phone: value?.phone,
+        country: value?.country,
+        last_contacted: value?.updatedAt,
+        image_src: value?.profilePic,
+        state: value?.state,
+        ...value,
+      };
+    });
+    return data;
+    // dispatch(userDetailSuccess(data));
+    // } else {
+    //   dispatch(userDetailFailure());
+    // }
   } catch (error) {
     console.error(error);
-    dispatch(apiError(error));
   }
 };
 
