@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col } from "reactstrap";
+import { useLocation } from "react-router-dom";
 import Layouts from "../../Layouts";
+import { getQAComparison } from "../../slices/thunks";
 
 const QAComparison = () => {
+  const [checkedQA, setCheckedQA] = useState([]);
+  const location = useLocation();
+  const getCheckedQA = () => {
+    getQAComparison(location.state)
+      .then((resp) => {
+        setCheckedQA(resp);
+      })
+      .catch((err) => console.error(err, "error in bench adminSummary"));
+  };
+  useEffect(() => {
+    getCheckedQA();
+  }, []);
+
+  console.log(checkedQA, "CHECKED QA");
+
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
@@ -39,85 +56,25 @@ const QAComparison = () => {
                   </div>
                 </th>
               </thead>
-              <th>
-                <div className="top">
-                  <tr>One</tr>
-                </div>
-                <div className="tr">
-                  <tr>
-                    Does your organisation <br /> have environmental
-                    commitments?
-                  </tr>
-                </div>
-                <div className="tr">
-                  <tr>15</tr>
-                </div>
-                <div className="tr">
-                  <tr>In Active</tr>
-                </div>
-                <div className="tr">
-                  <tr>Genral</tr>
-                </div>
-              </th>
-              <th>
-                <div className="top">
-                  <tr>Two</tr>
-                </div>
-                <div className="tr">
-                  <tr>
-                    Does your organisation <br /> have a ‘green’ strategy?
-                  </tr>
-                </div>
-                <div className="tr">
-                  <tr>15</tr>
-                </div>
-                <div className="tr">
-                  <tr>InActive</tr>
-                </div>
-                <div className="tr">
-                  <tr>Genral</tr>
-                </div>
-              </th>
-              <th>
-                <div className="top">
-                  <tr>Three</tr>
-                </div>
-                <div className="tr">
-                  <tr>
-                    Do you use sustainability <br /> criteria to assess/ select
-                    suppliers?
-                  </tr>
-                </div>
-                <div className="tr">
-                  <tr>15</tr>
-                </div>
-                <div className="tr">
-                  <tr>Active</tr>
-                </div>
-                <div className="tr">
-                  <tr>Genral</tr>
-                </div>
-              </th>
-              <th>
-                <div className="top">
-                  <tr>Four</tr>
-                </div>
-                <div className="tr">
-                  <tr>
-                    Do you have standardised <br />
-                    fleet procurement.
-                  </tr>
-                </div>
-                <div className="tr">
-                  <tr>15</tr>
-                </div>
-                <div className="tr">
-                  <tr>Active </tr>
-                </div>
-                <div className="tr">
-                  <tr>Genral</tr>
-                </div>
-              </th>
+              {checkedQA.map((question, index) => (
+                <tr key={index}>
+                  <th>
+                    <div className="top">{index + 1}</div>
+                    <div className="tr">
+                      <div>{question.title}</div>
+                    </div>
+                    <div className="tr">
+                      <div>{question.responses}</div>
+                    </div>
+                    <div className="tr">
+                      <div>{question.status}</div>
+                    </div>
+                    <div className="tr">
+                      <div>{question.category}</div>
+                    </div>
+                  </th>
+                </tr>
+              ))}
             </tbody>
           </table>
         </Col>

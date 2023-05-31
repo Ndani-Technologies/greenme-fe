@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import {
   Col,
   Card,
@@ -26,6 +27,7 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
   getAllQA,
+  getQAComparison,
   removeAllQA,
   getAllAnswers,
   getAllCategories,
@@ -381,11 +383,16 @@ const BenchmarkingQA = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
-  const [toBeDeleted, setToBeDeleted] = useState([]);
 
+  const [toBeDeleted, setToBeDeleted] = useState([]);
+  const [paramString, setParamString] = useState("");
+
+  const navigate = useNavigate();
   const handleComparisonClick = () => {
-    console.log("Nothing");
+    const uniqueIds = Array.from(new Set(toBeDeleted));
+    navigate("/adminbenchmarking/questions/compare", { state: uniqueIds });
   };
+
   // Column
   const columns = useMemo(
     () => [
@@ -1908,11 +1915,7 @@ const BenchmarkingQA = () => {
                 </ModalBody>
               </Modal>
             </div>
-            <Button
-              className="m-3 p-3"
-              href="/adminbenchmarking/questions/compare"
-              onClick={handleComparisonClick}
-            >
+            <Button className="m-3 p-3" onClick={handleComparisonClick}>
               View Comparison
             </Button>
           </div>
