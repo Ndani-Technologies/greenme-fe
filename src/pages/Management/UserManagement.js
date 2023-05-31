@@ -59,18 +59,23 @@ import { Select } from "@mui/material";
 
 const UsersManagement = () => {
   const dispatch = useDispatch();
-  const { userDetail, crmcontacts, isContactCreated, isContactSuccess, error } =
+
+  const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
-      userDetail: state.UserDetail.userDetail,
       error: state.Crm.error,
     }));
+  const getAllUsers = () => {
+    getUserDetails()
+      .then((res) => setUserNewDetails(res))
+      .catch((err) => toast.error("Error in getting user"));
+  };
   useEffect(() => {
-    dispatch(getUserDetails());
+    getAllUsers();
   }, []);
-  const [userNewDetails, setUserNewDetails] = useState(userDetail);
+  const [userNewDetails, setUserNewDetails] = useState();
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -543,7 +548,7 @@ const UsersManagement = () => {
               <Card id="contactList">
                 <CardBody className="pt-0">
                   <div>
-                    {userNewDetails.length >= 0 ? (
+                    {userNewDetails?.length >= 0 ? (
                       <TableContainer
                         columns={columns}
                         data={userNewDetails || []}

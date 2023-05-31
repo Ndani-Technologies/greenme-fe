@@ -382,6 +382,10 @@ const BenchmarkingQA = () => {
     setSelectedCheckBoxDelete(ele);
   };
   const [toBeDeleted, setToBeDeleted] = useState([]);
+
+  const handleComparisonClick = () => {
+    console.log("Nothing");
+  };
   // Column
   const columns = useMemo(
     () => [
@@ -397,22 +401,6 @@ const BenchmarkingQA = () => {
         ),
 
         Cell: (cellProps) => {
-          // const handleCheckboxChange = () => {
-          //   const isChecked = toBeDeleted.includes(cellProps.row.original._id);
-          //   if (isChecked) {
-          //     setToBeDeleted((prevToBeDeleted) =>
-          //       prevToBeDeleted.filter(
-          //         (id) => id !== cellProps.row.original._id
-          //       )
-          //     );
-          //   } else {
-          //     setToBeDeleted((prevToBeDeleted) => [
-          //       ...prevToBeDeleted,
-          //       cellProps.row.original._id,
-          //     ]);
-          //   }
-          //   deleteCheckbox();
-          // };
           const handleCheckboxChange = () => {
             const isChecked = toBeDeleted.includes(cellProps.row.original._id);
 
@@ -431,6 +419,8 @@ const BenchmarkingQA = () => {
 
             deleteCheckbox();
           };
+
+          console.log(toBeDeleted, "TO BE DELETED");
 
           return (
             <input
@@ -1921,6 +1911,7 @@ const BenchmarkingQA = () => {
             <Button
               className="m-3 p-3"
               href="/adminbenchmarking/questions/compare"
+              onClick={handleComparisonClick}
             >
               View Comparison
             </Button>
@@ -1966,7 +1957,6 @@ const BenchmarkingQA = () => {
                       const uniqueIds = Array.from(new Set(toBeDeleted)); // Remove duplicates
 
                       setToBeDeleted([]);
-                      console.log(uniqueIds, "TO BE DELETED");
                       removeAllQA(uniqueIds);
                     }
                   }}
