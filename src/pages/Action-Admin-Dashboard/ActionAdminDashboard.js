@@ -15,6 +15,13 @@ import {
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
+  getAllAdminActions,
+  getAdminTimeScale,
+  getAdminCosts,
+  getAdminPotentials,
+  getAdminStatus,
+  getAdminRelationships,
+  getAdminCategories,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -144,6 +151,14 @@ const arr = [
   },
 ];
 const ActionAdminDashboard = () => {
+  const [adminActions, setAdminActions] = useState([]);
+  const [adminTimeScale, setAdminTimeScale] = useState([]);
+  const [adminCosts, setAdminCosts] = useState([]);
+  const [adminPotential, setAdminPotential] = useState([]);
+  const [adminStatus, setAdminStatus] = useState([]);
+  const [adminRelation, setAdminRelation] = useState([]);
+  const [adminCategories, setAdminCategories] = useState([]);
+
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,
@@ -151,6 +166,71 @@ const ActionAdminDashboard = () => {
     isContactSuccess: state.Crm.isContactSuccess,
     error: state.Crm.error,
   }));
+
+  const getAdminActions = () => {
+    getAllAdminActions().then((res) => {
+      setAdminActions(res);
+    });
+  };
+
+  const getAllAdminTimeScale = () => {
+    getAdminTimeScale()
+      .then((res) => {
+        setAdminTimeScale(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminCosts = () => {
+    getAdminCosts()
+      .then((res) => {
+        setAdminCosts(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminPotentials = () => {
+    getAdminPotentials()
+      .then((res) => {
+        setAdminPotential(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminStatus = () => {
+    getAdminStatus()
+      .then((res) => {
+        setAdminStatus(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminRelationships = () => {
+    getAdminRelationships()
+      .then((res) => {
+        setAdminRelation(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminCategories = () => {
+    getAdminCategories()
+      .then((res) => {
+        setAdminCategories(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getAdminActions();
+    getAllAdminTimeScale();
+    getAllAdminCosts();
+    getAllAdminPotentials();
+    getAllAdminStatus();
+    getAllAdminRelationships();
+    getAllAdminCategories();
+  }, []);
+
   useEffect(() => {
     dispatch(onGetContacts(arr));
   }, [dispatch, crmcontacts]);
@@ -385,14 +465,14 @@ const ActionAdminDashboard = () => {
       },
       {
         Header: "Title",
-        accessor: "name",
+        accessor: "title",
         filterable: false,
         Cell: (contact) => (
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div className="flex-grow-1 ms-2 name">
-                {contact.row.original.name}
+                {contact.row.original.title}
               </div>
             </div>
           </>
@@ -400,30 +480,30 @@ const ActionAdminDashboard = () => {
       },
       {
         Header: "Category",
-        accessor: "lead_score",
+        accessor: "category",
         filterable: false,
       },
       {
         Header: "Weight",
-        accessor: "phone",
+        accessor: "weight",
       },
       {
         Header: "Status",
-        accessor: "tags",
+        accessor: "stat",
       },
       {
         Header: "Potential",
-        accessor: "email",
+        accessor: "potential",
         filterable: false,
       },
       {
         Header: "Cost",
-        accessor: "response",
+        accessor: "cost",
         filterable: false,
       },
       {
         Header: "Timescale",
-        accessor: "Scale",
+        accessor: "timescale",
         filterable: false,
       },
       {
@@ -554,21 +634,14 @@ const ActionAdminDashboard = () => {
     { id: 2, name: "Medium" },
     { id: 3, name: "High" },
   ];
-  const Cost = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "High" },
-  ];
-  const scale = [
-    { id: 1, name: "Short term" },
-    { id: 2, name: "Intermediate" },
-    { id: 3, name: "Medium term" },
-  ];
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
 
   // Export Modal
+  const [modalName, setModalName] = useState("");
+  const [modalField, setModalField] = useState("");
+  const [modalEdit, setModalEdit] = useState("");
   const [modals_grid, setmodals_grid] = useState(false);
   function tog_grids() {
     setmodals_grid(!modals_grid);
@@ -579,18 +652,37 @@ const ActionAdminDashboard = () => {
   }
   const [data, setData] = useState([]);
   const handleModal = (e) => {
-    if (e.target.name == "manage_categories") {
-      setData(categories);
-    } else if (e.target.name == "manage_weight") {
-      setData(weight);
-    } else if (e.target.name == "manage_Status") {
-      setData(Status);
-    } else if (e.target.name == "manage_Potential") {
-      setData(Potential);
+    // console.log("targer", e.target.name)
+    if (e.target.name == "manage_Scale") {
+      setModalName("Manage Scale");
+      setModalField("Add new Scale");
+      setModalEdit("Edit Scale Name");
+      setData(adminTimeScale);
     } else if (e.target.name == "manage_Costs") {
-      setData(Cost);
-    } else if (e.target.name == "manage_Scale") {
-      setData(scale);
+      setModalName("Manage Costs");
+      setModalField("Add new Cost");
+      setModalEdit("Edit Cost Value");
+      setData(adminCosts);
+    } else if (e.target.name == "manage_Potential") {
+      setModalName("Manage Potential");
+      setModalField("Add new Potential");
+      setModalEdit("Edit Potential Name");
+      setData(adminPotential);
+    } else if (e.target.name == "manage_Status") {
+      setModalName("Manage Status");
+      setModalField("Add new Status");
+      setModalEdit("Edit Status Name");
+      setData(adminStatus);
+    } else if (e.target.name == "manage_weight") {
+      setModalName("Manage Answer Relationship");
+      setModalField("Add new Relationship");
+      setModalEdit("Edit Relationship Name");
+      setData(adminRelation);
+    } else if (e.target.name == "manage_categories") {
+      setModalName("Manage Categories");
+      setModalField("Add new Category");
+      setModalEdit("Edit Category Name");
+      setData(adminCategories);
     }
     setmodals_grid(true);
   };
@@ -641,11 +733,11 @@ const ActionAdminDashboard = () => {
                 <CategoryModal
                   modals_grid={modals_grid}
                   setmodals_grid={setmodals_grid}
-                  categories={data}
-                  setCategories={setData}
-                  Title={"Manage category"}
-                  FieldName={"Add new Category"}
-                  Edit={"Edit category name"}
+                  data={data}
+                  setData={setData}
+                  Title={modalName}
+                  FieldName={modalField}
+                  Edit={modalEdit}
                 />
               )}
             </div>
@@ -657,14 +749,10 @@ const ActionAdminDashboard = () => {
                 name="manage_weight"
                 onClick={handleModal}
               >
-                Manage Weight
+                Manage Answer Relationship
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage weight"}
-                FieldName={"Add new Weight"}
-                Edit={"Edit weight name"}
-              />
+              <CategoryModal />
             </div>
             <div className="pt-5">
               <Button
@@ -738,11 +826,10 @@ const ActionAdminDashboard = () => {
           <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {console.log("contact", crmcontacts)}
-                {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                {adminActions && adminActions.length ? (
                   <TableContainer
                     columns={columns}
-                    data={crmcontacts || []}
+                    data={adminActions || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}

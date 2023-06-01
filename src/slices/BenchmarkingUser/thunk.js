@@ -10,6 +10,7 @@ export const getAllBenchmarks = async () => {
     let resp = await axios.get(
       `${process.env.REACT_APP_BENCHMARK_URL}/getBenchmarksById/${obj._id}`
     );
+    console.log(resp, "RESP");
     let data;
     data = resp.map((value) => {
       return {

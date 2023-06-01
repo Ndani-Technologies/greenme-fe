@@ -311,7 +311,6 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isRecommend,
-      disable: true,
       // subItems: [
       //   {
       //     id: 1,
