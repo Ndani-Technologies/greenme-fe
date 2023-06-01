@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   Card,
   CardBody,
@@ -20,10 +20,13 @@ import { Cards } from "./TabsData";
 import { Orgnaization } from "./TabsData";
 import { widgetsActivities, widgetsTasks } from "../../common/data/index";
 import { Link } from "react-router-dom";
+import CategoryModal from "./cardModal";
 
 const CardsPerPage = [12, 4]; // Number of cards to display per page: [8 cards on first page, 4 cards on second page]
 
 const Tabs = () => {
+  const [modal, setModal] = useState(false);
+  const [card, setCard] = useState(null);
   const [justifyTab, setjustifyTab] = useState("1");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -41,6 +44,10 @@ const Tabs = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
+  };
+  const handleSelectedCard = (item) => {
+    setCard(item);
+    setModal(true);
   };
 
   return (
@@ -71,7 +78,14 @@ const Tabs = () => {
             <TabPane tabId="1" id="base-justified-home">
               <Row>
                 {currentCards.map((item, index) => (
-                  <Col xs={12} md={6} lg={4} xxl={3} key={index}>
+                  <Col
+                    xs={12}
+                    md={6}
+                    lg={4}
+                    xxl={3}
+                    key={index}
+                    onClick={() => handleSelectedCard(item)}
+                  >
                     <Col
                       className="d-flex  gap-2 border border-light rounded p-2 mb-2"
                       style={{ fontSize: "12px" }}
@@ -118,6 +132,9 @@ const Tabs = () => {
                   </Col>
                 ))}
               </Row>
+              {modal && (
+                <CategoryModal modal={modal} setModal={setModal} card={card} />
+              )}
               <Pagination>
                 <PaginationItem disabled={currentPage === 1}>
                   <PaginationLink

@@ -55,7 +55,8 @@ import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
-
+import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
+import ActionUserDashboard from "../pages/Action-User-dashboard/ActionUserDashboard";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/index", component: <DashboardEcommerce /> },
@@ -93,6 +94,7 @@ const authProtectedRoutes = [
   { path: "/userreport", component: <UserReport /> },
   { path: "/usersummary", component: <ActionUserSummary /> },
   { path: "/actionuserdetail", component: <ActionUserDetail /> },
+  { path: "/actionuserdashboard", component: <ActionUserDashboard /> },
   //Admin Recomendations pages
   { path: "/adminreport", component: <AdminReport /> },
   ,
@@ -102,6 +104,7 @@ const authProtectedRoutes = [
   { path: "/AdminRelationship", component: <AdminRelation /> },
   //User Collaboration
   { path: "/UserCollaboration", component: <UserCollaboration /> },
+  { path: "/collaborationChat", component: <CollaborationChat /> },
 ];
 
 const publicRoutes = [

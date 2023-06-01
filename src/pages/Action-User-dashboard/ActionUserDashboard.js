@@ -1,151 +1,157 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import * as moment from "moment";
 import {
   Col,
+  Container,
+  Row,
   Card,
   CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
+  Label,
+  Input,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Form,
+  ModalFooter,
+  Table,
+  FormFeedback,
   Button,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
+  deleteContact as onDeleteContact,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
-import Select from "react-select";
 import { toast, ToastContainer } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
-import Layouts from "../../Layouts";
-import RelationModal from "./RelationModal";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
     name: "Does your organisation have environmental commitments?",
-    phone: "NO",
-    email: "18",
+    phone: "Max",
+    email: "low",
     last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Switch to electric vehicles",
-    tags: "Automatic",
-    response: "Active",
+    lead_score: "Avoid",
+    tags: "active",
+    response: "low",
     Scale: "intermediate",
   },
   {
     _id: "625d3cd5923ccd040209ebf3",
     name: "Does your organisation have a ‘green’ strategy?",
-    phone: "NO",
-    email: "18",
+    phone: "Max",
+    email: "low",
     last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Introducing trip sharing",
-    tags: "Automatic",
-    response: "Active",
+    lead_score: "Improve",
+    tags: "In progress",
+    response: "low",
     Scale: "Short term",
   },
   {
     _id: "625d3cd5923ccd040209ebee",
     name: "Does your fleet policy contain references to a green strategy or environmental sustainability?",
-    phone: "-",
-    email: "05",
-    lead_score: "Enroll drivers in trainings",
-    tags: "Automatic",
-    response: "Active",
+    phone: "Max",
+    email: "low",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
     Scale: "intermediate",
   },
   {
     _id: "625d3cd5923ccd040209ebf0",
     name: "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
-    phone: "NO",
-    email: "10",
-    lead_score: "Carry out waste management audit ",
-    tags: "Automatic",
-    response: "Active",
+    phone: "Medium",
+    email: "Very High",
+    lead_score: "Avoid",
+    tags: "In progress",
+    response: "low",
     Scale: "Medium term",
   },
   {
     _id: "625d3cd5923ccd040209ebf2",
     name: "Do you have standardised fleet procurement (global framework agreement…)?",
-    phone: "-",
-    email: "12",
-    lead_score: "Route optimisation exercise",
-    tags: "Automatic",
-    response: "Active",
+    phone: "Medium",
+    email: "Medium",
+    lead_score: "Improve",
+    tags: "In progress",
+    response: "low",
     Scale: "intermediate",
   },
   {
     _id: "625d3cd5923ccd040209ebeb",
     name: "Do you use sustainability criteria to assess/ select suppliers?",
-    phone: "NO",
+    phone: "Low",
     company: "iTest Factory",
     designation: "UI / UX Designer",
-    email: "08",
-    lead_score: "Upload the JD or relevant points",
-    tags: "Automatic",
-    response: "Inactive",
+    email: "low",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
     Scale: "Medium term",
   },
   {
     _id: "625d3cd5923ccd040209ebec",
     name: "How do you dispose of vehicles?",
-    phone: "NO",
+    phone: "Max",
     company: "Force Medicines",
     designation: "PHP Developer",
-    email: "02",
+    email: "Medium",
     last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Complete sustainable FM training",
-    tags: "Automatic",
-    response: "Inactive",
+    lead_score: "General",
+    tags: "In progress",
+    response: "low",
     Scale: "Short term",
   },
   {
     _id: "625d3cd5923ccd040209ebea",
     name: "Do you take the environmental impact into consideration when planning for disposal ?",
-    phone: "NO",
+    phone: "Medium",
     company: "Nesta Technologies",
     designation: "Lead Designer / Developer",
-    email: "07",
-    lead_score: "Route optimisation exercise",
-    tags: "Automatic",
-    response: "Inactive",
+    email: "High",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
     Scale: "intermediate",
   },
 
   {
     _id: "625d3cd5923ccd040209ebef",
     name: "How do you dispose of vehicles?",
-    phone: "-",
+    phone: "Max",
     company: "Micro Design",
     designation: "Asp.Net Developer",
-    email: "07",
-    lead_score: "Route optimisation exercise",
-    tags: "Automatic",
-    response: "Active",
+    email: "Very High",
+    lead_score: "Improve",
+    tags: "In progress",
+    response: "low",
     Scale: "Long term",
   },
   {
     _id: "625d3cd5923ccd040209ebed",
     name: "How do you dispose of vehicles?",
-    phone: "NO",
+    phone: "Low",
     company: "Digitech Galaxy",
     designation: "Full Stack Developer",
-    email: "07",
-    lead_score: "Route optimisation exercise",
-    tags: "Automatic",
-    response: "Active",
+    email: "low",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
     Scale: "intermediate",
   },
 ];
-const AdminRelation = () => {
-  const [modal_grid, setmodal_grid] = useState(false);
-  function tog_grid() {
-    setmodal_grid(!modal_grid);
-  }
+const ActionUserDashboard = () => {
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,
@@ -169,8 +175,9 @@ const AdminRelation = () => {
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
-  const [info, setInfo] = useState([]);
+
   //delete Conatct
+  const [deleteModal, setDeleteModal] = useState(false);
   const [modal, setModal] = useState(false);
 
   const toggle = useCallback(() => {
@@ -316,6 +323,8 @@ const AdminRelation = () => {
     },
     [toggle]
   );
+
+  // Checked All
   const checkedAll = useCallback(() => {
     const checkall = document.getElementById("checkBoxAll");
     const ele = document.querySelectorAll(".contactCheckBox");
@@ -331,6 +340,9 @@ const AdminRelation = () => {
     }
     deleteCheckbox();
   }, []);
+
+  // Delete Multiple
+
   const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
 
@@ -353,111 +365,142 @@ const AdminRelation = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
-  const columns = useMemo(() => [
-    {
-      Cell: (cellProps) => {
-        return (
-          <input
-            type="checkbox"
-            className="contactCheckBox form-check-input"
-            value={cellProps.row.original._id}
-            onChange={() => deleteCheckbox()}
-          />
-        );
-      },
-      id: "#",
-    },
-    {
-      Header: "Recommended action title",
-      accessor: "lead_score",
-      filterable: false,
-    },
-    {
-      Header: "Benchmark question title",
-      accessor: "name",
-      filterable: false,
-    },
 
-    {
-      Header: "Selected answer options",
-      accessor: "phone",
-    },
-    {
-      Header: "Assignment type",
-      accessor: "tags",
-    },
-    {
-      Header: "Number of asignments",
-      accessor: "email",
-      filterable: false,
-    },
-    {
-      Header: "Status",
-      accessor: "response",
-      filterable: false,
-    },
-    {
-      Header: "Action",
-      Cell: (cellProps) => {
-        const { _id } = cellProps.row.original;
-        return (
-          <ul className="list-inline hstack gap-2 mb-0">
-            <li className="list-inline-item">
-              <UncontrolledDropdown>
-                <DropdownToggle
-                  href="#"
-                  className="btn btn-soft-secondary btn-sm dropdown"
-                  tag="button"
-                >
-                  <i className="ri-more-fill align-middle"></i>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-end">
-                  <DropdownItem
-                    className="dropdown-item"
-                    onClick={() => {
-                      const contactData = cellProps.row.original;
-                      setInfo(contactData);
-                    }}
-                  >
-                    View
-                  </DropdownItem>
-                  <DropdownItem
-                    className="dropdown-item"
-                    onClick={() => {
-                      const contactData = cellProps.row.original;
-                      setInfo(contactData);
-                    }}
-                  >
-                    Edit
-                  </DropdownItem>
-                  <DropdownItem
-                    className="dropdown-item remove-item-btn"
-                    href="#"
-                    onClick={() => {
-                      const contactData = cellProps.row.original;
-                      onClickDelete(contactData);
-                    }}
-                  >
-                    Delete
-                  </DropdownItem>
-                  <DropdownItem
-                    className="dropdown-item edit-item-btn"
-                    href="#"
-                    onClick={() => {
-                      const contactData = cellProps.row.original;
-                      handleContactClick(contactData);
-                    }}
-                  >
-                    Deactivate
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </li>
-          </ul>
-        );
+  // Column
+  const columns = useMemo(
+    () => [
+      {
+        Cell: (cellProps) => {
+          return (
+            <input
+              type="checkbox"
+              className="contactCheckBox form-check-input"
+              value={cellProps.row.original._id}
+              onChange={() => deleteCheckbox()}
+            />
+          );
+        },
+        id: "#",
       },
-    },
-  ]);
+      {
+        Header: "Title",
+        accessor: "name",
+        filterable: false,
+        Cell: (contact) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div className="flex-grow-1 ms-2 name">
+                {contact.row.original.name}
+              </div>
+            </div>
+          </>
+        ),
+      },
+      {
+        Header: "Category",
+        accessor: "lead_score",
+        filterable: false,
+      },
+      {
+        Header: "Weight",
+        accessor: "phone",
+      },
+      {
+        Header: "Status",
+        accessor: "tags",
+      },
+      {
+        Header: "Potential",
+        accessor: "email",
+        filterable: false,
+      },
+      {
+        Header: "Cost",
+        accessor: "response",
+        filterable: false,
+      },
+      {
+        Header: "Timescale",
+        accessor: "Scale",
+        filterable: false,
+      },
+      {
+        Header: "Action",
+        Cell: (cellProps) => {
+          const { _id } = cellProps.row.original;
+          return (
+            <ul className="list-inline hstack gap-2 mb-0">
+              <li className="list-inline-item">
+                <UncontrolledDropdown>
+                  <DropdownToggle
+                    href="#"
+                    className="btn btn-soft-secondary btn-sm dropdown"
+                    tag="button"
+                  >
+                    <i className="ri-more-fill align-middle"></i>
+                  </DropdownToggle>
+                  <DropdownMenu className="dropdown-menu-end">
+                    <DropdownItem
+                      className="dropdown-item"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        setInfo(contactData);
+                      }}
+                    >
+                      View
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        setInfo(contactData);
+                      }}
+                    >
+                      Edit
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item remove-item-btn"
+                      href="#"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        onClickDelete(contactData);
+                      }}
+                    >
+                      Delete
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item edit-item-btn"
+                      href="#"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        handleContactClick(contactData);
+                      }}
+                    >
+                      Active
+                    </DropdownItem>
+
+                    <DropdownItem
+                      className="dropdown-item edit-item-btn"
+                      href="#"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        handleContactClick(contactData);
+                      }}
+                    >
+                      Manage
+                    </DropdownItem>
+                  </DropdownMenu>
+                </UncontrolledDropdown>
+              </li>
+            </ul>
+          );
+        },
+      },
+    ],
+    [handleContactClick, checkedAll]
+  );
+
   const [response, setResponse] = useState([]);
   const [assignResponse, setAssignResponse] = useState([]);
   const [Scale, setScale] = useState([]);
@@ -482,30 +525,85 @@ const AdminRelation = () => {
     setAssignTag(assigned);
   }
 
-  const tags = [
-    { label: "Exiting", value: "Exiting" },
-    { label: "Lead", value: "Lead" },
-    { label: "Long-term", value: "Long-term" },
-    { label: "Partner", value: "Partner" },
-  ];
+  //   const tags = [
+  //     { label: "Exiting", value: "Exiting" },
+  //     { label: "Lead", value: "Lead" },
+  //     { label: "Long-term", value: "Long-term" },
+  //     { label: "Partner", value: "Partner" },
+  //   ];
 
-  document.title = "Benchmaking QA | GreenMe";
+  //   const categories = [
+  //     { id: 1, name: "Avoid" },
+  //     { id: 2, name: "Shift" },
+  //     { id: 3, name: "Improve" },
+  //   ];
+
+  //   const weight = [
+  //     { id: 1, name: "Low" },
+  //     { id: 2, name: "Medium" },
+  //     { id: 3, name: "Max" },
+  //   ];
+  //   const Status = [
+  //     { id: 1, name: "Not started" },
+  //     { id: 2, name: "In progress" },
+  //     { id: 3, name: "Completed" },
+  //   ];
+  //   const Potential = [
+  //     { id: 1, name: "Low" },
+  //     { id: 2, name: "Medium" },
+  //     { id: 3, name: "High" },
+  //   ];
+  //   const Cost = [
+  //     { id: 1, name: "Low" },
+  //     { id: 2, name: "Medium" },
+  //     { id: 3, name: "High" },
+  //   ];
+  //   const scale = [
+  //     { id: 1, name: "Short term" },
+  //     { id: 2, name: "Intermediate" },
+  //     { id: 3, name: "Medium term" },
+  //   ];
+
+  //   // SideBar Contact Deatail
+  //   const [info, setInfo] = useState([]);
+
+  //   // Export Modal
+  //   const [modals_grid, setmodals_grid] = useState(false);
+  //   function tog_grids() {
+  //     setmodals_grid(!modals_grid);
+  //   }
+  //   const [modal_grid, setmodal_grid] = useState(false);
+  //   function tog_grid() {
+  //     setmodal_grid(!modal_grid);
+  //   }
+  //   const [data, setData] = useState([]);
+  //   const handleModal = (e) => {
+  //     if (e.target.name == "manage_categories") {
+  //       setData(categories);
+  //     } else if (e.target.name == "manage_weight") {
+  //       setData(weight);
+  //     } else if (e.target.name == "manage_Status") {
+  //       setData(Status);
+  //     } else if (e.target.name == "manage_Potential") {
+  //       setData(Potential);
+  //     } else if (e.target.name == "manage_Costs") {
+  //       setData(Cost);
+  //     } else if (e.target.name == "manage_Scale") {
+  //       setData(scale);
+  //     }
+  //     setmodals_grid(true);
+  //   };
+  document.title = "Recomended Action Dashboard | GreenMe";
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
         <ActionMain
-          Title={"Recommended Actions - Benchmark to Action Relationships"}
+          Title={"Recommended Actions"}
+          Text={
+            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+          }
         />
-        <Button className="mt-4 " onClick={() => setmodal_grid(true)}>
-          <i class="ri-add-fill mt-2"></i>Add New Relationship
-        </Button>
-        {modal_grid && (
-          <RelationModal
-            modal_grid={modal_grid}
-            setmodal_grid={setmodal_grid}
-          />
-        )}
-        <Col xxl={12} className="m-auto mt-5">
+        <Col xxl={12} className="mt-5">
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
@@ -517,7 +615,6 @@ const AdminRelation = () => {
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
-                    isFilterAction={true}
                     isFooter={true}
                     customPageSize={8}
                     className="custom-header-css"
@@ -532,6 +629,7 @@ const AdminRelation = () => {
                   <Loader error={error} />
                 )}
               </div>
+              <ToastContainer closeButton={false} limit={1} />
             </CardBody>
           </Card>
         </Col>
@@ -540,4 +638,4 @@ const AdminRelation = () => {
   );
 };
 
-export default AdminRelation;
+export default ActionUserDashboard;

@@ -659,6 +659,7 @@ const ActionAdminDashboard = () => {
                 Manage Weight
                 <i class="ri-add-fill"></i>
               </Button>
+
               <CategoryModal
                 Title={"Manage weight"}
                 FieldName={"Add new Weight"}

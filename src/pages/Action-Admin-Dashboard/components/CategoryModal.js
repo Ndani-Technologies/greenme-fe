@@ -95,20 +95,15 @@ const CategoryModal = ({
   const [deleteId, setDeleteId] = useState(null);
 
   const confirmDelete = (AnswerId, id) => {
-    // TODO: implement deletion logic using `deleteId`
-    // setCategories(updCategories);
-
     setAnswers(updAnswers);
     setDeleteConfirmation(false);
-    // setUpdAnswers([]);
-    // setUpdCategories([]);
+
     setDeleteId(null);
   };
   const confirmDelete2 = (AnswerId, id) => {
     setCategories(updCategories);
     setDeleteConfirmation2(false);
-    // setUpdAnswers([]);
-    // setUpdCategories([]);
+
     setDeleteId(null);
   };
 
@@ -120,10 +115,7 @@ const CategoryModal = ({
     setDeleteConfirmation(false);
     setDeleteId(null);
   };
-  // const [modals_grid, setmodals_grid] = useState(false);
-  // function tog_grids() {
-  //   setmodals_grid(!modals_grid);
-  // }
+
   return (
     <Modal
       size="lg p-5"
@@ -241,7 +233,6 @@ const CategoryModal = ({
                 </Button>
               </div>
             </Col>
-
             <DragDropContext onDragEnd={handleDragEnds}>
               <Col lg={12} className="border p-3 rounded bg-white">
                 {FieldName}
