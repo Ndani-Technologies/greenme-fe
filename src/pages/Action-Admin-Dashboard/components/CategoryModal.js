@@ -26,6 +26,7 @@ import {
   deleteAdminStatus,
   createAdminRelationships,
   updateAdminRelationships,
+  deleteAdminRelationships,
   createAdminCategories,
   updateAdminCategories,
   deleteAdminCategories,
@@ -400,7 +401,7 @@ const CategoryModal = ({
     } else if (Title === "Manage Status") {
       deleteData(deleteAdminStatus, "Successfully Deleted Status");
     } else if (Title === "Manage Answer Relationship") {
-      deleteData(deleteAdminStatus, "Successfully Deleted Relation");
+      deleteData(deleteAdminRelationships, "Successfully Deleted Relation");
     } else if (Title === "Manage Categories") {
       deleteData(deleteAdminCategories, "Successfully Deleted Category");
     }

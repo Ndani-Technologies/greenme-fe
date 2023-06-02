@@ -147,17 +147,18 @@ export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
     // ];
     // const response = getContactsApi();
     const response = { status: "success", data: arr };
-    console.log("get contacts 1", response);
+
     return response;
   } catch (error) {
     return error;
   }
 });
 
+//ADMIN ACTIONS CRUD FUNCTIONALITY
+
 export const getAllAdminActions = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/actionsteps`);
-    console.log(res, "INSIDE THUNK");
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
 
     let data;
     data = res.map((value) => {
@@ -178,11 +179,82 @@ export const getAllAdminActions = async () => {
   }
 };
 
+export const createAdminActions = async (data, category) => {
+  try {
+    const res = await axios.post(`${process.env.REACT_APP_RA_URL}`, data);
+    if (res !== undefined) {
+      const updatedResp = {
+        ...res,
+        response: 0,
+        answered: res.whoHasAnswer?.totalUsers,
+        category: category,
+        status: res?.status ? "active" : "Inactive",
+        visibility: res?.visibility ? "True" : "False",
+      };
+      return updatedResp;
+    }
+    return res;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+};
+
+//ADMIN ACTIONS CRUD FUNCTIONALITY
+export const getAllAdminResources = async () => {
+  try {
+    // const res = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
+    const res = await axios.get(
+      `http://192.168.137.1:5002/api/v1/ra/resourceLink`
+    );
+    return res;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
+
+export const createAdminResources = async (data, category) => {
+  try {
+    const res = await axios.post(
+      `http://192.168.137.1:5002/api/v1/ra/resourceLink`,
+      data
+    );
+    return res;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+};
+
+export const updateAdminResources = async (id, data) => {
+  try {
+    const res = await axios.patch(
+      `http://192.168.137.1:5002/api/v1/ra/resourceLink`,
+      data
+    );
+    return res;
+  } catch (error) {
+    console.log("Unable to Add", error);
+  }
+};
+
+export const deleteAdminResources = async (id) => {
+  try {
+    const res = await axios.delete(
+      `http://192.168.137.1:5002/api/v1/ra/resourceLink/${id}`
+    );
+    return res;
+  } catch (error) {
+    toast.error("Unable to Delete");
+    console.log(error);
+  }
+};
+
 //TIME SCALE CRUD FUNCTIONALITY
 
 export const getAdminTimeScale = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/timescales`);
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}timescales`);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -191,7 +263,10 @@ export const getAdminTimeScale = async () => {
 
 export const createAdminTimeScale = async (data) => {
   try {
-    const res = await axios.post(`REACT_APP_RA_URL/timescales`, data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_RA_URL}timescales`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -200,8 +275,10 @@ export const createAdminTimeScale = async (data) => {
 
 export const updateAdminTimeScale = async (id, data) => {
   try {
-    const res = await axios.patch(`REACT_APP_RA_URL/timescales/${id}`, data);
-    console.log(res, "RES");
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}timescales/${id}`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Unable to Add", error);
@@ -210,9 +287,9 @@ export const updateAdminTimeScale = async (id, data) => {
 
 export const deleteAdminTimeScale = async (id) => {
   try {
-    const res = await axios.delete(`REACT_APP_RA_URL/timescales/${id}`);
-    // toast.success("Successfully Deleted")
-    console.log(res, "RESPONSE");
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}timescales/${id}`
+    );
     return res;
   } catch (error) {
     toast.error("Unable to Delete");
@@ -224,7 +301,7 @@ export const deleteAdminTimeScale = async (id) => {
 
 export const getAdminCosts = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/costs`);
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}costs`);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -233,7 +310,7 @@ export const getAdminCosts = async () => {
 
 export const createAdminCosts = async (data) => {
   try {
-    const res = await axios.post(`REACT_APP_RA_URL/costs`, data);
+    const res = await axios.post(`${process.env.REACT_APP_RA_URL}costs`, data);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -242,8 +319,10 @@ export const createAdminCosts = async (data) => {
 
 export const updateAdminCosts = async (id, data) => {
   try {
-    const res = await axios.patch(`REACT_APP_RA_URL/costs/${id}`, data);
-    console.log(res, "RES");
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}costs/${id}`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Unable to Add", error);
@@ -252,9 +331,9 @@ export const updateAdminCosts = async (id, data) => {
 
 export const deleteAdminCosts = async (id) => {
   try {
-    const res = await axios.delete(`REACT_APP_RA_URL/costs/${id}`);
-    // toast.success("Successfully Deleted")
-    console.log(res, "RESPONSE");
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}costs/${id}`
+    );
     return res;
   } catch (error) {
     toast.error("Unable to Delete");
@@ -266,7 +345,7 @@ export const deleteAdminCosts = async (id) => {
 
 export const getAdminPotentials = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/potentials`);
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}potentials`);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -275,7 +354,10 @@ export const getAdminPotentials = async () => {
 
 export const createAdminPotential = async (data) => {
   try {
-    const res = await axios.post(`REACT_APP_RA_URL/potentials`, data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_RA_URL}potentials`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -284,8 +366,10 @@ export const createAdminPotential = async (data) => {
 
 export const updateAdminPotential = async (id, data) => {
   try {
-    const res = await axios.patch(`REACT_APP_RA_URL/potentials/${id}`, data);
-    console.log(res, "RES");
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}potentials/${id}`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Unable to Add", error);
@@ -294,9 +378,9 @@ export const updateAdminPotential = async (id, data) => {
 
 export const deleteAdminPotential = async (id) => {
   try {
-    const res = await axios.delete(`REACT_APP_RA_URL/potentials/${id}`);
-    // toast.success("Successfully Deleted")
-    console.log(res, "RESPONSE");
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}potentials/${id}`
+    );
     return res;
   } catch (error) {
     toast.error("Unable to Delete");
@@ -308,7 +392,7 @@ export const deleteAdminPotential = async (id) => {
 
 export const getAdminStatus = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/status`);
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}status`);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -317,7 +401,7 @@ export const getAdminStatus = async () => {
 
 export const createAdminStatus = async (data) => {
   try {
-    const res = await axios.post(`REACT_APP_RA_URL/status`, data);
+    const res = await axios.post(`${process.env.REACT_APP_RA_URL}status`, data);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -326,8 +410,10 @@ export const createAdminStatus = async (data) => {
 
 export const updateAdminStatus = async (id, data) => {
   try {
-    const res = await axios.patch(`REACT_APP_RA_URL/status/${id}`, data);
-    console.log(res, "RES");
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}status/${id}`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Unable to Add", error);
@@ -336,9 +422,9 @@ export const updateAdminStatus = async (id, data) => {
 
 export const deleteAdminStatus = async (id) => {
   try {
-    const res = await axios.delete(`REACT_APP_RA_URL/status/${id}`);
-    // toast.success("Successfully Deleted")
-    console.log(res, "RESPONSE");
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}status/${id}`
+    );
     return res;
   } catch (error) {
     toast.error("Unable to Delete");
@@ -350,8 +436,9 @@ export const deleteAdminStatus = async (id) => {
 
 export const getAdminRelationships = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/relationships`);
-    console.log(res, "RESPONSE");
+    const res = await axios.get(
+      `${process.env.REACT_APP_RA_URL}answer_relationship`
+    );
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -359,9 +446,11 @@ export const getAdminRelationships = async () => {
 };
 
 export const createAdminRelationships = async (data) => {
-  console.log(data, "CREATE DATA");
   try {
-    const res = await axios.post(`REACT_APP_RA_URL/relationships`, data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_RA_URL}answer_relationship`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -370,8 +459,10 @@ export const createAdminRelationships = async (data) => {
 
 export const updateAdminRelationships = async (id, data) => {
   try {
-    const res = await axios.patch(`REACT_APP_RA_URL/relationships/${id}`, data);
-    console.log(res, "RES");
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}answer_relationship/${id}`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Unable to Add", error);
@@ -380,9 +471,9 @@ export const updateAdminRelationships = async (id, data) => {
 
 export const deleteAdminRelationships = async (id) => {
   try {
-    const res = await axios.delete(`REACT_APP_RA_URL/relationships/${id}`);
-    // toast.success("Successfully Deleted")
-    console.log(res, "RESPONSE");
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}answer_relationship/${id}`
+    );
     return res;
   } catch (error) {
     toast.error("Unable to Delete");
@@ -394,8 +485,7 @@ export const deleteAdminRelationships = async (id) => {
 
 export const getAdminCategories = async () => {
   try {
-    const res = await axios.get(`REACT_APP_RA_URL/categories`);
-    console.log(res, "RESPONSE");
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}categories`);
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -403,9 +493,11 @@ export const getAdminCategories = async () => {
 };
 
 export const createAdminCategories = async (data) => {
-  console.log(data, "CREATE DATA");
   try {
-    const res = await axios.post(`REACT_APP_RA_URL/categories`, data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_RA_URL}categories`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Cannot get Time Scale", error);
@@ -414,8 +506,10 @@ export const createAdminCategories = async (data) => {
 
 export const updateAdminCategories = async (id, data) => {
   try {
-    const res = await axios.patch(`REACT_APP_RA_URL/categories/${id}`, data);
-    console.log(res, "RES");
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}categories/${id}`,
+      data
+    );
     return res;
   } catch (error) {
     console.log("Unable to Add", error);
@@ -424,12 +518,11 @@ export const updateAdminCategories = async (id, data) => {
 
 export const deleteAdminCategories = async (id) => {
   try {
-    const res = await axios.delete(`REACT_APP_RA_URL/categories/${id}`);
-    // toast.success("Successfully Deleted")
-    console.log(res, "RESPONSE");
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}categories/${id}`
+    );
     return res;
   } catch (error) {
-    toast.error("Unable to Delete");
     console.log(error);
   }
 };

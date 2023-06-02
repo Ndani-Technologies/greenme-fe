@@ -22,6 +22,7 @@ import {
   getAdminStatus,
   getAdminRelationships,
   getAdminCategories,
+  getAllAdminResources,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -152,6 +153,7 @@ const arr = [
 ];
 const ActionAdminDashboard = () => {
   const [adminActions, setAdminActions] = useState([]);
+  const [adminResources, setAdminResources] = useState([]);
   const [adminTimeScale, setAdminTimeScale] = useState([]);
   const [adminCosts, setAdminCosts] = useState([]);
   const [adminPotential, setAdminPotential] = useState([]);
@@ -170,6 +172,12 @@ const ActionAdminDashboard = () => {
   const getAdminActions = () => {
     getAllAdminActions().then((res) => {
       setAdminActions(res);
+    });
+  };
+
+  const getAdminResources = () => {
+    getAllAdminResources().then((res) => {
+      setAdminResources(res);
     });
   };
 
@@ -223,6 +231,7 @@ const ActionAdminDashboard = () => {
 
   useEffect(() => {
     getAdminActions();
+    getAdminResources();
     getAllAdminTimeScale();
     getAllAdminCosts();
     getAllAdminPotentials();
@@ -686,6 +695,8 @@ const ActionAdminDashboard = () => {
     }
     setmodals_grid(true);
   };
+
+  const [isDataUpdated, setIsDataUpdated] = useState(true);
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
@@ -705,7 +716,10 @@ const ActionAdminDashboard = () => {
               <Button
                 className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded"
                 color="white"
-                onClick={() => setmodal_grid(true)}
+                onClick={() => {
+                  setIsDataUpdated(false);
+                  setmodal_grid(true);
+                }}
                 style={{ width: "130px" }}
               >
                 Add Action
@@ -715,6 +729,24 @@ const ActionAdminDashboard = () => {
                 <ActionModal
                   modal_grid={modal_grid}
                   setmodal_grid={setmodal_grid}
+                  adminCategories={adminCategories}
+                  setAdminCategories={setAdminCategories}
+                  adminResources={adminResources}
+                  setAdminResources={setAdminResources}
+                  adminTimeScale={adminTimeScale}
+                  setAdminTimeScale={setAdminTimeScale}
+                  adminActions={adminActions}
+                  setAdminActions={setAdminActions}
+                  adminCosts={adminCosts}
+                  setAdminCosts={setAdminCosts}
+                  adminPotential={adminPotential}
+                  setAdminPotential={setAdminPotential}
+                  adminRelation={adminRelation}
+                  setAdminRelation={setAdminRelation}
+                  adminStatus={adminStatus}
+                  setAdminStatus={setAdminStatus}
+                  isDataUpdated={isDataUpdated}
+                  setIsDataUpdated={setIsDataUpdated}
                 />
               )}
             </div>
