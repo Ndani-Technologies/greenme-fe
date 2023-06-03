@@ -148,6 +148,7 @@ export const getAllQA = async () => {
     let resp = await axios.get(process.env.REACT_APP_QUESTION_URL);
 
     let data;
+    console.log("QA get all", resp);
     data = resp.map((value) => {
       return {
         ...value,
@@ -158,7 +159,6 @@ export const getAllQA = async () => {
         visibility: value?.visibility ? "True" : "False",
       };
     });
-    console.log("QA get all", data);
     return data;
   } catch (error) {
     console.error(error);
