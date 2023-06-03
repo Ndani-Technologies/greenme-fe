@@ -13,6 +13,7 @@ import {
   getContacts as onGetContacts,
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
+  getAllQA,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -25,6 +26,11 @@ import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import Layouts from "../../Layouts";
 import RelationModal from "./RelationModal";
+import {
+  deleteRecommendActionRelation,
+  getAllRecommendedAction,
+  getAllRecommendedRelation,
+} from "../../slices/RecommendedAction/thunk";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -141,36 +147,28 @@ const arr = [
     Scale: "intermediate",
   },
 ];
+
 const AdminRelation = () => {
   const [modal_grid, setmodal_grid] = useState(false);
-  function tog_grid() {
-    setmodal_grid(!modal_grid);
-  }
-  const dispatch = useDispatch();
-  const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
-    crmcontacts: state.Crm.crmcontacts,
-    isContactCreated: state.Crm.isContactCreated,
-    isContactSuccess: state.Crm.isContactSuccess,
-    error: state.Crm.error,
-  }));
-  useEffect(() => {
-    dispatch(onGetContacts(arr));
-  }, [dispatch, crmcontacts]);
-  useEffect(() => {
-    setContact(crmcontacts);
-  }, [crmcontacts]);
+  const [questionList, setQuestionList] = useState([]);
+  const [recommendedAction, setRecommendedAction] = useState([]);
+  const [recommendedRelation, setRecommendedRelation] = useState([]);
 
+  const fetchAPIs = () => {
+    getAllQA()
+      .then((resp) => setQuestionList(resp))
+      .catch((err) => console.log("qa all error", err));
+    getAllRecommendedAction()
+      .then((resp) => setRecommendedAction(resp))
+      .catch((err) => console.log("recommend action error", err));
+    getAllRecommendedRelation()
+      .then((resp) => setRecommendedRelation(resp))
+      .catch((err) => console.log("recommend action error", err));
+  };
   useEffect(() => {
-    if (!isEmpty(crmcontacts)) {
-      setContact(crmcontacts);
-      setIsEdit(false);
-    }
-  }, [crmcontacts]);
+    fetchAPIs();
+  }, []);
 
-  const [isEdit, setIsEdit] = useState(false);
-  const [contact, setContact] = useState([]);
-  const [info, setInfo] = useState([]);
-  //delete Conatct
   const [modal, setModal] = useState(false);
 
   const toggle = useCallback(() => {
@@ -183,12 +181,19 @@ const AdminRelation = () => {
       setAssignTag([]);
     }
   }, [modal]);
-
-  // Delete Data
+  const [isEdit, setIsEdit] = useState(false);
+  const [contact, setContact] = useState([]);
+  const [info, setInfo] = useState([]);
 
   const onClickDelete = (contact) => {
-    setContact(contact);
-    setDeleteModal(true);
+    console.log("row", contact);
+    deleteRecommendActionRelation(contact._id)
+      .then(() => {
+        toast.success("Relation successfully deleted");
+      })
+      .catch(() => {
+        toast.success("Relation couldn't get deleted");
+      });
   };
 
   // Add Data
@@ -197,98 +202,6 @@ const AdminRelation = () => {
     setIsEdit(false);
     toggle();
   };
-
-  // Date & Time Format
-
-  const dateFormat = () => {
-    var d = new Date(),
-      months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-    return d.getDate() + " " + months[d.getMonth()] + ", " + d.getFullYear();
-  };
-
-  // validation
-  const validation = useFormik({
-    // enableReinitialize : use this flag when initial values needs to be changed
-    enableReinitialize: true,
-
-    initialValues: {
-      // img: (contact && contact.img) || '',
-      name: (contact && contact.name) || "",
-      reeponse: (contact && contact.response) || "",
-      company: (contact && contact.company) || "",
-      designation: (contact && contact.designation) || "",
-      email: (contact && contact.email) || "",
-      Scale: (contact && contact.Scale) || "",
-      phone: (contact && contact.phone) || "",
-      lead_score: (contact && contact.lead_score) || "",
-      tags: (contact && contact.tags) || [],
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Please Enter Name"),
-      response: Yup.string().required("Please Enter Name"),
-      company: Yup.string().required("Please Enter Company"),
-      designation: Yup.string().required("Please Enter Designation"),
-      email: Yup.string().required("Please Enter Email"),
-      phone: Yup.string().required("Please Enter Phone"),
-      lead_score: Yup.string().required("Please Enter lead_score"),
-    }),
-    onSubmit: (values) => {
-      if (isEdit) {
-        const updateContact = {
-          _id: contact ? contact._id : 0,
-          // img: values.img,
-          name: values.name,
-          response: assignResponse,
-          Scale: assignScale,
-          company: values.company,
-          designation: values.designation,
-          email: values.email,
-          Scale: values.Scale,
-          phone: values.phone,
-          lead_score: values.lead_score,
-          last_contacted: dateFormat(),
-          // time: timeFormat(),
-          tags: assignTag,
-        };
-        // update Contact
-        dispatch(onUpdateContact(updateContact));
-        validation.resetForm();
-      } else {
-        const newContact = {
-          _id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
-          // img: values["img"],
-          name: values["name"],
-          response: values["response"],
-          company: values["company"],
-          designation: values["designation"],
-          email: values["email"],
-          Scale: values["Scale"],
-          phone: values["phone"],
-          lead_score: values["lead_score"],
-          last_contacted: dateFormat(),
-          // time: timeFormat(),
-          tags: assignTag,
-        };
-        // save new Contact
-        dispatch(onAddNewContact(newContact));
-        validation.resetForm();
-      }
-      toggle();
-    },
-  });
 
   // Update Data
   const handleContactClick = useCallback(
@@ -312,7 +225,7 @@ const AdminRelation = () => {
       });
 
       setIsEdit(true);
-      toggle();
+      // toggle();
     },
     [toggle]
   );
@@ -353,6 +266,7 @@ const AdminRelation = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
+
   const columns = useMemo(() => [
     {
       Header: (
@@ -378,31 +292,31 @@ const AdminRelation = () => {
     },
     {
       Header: "Recommended action title",
-      accessor: "lead_score",
+      accessor: "ra_title",
       filterable: false,
     },
     {
       Header: "Benchmark question title",
-      accessor: "name",
+      accessor: "question_title",
       filterable: false,
     },
 
     {
       Header: "Selected answer options",
-      accessor: "phone",
+      accessor: "answr_option",
     },
     {
       Header: "Assignment type",
-      accessor: "tags",
+      accessor: "assignment_type",
     },
     {
       Header: "Number of asignments",
-      accessor: "email",
+      accessor: "number_of_assignment",
       filterable: false,
     },
     {
       Header: "Status",
-      accessor: "response",
+      accessor: "status",
       filterable: false,
     },
     {
@@ -467,36 +381,6 @@ const AdminRelation = () => {
       },
     },
   ]);
-  const [response, setResponse] = useState([]);
-  const [assignResponse, setAssignResponse] = useState([]);
-  const [Scale, setScale] = useState([]);
-  const [assignScale, setAssignScale] = useState([]);
-
-  function handlestag(Scale) {
-    setScale(Scale);
-    const assigned = tags.map((item) => item.value);
-    setAssignScale(assigned);
-  }
-  function handlestag(response) {
-    setResponse(response);
-    const assigned = tags.map((item) => item.value);
-    setAssignResponse(assigned);
-  }
-  const [tag, setTag] = useState([]);
-  const [assignTag, setAssignTag] = useState([]);
-
-  function handlestag(tags) {
-    setTag(tags);
-    const assigned = tags.map((item) => item.value);
-    setAssignTag(assigned);
-  }
-
-  const tags = [
-    { label: "Exiting", value: "Exiting" },
-    { label: "Lead", value: "Lead" },
-    { label: "Long-term", value: "Long-term" },
-    { label: "Partner", value: "Partner" },
-  ];
 
   document.title = "Benchmaking QA | GreenMe";
   return (
@@ -508,26 +392,30 @@ const AdminRelation = () => {
         <Button className="mt-4 " onClick={() => setmodal_grid(true)}>
           <i class="ri-add-fill mt-2"></i>Add New Relationship
         </Button>
-        {modal_grid && (
+        {modal_grid && questionList.length > 0 && (
           <RelationModal
             modal_grid={modal_grid}
+            questionList={questionList}
+            recommendAction={recommendedAction}
             setmodal_grid={setmodal_grid}
+            setRecommendedRelation={setRecommendedRelation}
+            recommendedRelation={recommendedRelation}
           />
         )}
         <Col xxl={12} className="m-auto mt-5">
           <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {console.log("contact", crmcontacts)}
-                {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                {recommendedRelation.length > 0 ? (
                   <TableContainer
                     columns={columns}
-                    data={crmcontacts || []}
+                    data={recommendedRelation || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
                     isFilterAction={true}
                     isFooter={true}
+                    setInfo={() => {}}
                     customPageSize={8}
                     className="custom-header-css"
                     divClass="table-responsive table-card mb-0"
@@ -538,7 +426,7 @@ const AdminRelation = () => {
                     SearchPlaceholder="Search by  title "
                   />
                 ) : (
-                  <Loader error={error} />
+                  <Loader error={new Error()} />
                 )}
                 <Button onClick={() => deleteMultiple()}>Delete All</Button>
               </div>
