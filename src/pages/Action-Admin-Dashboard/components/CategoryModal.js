@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import {
   Col,
   Input,
@@ -10,11 +11,32 @@ import {
 } from "reactstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import {
+  deleteAdminTimeScale,
+  updateAdminTimeScale,
+  createAdminTimeScale,
+  createAdminCosts,
+  updateAdminCosts,
+  deleteAdminCosts,
+  deleteAdminPotential,
+  createAdminPotential,
+  updateAdminPotential,
+  createAdminStatus,
+  updateAdminStatus,
+  deleteAdminStatus,
+  createAdminRelationships,
+  updateAdminRelationships,
+  deleteAdminRelationships,
+  createAdminCategories,
+  updateAdminCategories,
+  deleteAdminCategories,
+} from "../../../slices/thunks";
+
 const CategoryModal = ({
   modals_grid,
   setmodals_grid,
-  setCategories,
-  categories,
+  setData,
+  data,
   Title,
   FieldName,
   Edit,
@@ -23,47 +45,254 @@ const CategoryModal = ({
   const handleClick = (language) => {
     setSelectedLanguage(language);
   };
-  //   const [categories, setCategories] = useState(data);
-  const [editingCategoryId, setEditingCategoryId] = useState(null);
+
+  const [editingDataId, setEditingDataId] = useState(null);
   const [inputField, setInputField] = useState("");
 
   const handleAdd = () => {
-    const newCategoryName = inputField;
-    if (newCategoryName) {
-      const newCategory = {
-        id: categories.length + 1,
-        name: newCategoryName,
+    const newDataTitle = inputField;
+    if (newDataTitle) {
+      const newData = {
+        title: newDataTitle,
       };
-      setCategories([newCategory, ...categories]);
+      if (Title === "Manage Scale") {
+        createAdminTimeScale(newData)
+          .then((resp) => {
+            toast.success("Successfully Added Scale");
+
+            setData([...data, resp]);
+          })
+          .catch((err) => {
+            toast.error("Unable to Update");
+            console.log("error in adding category", err);
+          });
+      } else if (Title === "Manage Costs") {
+        createAdminCosts(newData)
+          .then((resp) => {
+            toast.success("Successfully Added Costs");
+
+            setData([...data, resp]);
+          })
+          .catch((err) => {
+            toast.error("Unable to Update");
+            console.log("error in adding category", err);
+          });
+      } else if (Title === "Manage Potential") {
+        createAdminPotential(newData)
+          .then((resp) => {
+            toast.success("Successfully Added Potential");
+
+            setData([...data, resp]);
+          })
+          .catch((err) => {
+            toast.error("Unable to Update");
+            console.log("error in adding category", err);
+          });
+      } else if (Title === "Manage Status") {
+        createAdminStatus(newData)
+          .then((resp) => {
+            toast.success("Successfully Added Status");
+
+            setData([...data, resp]);
+          })
+          .catch((err) => {
+            toast.error("Unable to Update");
+            console.log("error in adding category", err);
+          });
+      } else if (Title === "Manage Answer Relationship") {
+        createAdminRelationships(newData)
+          .then((resp) => {
+            toast.success("Successfully Added Relation");
+
+            setData([...data, resp]);
+          })
+          .catch((err) => {
+            toast.error("Unable to Update");
+            console.log("error in adding category", err);
+          });
+      } else if (Title === "Manage Categories") {
+        createAdminCategories(newData)
+          .then((resp) => {
+            toast.success("Successfully Added Category");
+
+            setData([...data, resp]);
+          })
+          .catch((err) => {
+            toast.error("Unable to Update");
+            console.log("error in adding category", err);
+          });
+      }
       setInputField("");
     }
   };
-  const handleEdit = (categoryId) => {
-    setEditingCategoryId(categoryId);
-    const category = categories.find((c) => c.id === categoryId);
-    setInputField(category.name);
+
+  const handleEdit = (dataId) => {
+    setEditingDataId(dataId);
+    const data_value = data.find((c) => {
+      return c._id === dataId; // Add return statement here
+    });
+    setInputField(data_value?.title);
   };
 
+  // const handleUpdate = () => {
+  //   const updatedDataName = inputField;
+  //   const mappedData = {
+  //     title: updatedDataName,
+  //   };
+  //   if(Title==="Manage Scale"){
+
+  //     updateAdminTimeScale(editingDataId, mappedData)
+  //       .then((resp) => {
+  //         const updatedData = data.map((c) => {
+  //           if (c._id === editingDataId) {
+  //             return { ...c, title: updatedDataName };
+  //           }
+  //           return c;
+  //         });
+  //         toast.success("Successfully Updated Scale");
+  //         setData(updatedData);
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Unable to Update");
+  //         console.log("err in updating category", err);
+  //       });
+  //   }
+  //   else if(Title==="Manage Costs"){
+  //     updateAdminCosts(editingDataId, mappedData)
+  //       .then((resp) => {
+  //         const updatedData = data.map((c) => {
+  //           if (c._id === editingDataId) {
+  //             return { ...c, title: updatedDataName };
+  //           }
+  //           return c;
+  //         });
+  //         toast.success("Successfully Updated Cost");
+  //         setData(updatedData);
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Unable to Update");
+  //         console.log("err in updating category", err);
+  //       });
+  //   }
+  //   else if(Title==="Manage Potential"){
+  //     updateAdminPotential(editingDataId, mappedData)
+  //       .then((resp) => {
+  //         const updatedData = data.map((c) => {
+  //           if (c._id === editingDataId) {
+  //             return { ...c, title: updatedDataName };
+  //           }
+  //           return c;
+  //         });
+  //         toast.success("Successfully Updated Potential");
+  //         setData(updatedData);
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Unable to Update");
+  //         console.log("err in updating category", err);
+  //       });
+  //   }
+  //   else if(Title==="Manage Status"){
+  //     updateAdminStatus(editingDataId, mappedData)
+  //       .then((resp) => {
+  //         const updatedData = data.map((c) => {
+  //           if (c._id === editingDataId) {
+  //             return { ...c, title: updatedDataName };
+  //           }
+  //           return c;
+  //         });
+  //         toast.success("Successfully Updated Status");
+  //         setData(updatedData);
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Unable to Update");
+  //         console.log("err in updating category", err);
+  //       });
+  //   }
+  //   else if(Title==="Manage Answer Relationship"){
+  //     updateAdminRelationships(editingDataId, mappedData)
+  //       .then((resp) => {
+  //         const updatedData = data.map((c) => {
+  //           if (c._id === editingDataId) {
+  //             return { ...c, title: updatedDataName };
+  //           }
+  //           return c;
+  //         });
+  //         toast.success("Successfully Updated Relation");
+  //         setData(updatedData);
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Unable to Update");
+  //         console.log("err in updating category", err);
+  //       });
+  //   }
+
+  //   else if(Title==="Manage Categories"){
+  //     updateAdminCategories(editingDataId, mappedData)
+  //       .then((resp) => {
+  //         const updatedData = data.map((c) => {
+  //           if (c._id === editingDataId) {
+  //             return { ...c, title: updatedDataName };
+  //           }
+  //           return c;
+  //         });
+  //         toast.success("Successfully Updated Category");
+  //         setData(updatedData);
+  //       })
+  //       .catch((err) => {
+  //         toast.error("Unable to Update");
+  //         console.log("err in updating category", err);
+  //       });
+  //   }
+  //   setEditingDataId(null);
+  //   setInputField("");
+  // };
+
   const handleUpdate = () => {
-    const updatedCategoryName = inputField;
-    const updatedCategories = categories.map((c) => {
-      if (c.id === editingCategoryId) {
-        return { ...c, name: updatedCategoryName };
-      }
-      return c;
-    });
-    setCategories(updatedCategories);
-    setEditingCategoryId(null);
+    const updateData = (updateFunction, successMessage) => {
+      updateFunction(editingDataId, mappedData)
+        .then((resp) => {
+          const updatedData = data.map((c) => {
+            if (c._id === editingDataId) {
+              return { ...c, title: updatedDataName };
+            }
+            return c;
+          });
+          toast.success(successMessage);
+          setData(updatedData);
+        })
+        .catch((err) => {
+          toast.error("Unable to Update");
+          console.log("err in updating category", err);
+        });
+    };
+
+    const mappedData = {
+      title: inputField,
+    };
+
+    if (Title === "Manage Scale") {
+      updateData(updateAdminTimeScale, "Successfully Updated Scale");
+    } else if (Title === "Manage Costs") {
+      updateData(updateAdminCosts, "Successfully Updated Cost");
+    } else if (Title === "Manage Potential") {
+      updateData(updateAdminPotential, "Successfully Updated Potential");
+    } else if (Title === "Manage Status") {
+      updateData(updateAdminStatus, "Successfully Updated Status");
+    } else if (Title === "Manage Answer Relationship") {
+      updateData(updateAdminRelationships, "Successfully Updated Relation");
+    } else if (Title === "Manage Categories") {
+      updateData(updateAdminCategories, "Successfully Updated Category");
+    }
+
+    setEditingDataId(null);
     setInputField("");
   };
-  const [updCategories, setUpdCategories] = useState();
-  const handleDelete = (categoryId) => {
-    const updatedCategories = categories.filter((c) => c.id !== categoryId);
-    console.log("upda", updatedCategories);
-    setUpdCategories(updatedCategories);
+
+  const [deleteId, setDeleteId] = useState(null);
+  const handleDelete = (id) => {
+    console.log(id, "ID");
+    setDeleteId(id);
     setDeleteConfirmation2(true);
-    // setCategories(updatedCategories);
-    // setUpdCategories(updatedCategories);
   };
   const handleDragEnd = (result) => {
     if (!result.destination) {
@@ -81,49 +310,111 @@ const CategoryModal = ({
       return;
     }
 
-    const newCategories = [...categories];
-    const draggedCategory = newCategories[result.source.index];
+    const newData = [...data];
+    const draggedCategory = newData[result.source.index];
 
-    newCategories.splice(result.source.index, 1);
-    newCategories.splice(result.destination.index, 0, draggedCategory);
+    newData.splice(result.source.index, 1);
+    newData.splice(result.destination.index, 0, draggedCategory);
 
-    setCategories(newCategories);
+    setData(newData);
   };
-  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
 
-  const [deleteId, setDeleteId] = useState(null);
+  // const confirmDelete2 = () => {
+  //   if(Title==="Manage Scale"){
+  //     deleteAdminTimeScale(deleteId)
+  //     .then((resp) => {
+  //       const updatedData = data.filter((c) => c._id !== deleteId);
+  //       setData(updatedData);
+  //       toast.success("Successfully Deleted Scale")
+  //     })
+  //     .catch((err) => console.log("err in deleteing category", err));
+  //   }
+  //   else if(Title==="Manage Costs"){
+  //     deleteAdminCosts(deleteId)
+  //     .then((resp) => {
+  //       const updatedData = data.filter((c) => c._id !== deleteId);
+  //       setData(updatedData);
+  //       toast.success("Successfully Deleted Cost")
+  //     })
+  //     .catch((err) => console.log("err in deleteing category", err));
+  //   }
 
-  const confirmDelete = (AnswerId, id) => {
-    // TODO: implement deletion logic using `deleteId`
-    // setCategories(updCategories);
+  //   else if(Title==="Manage Potential"){
+  //     deleteAdminPotential(deleteId)
+  //     .then((resp) => {
+  //       const updatedData = data.filter((c) => c._id !== deleteId);
+  //       setData(updatedData);
+  //       toast.success("Successfully Deleted Cost")
+  //     })
+  //     .catch((err) => console.log("err in deleteing category", err));
+  //   }
+  //   else if(Title==="Manage Status"){
+  //     deleteAdminStatus(deleteId)
+  //     .then((resp) => {
+  //       const updatedData = data.filter((c) => c._id !== deleteId);
+  //       setData(updatedData);
+  //       toast.success("Successfully Deleted Status")
+  //     })
+  //     .catch((err) => console.log("err in deleteing category", err));
+  //   }
+  //   else if(Title==="Manage Answer Relationship"){
+  //     deleteAdminStatus(deleteId)
+  //     .then((resp) => {
+  //       const updatedData = data.filter((c) => c._id !== deleteId);
+  //       setData(updatedData);
+  //       toast.success("Successfully Deleted Relation")
+  //     })
+  //     .catch((err) => console.log("err in deleteing category", err));
+  //   }
 
-    setAnswers(updAnswers);
-    setDeleteConfirmation(false);
-    // setUpdAnswers([]);
-    // setUpdCategories([]);
-    setDeleteId(null);
-  };
-  const confirmDelete2 = (AnswerId, id) => {
-    setCategories(updCategories);
+  //   else if(Title==="Manage Categories"){
+  //     deleteAdminCategories(deleteId)
+  //     .then((resp) => {
+  //       const updatedData = data.filter((c) => c._id !== deleteId);
+  //       setData(updatedData);
+  //       toast.success("Successfully Deleted Cost")
+  //     })
+  //     .catch((err) => console.log("err in deleteing category", err));
+  //   }
+  //   setDeleteConfirmation2(false);
+  //   setDeleteId(null);
+  // };
+
+  const confirmDelete2 = () => {
+    const deleteData = (deleteFunction, deleteMessage) => {
+      deleteFunction(deleteId)
+        .then((resp) => {
+          const updatedData = data.filter((c) => c._id !== deleteId);
+          setData(updatedData);
+          toast.success(deleteMessage);
+        })
+        .catch((err) => console.log("err in deleting category", err));
+    };
+
+    if (Title === "Manage Scale") {
+      deleteData(deleteAdminTimeScale, "Successfully Deleted Scale");
+    } else if (Title === "Manage Costs") {
+      deleteData(deleteAdminCosts, "Successfully Deleted Cost");
+    } else if (Title === "Manage Potential") {
+      deleteData(deleteAdminPotential, "Successfully Deleted Potential");
+    } else if (Title === "Manage Status") {
+      deleteData(deleteAdminStatus, "Successfully Deleted Status");
+    } else if (Title === "Manage Answer Relationship") {
+      deleteData(deleteAdminRelationships, "Successfully Deleted Relation");
+    } else if (Title === "Manage Categories") {
+      deleteData(deleteAdminCategories, "Successfully Deleted Category");
+    }
+
     setDeleteConfirmation2(false);
-    // setUpdAnswers([]);
-    // setUpdCategories([]);
     setDeleteId(null);
   };
 
-  const cancelDelete = () => {
-    setDeleteConfirmation(false);
-    setDeleteId(null);
-  };
   const cancelDelete2 = () => {
-    setDeleteConfirmation(false);
+    setDeleteConfirmation2(false);
     setDeleteId(null);
   };
-  // const [modals_grid, setmodals_grid] = useState(false);
-  // function tog_grids() {
-  //   setmodals_grid(!modals_grid);
-  // }
+
   return (
     <Modal
       size="lg p-5"
@@ -246,23 +537,23 @@ const CategoryModal = ({
               <Col lg={12} className="border p-3 rounded bg-white">
                 {FieldName}
               </Col>
-              <Droppable droppableId="categories">
+              <Droppable droppableId="data">
                 {(provided) => (
                   <div
                     className="mt-0 p-0"
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    {categories &&
-                      categories.map((category, index) => (
+                    {data &&
+                      data.map((data_value, index) => (
                         <Draggable
-                          key={category.id}
-                          draggableId={category.id.toString()}
+                          key={data_value._id}
+                          draggableId={data_value._id}
                           index={index}
                         >
                           {(provided) => (
                             <div
-                              key={category.id}
+                              key={data_value._id}
                               className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
@@ -273,18 +564,18 @@ const CategoryModal = ({
                                   className="ri-drag-move-2-line fs-24"
                                   style={{ color: "#4A7BA4" }}
                                 ></i>
-                                <h5 className="m-0">{category.name}</h5>
+                                <h5 className="m-0">{data_value.title}</h5>
                               </div>
                               <div className="d-flex justify-content-end gap-2">
                                 <i
                                   className="ri-pencil-fill fs-18"
                                   style={{ color: "gray" }}
-                                  onClick={() => handleEdit(category.id)}
+                                  onClick={() => handleEdit(data_value._id)}
                                 ></i>
                                 <i
                                   className="ri-delete-bin-2-line fs-18"
                                   style={{ color: "red" }}
-                                  onClick={() => handleDelete(category.id)}
+                                  onClick={() => handleDelete(data_value._id)}
                                 ></i>
                               </div>
                             </div>
