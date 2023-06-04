@@ -9,6 +9,10 @@ import {
   DropdownMenu,
   DropdownItem,
   Button,
+  Modal,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -23,6 +27,8 @@ import {
   getAdminRelationships,
   getAdminCategories,
   getAllAdminResources,
+  getAllAdminSteps,
+  deleteAdminAction,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -160,6 +166,7 @@ const ActionAdminDashboard = () => {
   const [adminStatus, setAdminStatus] = useState([]);
   const [adminRelation, setAdminRelation] = useState([]);
   const [adminCategories, setAdminCategories] = useState([]);
+  const [adminSteps, setAdminSteps] = useState([]);
 
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
@@ -172,6 +179,9 @@ const ActionAdminDashboard = () => {
   const getAdminActions = () => {
     getAllAdminActions().then((res) => {
       setAdminActions(res);
+    });
+    getAllAdminSteps().then((res) => {
+      setAdminSteps(res);
     });
   };
 
@@ -447,6 +457,11 @@ const ActionAdminDashboard = () => {
     setSelectedCheckBoxDelete(ele);
   };
 
+  const handleDelete = (id) => {
+    setDeleteId(id);
+    setDeleteConfirmation2(true);
+  };
+
   // Column
   const columns = useMemo(
     () => [
@@ -538,15 +553,6 @@ const ActionAdminDashboard = () => {
                         setInfo(contactData);
                       }}
                     >
-                      View
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        setInfo(contactData);
-                      }}
-                    >
                       Edit
                     </DropdownItem>
                     <DropdownItem
@@ -554,31 +560,11 @@ const ActionAdminDashboard = () => {
                       href="#"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        onClickDelete(contactData);
+                        // onClickDelete(contactData);
+                        handleDelete(contactData._id);
                       }}
                     >
                       Delete
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Active
-                    </DropdownItem>
-
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Manage
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -697,6 +683,27 @@ const ActionAdminDashboard = () => {
   };
 
   const [isDataUpdated, setIsDataUpdated] = useState(true);
+  const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+  const confirmDelete2 = () => {
+    deleteAdminAction(deleteId)
+      .then((resp) => {
+        const update = adminActions.filter((c) => c._id !== deleteId);
+        setAdminActions(update);
+        toast.success("Successfully Deleted");
+      })
+      .catch((err) => {
+        toast.error("Unable to Delete");
+        console.log("err in deleteing Resource", err);
+      });
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
+
+  const cancelDelete2 = () => {
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
   document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
@@ -727,6 +734,8 @@ const ActionAdminDashboard = () => {
               </Button>
               {modal_grid && (
                 <ActionModal
+                  adminSteps={adminSteps}
+                  setAdminSteps={setAdminSteps}
                   modal_grid={modal_grid}
                   setmodal_grid={setmodal_grid}
                   adminCategories={adminCategories}
@@ -784,7 +793,6 @@ const ActionAdminDashboard = () => {
                 Manage Answer Relationship
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal />
             </div>
             <div className="pt-5">
               <Button
@@ -797,11 +805,6 @@ const ActionAdminDashboard = () => {
                 Manage Status
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage status"}
-                FieldName={"Add new Status"}
-                Edit={"Edit status name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -814,11 +817,6 @@ const ActionAdminDashboard = () => {
                 Manage Potential
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage potential"}
-                FieldName={"Add new Potential"}
-                Edit={"Edit potential name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -831,11 +829,6 @@ const ActionAdminDashboard = () => {
                 Manage Costs
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage cost"}
-                FieldName={"Add new Cost"}
-                Edit={"Edit sost name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -848,11 +841,6 @@ const ActionAdminDashboard = () => {
                 Manage Scale
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage time scale"}
-                FieldName={"Add new Scale"}
-                Edit={"Edit a time scale name"}
-              />
             </div>
           </div>
           <Card id="contactList" style={{ width: "98%" }}>
@@ -873,11 +861,28 @@ const ActionAdminDashboard = () => {
                     theadClass="table-light"
                     handleContactClick={handleContactClicks}
                     isContactsFilter={false}
+                    setInfo={() => {}}
                     SearchPlaceholder="Search by  title "
                   />
                 ) : (
                   <Loader error={error} />
                 )}
+                <Modal isOpen={deleteConfirmation2} toggle={cancelDelete2}>
+                  <ModalHeader toggle={cancelDelete2}>
+                    Confirm Deletion
+                  </ModalHeader>
+                  <ModalBody>
+                    Are you sure you want to delete this variation?
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" onClick={confirmDelete2}>
+                      Delete
+                    </Button>
+                    <Button color="secondary" onClick={cancelDelete2}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </Modal>
                 <Button onClick={() => deleteMultiple()}>Delete All</Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />

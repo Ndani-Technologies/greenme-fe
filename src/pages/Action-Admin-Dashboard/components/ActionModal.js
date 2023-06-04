@@ -32,11 +32,17 @@ import {
 } from "./ActionModalData";
 import { toast } from "react-toastify";
 import {
+  createAdminActions,
   createAdminResources,
+  createAdminStatus,
+  createAdminStep,
   deleteAdminResources,
+  deleteAdminStep,
   updateAdminResources,
+  updateAdminStep,
 } from "../../../slices/thunks";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { set } from "lodash";
 const ActionModal = ({
   modal_grid,
   setmodal_grid,
@@ -56,12 +62,26 @@ const ActionModal = ({
   setAdminStatus,
   adminResources,
   setAdminResources,
+  adminSteps,
+  setAdminSteps,
 }) => {
   const [open, isOpen] = useState(false);
   const [isWeight, setIsWeight] = useState(false);
   const [isCost, setIsCost] = useState(false);
   const [isScale, setIsScale] = useState(false);
   const [isPotential, setIsPotential] = useState(false);
+
+  //gm
+  const [resourceInput, setResourceInput] = useState("");
+  const [isManageResourceUpdate, setIsManageResourceUpdate] = useState(false);
+  const [isActionStepUpdate, setIsActionStepUpdate] = useState(false);
+  const [actionStepId, setActionStepId] = useState();
+  const [resourceManageId, setResourceManageId] = useState();
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionDescription, setActionDescription] = useState("");
+  const [actionScore, setActionScore] = useState();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   const [isUpdatingData, setIsUpdatingData] = useState(true);
 
@@ -118,13 +138,6 @@ const ActionModal = ({
   };
 
   const [inputField, setInputField] = useState(null);
-  const handleResourceEdit = (dataId) => {
-    setEditingDataId(dataId);
-    const resource_value = adminResources.find((resource) => {
-      return c._id === dataId; // Add return statement here
-    });
-    setInputField(resource_value?.title);
-  };
 
   const handleResourceUpdates = () => {
     const updatedDataName = inputField;
@@ -179,6 +192,137 @@ const ActionModal = ({
     setDeleteId(null);
   };
 
+  const handleResourceEdit = (data) => {
+    // setEditingDataId(dataId);
+
+    setIsManageResourceUpdate(true);
+    setResourceManageId(data._id);
+    setResourceInput(data?.title);
+  };
+
+  const handleManageResource = () => {
+    if (resourceInput !== "") {
+      const mappedData = {
+        title: resourceInput,
+      };
+      if (isManageResourceUpdate) {
+        //update
+        updateAdminResources(resourceManageId, mappedData)
+          .then((data) => {
+            setAdminResources((prev) => {
+              const updateAdminResources = prev.map((value) => {
+                if (value._id === resourceManageId) {
+                  value.title = mappedData.title;
+                  return value;
+                }
+                return value;
+              });
+              return updateAdminResources;
+            });
+            setResourceInput("");
+            setIsManageResourceUpdate(false);
+          })
+          .catch(() => toast.error("Error in adding link"));
+      } else {
+        //create
+        createAdminResources(mappedData)
+          .then((data) => {
+            setAdminResources([...adminResources, data]);
+            setResourceInput("");
+          })
+          .catch(() => toast.error("Error in adding link"));
+      }
+    }
+  };
+
+  const handleAddActions = () => {
+    if (actionTitle !== "" && actionDescription !== "" && actionScore) {
+      const mappedData = {
+        title: actionTitle,
+        description: actionDescription,
+        score: actionScore,
+      };
+      if (isActionStepUpdate) {
+        updateAdminStep(actionStepId, mappedData).then((resp) => {
+          setAdminSteps((prev) => {
+            const updateAdminResources = prev.map((value) => {
+              if (value._id === actionStepId) {
+                value.title = mappedData.title;
+                (value.description = mappedData.description),
+                  (value.score = mappedData.score);
+                return value;
+              }
+              return value;
+            });
+            return updateAdminResources;
+          });
+        });
+      } else {
+        createAdminStep(mappedData)
+          .then((res) => {
+            setAdminSteps([...adminSteps, mappedData]);
+          })
+          .catch(() => toast.error("Error in adding step"));
+      }
+      setIsActionStepUpdate(false);
+      setActionTitle("");
+      setActionDescription("");
+      setActionScore("");
+    } else {
+      toast.error("Title, Description or Score can not be null.");
+    }
+  };
+  const handleEdit = (data) => {
+    setActionStepId(data._id);
+    setActionTitle(data.title);
+    setActionDescription(data.description);
+    setActionScore(data.score);
+    setIsActionStepUpdate(true);
+  };
+
+  const handleDelete = (id) => {
+    console.log("delte id", id);
+    deleteAdminStep(id)
+      .then((res) => {
+        if (res !== undefined) {
+          setAdminSteps((prev) => {
+            const updateAdminResources = prev.filter(
+              (value) => value._id !== id
+            );
+            return updateAdminResources;
+          });
+          toast.success("Step deleted.");
+        }
+      })
+      .catch(() => toast.error("Error in adding step"));
+  };
+  const handleSubmit = () => {
+    const mappedData = {
+      title,
+      description,
+      status: isChecked5,
+      visibility: isChecked6,
+      steps: adminSteps.map((value) => value._id),
+      categoryId: isCategoryClick,
+      costId: isCostClick,
+      potentialId: isPotentialClick,
+      timescaleId: isScaleClick,
+      answerRelationshipId: isRelationshipClick,
+    };
+    console.log("hanlde submit", mappedData);
+    if (title !== "" && description !== "") {
+      createAdminActions(mappedData)
+        .then((resp) => {
+          if (resp !== undefined) {
+            setAdminActions([...adminActions, resp]);
+            setmodal_grid(false);
+          }
+        })
+        .catch((err) => toast.error("Error in creating action."));
+    } else {
+      toast.error("title or description can not be null");
+    }
+  };
   return (
     <>
       <Modal
@@ -321,6 +465,8 @@ const ActionModal = ({
                     className="form-control"
                     id="firstName"
                     placeholder="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
               </Col>
@@ -330,6 +476,8 @@ const ActionModal = ({
                     class="form-control"
                     placeholder="Description"
                     id="floatingTextarea"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     style={{
                       height: "120px",
                       overflow: "hidden",
@@ -346,7 +494,10 @@ const ActionModal = ({
                       className="avatar-title bg-soft-info text-info fs-17 rounded p-1"
                       style={{ width: "30px" }}
                     >
-                      <i className="ri-add-line"></i>
+                      <i
+                        className="ri-add-line cursor-pointer"
+                        onClick={handleAddActions}
+                      ></i>
                     </div>
                   </CardHeader>
                   <CardBody>
@@ -394,6 +545,10 @@ const ActionModal = ({
                                   className="form-control"
                                   id="firstName"
                                   placeholder="Title"
+                                  value={actionTitle}
+                                  onChange={(e) =>
+                                    setActionTitle(e.target.value)
+                                  }
                                 />
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
@@ -414,6 +569,10 @@ const ActionModal = ({
                                   className="form-control"
                                   id="firstName"
                                   placeholder="Discription"
+                                  value={actionDescription}
+                                  onChange={(e) =>
+                                    setActionDescription(e.target.value)
+                                  }
                                 />
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
@@ -434,6 +593,10 @@ const ActionModal = ({
                                   className="form-control"
                                   id="firstName"
                                   placeholder="Value"
+                                  value={actionScore}
+                                  onChange={(e) =>
+                                    setActionScore(e.target.value)
+                                  }
                                 />
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
@@ -461,7 +624,7 @@ const ActionModal = ({
                               </div>
                             </Col>
                             {tab.id &&
-                              adminActions.map((action) => {
+                              adminSteps.map((action) => {
                                 return (
                                   <div className="border rounded mb-2 p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center">
                                     <div className="d-flex align-items-center justify-content-beetween w-100">
@@ -470,18 +633,18 @@ const ActionModal = ({
                                           className="ri-drag-move-2-line fs-24"
                                           style={{ color: "#4A7BA4" }}
                                         ></i>
-                                        <h5 className="m-0">{action.title}</h5>
+                                        <h5 className="m-0">{action?.title}</h5>
                                       </div>
                                       <div className="d-flex gap-2 justify-content-end w-25  mt-1">
                                         <img src={Medal} />
-                                        {action.points}
+                                        {action?.score}
                                       </div>
                                     </div>
                                     <div className="d-flex justify-content-end gap-2 w-25">
                                       <i
                                         className="ri-pencil-fill fs-18"
                                         style={{ color: "gray" }}
-                                        onClick={() => handleEdit(action._id)}
+                                        onClick={() => handleEdit(action)}
                                       ></i>
                                       <i
                                         className="ri-delete-bin-2-line fs-18"
@@ -518,8 +681,8 @@ const ActionModal = ({
                         <div className="d-flex justify-content-end gap-2">
                           <i
                             className="ri-pencil-fill fs-18"
-                            style={{ color: "gray" }}
-                            onClick={() => handleResourceEdit(resource._id)}
+                            style={{ color: "gray", cursor: "pointer" }}
+                            onClick={() => handleResourceEdit(resource)}
                           ></i>
                           <i
                             className="ri-delete-bin-2-line fs-18"
@@ -552,11 +715,16 @@ const ActionModal = ({
                       <div className="form-icon right">
                         <Input
                           type="text"
+                          value={resourceInput}
                           className="form-control form-control-icon"
                           id="iconrightInput"
                           placeholder="Manage Resource link"
+                          onChange={(e) => setResourceInput(e.target.value)}
                         />
-                        <i className="ri-add-line"></i>
+                        <i
+                          className="ri-add-line cursor-pointer"
+                          onClick={handleManageResource}
+                        ></i>
                       </div>
                     </div>
                   </Col>
@@ -612,7 +780,7 @@ const ActionModal = ({
                     disable
                     className="form-select "
                   >
-                    Select Weight
+                    Select Relation
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
@@ -787,7 +955,11 @@ const ActionModal = ({
                   </Button>
                 </div>
                 <div className="hstack gap-2 justify-content-start">
-                  <Button className="p-4 pt-2 pb-2" color="secondary">
+                  <Button
+                    className="p-4 pt-2 pb-2"
+                    color="secondary"
+                    onClick={handleSubmit}
+                  >
                     Save
                   </Button>
                 </div>

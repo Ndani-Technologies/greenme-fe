@@ -158,6 +158,7 @@ export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
 
 export const getAllAdminActions = async () => {
   try {
+    console.log("url", `${process.env.REACT_APP_RA_URL}actionsteps`);
     const res = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
 
     let data;
@@ -181,15 +182,20 @@ export const getAllAdminActions = async () => {
 
 export const createAdminActions = async (data, category) => {
   try {
-    const res = await axios.post(`${process.env.REACT_APP_RA_URL}`, data);
+    const res = await axios.post(
+      `${process.env.REACT_APP_RA_URL}actionsteps`,
+      data
+    );
     if (res !== undefined) {
       const updatedResp = {
+        title: res?.title || "title",
+        category: res?.categoryId?.title || "category",
+        weight: res?.weightId?.title || "weight",
+        stat: res?.status?.title || "status",
+        potential: res?.potentialId?.title || "potential",
+        cost: res?.costId?.title || "cost",
+        timescale: res?.timescaleId?.title || "title",
         ...res,
-        response: 0,
-        answered: res.whoHasAnswer?.totalUsers,
-        category: category,
-        status: res?.status ? "active" : "Inactive",
-        visibility: res?.visibility ? "True" : "False",
       };
       return updatedResp;
     }
@@ -199,14 +205,27 @@ export const createAdminActions = async (data, category) => {
     return {};
   }
 };
-
+export const deleteAdminAction = async (id) => {
+  try {
+    // const res = await axios.delete(
+    //   `http://192.168.137.1:5002/api/v1/ra/resourceLink/${id}`
+    // );
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`
+    );
+    return res;
+  } catch (error) {
+    toast.error("Unable to Delete");
+    console.log(error);
+  }
+};
 //ADMIN ACTIONS CRUD FUNCTIONALITY
 export const getAllAdminResources = async () => {
   try {
-    // const res = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
-    const res = await axios.get(
-      `http://192.168.137.1:5002/api/v1/ra/resourceLink`
-    );
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}resourceLink`);
+    // const res = await axios.get(
+    //   `http://192.168.137.1:5002/api/v1/ra/resourceLink`
+    // );
     return res;
   } catch (err) {
     console.log("Error in getting data", err);
@@ -215,8 +234,12 @@ export const getAllAdminResources = async () => {
 
 export const createAdminResources = async (data, category) => {
   try {
+    // const res = await axios.post(
+    //   `http://192.168.137.1:5002/api/v1/ra/resourceLink`,
+    //   data
+    // );
     const res = await axios.post(
-      `http://192.168.137.1:5002/api/v1/ra/resourceLink`,
+      `${process.env.REACT_APP_RA_URL}resourceLink`,
       data
     );
     return res;
@@ -228,8 +251,12 @@ export const createAdminResources = async (data, category) => {
 
 export const updateAdminResources = async (id, data) => {
   try {
+    // const res = await axios.patch(
+    //   `http://192.168.137.1:5002/api/v1/ra/resourceLink`,
+    //   data
+    // );
     const res = await axios.patch(
-      `http://192.168.137.1:5002/api/v1/ra/resourceLink`,
+      `${process.env.REACT_APP_RA_URL}resourceLink/${id}`,
       data
     );
     return res;
@@ -240,8 +267,70 @@ export const updateAdminResources = async (id, data) => {
 
 export const deleteAdminResources = async (id) => {
   try {
+    // const res = await axios.delete(
+    //   `http://192.168.137.1:5002/api/v1/ra/resourceLink/${id}`
+    // );
     const res = await axios.delete(
-      `http://192.168.137.1:5002/api/v1/ra/resourceLink/${id}`
+      `${process.env.REACT_APP_RA_URL}resourceLink/${id}`
+    );
+    return res;
+  } catch (error) {
+    toast.error("Unable to Delete");
+    console.log(error);
+  }
+};
+//ADMIN STEPS CRUD FUNCTIONALITY
+export const getAllAdminSteps = async () => {
+  try {
+    const res = await axios.get(`${process.env.REACT_APP_RA_URL}steps`);
+    // const res = await axios.get(
+    //   `http://localhost:5002/api/v1/ra/steps`
+    // );
+    console.log("resp steps", res);
+    return res;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
+
+export const createAdminStep = async (data, category) => {
+  try {
+    // const res = await axios.post(
+    //   `http://localhost:5002/api/v1/ra/steps`,
+    //   data
+    // );
+    const res = await axios.post(`${process.env.REACT_APP_RA_URL}steps`, data);
+    return res;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+};
+
+export const updateAdminStep = async (id, data) => {
+  try {
+    // const res = await axios.patch(
+    //   `http://localhost:5002/api/v1/ra/steps/${id}`,
+    //   data
+    // );
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}steps/${id}`,
+      data
+    );
+    return res;
+  } catch (error) {
+    console.log("Unable to Add", error);
+  }
+};
+
+export const deleteAdminStep = async (id) => {
+  try {
+    console.log("id", id);
+    // const res = await axios.delete(
+    //   `http://localhost:5002/api/v1/ra/steps/${id}`
+    // );
+    const res = await axios.delete(
+      `${process.env.REACT_APP_RA_URL}steps/${id}`
     );
     return res;
   } catch (error) {
