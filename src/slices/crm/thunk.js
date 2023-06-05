@@ -21,7 +21,6 @@ import {
 } from "../../helpers/fakebackend_helper";
 
 export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
-  console.log("array", arr);
   try {
     // const arr = [
     //   {
@@ -158,19 +157,16 @@ export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
 
 export const getAllAdminActions = async () => {
   try {
-    console.log("url", `${process.env.REACT_APP_RA_URL}actionsteps`);
     const res = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
-
     let data;
     data = res.map((value) => {
       return {
-        title: value?.title || "title",
-        category: value?.categoryId?.title || "category",
-        weight: value?.weightId?.title || "weight",
-        stat: value?.status?.title || "status",
-        potential: value?.potentialId?.title || "potential",
-        cost: value?.costId?.title || "cost",
-        timescale: value?.timescaleId?.title || "title",
+        title: value?.title,
+        category: value?.categoryId?.title,
+        stat: value?.status ? "true" : "false",
+        potential: value?.potentialId?.title,
+        cost: value?.costId?.title,
+        timescale: value?.timescaleId?.title,
         ...value,
       };
     });
@@ -187,14 +183,38 @@ export const createAdminActions = async (data, category) => {
       data
     );
     if (res !== undefined) {
+      const createdResp = {
+        title: res?.title,
+        category: res?.categoryId?.title,
+        stat: res?.status ? "true" : "false",
+        potential: res?.potentialId?.title,
+        cost: res?.costId?.title,
+        timescale: res?.timescaleId?.title,
+        ...res,
+      };
+      return createdResp;
+    }
+    return res;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+};
+
+export const updatedAdminActions = async (data, id) => {
+  try {
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
+      data
+    );
+    if (res !== undefined) {
       const updatedResp = {
-        title: res?.title || "title",
-        category: res?.categoryId?.title || "category",
-        weight: res?.weightId?.title || "weight",
-        stat: res?.status?.title || "status",
-        potential: res?.potentialId?.title || "potential",
-        cost: res?.costId?.title || "cost",
-        timescale: res?.timescaleId?.title || "title",
+        title: res?.title,
+        category: res?.categoryId?.title,
+        stat: res?.status ? "true" : "false",
+        potential: res?.potentialId?.title,
+        cost: res?.costId?.title,
+        timescale: res?.timescaleId?.title,
         ...res,
       };
       return updatedResp;
@@ -205,6 +225,7 @@ export const createAdminActions = async (data, category) => {
     return {};
   }
 };
+
 export const deleteAdminAction = async (id) => {
   try {
     // const res = await axios.delete(
@@ -219,6 +240,7 @@ export const deleteAdminAction = async (id) => {
     console.log(error);
   }
 };
+
 //ADMIN ACTIONS CRUD FUNCTIONALITY
 export const getAllAdminResources = async () => {
   try {
