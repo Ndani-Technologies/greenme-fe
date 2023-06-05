@@ -3,6 +3,7 @@ export * from "./layouts/thunk";
 
 //my thunks
 export * from "./usermanagement/thunk";
+export * from "./chat/thunk";
 
 // Authentication
 export * from "./auth/login/thunk";

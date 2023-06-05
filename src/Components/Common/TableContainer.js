@@ -17,6 +17,7 @@ import {
   FilterA,
   FilterAction,
   FilterBenchmarkAction,
+  FilterCollaboration,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -159,6 +160,7 @@ const TableContainer = ({
   tableClass,
   theadClass,
   trClass,
+
   thClass,
   divClass,
   SearchPlaceholder,
