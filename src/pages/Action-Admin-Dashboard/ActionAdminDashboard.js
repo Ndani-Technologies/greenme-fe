@@ -883,6 +883,7 @@ const ActionAdminDashboard = () => {
                     </Button>
                   </ModalFooter>
                 </Modal>
+
                 <Button onClick={() => deleteMultiple()}>Delete All</Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
