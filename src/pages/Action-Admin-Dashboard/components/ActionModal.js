@@ -32,8 +32,10 @@ import {
 } from "./ActionModalData";
 import { toast } from "react-toastify";
 import {
+  getAllAdminActions,
   createAdminActions,
   createAdminResources,
+  updatedAdminActions,
   createAdminStatus,
   createAdminStep,
   deleteAdminResources,
@@ -44,6 +46,10 @@ import {
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { set } from "lodash";
 const ActionModal = ({
+  info,
+  setInfo,
+  isDataUpdated,
+  setIsDataUpdated,
   modal_grid,
   setmodal_grid,
   adminCategories,
@@ -83,8 +89,6 @@ const ActionModal = ({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  const [isUpdatingData, setIsUpdatingData] = useState(true);
-
   //Data values States
 
   const [selectedLanguage, setSelectedLanguage] = useState("ENGLISH");
@@ -110,55 +114,62 @@ const ActionModal = ({
     }
   }
   const [isCategoryClick, setIsCategoryClick] = useState(0);
-  const [isRelationshipClick, setIsRelationshipClick] = useState(0);
+  const [categorySelectTitle, setCategorySelectTitle] = useState("");
   const [isCostClick, setIsCostClick] = useState(0);
+  const [costSelectTitle, setCostSelectTitle] = useState("");
   const [isScaleClick, setIsScaleClick] = useState(0);
+  const [scaleSelectTitle, setScaleSelectTitle] = useState("");
   const [isPotentialClick, setIsPotentialClick] = useState(0);
+  const [potentialSelectTitle, setPotentialSelectTitle] = useState("");
 
   const handleCategoryClick = (index) => {
-    console.log(index, "This is working");
+    if (isDataUpdated) {
+      setInfo((prevInfo) => ({
+        ...prevInfo,
+        categoryId: index, // Update the answerRelationshipId with the clicked item's ID
+      }));
+      setIsCategoryClick(index);
+      setCategorySelectTitle(index.title);
+    }
     setIsCategoryClick(index);
-  };
-  const handleRelationshipClick = (index) => {
-    console.log(index, "This is working 1");
-    setIsRelationshipClick(index);
+    setCategorySelectTitle(index.title);
   };
 
   const handleCostClick = (index) => {
-    console.log(index, "This is working 2");
+    if (isDataUpdated) {
+      setInfo((prevInfo) => ({
+        ...prevInfo,
+        costId: index, // Update the answerRelationshipId with the clicked item's ID
+      }));
+      setIsCostClick(index);
+      setCostSelectTitle(index.title);
+    }
     setIsCostClick(index);
+    setCostSelectTitle(index.title);
   };
   const handleScaleClick = (index) => {
-    console.log(index, "This is working 3");
+    if (isDataUpdated) {
+      setInfo((prevInfo) => ({
+        ...prevInfo,
+        timescaleId: index, // Update the answerRelationshipId with the clicked item's ID
+      }));
+      setIsScaleClick(index);
+      setScaleSelectTitle(index.title);
+    }
     setIsScaleClick(index);
+    setScaleSelectTitle(index.title);
   };
   const handlePotentialClick = (index) => {
-    console.log(index, "This is working 4");
+    if (isDataUpdated) {
+      setInfo((prevInfo) => ({
+        ...prevInfo,
+        potentialId: index, // Update the answerRelationshipId with the clicked item's ID
+      }));
+      setIsPotentialClick(index);
+      setPotentialSelectTitle(index.title);
+    }
     setIsPotentialClick(index);
-  };
-
-  const [inputField, setInputField] = useState(null);
-
-  const handleResourceUpdates = () => {
-    const updatedDataName = inputField;
-    const mappedData = {
-      title: updatedDataName,
-    };
-    updateAdminResources(editingDataId, mappedData)
-      .then((resp) => {
-        const updatedData = data.map((c) => {
-          if (c._id === editingDataId) {
-            return { ...c, title: updatedDataName };
-          }
-          return c;
-        });
-        toast.success(successMessage);
-        setData(updatedData);
-      })
-      .catch((err) => {
-        toast.error("Unable to Update");
-        console.log("err in updating category", err);
-      });
+    setPotentialSelectTitle(index.title);
   };
 
   //HANDLING DELETE
@@ -296,20 +307,35 @@ const ActionModal = ({
       })
       .catch(() => toast.error("Error in adding step"));
   };
+
+  //HANDLING TABS CLICK ON NEXT AND BACK
+  const [activeTab, setActiveTab] = useState(1);
+
+  const handleNextTab = (e) => {
+    e.preventDefault();
+    setactiveArrowTab((prevTab) => prevTab + 1);
+  };
+
+  // Function to handle the previous tab
+  const handlePrevTab = (e) => {
+    e.preventDefault();
+    setactiveArrowTab((prevTab) => prevTab - 1);
+  };
+
   const handleSubmit = () => {
     const mappedData = {
       title,
       description,
-      status: isChecked5,
+      stat: isChecked5,
       visibility: isChecked6,
       steps: adminSteps.map((value) => value._id),
       categoryId: isCategoryClick,
       costId: isCostClick,
       potentialId: isPotentialClick,
       timescaleId: isScaleClick,
-      answerRelationshipId: isRelationshipClick,
     };
     console.log("hanlde submit", mappedData);
+
     if (title !== "" && description !== "") {
       createAdminActions(mappedData)
         .then((resp) => {
@@ -323,6 +349,51 @@ const ActionModal = ({
       toast.error("title or description can not be null");
     }
   };
+
+  const handleUpdate = (id) => {
+    const mappedData = {
+      title,
+      description,
+      stat: isChecked5,
+      visibility: isChecked6,
+      categoryId: isCategoryClick,
+      costId: isCostClick,
+      potentialId: isPotentialClick,
+      timescaleId: isScaleClick,
+    };
+
+    console.log(mappedData, "MAPPED DATA");
+
+    updatedAdminActions(mappedData, id)
+      .then((resp) => {
+        getAllAdminActions().then((res) => {
+          setAdminActions(res);
+          setmodal_grid(false);
+          toast.success("Successfully updated");
+        });
+      })
+      .catch((err) => {
+        console.log("error in updating", err);
+        toast.error("Error in updating action");
+      });
+  };
+
+  const [scoreError, setScoreError] = useState(false);
+
+  const handleScoreChange = (e) => {
+    const inputValue = e.target.value;
+    // Regular expression to match only numbers
+    const numberRegex = /^[0-9]*$/;
+
+    if (numberRegex.test(inputValue)) {
+      setActionScore(inputValue);
+      setScoreError(false);
+    } else {
+      setActionScore(inputValue);
+      setScoreError(true);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -465,8 +536,18 @@ const ActionModal = ({
                     className="form-control"
                     id="firstName"
                     placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    value={isDataUpdated ? info.title : title}
+                    onChange={(e) => {
+                      if (isDataUpdated) {
+                        // If data is updated, handle changes differently
+                        const updatedInfo = { ...info, title: e.target.value };
+                        setInfo(updatedInfo);
+                        setTitle(updatedInfo.title);
+                      } else {
+                        // If data is not updated, update the local state
+                        setTitle(e.target.value);
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -476,8 +557,21 @@ const ActionModal = ({
                     class="form-control"
                     placeholder="Description"
                     id="floatingTextarea"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={isDataUpdated ? info.description : description}
+                    onChange={(e) => {
+                      if (isDataUpdated) {
+                        // If data is updated, handle changes differently
+                        const updatedInfo = {
+                          ...info,
+                          description: e.target.value,
+                        };
+                        setInfo(updatedInfo);
+                        setDescription(updatedInfo.description);
+                      } else {
+                        // If data is not updated, update the local state
+                        setDescription(e.target.value);
+                      }
+                    }}
                     style={{
                       height: "120px",
                       overflow: "hidden",
@@ -490,15 +584,6 @@ const ActionModal = ({
                 <Card>
                   <CardHeader className="d-flex align-iteems-center justify-content-between">
                     <h5 className="mt-2">Action Steps</h5>
-                    <div
-                      className="avatar-title bg-soft-info text-info fs-17 rounded p-1"
-                      style={{ width: "30px" }}
-                    >
-                      <i
-                        className="ri-add-line cursor-pointer"
-                        onClick={handleAddActions}
-                      ></i>
-                    </div>
                   </CardHeader>
                   <CardBody>
                     <Form className="form-steps">
@@ -536,6 +621,7 @@ const ActionModal = ({
                             key={tab.id}
                             id={`steparrow-gen-info-${tab.id}`}
                             tabId={tab.id}
+                            active={activeTab === tab.id}
                           >
                             {tab.id == 1 && (
                               <Col xxl={12} className="p-0 mb-2">
@@ -588,16 +674,24 @@ const ActionModal = ({
                             {tab.id == 3 && (
                               <Col xxl={12} className="p-0 mb-2">
                                 <label>Add Value</label>
-                                <Input
-                                  type="text"
-                                  className="form-control"
-                                  id="firstName"
-                                  placeholder="Value"
-                                  value={actionScore}
-                                  onChange={(e) =>
-                                    setActionScore(e.target.value)
-                                  }
-                                />
+                                <div>
+                                  <Input
+                                    type="text"
+                                    className={`form-control ${
+                                      scoreError ? "is-invalid" : ""
+                                    }`}
+                                    id="firstName"
+                                    placeholder="Value"
+                                    value={actionScore}
+                                    onChange={handleScoreChange}
+                                  />
+                                  {scoreError && (
+                                    <div className="invalid-feedback">
+                                      Please enter only numbers in the Value
+                                      field.
+                                    </div>
+                                  )}
+                                </div>
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
                                     <i class="ri-error-warning-line"></i>
@@ -611,18 +705,110 @@ const ActionModal = ({
                             )}
                             <Col className="d-flex justify-content-between">
                               <div className="text-end mb-4">
-                                <button className="btn btn-light btn-label left ms-auto">
-                                  <i className="ri-arrow-left-line label-icon align-bottom fs-16 "></i>{" "}
-                                  Back
-                                </button>
+                                {activeArrowTab > 1 && (
+                                  <button
+                                    className="btn btn-light btn-label left ms-auto"
+                                    onClick={handlePrevTab}
+                                  >
+                                    <i className="ri-arrow-left-line label-icon align-bottom fs-16"></i>{" "}
+                                    Back
+                                  </button>
+                                )}
                               </div>
                               <div className="text-end mb-4">
-                                <button className="btn btn-info btn-label right ms-auto">
-                                  <i className="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>{" "}
-                                  Next
-                                </button>
+                                <Button
+                                  className={`p-4 pt-2 pb-2`}
+                                  color="secondary"
+                                  onClick={handleAddActions}
+                                >
+                                  Save
+                                </Button>
+                              </div>
+                              <div className="text-end mb-4">
+                                {activeArrowTab < tabs.length && (
+                                  <button
+                                    className="btn btn-info btn-label right ms-auto"
+                                    onClick={handleNextTab}
+                                  >
+                                    <i className="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>{" "}
+                                    Next
+                                  </button>
+                                )}
                               </div>
                             </Col>
+
+                            {/* <Col className="d-flex justify-content-between">
+                              <div className="text-end mb-4">
+                                {activeTab > 1 && (
+                                  <button
+                                    className="btn btn-light btn-label left ms-auto"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handlePrevTab;
+                                    }}
+                                  >
+                                    <i className="ri-arrow-left-line label-icon align-bottom fs-16"></i>{" "}
+                                    Back
+                                  </button>
+                                )}
+                              </div>
+                              <div className="text-end mb-4">
+                                <Button
+                                  className={`p-4 pt-2 pb-2`}
+                                  color="secondary"
+                                  onClick={handleAddActions}
+                                >
+                                  Save
+                                </Button>
+                              </div>
+                              <div className="text-end mb-4">
+                                {activeTab < tabs.length && (
+                                  <button
+                                    className="btn btn-info btn-label right ms-auto"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleNextTab;
+                                    }}
+                                  >
+                                    <i className="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>{" "}
+                                    Next
+                                  </button>
+                                )}
+                              </div>
+                            </Col> */}
+                            {/* <Col className="d-flex justify-content-between">
+                              <div className="text-end mb-4">
+                                {activeTab > 1 && (
+                                  <button
+                                    className="btn btn-light btn-label left ms-auto"
+                                    onClick={handleBack}
+                                  >
+                                    <i className="ri-arrow-left-line label-icon align-bottom fs-16"></i>{" "}
+                                    Back
+                                  </button>
+                                )}
+                              </div>
+                              <div className="text-end mb-4">
+                                <Button
+                                  className={`p-4 pt-2 pb-2`}
+                                  color="secondary"
+                                  onClick={handleAddActions}
+                                >
+                                  Save
+                                </Button>
+                              </div>
+                              <div className="text-end mb-4">
+                                {activeTab < tabs.length && (
+                                  <button
+                                    className="btn btn-info btn-label right ms-auto"
+                                    onClick={handleNext}
+                                  >
+                                    <i className="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>{" "}
+                                    Next
+                                  </button>
+                                )}
+                              </div>
+                            </Col> */}
                             {tab.id &&
                               adminSteps.map((action) => {
                                 return (
@@ -738,7 +924,7 @@ const ActionModal = ({
                     disable
                     className="form-select "
                   >
-                    Select a category
+                    {categorySelectTitle || "Select a Category"}
                   </Col>
                   <div style={{ position: "relative" }}>
                     {open && (
@@ -747,12 +933,14 @@ const ActionModal = ({
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
                         {adminCategories.map((item) => {
+                          const isChecked =
+                            isDataUpdated && item._id === info.categoryId._id;
                           return (
                             <li
-                              onClick={() => handleCategoryClick(item._id)}
+                              onClick={() => handleCategoryClick(item)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isCategoryClick === item._id
+                                isChecked || isCategoryClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -773,29 +961,31 @@ const ActionModal = ({
                     )}
                   </div>
                 </Col>
-                <Col lg={5} className="p-0 ">
+                <Col lg={6} className="p-0 ">
                   <Col
-                    lg={5}
-                    onClick={() => setIsWeight(!isWeight)}
+                    lg={6}
+                    onClick={() => setIsCost(!isCost)}
                     disable
                     className="form-select "
                   >
-                    Select Relation
+                    {costSelectTitle || "Select a Cost"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
-                    {isWeight && (
+                    {isCost && (
                       <Col
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
-                        {adminRelation.map((item) => {
+                        {adminCosts.map((item) => {
+                          const isChecked =
+                            isDataUpdated && item._id === info.costId._id;
                           return (
                             <li
-                              onClick={() => handleRelationshipClick(item._id)}
+                              onClick={() => handleCostClick(item)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isRelationshipClick === item._id
+                                isChecked || isCostClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -818,57 +1008,14 @@ const ActionModal = ({
                 </Col>
               </Col>
               <Col className="d-flex gap-2 mt-2">
-                <Col lg={4} className="p-0 ">
+                <Col lg={6} className="p-0 ">
                   <Col
-                    lg={4}
-                    onClick={() => setIsCost(!isCost)}
-                    disable
-                    className="form-select "
-                  >
-                    Select a cost
-                    <i class="fa fa-window-maximize" aria-hidden="true"></i>
-                  </Col>
-                  <div style={{ position: "relative" }}>
-                    {isCost && (
-                      <Col
-                        lg={12}
-                        className="p-1 mb-3 border-top-0 border border-grey "
-                      >
-                        {adminCosts.map((item) => {
-                          return (
-                            <li
-                              onClick={() => handleCostClick(item._id)}
-                              className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
-                              style={
-                                isCostClick === item._id
-                                  ? {
-                                      backgroundColor: "#C3C887",
-                                      color: "#fff",
-                                      cursor: "pointer",
-                                    }
-                                  : {
-                                      backgroundColor: "#fff",
-                                      color: "#000",
-                                      cursor: "pointer",
-                                    }
-                              }
-                            >
-                              {item.title}
-                            </li>
-                          );
-                        })}
-                      </Col>
-                    )}
-                  </div>
-                </Col>
-                <Col lg={4} className="p-0 ">
-                  <Col
-                    lg={4}
+                    lg={6}
                     onClick={() => setIsScale(!isScale)}
                     disable
                     className="form-select "
                   >
-                    Select Timescale
+                    {scaleSelectTitle || "Select a Scale"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
@@ -878,12 +1025,14 @@ const ActionModal = ({
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
                         {adminTimeScale.map((item) => {
+                          const isChecked =
+                            isDataUpdated && item._id === info.timescaleId._id;
                           return (
                             <li
-                              onClick={() => handleScaleClick(item._id)}
+                              onClick={() => handleScaleClick(item)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isScaleClick === item._id
+                                isChecked || isScaleClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -904,14 +1053,14 @@ const ActionModal = ({
                     )}
                   </div>
                 </Col>
-                <Col lg={4} className="p-0 ">
+                <Col lg={6} className="p-0 ">
                   <Col
-                    lg={4}
+                    lg={6}
                     onClick={() => setIsPotential(!isPotential)}
                     disable
                     className="form-select "
                   >
-                    Select a cost
+                    {potentialSelectTitle || "Select a Potential"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
@@ -921,12 +1070,14 @@ const ActionModal = ({
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
                         {adminPotential.map((item) => {
+                          const isChecked =
+                            isDataUpdated && item._id === info.potentialId._id;
                           return (
                             <li
-                              onClick={() => handlePotentialClick(item._id)}
+                              onClick={() => handlePotentialClick(item)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isPotentialClick === item._id
+                                isChecked || isPotentialClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -956,14 +1107,26 @@ const ActionModal = ({
                 </div>
                 <div className="hstack gap-2 justify-content-start">
                   <Button
-                    className="p-4 pt-2 pb-2"
+                    className={`p-4 pt-2 pb-2 ${
+                      isDataUpdated ? "disabled" : ""
+                    }`}
                     color="secondary"
                     onClick={handleSubmit}
+                    disabled={isDataUpdated}
                   >
                     Save
                   </Button>
                 </div>
-                <Button color="primary">Update</Button>
+                <Button
+                  className={`p-4 pt-2 pb-2 ${
+                    !isDataUpdated ? "disabled" : ""
+                  }`}
+                  color="primary"
+                  disabled={!isDataUpdated}
+                  onClick={() => handleUpdate(info._id)}
+                >
+                  Update
+                </Button>
               </div>
             </div>
           </form>
