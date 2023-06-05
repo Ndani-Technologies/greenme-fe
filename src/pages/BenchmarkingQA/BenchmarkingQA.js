@@ -724,9 +724,8 @@ const BenchmarkingQA = () => {
       };
       addCategory(newCategory)
         .then((resp) => {
+          setData([...data, resp]);
           toast.success("Successfully Added");
-
-          setAllCategories([...allCategories, resp]);
         })
         .catch((err) => {
           toast.error("Unable to Update");
@@ -764,6 +763,7 @@ const BenchmarkingQA = () => {
     setEditingCategoryId(null);
     setInputField("");
   };
+
   const handleDelete = (id) => {
     setDeleteId(id);
     setDeleteConfirmation2(true);
