@@ -178,7 +178,7 @@ const VerticalLayout = (props) => {
               <li className="nav-item">
                 <Link
                   onClick={item.click}
-                  className="nav-link menu-link"
+                  className="nav-link menu-link "
                   to={item.link ? item.link : "/#"}
                   data-bs-toggle="collapse"
                 >

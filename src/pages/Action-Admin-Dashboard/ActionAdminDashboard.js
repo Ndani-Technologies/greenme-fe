@@ -2,30 +2,33 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import {
   Col,
-  Container,
-  Row,
   Card,
   CardBody,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Label,
-  Input,
+  Button,
   Modal,
   ModalHeader,
-  ModalBody,
-  Form,
   ModalFooter,
-  Table,
-  FormFeedback,
-  Button,
+  ModalBody,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
+  getAllAdminActions,
+  getAdminTimeScale,
+  getAdminCosts,
+  getAdminPotentials,
+  getAdminStatus,
+  getAdminRelationships,
+  getAdminCategories,
+  getAllAdminResources,
+  getAllAdminSteps,
+  deleteAdminAction,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -155,6 +158,16 @@ const arr = [
   },
 ];
 const ActionAdminDashboard = () => {
+  const [adminActions, setAdminActions] = useState([]);
+  const [adminResources, setAdminResources] = useState([]);
+  const [adminTimeScale, setAdminTimeScale] = useState([]);
+  const [adminCosts, setAdminCosts] = useState([]);
+  const [adminPotential, setAdminPotential] = useState([]);
+  const [adminStatus, setAdminStatus] = useState([]);
+  const [adminRelation, setAdminRelation] = useState([]);
+  const [adminCategories, setAdminCategories] = useState([]);
+  const [adminSteps, setAdminSteps] = useState([]);
+
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,
@@ -162,6 +175,81 @@ const ActionAdminDashboard = () => {
     isContactSuccess: state.Crm.isContactSuccess,
     error: state.Crm.error,
   }));
+
+  const getAdminActions = () => {
+    getAllAdminActions().then((res) => {
+      setAdminActions(res);
+    });
+    getAllAdminSteps().then((res) => {
+      setAdminSteps(res);
+    });
+  };
+
+  const getAdminResources = () => {
+    getAllAdminResources().then((res) => {
+      setAdminResources(res);
+    });
+  };
+
+  const getAllAdminTimeScale = () => {
+    getAdminTimeScale()
+      .then((res) => {
+        setAdminTimeScale(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminCosts = () => {
+    getAdminCosts()
+      .then((res) => {
+        setAdminCosts(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminPotentials = () => {
+    getAdminPotentials()
+      .then((res) => {
+        setAdminPotential(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminStatus = () => {
+    getAdminStatus()
+      .then((res) => {
+        setAdminStatus(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminRelationships = () => {
+    getAdminRelationships()
+      .then((res) => {
+        setAdminRelation(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminCategories = () => {
+    getAdminCategories()
+      .then((res) => {
+        setAdminCategories(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  useEffect(() => {
+    getAdminActions();
+    getAdminResources();
+    getAllAdminTimeScale();
+    getAllAdminCosts();
+    getAllAdminPotentials();
+    getAllAdminStatus();
+    getAllAdminRelationships();
+    getAllAdminCategories();
+  }, []);
+
   useEffect(() => {
     dispatch(onGetContacts(arr));
   }, [dispatch, crmcontacts]);
@@ -369,16 +457,30 @@ const ActionAdminDashboard = () => {
     setSelectedCheckBoxDelete(ele);
   };
 
+  const handleDelete = (id) => {
+    setDeleteId(id);
+    setDeleteConfirmation2(true);
+  };
+
   // Column
   const columns = useMemo(
     () => [
       {
+        Header: (
+          <input
+            type="checkbox"
+            id="checkBoxAll"
+            className="form-check-input"
+            onClick={() => checkedAll()}
+          />
+        ),
+
         Cell: (cellProps) => {
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original._id}
+              value={cellProps.row.original}
               onChange={() => deleteCheckbox()}
             />
           );
@@ -387,14 +489,14 @@ const ActionAdminDashboard = () => {
       },
       {
         Header: "Title",
-        accessor: "name",
+        accessor: "title",
         filterable: false,
         Cell: (contact) => (
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div className="flex-grow-1 ms-2 name">
-                {contact.row.original.name}
+                {contact.row.original.title}
               </div>
             </div>
           </>
@@ -402,30 +504,30 @@ const ActionAdminDashboard = () => {
       },
       {
         Header: "Category",
-        accessor: "lead_score",
+        accessor: "category",
         filterable: false,
       },
       {
         Header: "Weight",
-        accessor: "phone",
+        accessor: "weight",
       },
       {
         Header: "Status",
-        accessor: "tags",
+        accessor: "stat",
       },
       {
         Header: "Potential",
-        accessor: "email",
+        accessor: "potential",
         filterable: false,
       },
       {
         Header: "Cost",
-        accessor: "response",
+        accessor: "cost",
         filterable: false,
       },
       {
         Header: "Timescale",
-        accessor: "Scale",
+        accessor: "timescale",
         filterable: false,
       },
       {
@@ -451,15 +553,6 @@ const ActionAdminDashboard = () => {
                         setInfo(contactData);
                       }}
                     >
-                      View
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        setInfo(contactData);
-                      }}
-                    >
                       Edit
                     </DropdownItem>
                     <DropdownItem
@@ -467,31 +560,11 @@ const ActionAdminDashboard = () => {
                       href="#"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        onClickDelete(contactData);
+                        // onClickDelete(contactData);
+                        handleDelete(contactData._id);
                       }}
                     >
                       Delete
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Active
-                    </DropdownItem>
-
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Manage
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -556,21 +629,14 @@ const ActionAdminDashboard = () => {
     { id: 2, name: "Medium" },
     { id: 3, name: "High" },
   ];
-  const Cost = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "High" },
-  ];
-  const scale = [
-    { id: 1, name: "Short term" },
-    { id: 2, name: "Intermediate" },
-    { id: 3, name: "Medium term" },
-  ];
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
 
   // Export Modal
+  const [modalName, setModalName] = useState("");
+  const [modalField, setModalField] = useState("");
+  const [modalEdit, setModalEdit] = useState("");
   const [modals_grid, setmodals_grid] = useState(false);
   function tog_grids() {
     setmodals_grid(!modals_grid);
@@ -581,20 +647,62 @@ const ActionAdminDashboard = () => {
   }
   const [data, setData] = useState([]);
   const handleModal = (e) => {
-    if (e.target.name == "manage_categories") {
-      setData(categories);
-    } else if (e.target.name == "manage_weight") {
-      setData(weight);
-    } else if (e.target.name == "manage_Status") {
-      setData(Status);
-    } else if (e.target.name == "manage_Potential") {
-      setData(Potential);
+    // console.log("targer", e.target.name)
+    if (e.target.name == "manage_Scale") {
+      setModalName("Manage Scale");
+      setModalField("Add new Scale");
+      setModalEdit("Edit Scale Name");
+      setData(adminTimeScale);
     } else if (e.target.name == "manage_Costs") {
-      setData(Cost);
-    } else if (e.target.name == "manage_Scale") {
-      setData(scale);
+      setModalName("Manage Costs");
+      setModalField("Add new Cost");
+      setModalEdit("Edit Cost Value");
+      setData(adminCosts);
+    } else if (e.target.name == "manage_Potential") {
+      setModalName("Manage Potential");
+      setModalField("Add new Potential");
+      setModalEdit("Edit Potential Name");
+      setData(adminPotential);
+    } else if (e.target.name == "manage_Status") {
+      setModalName("Manage Status");
+      setModalField("Add new Status");
+      setModalEdit("Edit Status Name");
+      setData(adminStatus);
+    } else if (e.target.name == "manage_weight") {
+      setModalName("Manage Answer Relationship");
+      setModalField("Add new Relationship");
+      setModalEdit("Edit Relationship Name");
+      setData(adminRelation);
+    } else if (e.target.name == "manage_categories") {
+      setModalName("Manage Categories");
+      setModalField("Add new Category");
+      setModalEdit("Edit Category Name");
+      setData(adminCategories);
     }
     setmodals_grid(true);
+  };
+
+  const [isDataUpdated, setIsDataUpdated] = useState(true);
+  const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+  const confirmDelete2 = () => {
+    deleteAdminAction(deleteId)
+      .then((resp) => {
+        const update = adminActions.filter((c) => c._id !== deleteId);
+        setAdminActions(update);
+        toast.success("Successfully Deleted");
+      })
+      .catch((err) => {
+        toast.error("Unable to Delete");
+        console.log("err in deleteing Resource", err);
+      });
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
+
+  const cancelDelete2 = () => {
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
   };
   document.title = "Benchmaking QA | GreenMe";
   return (
@@ -606,13 +714,19 @@ const ActionAdminDashboard = () => {
             "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
           }
         />
-        <Col xxl={9} className="m-auto">
-          <div className="d-flex align-items-center justify-content-center gap-2 w-100">
+        <Col xxl={12}>
+          <div
+            className="d-flex align-items-center justify-content-between gap-2 "
+            style={{ width: "98%" }}
+          >
             <div className="pt-5">
               <Button
                 className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded"
                 color="white"
-                onClick={() => setmodal_grid(true)}
+                onClick={() => {
+                  setIsDataUpdated(false);
+                  setmodal_grid(true);
+                }}
                 style={{ width: "130px" }}
               >
                 Add Action
@@ -620,8 +734,28 @@ const ActionAdminDashboard = () => {
               </Button>
               {modal_grid && (
                 <ActionModal
+                  adminSteps={adminSteps}
+                  setAdminSteps={setAdminSteps}
                   modal_grid={modal_grid}
                   setmodal_grid={setmodal_grid}
+                  adminCategories={adminCategories}
+                  setAdminCategories={setAdminCategories}
+                  adminResources={adminResources}
+                  setAdminResources={setAdminResources}
+                  adminTimeScale={adminTimeScale}
+                  setAdminTimeScale={setAdminTimeScale}
+                  adminActions={adminActions}
+                  setAdminActions={setAdminActions}
+                  adminCosts={adminCosts}
+                  setAdminCosts={setAdminCosts}
+                  adminPotential={adminPotential}
+                  setAdminPotential={setAdminPotential}
+                  adminRelation={adminRelation}
+                  setAdminRelation={setAdminRelation}
+                  adminStatus={adminStatus}
+                  setAdminStatus={setAdminStatus}
+                  isDataUpdated={isDataUpdated}
+                  setIsDataUpdated={setIsDataUpdated}
                 />
               )}
             </div>
@@ -640,11 +774,11 @@ const ActionAdminDashboard = () => {
                 <CategoryModal
                   modals_grid={modals_grid}
                   setmodals_grid={setmodals_grid}
-                  categories={data}
-                  setCategories={setData}
-                  Title={"Manage category"}
-                  FieldName={"Add new Category"}
-                  Edit={"Edit category name"}
+                  data={data}
+                  setData={setData}
+                  Title={modalName}
+                  FieldName={modalField}
+                  Edit={modalEdit}
                 />
               )}
             </div>
@@ -656,15 +790,9 @@ const ActionAdminDashboard = () => {
                 name="manage_weight"
                 onClick={handleModal}
               >
-                Manage Weight
+                Manage Answer Relationship
                 <i class="ri-add-fill"></i>
               </Button>
-
-              <CategoryModal
-                Title={"Manage weight"}
-                FieldName={"Add new Weight"}
-                Edit={"Edit weight name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -677,11 +805,6 @@ const ActionAdminDashboard = () => {
                 Manage Status
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage status"}
-                FieldName={"Add new Status"}
-                Edit={"Edit status name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -694,11 +817,6 @@ const ActionAdminDashboard = () => {
                 Manage Potential
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage potential"}
-                FieldName={"Add new Potential"}
-                Edit={"Edit potential name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -711,11 +829,6 @@ const ActionAdminDashboard = () => {
                 Manage Costs
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage cost"}
-                FieldName={"Add new Cost"}
-                Edit={"Edit sost name"}
-              />
             </div>
             <div className="pt-5">
               <Button
@@ -728,21 +841,15 @@ const ActionAdminDashboard = () => {
                 Manage Scale
                 <i class="ri-add-fill"></i>
               </Button>
-              <CategoryModal
-                Title={"Manage time scale"}
-                FieldName={"Add new Scale"}
-                Edit={"Edit a time scale name"}
-              />
             </div>
           </div>
-          <Card id="contactList">
+          <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {console.log("contact", crmcontacts)}
-                {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                {adminActions && adminActions.length ? (
                   <TableContainer
                     columns={columns}
-                    data={crmcontacts || []}
+                    data={adminActions || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
@@ -754,11 +861,30 @@ const ActionAdminDashboard = () => {
                     theadClass="table-light"
                     handleContactClick={handleContactClicks}
                     isContactsFilter={false}
+                    setInfo={() => {}}
                     SearchPlaceholder="Search by  title "
                   />
                 ) : (
                   <Loader error={error} />
                 )}
+                <Modal isOpen={deleteConfirmation2} toggle={cancelDelete2}>
+                  <ModalHeader toggle={cancelDelete2}>
+                    Confirm Deletion
+                  </ModalHeader>
+                  <ModalBody>
+                    Are you sure you want to delete this variation?
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button color="danger" onClick={confirmDelete2}>
+                      Delete
+                    </Button>
+                    <Button color="secondary" onClick={cancelDelete2}>
+                      Cancel
+                    </Button>
+                  </ModalFooter>
+                </Modal>
+
+                <Button onClick={() => deleteMultiple()}>Delete All</Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>

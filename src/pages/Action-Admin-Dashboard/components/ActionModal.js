@@ -16,9 +16,10 @@ import {
   TabContent,
   TabPane,
   Form,
+  ModalFooter,
 } from "reactstrap";
 import classnames from "classnames";
-import Medal from "../../../assets/images/Medal-1.png";
+import Medal from "../../../assets/images/Medal.png";
 import {
   category,
   cost,
@@ -29,15 +30,62 @@ import {
   tabs,
   weight,
 } from "./ActionModalData";
+import { toast } from "react-toastify";
+import {
+  createAdminActions,
+  createAdminResources,
+  createAdminStatus,
+  createAdminStep,
+  deleteAdminResources,
+  deleteAdminStep,
+  updateAdminResources,
+  updateAdminStep,
+} from "../../../slices/thunks";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import Warning from "../../../assets/images/warning.png";
-const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
+import { set } from "lodash";
+const ActionModal = ({
+  modal_grid,
+  setmodal_grid,
+  adminCategories,
+  setAdminCategories,
+  adminTimeScale,
+  setAdminTimeScale,
+  adminActions,
+  setAdminActions,
+  adminCosts,
+  setAdminCosts,
+  adminPotential,
+  setAdminPotential,
+  adminRelation,
+  setAdminRelation,
+  adminStatus,
+  setAdminStatus,
+  adminResources,
+  setAdminResources,
+  adminSteps,
+  setAdminSteps,
+}) => {
   const [open, isOpen] = useState(false);
   const [isWeight, setIsWeight] = useState(false);
   const [isCost, setIsCost] = useState(false);
   const [isScale, setIsScale] = useState(false);
   const [isPotential, setIsPotential] = useState(false);
-  console.log("modal", modal_grid);
+
+  //gm
+  const [resourceInput, setResourceInput] = useState("");
+  const [isManageResourceUpdate, setIsManageResourceUpdate] = useState(false);
+  const [isActionStepUpdate, setIsActionStepUpdate] = useState(false);
+  const [actionStepId, setActionStepId] = useState();
+  const [resourceManageId, setResourceManageId] = useState();
+  const [actionTitle, setActionTitle] = useState("");
+  const [actionDescription, setActionDescription] = useState("");
+  const [actionScore, setActionScore] = useState();
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+
+  const [isUpdatingData, setIsUpdatingData] = useState(true);
+
+  //Data values States
 
   const [selectedLanguage, setSelectedLanguage] = useState("ENGLISH");
   const handleClick = (language) => {
@@ -61,9 +109,219 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
       setactiveArrowTab(index);
     }
   }
-  const [isClick, setIsClick] = useState(0);
-  const handleClicks = (index) => {
-    setIsClick(index);
+  const [isCategoryClick, setIsCategoryClick] = useState(0);
+  const [isRelationshipClick, setIsRelationshipClick] = useState(0);
+  const [isCostClick, setIsCostClick] = useState(0);
+  const [isScaleClick, setIsScaleClick] = useState(0);
+  const [isPotentialClick, setIsPotentialClick] = useState(0);
+
+  const handleCategoryClick = (index) => {
+    console.log(index, "This is working");
+    setIsCategoryClick(index);
+  };
+  const handleRelationshipClick = (index) => {
+    console.log(index, "This is working 1");
+    setIsRelationshipClick(index);
+  };
+
+  const handleCostClick = (index) => {
+    console.log(index, "This is working 2");
+    setIsCostClick(index);
+  };
+  const handleScaleClick = (index) => {
+    console.log(index, "This is working 3");
+    setIsScaleClick(index);
+  };
+  const handlePotentialClick = (index) => {
+    console.log(index, "This is working 4");
+    setIsPotentialClick(index);
+  };
+
+  const [inputField, setInputField] = useState(null);
+
+  const handleResourceUpdates = () => {
+    const updatedDataName = inputField;
+    const mappedData = {
+      title: updatedDataName,
+    };
+    updateAdminResources(editingDataId, mappedData)
+      .then((resp) => {
+        const updatedData = data.map((c) => {
+          if (c._id === editingDataId) {
+            return { ...c, title: updatedDataName };
+          }
+          return c;
+        });
+        toast.success(successMessage);
+        setData(updatedData);
+      })
+      .catch((err) => {
+        toast.error("Unable to Update");
+        console.log("err in updating category", err);
+      });
+  };
+
+  //HANDLING DELETE
+
+  const [deleteId, setDeleteId] = useState(null);
+  const handleResourceDelete = (id) => {
+    setDeleteId(id);
+    setDeleteConfirmation2(true);
+  };
+
+  const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
+  const confirmDelete2 = () => {
+    deleteAdminResources(deleteId)
+      .then((resp) => {
+        const updatedResponses = adminResources.filter(
+          (c) => c._id !== deleteId
+        );
+        setAdminResources(updatedResponses);
+        toast.success("Successfully Deleted");
+      })
+      .catch((err) => {
+        toast.error(toast.error("Unable to Delete"));
+        console.log("err in deleteing Resource", err);
+      });
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
+
+  const cancelDelete2 = () => {
+    setDeleteConfirmation2(false);
+    setDeleteId(null);
+  };
+
+  const handleResourceEdit = (data) => {
+    // setEditingDataId(dataId);
+
+    setIsManageResourceUpdate(true);
+    setResourceManageId(data._id);
+    setResourceInput(data?.title);
+  };
+
+  const handleManageResource = () => {
+    if (resourceInput !== "") {
+      const mappedData = {
+        title: resourceInput,
+      };
+      if (isManageResourceUpdate) {
+        //update
+        updateAdminResources(resourceManageId, mappedData)
+          .then((data) => {
+            setAdminResources((prev) => {
+              const updateAdminResources = prev.map((value) => {
+                if (value._id === resourceManageId) {
+                  value.title = mappedData.title;
+                  return value;
+                }
+                return value;
+              });
+              return updateAdminResources;
+            });
+            setResourceInput("");
+            setIsManageResourceUpdate(false);
+          })
+          .catch(() => toast.error("Error in adding link"));
+      } else {
+        //create
+        createAdminResources(mappedData)
+          .then((data) => {
+            setAdminResources([...adminResources, data]);
+            setResourceInput("");
+          })
+          .catch(() => toast.error("Error in adding link"));
+      }
+    }
+  };
+
+  const handleAddActions = () => {
+    if (actionTitle !== "" && actionDescription !== "" && actionScore) {
+      const mappedData = {
+        title: actionTitle,
+        description: actionDescription,
+        score: actionScore,
+      };
+      if (isActionStepUpdate) {
+        updateAdminStep(actionStepId, mappedData).then((resp) => {
+          setAdminSteps((prev) => {
+            const updateAdminResources = prev.map((value) => {
+              if (value._id === actionStepId) {
+                value.title = mappedData.title;
+                (value.description = mappedData.description),
+                  (value.score = mappedData.score);
+                return value;
+              }
+              return value;
+            });
+            return updateAdminResources;
+          });
+        });
+      } else {
+        createAdminStep(mappedData)
+          .then((res) => {
+            setAdminSteps([...adminSteps, mappedData]);
+          })
+          .catch(() => toast.error("Error in adding step"));
+      }
+      setIsActionStepUpdate(false);
+      setActionTitle("");
+      setActionDescription("");
+      setActionScore("");
+    } else {
+      toast.error("Title, Description or Score can not be null.");
+    }
+  };
+  const handleEdit = (data) => {
+    setActionStepId(data._id);
+    setActionTitle(data.title);
+    setActionDescription(data.description);
+    setActionScore(data.score);
+    setIsActionStepUpdate(true);
+  };
+
+  const handleDelete = (id) => {
+    console.log("delte id", id);
+    deleteAdminStep(id)
+      .then((res) => {
+        if (res !== undefined) {
+          setAdminSteps((prev) => {
+            const updateAdminResources = prev.filter(
+              (value) => value._id !== id
+            );
+            return updateAdminResources;
+          });
+          toast.success("Step deleted.");
+        }
+      })
+      .catch(() => toast.error("Error in adding step"));
+  };
+  const handleSubmit = () => {
+    const mappedData = {
+      title,
+      description,
+      status: isChecked5,
+      visibility: isChecked6,
+      steps: adminSteps.map((value) => value._id),
+      categoryId: isCategoryClick,
+      costId: isCostClick,
+      potentialId: isPotentialClick,
+      timescaleId: isScaleClick,
+      answerRelationshipId: isRelationshipClick,
+    };
+    console.log("hanlde submit", mappedData);
+    if (title !== "" && description !== "") {
+      createAdminActions(mappedData)
+        .then((resp) => {
+          if (resp !== undefined) {
+            setAdminActions([...adminActions, resp]);
+            setmodal_grid(false);
+          }
+        })
+        .catch((err) => toast.error("Error in creating action."));
+    } else {
+      toast.error("title or description can not be null");
+    }
   };
   return (
     <>
@@ -207,6 +465,8 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                     className="form-control"
                     id="firstName"
                     placeholder="Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                 </div>
               </Col>
@@ -214,8 +474,10 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                 <div>
                   <textarea
                     class="form-control"
-                    placeholder="Discription"
+                    placeholder="Description"
                     id="floatingTextarea"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     style={{
                       height: "120px",
                       overflow: "hidden",
@@ -232,7 +494,10 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                       className="avatar-title bg-soft-info text-info fs-17 rounded p-1"
                       style={{ width: "30px" }}
                     >
-                      <i className="ri-add-line"></i>
+                      <i
+                        className="ri-add-line cursor-pointer"
+                        onClick={handleAddActions}
+                      ></i>
                     </div>
                   </CardHeader>
                   <CardBody>
@@ -280,6 +545,10 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                   className="form-control"
                                   id="firstName"
                                   placeholder="Title"
+                                  value={actionTitle}
+                                  onChange={(e) =>
+                                    setActionTitle(e.target.value)
+                                  }
                                 />
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
@@ -294,12 +563,16 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                             )}
                             {tab.id == 2 && (
                               <Col xxl={12} className="p-0 mb-2">
-                                <label>Add Discription</label>
+                                <label>Add Description</label>
                                 <Input
                                   type="text"
                                   className="form-control"
                                   id="firstName"
                                   placeholder="Discription"
+                                  value={actionDescription}
+                                  onChange={(e) =>
+                                    setActionDescription(e.target.value)
+                                  }
                                 />
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
@@ -320,6 +593,10 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                   className="form-control"
                                   id="firstName"
                                   placeholder="Value"
+                                  value={actionScore}
+                                  onChange={(e) =>
+                                    setActionScore(e.target.value)
+                                  }
                                 />
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
@@ -347,39 +624,35 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                               </div>
                             </Col>
                             {tab.id &&
-                              tabContent.map((item) => {
+                              adminSteps.map((action) => {
                                 return (
-                                  <>
-                                    <div className="border rounded mb-2 p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center">
-                                      <div className="d-flex align-items-center justify-content-beetween w-100">
-                                        <div className="d-flex align-items-center gap-2">
-                                          <i
-                                            className="ri-drag-move-2-line fs-24"
-                                            style={{ color: "#4A7BA4" }}
-                                          ></i>
-                                          <h5 className="m-0">
-                                            {item.content}
-                                          </h5>
-                                        </div>
-                                        <div className="d-flex gap-2 justify-content-end w-25  mt-1">
-                                          <img src={Medal} />
-                                          20
-                                        </div>
+                                  <div className="border rounded mb-2 p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center">
+                                    <div className="d-flex align-items-center justify-content-beetween w-100">
+                                      <div className="d-flex align-items-center gap-2">
+                                        <i
+                                          className="ri-drag-move-2-line fs-24"
+                                          style={{ color: "#4A7BA4" }}
+                                        ></i>
+                                        <h5 className="m-0">{action?.title}</h5>
                                       </div>
-                                      <div className="d-flex justify-content-end gap-2 w-25">
-                                        <i
-                                          className="ri-pencil-fill fs-18"
-                                          style={{ color: "gray" }}
-                                          // onClick={() => handleEdit(category.id)}
-                                        ></i>
-                                        <i
-                                          className="ri-delete-bin-2-line fs-18"
-                                          style={{ color: "red" }}
-                                          // onClick={() => handleDelete(category.id)}
-                                        ></i>
+                                      <div className="d-flex gap-2 justify-content-end w-25  mt-1">
+                                        <img src={Medal} />
+                                        {action?.score}
                                       </div>
                                     </div>
-                                  </>
+                                    <div className="d-flex justify-content-end gap-2 w-25">
+                                      <i
+                                        className="ri-pencil-fill fs-18"
+                                        style={{ color: "gray" }}
+                                        onClick={() => handleEdit(action)}
+                                      ></i>
+                                      <i
+                                        className="ri-delete-bin-2-line fs-18"
+                                        style={{ color: "red" }}
+                                        onClick={() => handleDelete(action._id)}
+                                      ></i>
+                                    </div>
+                                  </div>
                                 );
                               })}
                           </TabPane>
@@ -395,7 +668,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                   Manage Resource Links
                 </Col>
                 <Col className="p-3">
-                  {resourceData.map((item) => {
+                  {adminResources.map((resource) => {
                     return (
                       <div className="border rounded mb-2 p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center">
                         <div className="d-flex align-items-center gap-2">
@@ -403,31 +676,55 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                             className="ri-drag-move-2-line fs-24"
                             style={{ color: "#4A7BA4" }}
                           ></i>
-                          <h5 className="m-0">{item.data}</h5>
+                          <h5 className="m-0">{resource.title}</h5>
                         </div>
-                        <div className="d-flex justify-content-end gap-2 w-25">
+                        <div className="d-flex justify-content-end gap-2">
                           <i
                             className="ri-pencil-fill fs-18"
-                            style={{ color: "gray" }}
+                            style={{ color: "gray", cursor: "pointer" }}
+                            onClick={() => handleResourceEdit(resource)}
                           ></i>
                           <i
                             className="ri-delete-bin-2-line fs-18"
-                            style={{ color: "red" }}
+                            style={{ color: "red", cursor: "pointer" }}
+                            onClick={() => handleResourceDelete(resource._id)}
                           ></i>
                         </div>
                       </div>
                     );
                   })}
+                  <Modal isOpen={deleteConfirmation2} toggle={cancelDelete2}>
+                    <ModalHeader toggle={cancelDelete2}>
+                      Confirm Deletion
+                    </ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to delete this category variation?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" onClick={confirmDelete2}>
+                        Delete
+                      </Button>
+                      <Button color="secondary" onClick={cancelDelete2}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+
                   <Col xxl={12}>
                     <div>
                       <div className="form-icon right">
                         <Input
                           type="text"
+                          value={resourceInput}
                           className="form-control form-control-icon"
                           id="iconrightInput"
                           placeholder="Manage Resource link"
+                          onChange={(e) => setResourceInput(e.target.value)}
                         />
-                        <i className="ri-add-line"></i>
+                        <i
+                          className="ri-add-line cursor-pointer"
+                          onClick={handleManageResource}
+                        ></i>
                       </div>
                     </div>
                   </Col>
@@ -449,13 +746,13 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
-                        {category.map((item) => {
+                        {adminCategories.map((item) => {
                           return (
                             <li
-                              onClick={() => handleClicks(item.id)}
+                              onClick={() => handleCategoryClick(item._id)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isClick === item.id
+                                isCategoryClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -468,7 +765,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                     }
                               }
                             >
-                              {item.list}
+                              {item.title}
                             </li>
                           );
                         })}
@@ -483,7 +780,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                     disable
                     className="form-select "
                   >
-                    Select Weight
+                    Select Relation
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
@@ -492,13 +789,13 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
-                        {weight.map((item) => {
+                        {adminRelation.map((item) => {
                           return (
                             <li
-                              onClick={() => handleClicks(item.id)}
+                              onClick={() => handleRelationshipClick(item._id)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isClick === item.id
+                                isRelationshipClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -511,7 +808,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                     }
                               }
                             >
-                              {item.list}
+                              {item.title}
                             </li>
                           );
                         })}
@@ -537,13 +834,13 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
-                        {cost.map((item) => {
+                        {adminCosts.map((item) => {
                           return (
                             <li
-                              onClick={() => handleClicks(item.id)}
+                              onClick={() => handleCostClick(item._id)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isClick === item.id
+                                isCostClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -556,7 +853,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                     }
                               }
                             >
-                              {item.list}
+                              {item.title}
                             </li>
                           );
                         })}
@@ -580,13 +877,13 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
-                        {scale.map((item) => {
+                        {adminTimeScale.map((item) => {
                           return (
                             <li
-                              onClick={() => handleClicks(item.id)}
+                              onClick={() => handleScaleClick(item._id)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isClick === item.id
+                                isScaleClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -599,7 +896,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                     }
                               }
                             >
-                              {item.list}
+                              {item.title}
                             </li>
                           );
                         })}
@@ -623,13 +920,13 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey "
                       >
-                        {potential.map((item) => {
+                        {adminPotential.map((item) => {
                           return (
                             <li
-                              onClick={() => handleClicks(item.id)}
+                              onClick={() => handlePotentialClick(item._id)}
                               className="list-unstyled border border-grey pt-1 pb-1 p-3 rounded d-flex gap-3 fs-5 mb-2"
                               style={
-                                isClick === item.id
+                                isPotentialClick === item._id
                                   ? {
                                       backgroundColor: "#C3C887",
                                       color: "#fff",
@@ -642,7 +939,7 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                                     }
                               }
                             >
-                              {item.list}
+                              {item.title}
                             </li>
                           );
                         })}
@@ -658,7 +955,11 @@ const ActionModal = ({ modal_grid, setmodal_grid, Tabs }) => {
                   </Button>
                 </div>
                 <div className="hstack gap-2 justify-content-start">
-                  <Button className="p-4 pt-2 pb-2" color="secondary">
+                  <Button
+                    className="p-4 pt-2 pb-2"
+                    color="secondary"
+                    onClick={handleSubmit}
+                  >
                     Save
                   </Button>
                 </div>

@@ -31,6 +31,142 @@ const ProductsGlobalFilter = () => {
 function valuetext(value) {
   return `${value}°C`;
 }
+
+const AllQaFilters = () => {
+  return (
+    <div className="d-flex align-items-center justify-content-between w-100 p-0">
+      <div className={"search-box me-2 mb-0 d-inline-block"}></div>
+
+      <div className="col-xxl-3 col-sm-4">
+        <Flatpickr
+          placeholder="Select date range"
+          className="form-control bg-light border-light"
+          options={{
+            mode: "range",
+            dateFormat: "d M, Y",
+          }}
+        />
+      </div>
+      <div className="flex-shrink-0">
+        <div className="form-check form-switch form-switch-right form-switch-md">
+          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
+            Status:
+          </Label>
+          <Input
+            className="form-check-input code-switcher"
+            type="checkbox"
+            value="active"
+            defaultValue="Incomplete"
+          />
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center gap-4"
+        style={{ width: "220px" }}
+      >
+        <span style={{ color: "black" }}>Filter by </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span style={{ color: "black" }}>Country</span>
+          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
+        </div>
+      </div>
+    </div>
+  );
+};
+const FilterBenchmarkAction = ({
+  setGlobalFilter,
+  globalFilter,
+  useAsyncDebounce,
+}) => {
+  const [value, setValue] = React.useState(globalFilter);
+  const [value1, setValue1] = React.useState(globalFilter);
+
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const onChange1 = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  return (
+    <div className="d-flex align-items-center justify-content-between w-100 p-0">
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Title"
+          type="text"
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          value={value || ""}
+        />
+      </div>
+
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Organization
+          </option>
+          <option>NO</option>
+          <option>I DON'T KNOW</option>
+        </select>
+      </div>
+
+      <div className="d-flex align-items-center border border-dark p-1  rounded">
+        <i className="bx bx-search-alt search-icon"></i>
+        <input
+          className="border-0"
+          placeholder="Search by  Title"
+          type="text"
+          onChange={(e) => {
+            setValue1(e.target.value);
+            onChange1(e.target.value);
+          }}
+          value={value1 || ""}
+        />
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={value}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Country
+          </option>
+        </select>
+      </div>
+      <div>
+        <select disable className="form-select">
+          <option hidden selected>
+            Status
+          </option>
+          <option>Completed</option>
+          <option>Completed</option>
+          <option>Completed</option>
+        </select>
+      </div>
+    </div>
+  );
+};
 const FilterAction = () => {
   const [value, setValue] = React.useState([8, 37]);
 
@@ -95,6 +231,7 @@ const FilterAction = () => {
     </div>
   );
 };
+
 const FilterA = () => {
   return (
     <div className="d-flex justify-content-between align-items-center w-100">
@@ -137,6 +274,7 @@ const FilterA = () => {
             className="form-check-input code-switcher"
             type="checkbox"
             value="active"
+            defaultValue="Incomplete"
           />
         </div>
       </div>
@@ -704,4 +842,6 @@ export {
   LeadsGlobalFilter,
   FilterA,
   FilterAction,
+  AllQaFilters,
+  FilterBenchmarkAction,
 };

@@ -17,6 +17,7 @@ import {
   Form,
   Input,
   Label,
+  Button,
 } from "reactstrap";
 import {
   getContacts as onGetContacts,
@@ -269,38 +270,79 @@ const BenchmarkAdmin = () => {
   // Delete Multiple
   const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
-
+  const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
+  const deletedArr = [];
   const deleteMultiple = () => {
-    const checkall = document.getElementById("checkBoxAll");
-    selectedCheckBoxDelete.forEach((element) => {
-      dispatch(onDeleteContact(element.value));
-      setTimeout(() => {
-        toast.clearWaitingQueue();
-      }, 3000);
+    // const checkall = document.getElementById("checkBoxAll");
+    // console.log(selectedCheckBoxDelete, "SELECTED")
+    // selectedCheckBoxDelete.forEach((element) => {
+    //   console.log(element, "VAL")
+    //   dispatch(onDeleteContact(element.value));
+    //   // setTimeout(() => {
+    //   //   toast.clearWaitingQueue();
+    //   // }, 3000);
+    // });
+    // setIsMultiDeleteButton(false);
+    console.log("tobedeleted", toBeDeleted);
+    console.log(benchmark, "Benchmark");
+    toBeDeleted.forEach((value) => {
+      setBenchmark((prev) => prev.filter((element) => element._id !== value));
     });
-    setIsMultiDeleteButton(false);
-    checkall.checked = false;
+    // checkall.checked = false;
   };
 
-  const deleteCheckbox = () => {
+  const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
+    console.log("id", id);
     ele.length > 0
       ? setIsMultiDeleteButton(true)
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
-
+  const [toBeDeleted, setToBeDeleted] = useState([]);
   // Column
   const columns = useMemo(
     () => [
       {
+        Header: (
+          <input
+            type="checkbox"
+            id="checkBoxAll"
+            className="form-check-input"
+            onClick={() => checkedAll()}
+          />
+        ),
+
         Cell: (cellProps) => {
+          const handleCheckboxChange = () => {
+            const isChecked = toBeDeleted.includes(cellProps.row.original._id);
+            if (isChecked) {
+              setToBeDeleted((prevToBeDeleted) =>
+                prevToBeDeleted.filter(
+                  (id) => id !== cellProps.row.original._id
+                )
+              );
+            } else {
+              setToBeDeleted((prevToBeDeleted) => [
+                ...prevToBeDeleted,
+                cellProps.row.original._id,
+              ]);
+            }
+            deleteCheckbox();
+          };
+
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original._id}
-              onChange={() => deleteCheckbox()}
+              value={cellProps.row.original}
+              onBlur={() => {
+                setToBeDeleted((prevToBeDeleted) => [
+                  ...prevToBeDeleted,
+                  cellProps.row.original._id,
+                ]);
+              }}
+              onChange={handleCheckboxChange}
             />
           );
         },
@@ -437,7 +479,7 @@ const BenchmarkAdmin = () => {
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
           <h1>
-            Benchmarking `<span className="fs-5">Admin</span>
+            Benchmarking <span className="fs-5">Admin</span>
           </h1>
           <p style={{ color: "#BEC887" }}>
             This is a page where users can take self-assessment questionnaires
@@ -447,11 +489,11 @@ const BenchmarkAdmin = () => {
             the user to view their score and their benchmark results
           </p>
         </div>
-        <Col xxl={9} className="m-auto">
-          <Col className="d-flex justify-content-between mt-0 p-5 pt-3 pb-2"></Col>
+        <Col xxl={12}>
+          <Col className="d-flex justify-content-between mt-4 p-5 pt-3 pb-2"></Col>
           <Row>
-            <Col xxl={9}>
-              <Card id="contactList">
+            <Col xxl={12}>
+              <Card id="contactList" style={{ width: "98%" }}>
                 <CardBody className="pt-0">
                   <div>
                     {benchmark?.length >= 0 ? (
@@ -460,7 +502,7 @@ const BenchmarkAdmin = () => {
                         data={benchmark || []}
                         isGlobalFilter={true}
                         isAddUserList={false}
-                        isFilterA={true}
+                        isFilterBenchmarkAction={true}
                         setInfo={setInfo}
                         isFooter={true}
                         isSearchInput={false}
@@ -470,12 +512,24 @@ const BenchmarkAdmin = () => {
                         tableClass="align-middle table-nowrap"
                         theadClass="table-light"
                         handleContactClick={handleContactClicks}
+                        // isBenchmarkingQASearch={true}
+                        SearchPlaceholder="Search"
                         isContactsFilter={false}
-                        SearchPlaceholder={false}
                       />
                     ) : (
                       <Loader error={error} />
                     )}
+                    <Button
+                      onClick={() => {
+                        setBenchmark((prev) =>
+                          prev.filter(
+                            (element) => !toBeDeleted.includes(element._id)
+                          )
+                        );
+                      }}
+                    >
+                      Delete All
+                    </Button>
                   </div>
 
                   <Modal id="showModal" isOpen={modal} toggle={toggle} centered>

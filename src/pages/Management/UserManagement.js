@@ -26,6 +26,7 @@ import {
   Label,
   Modal,
   ModalFooter,
+  Button,
 } from "reactstrap";
 import BreadCrumb from "../../Components/Common/BreadCrumb";
 import DeleteModal from "../../Components/Common/DeleteModal";
@@ -58,18 +59,23 @@ import { Select } from "@mui/material";
 
 const UsersManagement = () => {
   const dispatch = useDispatch();
-  const { userDetail, crmcontacts, isContactCreated, isContactSuccess, error } =
+
+  const { crmcontacts, isContactCreated, isContactSuccess, error } =
     useSelector((state) => ({
       crmcontacts: state.Crm.crmcontacts,
       isContactCreated: state.Crm.isContactCreated,
       isContactSuccess: state.Crm.isContactSuccess,
-
-      userDetail: state.UserDetail.userDetail,
       error: state.Crm.error,
     }));
+  const getAllUsers = () => {
+    getUserDetails()
+      .then((res) => setUserNewDetails(res))
+      .catch((err) => toast.error("Error in getting user"));
+  };
   useEffect(() => {
-    dispatch(getUserDetails());
+    getAllUsers();
   }, []);
+  const [userNewDetails, setUserNewDetails] = useState();
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -293,13 +299,15 @@ const UsersManagement = () => {
     checkall.checked = false;
   };
 
-  const deleteCheckbox = () => {
+  const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
+    console.log("id", id);
     ele.length > 0
       ? setIsMultiDeleteButton(true)
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
+  const [toBeDeleted, setToBeDeleted] = useState([]);
 
   // Column
   const columns = useMemo(
@@ -314,12 +322,35 @@ const UsersManagement = () => {
           />
         ),
         Cell: (cellProps) => {
+          const handleCheckboxChange = () => {
+            const isChecked = toBeDeleted.includes(cellProps.row.original._id);
+            if (isChecked) {
+              setToBeDeleted((prevToBeDeleted) =>
+                prevToBeDeleted.filter(
+                  (id) => id !== cellProps.row.original._id
+                )
+              );
+            } else {
+              setToBeDeleted((prevToBeDeleted) => [
+                ...prevToBeDeleted,
+                cellProps.row.original._id,
+              ]);
+            }
+            deleteCheckbox();
+          };
+
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original._id}
-              onChange={() => deleteCheckbox()}
+              value={cellProps.row.original}
+              onBlur={() => {
+                setToBeDeleted((prevToBeDeleted) => [
+                  ...prevToBeDeleted,
+                  cellProps.row.original._id,
+                ]);
+              }}
+              onChange={handleCheckboxChange}
             />
           );
         },
@@ -513,14 +544,14 @@ const UsersManagement = () => {
               // setInfo(contactData);
             }}
           >
-            <Col xxl={9}>
+            <Col xxl={12}>
               <Card id="contactList">
                 <CardBody className="pt-0">
                   <div>
-                    {userDetail.length >= 0 ? (
+                    {userNewDetails?.length >= 0 ? (
                       <TableContainer
                         columns={columns}
-                        data={userDetail || []}
+                        data={userNewDetails || []}
                         isGlobalFilter={true}
                         isAddUserList={false}
                         isFooter={true}
@@ -537,438 +568,19 @@ const UsersManagement = () => {
                     ) : (
                       <Loader error={error} />
                     )}
-                  </div>
-                  <Modal id="showModal" isOpen={modal} toggle={toggle} centered>
-                    <ModalHeader className="bg-soft-info p-3" toggle={toggle}>
-                      {!!isEdit ? "Edit Contact" : "Add Contact"}
-                    </ModalHeader>
-
-                    <Form
-                      className="tablelist-form"
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        validation.handleSubmit();
-                        return false;
+                    <Button
+                      onClick={() => {
+                        setUserNewDetails((prev) =>
+                          prev.filter(
+                            (element) => !toBeDeleted.includes(element._id)
+                          )
+                        );
                       }}
                     >
-                      <ModalBody>
-                        <Input type="hidden" id="id-field" />
-                        <Row className="g-3">
-                          <Col lg={12}>
-                            <div className="text-center">
-                              <div className="position-relative d-inline-block">
-                                <div className="position-absolute  bottom-0 end-0">
-                                  <Label
-                                    htmlFor="customer-image-input"
-                                    className="mb-0"
-                                  >
-                                    <div className="avatar-xs cursor-pointer">
-                                      <div className="avatar-title bg-light border rounded-circle text-muted">
-                                        <i className="ri-image-fill"></i>
-                                      </div>
-                                    </div>
-                                  </Label>
-                                  <Input
-                                    className="form-control d-none"
-                                    id="customer-image-input"
-                                    type="file"
-                                    accept="image/png, image/gif, image/jpeg"
-                                    onChange={validation.handleChange}
-                                    onBlur={validation.handleBlur}
-                                    value={validation.values.img || ""}
-                                    invalid={
-                                      validation.touched.img &&
-                                      validation.errors.img
-                                        ? true
-                                        : false
-                                    }
-                                  />
-                                </div>
-                                <div className="avatar-lg p-1">
-                                  <div className="avatar-title bg-light rounded-circle">
-                                    <img
-                                      src={validation.values.img}
-                                      alt="dummyImg"
-                                      id="customer-img"
-                                      className="avatar-md rounded-circle object-cover"
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div>
-                              <Label
-                                htmlFor="name-field"
-                                className="form-label"
-                              >
-                                Name
-                              </Label>
-                              <Input
-                                name="name"
-                                id="customername-field"
-                                className="form-control"
-                                placeholder="Enter Name"
-                                type="text"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.name || ""}
-                                invalid={
-                                  validation.touched.name &&
-                                  validation.errors.name
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.name &&
-                              validation.errors.name ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.name}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="company_name-field"
-                                className="form-label"
-                              >
-                                Company Name
-                              </Label>
-                              <Input
-                                name="company"
-                                id="company_name-field"
-                                className="form-control"
-                                placeholder="Enter Company Name"
-                                type="text"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.company || ""}
-                                invalid={
-                                  validation.touched.company &&
-                                  validation.errors.company
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.company &&
-                              validation.errors.company ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.company}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="designation-field"
-                                className="form-label"
-                              >
-                                Designation
-                              </Label>
-
-                              <Input
-                                name="designation"
-                                id="designation-field"
-                                className="form-control"
-                                placeholder="Enter Designation"
-                                type="text"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.designation || ""}
-                                invalid={
-                                  validation.touched.designation &&
-                                  validation.errors.designation
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.designation &&
-                              validation.errors.designation ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.designation}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="email_id-field"
-                                className="form-label"
-                              >
-                                Email ID
-                              </Label>
-
-                              <Input
-                                name="email"
-                                id="email_id-field"
-                                className="form-control"
-                                placeholder="Enter Email"
-                                type="text"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.email || ""}
-                                invalid={
-                                  validation.touched.email &&
-                                  validation.errors.email
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.email &&
-                              validation.errors.email ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.email}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                          <Col lg={6}>
-                            <div>
-                              <Label
-                                htmlFor="phone-field"
-                                className="form-label"
-                              >
-                                Phone
-                              </Label>
-
-                              <Input
-                                name="phone"
-                                id="phone-field"
-                                className="form-control"
-                                placeholder="Enter Phone No."
-                                type="text"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.phone || ""}
-                                invalid={
-                                  validation.touched.phone &&
-                                  validation.errors.phone
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.phone &&
-                              validation.errors.phone ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.phone}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                          <Col lg={6}>
-                            <div>
-                              <Label
-                                htmlFor="leadScore-field"
-                                className="form-label"
-                              >
-                                Lead Score
-                              </Label>
-
-                              <Input
-                                name="leadScore"
-                                id="leadScore-field"
-                                className="form-control"
-                                placeholder="Enter Lead Score"
-                                type="text"
-                                validate={{
-                                  required: { value: true },
-                                }}
-                                onChange={validation.handleChange}
-                                onBlur={validation.handleBlur}
-                                value={validation.values.leadScore || ""}
-                                invalid={
-                                  validation.touched.leadScore &&
-                                  validation.errors.leadScore
-                                    ? true
-                                    : false
-                                }
-                              />
-                              {validation.touched.leadScore &&
-                              validation.errors.leadScore ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.leadScore}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                          <Col lg={12}>
-                            <div>
-                              <Label
-                                htmlFor="taginput-choices"
-                                className="form-label font-size-13 text-muted"
-                              >
-                                Tags
-                              </Label>
-                              <Select
-                                isMulti
-                                value={tag}
-                                onChange={(e) => {
-                                  handlestag(e);
-                                }}
-                                className="mb-0"
-                                options={tags}
-                                id="taginput-choices"
-                              ></Select>
-
-                              {validation.touched.tags &&
-                              validation.errors.tags ? (
-                                <FormFeedback type="invalid">
-                                  {validation.errors.tags}
-                                </FormFeedback>
-                              ) : null}
-                            </div>
-                          </Col>
-                        </Row>
-                      </ModalBody>
-                      <ModalFooter>
-                        <div className="hstack gap-2 justify-content-end">
-                          <button
-                            type="button"
-                            className="btn btn-light"
-                            onClick={() => {
-                              setModal(false);
-                            }}
-                          >
-                            {" "}
-                            Close{" "}
-                          </button>
-                          <button
-                            type="submit"
-                            className="btn btn-success"
-                            id="add-btn"
-                          >
-                            {!!isEdit ? "Update" : "Add Contact"}{" "}
-                          </button>
-                        </div>
-                      </ModalFooter>
-                    </Form>
-                  </Modal>
+                      Delete All
+                    </Button>
+                  </div>
                   <ToastContainer closeButton={false} limit={1} />
-                </CardBody>
-              </Card>
-            </Col>
-
-            <Col xxl={3}>
-              <Card id="contact-view-detail">
-                <CardBody className="text-center">
-                  <div className="position-relative d-inline-block">
-                    <img
-                      src={avatar}
-                      alt=""
-                      className="avatar-lg rounded-circle img-thumbnail"
-                    />
-                    <span className="contact-active position-absolute rounded-circle bg-success">
-                      <span className="visually-hidden"></span>
-                    </span>
-                  </div>
-                  <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
-                  <p className="text-muted">
-                    {info.company || "FleetMGT Co. Z"}
-                  </p>
-                </CardBody>
-                <CardBody>
-                  <div className="table-responsive table-card">
-                    <Table className="table table-borderless mb-0">
-                      <tbody>
-                        <tr>
-                          <td className="fw-medium">Country</td>
-                          <td>UK</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Designation</td>
-                          <td>Global Fleet Manager</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Email ID</td>
-                          <td>{info.email || "tonyanoble@velzon.com"}</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Points</td>
-                          <td>235</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Leaderboard points</td>
-                          <td>{info.leadScore || "154"}</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Area of Expertise</td>
-                          <td>Tracking, Management.</td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </CardBody>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-4">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "40%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">40%</div>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-0">Benchmark progress</h5>
-                    </div>
-                  </div>
-                </CardBody>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-0">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "30%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">30%</div>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-0">
-                        Recommended actions progress
-                      </h5>
-                    </div>
-                  </div>
-                  <div className="d-flex gap-2 ">
-                    <span className="mt-2">Chat</span>
-                    <span className="avatar-xs">
-                      <Link
-                        to="#"
-                        className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                      >
-                        <i className="ri-question-answer-line"></i>
-                      </Link>
-                    </span>
-                  </div>
                 </CardBody>
               </Card>
             </Col>

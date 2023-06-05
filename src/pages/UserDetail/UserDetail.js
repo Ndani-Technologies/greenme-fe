@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Card,
@@ -27,7 +27,7 @@ import Layouts from "../../Layouts";
 import { Icon } from "leaflet";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
-import { updateUser } from "../../slices/thunks";
+import { updateUser, getUserProgress } from "../../slices/thunks";
 import * as Countries from "./Countries";
 import {
   Box,
@@ -43,6 +43,7 @@ const Profile = () => {
   document.title = "Profile | GreenMe";
   const [rightColumn, setRightColumn] = useState(true);
   const [coverPhoto, setCoverPhoto] = useState(progileBg);
+  const [progressPercentage, setProgressPercentage] = useState(0);
 
   const theme = useTheme();
   const [countryName, setCountryName] = React.useState([]);
@@ -54,6 +55,16 @@ const Profile = () => {
 
   const user = useSelector((state) => state.Login.user);
   const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+
+  const getProgressPercentage = async () => {
+    getUserProgress(userObj._id)
+      .then((res) => setProgressPercentage(res))
+      .catch((err) => console.log("error in percentage benchmarking"));
+  };
+
+  useEffect(() => {
+    getProgressPercentage();
+  }, []);
 
   const tabChange = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
@@ -215,11 +226,11 @@ const Profile = () => {
                       className="progress-bar bg-"
                       role="progressbar"
                       style={{ width: "80%" }}
-                      aria-valuenow="30"
+                      aria-valuenow="80%"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >
-                      <div className="label">80%</div>
+                      <div className="label">"80%"</div>
                     </div>
                   </div>
                 </CardBody>
@@ -227,16 +238,22 @@ const Profile = () => {
               <Card>
                 <CardBody>
                   <div className="progress animated-progress custom-progress progress-label mt-4">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "0%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">0%</div>
-                    </div>
+                    {progressPercentage?.percentage >= 0 && (
+                      <div
+                        className="progress-bar bg- "
+                        role="progressbar"
+                        style={{
+                          width: progressPercentage.percentage + "%",
+                        }}
+                        aria-valuenow={progressPercentage.percentage}
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                      >
+                        <div className="label">
+                          {progressPercentage.percentage}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="d-flex align-items-center mb-4 mt-3">
                     <div className="flex-grow-1">
