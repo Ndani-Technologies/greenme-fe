@@ -348,7 +348,7 @@ const RelationModal = ({ modal_grid, setmodal_grid }) => {
                               }
                         }
                       >
-                        Greater Than (>)
+                        Greater Than (>7)
                       </li>
                       <li
                         onClick={() => handleClicks(9)}

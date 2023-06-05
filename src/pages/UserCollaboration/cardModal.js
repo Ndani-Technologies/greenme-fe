@@ -97,7 +97,7 @@ const CategoryModal = ({ modal, setModal, card }) => {
                 </div>
               </div>
               <div className="d-flex align-items-center gap-3">
-                <h6 className="mb-3 mt-3">Areas of Expertise</h6>
+                <h6 className="mb-3 mt-3">{card.Expert}</h6>
                 <span>Fleet management</span>
               </div>
               <div className="d-flex align-items-center gap-3 mb-3">

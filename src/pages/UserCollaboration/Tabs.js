@@ -21,6 +21,7 @@ import { Orgnaization } from "./TabsData";
 import { widgetsActivities, widgetsTasks } from "../../common/data/index";
 import { Link } from "react-router-dom";
 import CategoryModal from "./cardModal";
+import { Box, Select, Slider } from "@mui/material";
 
 const CardsPerPage = [12, 4]; // Number of cards to display per page: [8 cards on first page, 4 cards on second page]
 
@@ -49,7 +50,14 @@ const Tabs = () => {
     setCard(item);
     setModal(true);
   };
+  const [value, setValue] = React.useState([8, 37]);
 
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  function valuetext(value) {
+    return `${value}°C`;
+  }
   return (
     <Col className="p-4 " xxl={12}>
       <h5 className="mb-3 p-3 pb-0">User details</h5>
@@ -77,6 +85,44 @@ const Tabs = () => {
           <TabContent activeTab={justifyTab} className="text-muted">
             <TabPane tabId="1" id="base-justified-home">
               <Row>
+                <div className="d-flex  gap-2">
+                  <div
+                    className="d-flex align-items-center border border-dark p-1 w-25 rounded"
+                    style={{ height: "37px" }}
+                  >
+                    <i className="bx bx-search-alt search-icon"></i>
+                    <input
+                      className="border-0"
+                      placeholder="Search by  Action"
+                      type="text"
+                    />
+                  </div>
+                  <div className="mb-5 w-25">
+                    <select className="form-select mb-3">
+                      <option hidden selected>
+                        Orgnaisation
+                      </option>
+                    </select>
+                  </div>
+                  <div>
+                    <Box sx={{ width: 120 }}>
+                      <Slider
+                        getAriaLabel={() => "Temperature range"}
+                        value={value}
+                        onChange={handleChange}
+                        valueLabelDisplay="auto"
+                        getAriaValueText={valuetext}
+                      />
+                    </Box>
+                  </div>
+                  <div className="mb-5" style={{ width: "145px" }}>
+                    <select className="form-select mb-3">
+                      <option hidden selected>
+                        Country
+                      </option>
+                    </select>
+                  </div>
+                </div>
                 {currentCards.map((item, index) => (
                   <Col
                     xs={12}
@@ -132,6 +178,7 @@ const Tabs = () => {
                   </Col>
                 ))}
               </Row>
+
               {modal && (
                 <CategoryModal modal={modal} setModal={setModal} card={card} />
               )}

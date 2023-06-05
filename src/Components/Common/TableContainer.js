@@ -16,6 +16,7 @@ import {
   ProductsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterCollaboration,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -47,6 +48,7 @@ function GlobalFilter({
   SearchPlaceholder,
   isFilterA,
   isFilterAction,
+  isFilterCollaboration,
   isSearchInput,
 }) {
   const [value, setValue] = React.useState(globalFilter);
@@ -60,7 +62,6 @@ function GlobalFilter({
         <form>
           <Row className="g-3">
             <Col className="d-flex align-items-center justify-content-between w-100">
-
               {true && (
                 <div
                   className={
@@ -221,8 +222,8 @@ const TableContainer = ({
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             isFilterA={isFilterA}
-            isFilterAction={isFilterAction}
             setGlobalFilter={setGlobalFilter}
+            isFilterCollaboration={isFilterCollaboration}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}
             isOrderFilter={isOrderFilter}

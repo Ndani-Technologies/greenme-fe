@@ -30,6 +30,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 2,
@@ -50,6 +51,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 3,
@@ -70,6 +72,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 4,
@@ -90,6 +93,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 5,
@@ -110,6 +114,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 6,
@@ -130,6 +135,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 7,
@@ -150,6 +156,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 8,
@@ -170,6 +177,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 9,
@@ -190,6 +198,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 10,
@@ -210,6 +219,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 11,
@@ -230,6 +240,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 12,
@@ -250,6 +261,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 13,
@@ -270,6 +282,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 14,
@@ -290,6 +303,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 15,
@@ -310,6 +324,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 16,
@@ -330,6 +345,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 17,
@@ -350,6 +366,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
   {
     id: 18,
@@ -370,6 +387,7 @@ export const Cards = [
     discussionPoints: "23",
     collaborationPoints: "10",
     totalPoints: "81",
+    Expert: "Fleet management",
   },
 ];
 export const Orgnaization = [
