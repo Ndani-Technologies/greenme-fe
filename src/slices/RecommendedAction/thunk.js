@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export const getAllRecommendedAction = async () => {
-  let resp = await axios.get(`${process.env.REACT_APP_RA}/actionsteps`);
+  let resp = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
   console.log("get action steps", resp);
   return resp;
 };
 export const getAllRecommendedRelation = async () => {
-  let resp = await axios.get(`${process.env.REACT_APP_RA}/relationships`);
+  let resp = await axios.get(`${process.env.REACT_APP_RA_URL}relationships`);
   console.log("get action relation", resp);
   let answers = "";
   let data = resp.map((value) => {
@@ -31,8 +31,8 @@ export const getAllRecommendedRelation = async () => {
   return data;
 };
 export const createRecommendActionRelation = (data) => {
-  return axios.post(`${process.env.REACT_APP_RA}/relationships`, data);
+  return axios.post(`${process.env.REACT_APP_RA_URL}relationships`, data);
 };
 export const deleteRecommendActionRelation = (id) => {
-  return axios.delete(`${process.env.REACT_APP_RA}/relationships/${id}`);
+  return axios.delete(`${process.env.REACT_APP_RA_URL}relationships/${id}`);
 };
