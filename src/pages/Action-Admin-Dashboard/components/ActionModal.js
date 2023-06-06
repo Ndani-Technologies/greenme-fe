@@ -309,6 +309,7 @@ const ActionModal = ({
       timescaleId: isScaleClick,
       // answerRelationshipId: isRelationshipClick,
       answerRelationshipId: null,
+
     };
     console.log("hanlde submit", mappedData);
     if (title !== "" && description !== "") {
