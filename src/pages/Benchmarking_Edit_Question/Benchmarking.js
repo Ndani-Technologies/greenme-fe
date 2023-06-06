@@ -35,7 +35,6 @@ const Benchmarking = () => {
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
     });
-    debugger;
     const uniqueArr = Array.from(
       new Set(arr.map((item) => item?.titleEng))
     ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));

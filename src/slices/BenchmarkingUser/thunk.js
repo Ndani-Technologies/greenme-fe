@@ -16,7 +16,7 @@ export const getAllBenchmarks = async () => {
       return {
         title: value?.title,
         status: value?.status,
-        completion_level: value?.completionLevel,
+        completion_level: Math.floor(value?.completionLevel),
         country: value?.country,
         start_date: value?.start_date,
         end_data: value?.end_date,
@@ -30,6 +30,7 @@ export const getAllBenchmarks = async () => {
     console.error(error);
   }
 };
+
 export const getSingleBenchmark = async (id) => {
   let resp = await axios.get(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`);
   // let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
@@ -44,22 +45,21 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
-export const updateUserResp =
-  (id, user_resp, history) => async (dispatch, getState) => {
-    // let resp = await axios.patch(
-    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
-    //   { user_resp }
-    // );
-    let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
-      { user_resp }
-    );
-    toast.success("User response submitted successfully!");
+export const updateUserResp = async (id, user_resp, history) => {
+  // let resp = await axios.patch(
+  //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+  //   { user_resp }
+  // );
+  let resp = await axios.patch(
+    `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
+    { user_resp }
+  );
+  toast.success("User response submitted successfully!");
 
-    // Wait for the toast notification to be displayed for a brief duration
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (resp) history("/benchmarking");
-  };
+  // Wait for the toast notification to be displayed for a brief duration
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  if (resp) history("/benchmarking");
+};
 
 export const updateUserRespSave =
   (id, user_resp) => async (dispatch, getState) => {

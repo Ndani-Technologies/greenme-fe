@@ -6,6 +6,8 @@ import { Button, Col, Input } from "reactstrap";
 import { Links } from "./Details";
 import StarsRating from "./StarsRating";
 import { useFormik } from "formik";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const ActionUserDetail = () => {
   const [value, setValue] = useState(1);
 
@@ -77,11 +79,25 @@ const ActionUserDetail = () => {
                 Here you can leave some feedback / experience that you have had.
               </h4>
 
-              <textarea
-                className="w-100 p-2"
-                rows={10}
-                placeholder="Leave us some feed back here"
-              />
+              <div className="ck-editor-reverse">
+                <CKEditor
+                  editor={ClassicEditor}
+                  onChange={(e, editor) => {
+                    const value = editor.getData();
+                    const div = document.createElement("div");
+                    div.innerHTML = value;
+                    const pValue = div.querySelector("p").innerHTML;
+                  }}
+                  class="form-control"
+                  placeholder="Description"
+                  id="floatingTextarea"
+                  style={{
+                    height: "120px",
+                    overflow: "hidden",
+                    backgroundColor: "#dfdfdf",
+                  }}
+                />
+              </div>
               <Button>Send</Button>
             </div>
           </div>

@@ -29,14 +29,8 @@ import { useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { updateUser, getUserProgress } from "../../slices/thunks";
 import * as Countries from "./Countries";
-import {
-  Box,
-  Chip,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  useTheme,
-} from "@mui/material";
+import { Box, Chip, MenuItem, OutlinedInput, useTheme } from "@mui/material";
+import Select from "react-select";
 import { Padding } from "@mui/icons-material";
 
 const Profile = () => {
@@ -62,8 +56,23 @@ const Profile = () => {
       .catch((err) => console.log("error in percentage benchmarking"));
   };
 
+  const [countryOptions, setCountryOptions] = useState([]);
+
+  const SingleOptions = [
+    { value: "Choices 1", label: "Choices 1" },
+    { value: "Choices 2", label: "Choices 2" },
+    { value: "Choices 3", label: "Choices 3" },
+    { value: "Choices 4", label: "Choices 4" },
+  ];
   useEffect(() => {
     getProgressPercentage();
+    const options = Countries.map((country) => {
+      return {
+        value: country.value,
+        label: country.value,
+      };
+    });
+    setCountryOptions(options);
   }, []);
 
   const tabChange = (tab) => {
@@ -113,21 +122,32 @@ const Profile = () => {
     };
   }
 
-  const handleChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setCountryName(typeof value === "string" ? value.split(",") : value, () => {
-      validation.setFieldValue(
-        "otherCountries",
-        countryName.map((country) => country)
-      );
-    });
-  };
+  // const handleChange = (event) => {
+  //   const {
+  //     target: { value },
+  //   } = event;
+  //   setCountryName(typeof value === "string" ? value.split(",") : value, () => {
+  //     validation.setFieldValue(
+  //       "otherCountries",
+  //       countryName.map((country) => country)
+  //     );
+  //   });
+  // };
   const handleCoverPhotoChange = (event) => {
     const file = event.target.files[0];
     setCoverPhoto(URL.createObjectURL(file));
   };
+
+  const [selectedCountries, setSelectedCountries] = useState([]);
+
+  const handleChange = (selectedOptions) => {
+    setSelectedCountries(selectedOptions.map((option) => option.value));
+  };
+
+  // const handleMulti = (selectedOptions) => {
+  //   setSelectedCountries(selectedOptions.map((option) => option.value));
+  // };
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -649,7 +669,111 @@ const Profile = () => {
                               >
                                 Other Countries of Operation
                               </Label>
-                              <Col lg={12}>
+                              // Render the Select component
+                              <Select
+                                value={selectedCountries}
+                                isMulti={true}
+                                onChange={handleChange(selectedCountries)}
+                                options={countryOptions}
+                                sx={{ width: "100%" }}
+                                placeholder=""
+                                style={{ Padding: "1px" }}
+                                labelId="demo-multiple-chip-label"
+                                id="demo-multiple-chip"
+                                input={
+                                  <OutlinedInput
+                                    id="select-multiple-chip"
+                                    label="Chip"
+                                  />
+                                }
+                                renderValue={(selected) => (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: 0.5,
+                                    }}
+                                  >
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} />
+                                    ))}
+                                  </Box>
+                                )}
+                                MenuProps={MenuProps}
+                              />
+                              {/* <Select
+                                                            value={selectedCountries}
+                                                            onChange={() => {
+                                                                handleChange();
+                                                            }}
+                                                            options={countryOptions}
+                                                        /> */}
+                              {/* <Select
+                                value={selectedCountries}
+                                isMulti={true}
+                                onChange={handleChange}
+                                options={countryOptions}
+                                sx={{ width: "100%" }}
+                                placeholder=""
+                                style={{ Padding: "1px" }}
+                                labelId="demo-multiple-chip-label"
+                                id="demo-multiple-chip"
+                                input={
+                                  <OutlinedInput
+                                    id="select-multiple-chip"
+                                    label="Chip"
+                                  />
+                                }
+                                renderValue={(selected) => (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: 0.5,
+                                    }}
+                                  >
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} />
+                                    ))}
+                                  </Box>
+                                )}
+                                MenuProps={MenuProps}
+                              /> */}
+                              {/* <Select
+                                    value={selectedMulti}
+                                    isMulti={true}
+                                    onChange={() => {
+                                      handleMulti();
+                                      handleChange();
+                                    }}
+                                    options={countryName}
+                                    sx={{ width: "100%" }}
+                                    placeholder=""
+                                    style={{ Padding: "1px" }}
+                                    labelId="demo-multiple-chip-label"
+                                    id="demo-multiple-chip"
+                                    input={
+                                      <OutlinedInput
+                                        id="select-multiple-chip"
+                                        label="Chip"
+                                      />
+                                    }
+                                    renderValue={(selected) => (
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          flexWrap: "wrap",
+                                          gap: 0.5,
+                                        }}
+                                      >
+                                        {selected.map((value) => (
+                                          <Chip key={value} label={value} />
+                                        ))}
+                                      </Box>
+                                    )}
+                                    MenuProps={MenuProps}
+                                  /> */}
+                              {/* <Col lg={12}>
                                 <Select
                                   sx={{ width: "100%" }}
                                   placeholder=""
@@ -700,7 +824,7 @@ const Profile = () => {
                                     </MenuItem>
                                   ))}
                                 </Select>
-                              </Col>
+                              </Col> */}
                             </div>
                           </Col>
                           <Col lg={12}>

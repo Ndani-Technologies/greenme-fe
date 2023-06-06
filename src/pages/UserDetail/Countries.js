@@ -3,7 +3,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff2",
     },
-    name: "Algeria",
+    value: "Algeria",
     code: "DZ",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -13,7 +13,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff3",
     },
-    name: "Albania",
+    value: "Albania",
     code: "AL",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -23,7 +23,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff4",
     },
-    name: "Afghanistan",
+    value: "Afghanistan",
     code: "AF",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -33,7 +33,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff5",
     },
-    name: "Angola",
+    value: "Angola",
     code: "AO",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -43,7 +43,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff6",
     },
-    name: "Andorra",
+    value: "Andorra",
     code: "AD",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -53,7 +53,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff7",
     },
-    name: "American Samoa",
+    value: "American Samoa",
     code: "AS",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -63,7 +63,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff8",
     },
-    name: "Antarctica",
+    value: "Antarctica",
     code: "AQ",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -73,7 +73,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ff9",
     },
-    name: "Anguilla",
+    value: "Anguilla",
     code: "AI",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -83,7 +83,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ffa",
     },
-    name: "Armenia",
+    value: "Armenia",
     code: "AM",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -93,7 +93,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ffb",
     },
-    name: "Argentina",
+    value: "Argentina",
     code: "AR",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -103,7 +103,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ffc",
     },
-    name: "Antigua and Barbuda",
+    value: "Antigua and Barbuda",
     code: "AG",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -113,7 +113,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ffd",
     },
-    name: "Australia",
+    value: "Australia",
     code: "AU",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -123,7 +123,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139ffe",
     },
-    name: "Aruba",
+    value: "Aruba",
     code: "AW",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -133,7 +133,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f2139fff",
     },
-    name: "Austria",
+    value: "Austria",
     code: "AT",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -143,7 +143,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a000",
     },
-    name: "Azerbaijan",
+    value: "Azerbaijan",
     code: "AZ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -153,7 +153,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a001",
     },
-    name: "Bahamas",
+    value: "Bahamas",
     code: "BS",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -163,7 +163,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a002",
     },
-    name: "Åland Islands",
+    value: "Åland Islands",
     code: "AX",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -173,7 +173,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a003",
     },
-    name: "Barbados",
+    value: "Barbados",
     code: "BB",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -183,7 +183,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a004",
     },
-    name: "Belarus",
+    value: "Belarus",
     code: "BY",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -193,7 +193,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a005",
     },
-    name: "Belize",
+    value: "Belize",
     code: "BZ",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -203,7 +203,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a006",
     },
-    name: "Belgium",
+    value: "Belgium",
     code: "BE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -213,7 +213,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a007",
     },
-    name: "Benin",
+    value: "Benin",
     code: "BJ",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -223,7 +223,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a008",
     },
-    name: "Bermuda",
+    value: "Bermuda",
     code: "BM",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -233,7 +233,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a009",
     },
-    name: "Bangladesh",
+    value: "Bangladesh",
     code: "BD",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -243,7 +243,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a00a",
     },
-    name: "Bahrain",
+    value: "Bahrain",
     code: "BH",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -253,7 +253,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a00b",
     },
-    name: "Botswana",
+    value: "Botswana",
     code: "BW",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -263,7 +263,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a00c",
     },
-    name: "Bouvet Island",
+    value: "Bouvet Island",
     code: "BV",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -273,7 +273,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a00d",
     },
-    name: "Brazil",
+    value: "Brazil",
     code: "BR",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -283,7 +283,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a00e",
     },
-    name: "Bolivia",
+    value: "Bolivia",
     code: "BO",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -293,7 +293,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a00f",
     },
-    name: "British Virgin Islands",
+    value: "British Virgin Islands",
     code: "IO",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -303,7 +303,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a010",
     },
-    name: "Bosnia and Herzegovina",
+    value: "Bosnia and Herzegovina",
     code: "BA",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -313,7 +313,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a011",
     },
-    name: "Bulgaria",
+    value: "Bulgaria",
     code: "BG",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -323,7 +323,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a012",
     },
-    name: "Brunei Darussalam",
+    value: "Brunei Darussalam",
     code: "BN",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -333,7 +333,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a013",
     },
-    name: "Bhutan",
+    value: "Bhutan",
     code: "BT",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -343,7 +343,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a014",
     },
-    name: "Cameroon",
+    value: "Cameroon",
     code: "CM",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -353,7 +353,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a015",
     },
-    name: "Cambodia",
+    value: "Cambodia",
     code: "KH",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -363,7 +363,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a016",
     },
-    name: "Canada",
+    value: "Canada",
     code: "CA",
     region: {
       $oid: "5d9c54ea55f83417e0174376",
@@ -373,7 +373,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a017",
     },
-    name: "Burkina Faso",
+    value: "Burkina Faso",
     code: "BF",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -383,7 +383,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a018",
     },
-    name: "Cape Verde",
+    value: "Cape Verde",
     code: "CV",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -393,7 +393,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a019",
     },
-    name: "Cayman Islands",
+    value: "Cayman Islands",
     code: "KY",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -403,7 +403,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a01a",
     },
-    name: "Central African Republic",
+    value: "Central African Republic",
     code: "CF",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -413,7 +413,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a01b",
     },
-    name: "Chad",
+    value: "Chad",
     code: "TD",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -423,7 +423,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a01c",
     },
-    name: "Burundi",
+    value: "Burundi",
     code: "BI",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -433,7 +433,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a01d",
     },
-    name: "Christmas Island",
+    value: "Christmas Island",
     code: "CX",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -443,7 +443,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a01e",
     },
-    name: "Cocos (Keeling) Islands",
+    value: "Cocos (Keeling) Islands",
     code: "CC",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -453,7 +453,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a01f",
     },
-    name: "China",
+    value: "China",
     code: "CN",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -463,7 +463,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a020",
     },
-    name: "Colombia",
+    value: "Colombia",
     code: "CO",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -473,7 +473,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a021",
     },
-    name: "Comoros",
+    value: "Comoros",
     code: "KM",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -483,7 +483,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a022",
     },
-    name: "Congo, The Democratic Republic of the",
+    value: "Congo, The Democratic Republic of the",
     code: "CD",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -493,7 +493,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a023",
     },
-    name: "Congo",
+    value: "Congo",
     code: "CG",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -503,7 +503,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a024",
     },
-    name: "Cook Islands",
+    value: "Cook Islands",
     code: "CK",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -513,7 +513,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a025",
     },
-    name: "Chile",
+    value: "Chile",
     code: "CL",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -523,7 +523,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a026",
     },
-    name: "Costa Rica",
+    value: "Costa Rica",
     code: "CR",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -533,7 +533,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a027",
     },
-    name: "Cuba",
+    value: "Cuba",
     code: "CU",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -543,7 +543,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a028",
     },
-    name: "Cote 'Ivoire",
+    value: "Cote 'Ivoire",
     code: "CI",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -553,7 +553,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a029",
     },
-    name: "Czech Republic",
+    value: "Czech Republic",
     code: "CZ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -563,7 +563,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a02a",
     },
-    name: "Denmark",
+    value: "Denmark",
     code: "DK",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -573,7 +573,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a02b",
     },
-    name: "Djibouti",
+    value: "Djibouti",
     code: "DJ",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -583,7 +583,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a02c",
     },
-    name: "Dominica",
+    value: "Dominica",
     code: "DM",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -593,7 +593,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a02d",
     },
-    name: "Dominican Republic",
+    value: "Dominican Republic",
     code: "DO",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -603,7 +603,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a02e",
     },
-    name: "Croatia",
+    value: "Croatia",
     code: "HR",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -613,7 +613,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a02f",
     },
-    name: "El Salvador",
+    value: "El Salvador",
     code: "SV",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -623,7 +623,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a030",
     },
-    name: "Egypt",
+    value: "Egypt",
     code: "EG",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -633,7 +633,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a031",
     },
-    name: "Eritrea",
+    value: "Eritrea",
     code: "ER",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -643,7 +643,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a032",
     },
-    name: "Equatorial Guinea",
+    value: "Equatorial Guinea",
     code: "GQ",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -653,7 +653,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a033",
     },
-    name: "Estonia",
+    value: "Estonia",
     code: "EE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -663,7 +663,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a034",
     },
-    name: "Ethiopia",
+    value: "Ethiopia",
     code: "ET",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -673,7 +673,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a035",
     },
-    name: "Falkland Islands (Malvinas)",
+    value: "Falkland Islands (Malvinas)",
     code: "FK",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -683,7 +683,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a036",
     },
-    name: "Fiji",
+    value: "Fiji",
     code: "FJ",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -693,7 +693,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a037",
     },
-    name: "Finland",
+    value: "Finland",
     code: "FI",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -703,7 +703,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a038",
     },
-    name: "Faroe Islands",
+    value: "Faroe Islands",
     code: "FO",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -713,7 +713,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a039",
     },
-    name: "France",
+    value: "France",
     code: "FR",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -723,7 +723,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a03a",
     },
-    name: "French Guiana",
+    value: "French Guiana",
     code: "GF",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -733,7 +733,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a03b",
     },
-    name: "Cyprus",
+    value: "Cyprus",
     code: "CY",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -743,7 +743,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a03c",
     },
-    name: "French Polynesia",
+    value: "French Polynesia",
     code: "PF",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -753,7 +753,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a03d",
     },
-    name: "French Southern Territories",
+    value: "French Southern Territories",
     code: "TF",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -763,7 +763,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a03e",
     },
-    name: "Georgia",
+    value: "Georgia",
     code: "GE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -773,7 +773,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a03f",
     },
-    name: "Gambia",
+    value: "Gambia",
     code: "GM",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -783,7 +783,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a040",
     },
-    name: "Ghana",
+    value: "Ghana",
     code: "GH",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -793,7 +793,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a041",
     },
-    name: "Gibraltar",
+    value: "Gibraltar",
     code: "GI",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -803,7 +803,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a042",
     },
-    name: "Germany",
+    value: "Germany",
     code: "DE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -813,7 +813,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a043",
     },
-    name: "Gabon",
+    value: "Gabon",
     code: "GA",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -823,7 +823,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a044",
     },
-    name: "Greece",
+    value: "Greece",
     code: "GR",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -833,7 +833,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a045",
     },
-    name: "Greenland",
+    value: "Greenland",
     code: "GL",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -843,7 +843,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a046",
     },
-    name: "Ecuador",
+    value: "Ecuador",
     code: "EC",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -853,7 +853,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a047",
     },
-    name: "Guadeloupe",
+    value: "Guadeloupe",
     code: "GP",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -863,7 +863,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a048",
     },
-    name: "Guatemala",
+    value: "Guatemala",
     code: "GT",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -873,7 +873,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a049",
     },
-    name: "Guernsey",
+    value: "Guernsey",
     code: "GG",
     region: {
       $oid: "5da492c31189e14c0478fd5a",
@@ -883,7 +883,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a04a",
     },
-    name: "Guam",
+    value: "Guam",
     code: "GU",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -893,7 +893,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a04b",
     },
-    name: "Guinea",
+    value: "Guinea",
     code: "GN",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -903,7 +903,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a04c",
     },
-    name: "Guinea-Bissau",
+    value: "Guinea-Bissau",
     code: "GW",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -913,7 +913,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a04d",
     },
-    name: "Haiti",
+    value: "Haiti",
     code: "HT",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -923,7 +923,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a04e",
     },
-    name: "Guyana",
+    value: "Guyana",
     code: "GY",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -933,7 +933,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a04f",
     },
-    name: "Holy See (Vatican City State)",
+    value: "Holy See (Vatican City State)",
     code: "VA",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -943,7 +943,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a050",
     },
-    name: "Grenada",
+    value: "Grenada",
     code: "GD",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -953,7 +953,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a051",
     },
-    name: "Hong Kong SAR, China",
+    value: "Hong Kong SAR, China",
     code: "HK",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -963,7 +963,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a052",
     },
-    name: "Hungary",
+    value: "Hungary",
     code: "HU",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -973,7 +973,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a053",
     },
-    name: "Honduras",
+    value: "Honduras",
     code: "HN",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -983,7 +983,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a054",
     },
-    name: "Iceland",
+    value: "Iceland",
     code: "IS",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -993,7 +993,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a055",
     },
-    name: "India",
+    value: "India",
     code: "IN",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -1003,7 +1003,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a056",
     },
-    name: "Indonesia",
+    value: "Indonesia",
     code: "ID",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1013,7 +1013,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a057",
     },
-    name: "Heard Island and Mcdonald Islands",
+    value: "Heard Island and Mcdonald Islands",
     code: "HM",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -1023,7 +1023,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a058",
     },
-    name: "Isle of Man",
+    value: "Isle of Man",
     code: "IM",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1033,7 +1033,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a059",
     },
-    name: "Israel",
+    value: "Israel",
     code: "IL",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1043,7 +1043,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a05a",
     },
-    name: "Ireland",
+    value: "Ireland",
     code: "IE",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1053,7 +1053,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a05b",
     },
-    name: "Jamaica",
+    value: "Jamaica",
     code: "JM",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1063,7 +1063,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a05c",
     },
-    name: "Italy",
+    value: "Italy",
     code: "IT",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1073,7 +1073,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a05d",
     },
-    name: "Japan",
+    value: "Japan",
     code: "JP",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1083,7 +1083,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a05e",
     },
-    name: "Jersey",
+    value: "Jersey",
     code: "JE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1093,7 +1093,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a05f",
     },
-    name: "Iran, Islamic Republic Of",
+    value: "Iran, Islamic Republic Of",
     code: "IR",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1103,7 +1103,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a060",
     },
-    name: "Iraq",
+    value: "Iraq",
     code: "IQ",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1113,7 +1113,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a061",
     },
-    name: "Jordan",
+    value: "Jordan",
     code: "JO",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1123,7 +1123,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a062",
     },
-    name: "Kenya",
+    value: "Kenya",
     code: "KE",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1133,7 +1133,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a063",
     },
-    name: "Kiribati",
+    value: "Kiribati",
     code: "KI",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1143,7 +1143,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a064",
     },
-    name: "Korea, Republic of",
+    value: "Korea, Republic of",
     code: "KR",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1153,7 +1153,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a065",
     },
-    name: "Korea, Democratic People's Republic of",
+    value: "Korea, Democratic People's Republic of",
     code: "KP",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1163,7 +1163,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a066",
     },
-    name: "Kuwait",
+    value: "Kuwait",
     code: "KW",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1173,7 +1173,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a067",
     },
-    name: "Kyrgyzstan",
+    value: "Kyrgyzstan",
     code: "KG",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1183,7 +1183,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a068",
     },
-    name: "Kazakhstan",
+    value: "Kazakhstan",
     code: "KZ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1193,7 +1193,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a069",
     },
-    name: "Lesotho",
+    value: "Lesotho",
     code: "LS",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1203,7 +1203,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a06a",
     },
-    name: "Lebanon",
+    value: "Lebanon",
     code: "LB",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1213,7 +1213,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a06b",
     },
-    name: "Liberia",
+    value: "Liberia",
     code: "LR",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1223,7 +1223,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a06c",
     },
-    name: "Libya",
+    value: "Libya",
     code: "LY",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1233,7 +1233,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a06d",
     },
-    name: "Lao People's Democratic Republic",
+    value: "Lao People's Democratic Republic",
     code: "LA",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1243,7 +1243,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a06e",
     },
-    name: "Lithuania",
+    value: "Lithuania",
     code: "LT",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1253,7 +1253,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a06f",
     },
-    name: "Latvia",
+    value: "Latvia",
     code: "LV",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1263,7 +1263,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a070",
     },
-    name: "Madagascar",
+    value: "Madagascar",
     code: "MG",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1273,7 +1273,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a071",
     },
-    name: "Luxembourg",
+    value: "Luxembourg",
     code: "LU",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1283,7 +1283,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a072",
     },
-    name: "Malaysia",
+    value: "Malaysia",
     code: "MY",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1293,7 +1293,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a073",
     },
-    name: "Maldives",
+    value: "Maldives",
     code: "MV",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -1303,7 +1303,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a074",
     },
-    name: "Malawi",
+    value: "Malawi",
     code: "MW",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1313,7 +1313,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a075",
     },
-    name: "Malta",
+    value: "Malta",
     code: "MT",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1323,7 +1323,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a076",
     },
-    name: "Marshall Islands",
+    value: "Marshall Islands",
     code: "MH",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1333,7 +1333,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a077",
     },
-    name: "Martinique",
+    value: "Martinique",
     code: "MQ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1343,7 +1343,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a078",
     },
-    name: "Mauritania",
+    value: "Mauritania",
     code: "MR",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1353,7 +1353,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a079",
     },
-    name: "Mauritius",
+    value: "Mauritius",
     code: "MU",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1363,7 +1363,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a07a",
     },
-    name: "Mayotte",
+    value: "Mayotte",
     code: "YT",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1373,7 +1373,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a07b",
     },
-    name: "Mexico",
+    value: "Mexico",
     code: "MX",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1383,7 +1383,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a07c",
     },
-    name: "Micronesia, Federated States of",
+    value: "Micronesia, Federated States of",
     code: "FM",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1393,7 +1393,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a07d",
     },
-    name: "Macao SAR, China",
+    value: "Macao SAR, China",
     code: "MO",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1403,7 +1403,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a07e",
     },
-    name: "Mali",
+    value: "Mali",
     code: "ML",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1413,7 +1413,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a07f",
     },
-    name: "Liechtenstein",
+    value: "Liechtenstein",
     code: "LI",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1423,7 +1423,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a080",
     },
-    name: "Monaco",
+    value: "Monaco",
     code: "MC",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1433,7 +1433,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a081",
     },
-    name: "Moldova, Republic of",
+    value: "Moldova, Republic of",
     code: "MD",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1443,7 +1443,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a082",
     },
-    name: "Montenegro",
+    value: "Montenegro",
     code: "ME",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1453,7 +1453,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a083",
     },
-    name: "Montserrat",
+    value: "Montserrat",
     code: "MS",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1463,7 +1463,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a084",
     },
-    name: "Mongolia",
+    value: "Mongolia",
     code: "MN",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1473,7 +1473,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a085",
     },
-    name: "Morocco",
+    value: "Morocco",
     code: "MA",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1483,7 +1483,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a086",
     },
-    name: "Nauru",
+    value: "Nauru",
     code: "NR",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1493,7 +1493,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a087",
     },
-    name: "Namibia",
+    value: "Namibia",
     code: "NA",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1503,7 +1503,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a088",
     },
-    name: "Netherlands",
+    value: "Netherlands",
     code: "NL",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1513,7 +1513,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a089",
     },
-    name: "Netherlands Antilles",
+    value: "Netherlands Antilles",
     code: "AN",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1523,7 +1523,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a08a",
     },
-    name: "New Caledonia",
+    value: "New Caledonia",
     code: "NC",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1533,7 +1533,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a08b",
     },
-    name: "Nepal",
+    value: "Nepal",
     code: "NP",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -1543,7 +1543,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a08c",
     },
-    name: "Mozambique",
+    value: "Mozambique",
     code: "MZ",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1553,7 +1553,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a08d",
     },
-    name: "Niger",
+    value: "Niger",
     code: "NE",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1563,7 +1563,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a08e",
     },
-    name: "Nigeria",
+    value: "Nigeria",
     code: "NG",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1573,7 +1573,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a08f",
     },
-    name: "Niue",
+    value: "Niue",
     code: "NU",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1583,7 +1583,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a090",
     },
-    name: "Nicaragua",
+    value: "Nicaragua",
     code: "NI",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1593,7 +1593,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a091",
     },
-    name: "Norfolk Island",
+    value: "Norfolk Island",
     code: "NF",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1603,7 +1603,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a092",
     },
-    name: "North Macedonia",
+    value: "North Macedonia",
     code: "MK",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1613,7 +1613,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a093",
     },
-    name: "Norway",
+    value: "Norway",
     code: "NO",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1623,7 +1623,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a094",
     },
-    name: "Northern Mariana Islands",
+    value: "Northern Mariana Islands",
     code: "MP",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1633,7 +1633,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a095",
     },
-    name: "New Zealand",
+    value: "New Zealand",
     code: "NZ",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1643,7 +1643,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a096",
     },
-    name: "Oman",
+    value: "Oman",
     code: "OM",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1653,7 +1653,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a097",
     },
-    name: "Myanmar",
+    value: "Myanmar",
     code: "MM",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1663,7 +1663,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a098",
     },
-    name: "Palestinian Territory, Occupied",
+    value: "Palestinian Territory, Occupied",
     code: "PS",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1673,7 +1673,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a099",
     },
-    name: "Palau",
+    value: "Palau",
     code: "PW",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1683,7 +1683,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a09a",
     },
-    name: "Panama",
+    value: "Panama",
     code: "PA",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1693,7 +1693,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a09b",
     },
-    name: "Papua New Guinea",
+    value: "Papua New Guinea",
     code: "PG",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1703,7 +1703,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a09c",
     },
-    name: "Paraguay",
+    value: "Paraguay",
     code: "PY",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1713,7 +1713,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a09d",
     },
-    name: "Peru",
+    value: "Peru",
     code: "PE",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1723,7 +1723,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a09e",
     },
-    name: "Pakistan",
+    value: "Pakistan",
     code: "PK",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -1733,7 +1733,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a09f",
     },
-    name: "Philippines",
+    value: "Philippines",
     code: "PH",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1743,7 +1743,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a0",
     },
-    name: "Portugal",
+    value: "Portugal",
     code: "PT",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1753,7 +1753,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a1",
     },
-    name: "Puerto Rico",
+    value: "Puerto Rico",
     code: "PR",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1763,7 +1763,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a2",
     },
-    name: "Poland",
+    value: "Poland",
     code: "PL",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1773,7 +1773,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a3",
     },
-    name: "Qatar",
+    value: "Qatar",
     code: "QA",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1783,7 +1783,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a4",
     },
-    name: "Reunion",
+    value: "Reunion",
     code: "RE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1793,7 +1793,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a5",
     },
-    name: "Romania",
+    value: "Romania",
     code: "RO",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1803,7 +1803,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a6",
     },
-    name: "Russian Federation",
+    value: "Russian Federation",
     code: "RU",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1813,7 +1813,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a7",
     },
-    name: "Rwanda",
+    value: "Rwanda",
     code: "RW",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1823,7 +1823,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a8",
     },
-    name: "Pitcairn",
+    value: "Pitcairn",
     code: "PN",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1833,7 +1833,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0a9",
     },
-    name: "Saint Helena",
+    value: "Saint Helena",
     code: "SH",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1843,7 +1843,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0aa",
     },
-    name: "Saint Kitts and Nevis",
+    value: "Saint Kitts and Nevis",
     code: "KN",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1853,7 +1853,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ab",
     },
-    name: "Saint Lucia",
+    value: "Saint Lucia",
     code: "LC",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1863,7 +1863,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ac",
     },
-    name: "Saint Pierre and Miquelon",
+    value: "Saint Pierre and Miquelon",
     code: "PM",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1873,7 +1873,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ad",
     },
-    name: "Saint Vincent and the Grenadines",
+    value: "Saint Vincent and the Grenadines",
     code: "VC",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -1883,7 +1883,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ae",
     },
-    name: "San Marino",
+    value: "San Marino",
     code: "SM",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1893,7 +1893,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0af",
     },
-    name: "Samoa",
+    value: "Samoa",
     code: "WS",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1903,7 +1903,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b0",
     },
-    name: "Sao Tome and Principe",
+    value: "Sao Tome and Principe",
     code: "ST",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1913,7 +1913,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b1",
     },
-    name: "Serbia",
+    value: "Serbia",
     code: "CS",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1923,7 +1923,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b2",
     },
-    name: "Seychelles",
+    value: "Seychelles",
     code: "SC",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1933,7 +1933,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b3",
     },
-    name: "Sierra Leone",
+    value: "Sierra Leone",
     code: "SL",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1943,7 +1943,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b4",
     },
-    name: "Saudi Arabia",
+    value: "Saudi Arabia",
     code: "SA",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -1953,7 +1953,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b5",
     },
-    name: "Slovakia",
+    value: "Slovakia",
     code: "SK",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1963,7 +1963,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b6",
     },
-    name: "Singapore",
+    value: "Singapore",
     code: "SG",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -1973,7 +1973,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b7",
     },
-    name: "Slovenia",
+    value: "Slovenia",
     code: "SI",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -1983,7 +1983,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b8",
     },
-    name: "Senegal",
+    value: "Senegal",
     code: "SN",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -1993,7 +1993,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0b9",
     },
-    name: "Solomon Islands",
+    value: "Solomon Islands",
     code: "SB",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2003,7 +2003,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ba",
     },
-    name: "Somalia",
+    value: "Somalia",
     code: "SO",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2013,7 +2013,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0bb",
     },
-    name: "South Georgia and the South Sandwich Islands",
+    value: "South Georgia and the South Sandwich Islands",
     code: "GS",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2023,7 +2023,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0bc",
     },
-    name: "Spain",
+    value: "Spain",
     code: "ES",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2033,7 +2033,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0bd",
     },
-    name: "South Sudan",
+    value: "South Sudan",
     code: "SS",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2043,7 +2043,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0be",
     },
-    name: "Sri Lanka",
+    value: "Sri Lanka",
     code: "LK",
     region: {
       $oid: "5d9c54f455f83417e0174377",
@@ -2053,7 +2053,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0bf",
     },
-    name: "Sudan",
+    value: "Sudan",
     code: "SD",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2063,7 +2063,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c0",
     },
-    name: "Suriname",
+    value: "Suriname",
     code: "SR",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2073,7 +2073,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c1",
     },
-    name: "South Africa",
+    value: "South Africa",
     code: "ZA",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2083,7 +2083,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c2",
     },
-    name: "Svalbard and Jan Mayen",
+    value: "Svalbard and Jan Mayen",
     code: "SJ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2093,7 +2093,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c3",
     },
-    name: "Syrian Arab Republic",
+    value: "Syrian Arab Republic",
     code: "SY",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -2103,7 +2103,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c4",
     },
-    name: "Swaziland",
+    value: "Swaziland",
     code: "SZ",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2113,7 +2113,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c5",
     },
-    name: "Taiwan, Province of China",
+    value: "Taiwan, Province of China",
     code: "TW",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2123,7 +2123,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c6",
     },
-    name: "Tajikistan",
+    value: "Tajikistan",
     code: "TJ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2133,7 +2133,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c7",
     },
-    name: "Switzerland",
+    value: "Switzerland",
     code: "CH",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2143,7 +2143,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c8",
     },
-    name: "Tanzania, United Republic of",
+    value: "Tanzania, United Republic of",
     code: "TZ",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2153,7 +2153,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0c9",
     },
-    name: "Thailand",
+    value: "Thailand",
     code: "TH",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2163,7 +2163,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ca",
     },
-    name: "Timor-Leste",
+    value: "Timor-Leste",
     code: "TL",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2173,7 +2173,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0cb",
     },
-    name: "Togo",
+    value: "Togo",
     code: "TG",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2183,7 +2183,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0cc",
     },
-    name: "Tokelau",
+    value: "Tokelau",
     code: "TK",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2193,7 +2193,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0cd",
     },
-    name: "Sweden",
+    value: "Sweden",
     code: "SE",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2203,7 +2203,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0ce",
     },
-    name: "Tunisia",
+    value: "Tunisia",
     code: "TN",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -2213,7 +2213,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0cf",
     },
-    name: "Turkey",
+    value: "Turkey",
     code: "TR",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2223,7 +2223,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d0",
     },
-    name: "Trinidad and Tobago",
+    value: "Trinidad and Tobago",
     code: "TT",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2233,7 +2233,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d1",
     },
-    name: "Turkmenistan",
+    value: "Turkmenistan",
     code: "TM",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2243,7 +2243,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d2",
     },
-    name: "Turks and Caicos Islands",
+    value: "Turks and Caicos Islands",
     code: "TC",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2253,7 +2253,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d3",
     },
-    name: "Uganda",
+    value: "Uganda",
     code: "UG",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2263,7 +2263,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d4",
     },
-    name: "Tuvalu",
+    value: "Tuvalu",
     code: "TV",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2273,7 +2273,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d5",
     },
-    name: "Ukraine",
+    value: "Ukraine",
     code: "UA",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2283,7 +2283,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d6",
     },
-    name: "Tonga",
+    value: "Tonga",
     code: "TO",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2293,7 +2293,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d7",
     },
-    name: "United Arab Emirates",
+    value: "United Arab Emirates",
     code: "AE",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -2303,7 +2303,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d8",
     },
-    name: "United Kingdom",
+    value: "United Kingdom",
     code: "GB",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2313,7 +2313,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0d9",
     },
-    name: "United States",
+    value: "United States",
     code: "US",
     region: {
       $oid: "5d9c54ea55f83417e0174376",
@@ -2323,7 +2323,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0da",
     },
-    name: "United States Minor Outlying Islands",
+    value: "United States Minor Outlying Islands",
     code: "UM",
     region: {
       $oid: "5d9c54ea55f83417e0174376",
@@ -2333,7 +2333,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0db",
     },
-    name: "Uruguay",
+    value: "Uruguay",
     code: "UY",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2343,7 +2343,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0dc",
     },
-    name: "Uzbekistan",
+    value: "Uzbekistan",
     code: "UZ",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2353,7 +2353,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0dd",
     },
-    name: "Vanuatu",
+    value: "Vanuatu",
     code: "VU",
     region: {
       $oid: "5d9c54b555f83417e0174372",
@@ -2363,7 +2363,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0de",
     },
-    name: "Venezuela",
+    value: "Venezuela",
     code: "VE",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2373,7 +2373,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0df",
     },
-    name: "Virgin Islands, U.S.",
+    value: "Virgin Islands, U.S.",
     code: "VI",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2383,7 +2383,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e0",
     },
-    name: "Virgin Islands, British",
+    value: "Virgin Islands, British",
     code: "VG",
     region: {
       $oid: "5d9c54d555f83417e0174374",
@@ -2393,7 +2393,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e1",
     },
-    name: "Wallis and Futuna",
+    value: "Wallis and Futuna",
     code: "WF",
     region: {
       $oid: "5d9c54c655f83417e0174373",
@@ -2403,7 +2403,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e2",
     },
-    name: "Western Sahara",
+    value: "Western Sahara",
     code: "EH",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -2413,7 +2413,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e3",
     },
-    name: "Yemen",
+    value: "Yemen",
     code: "YE",
     region: {
       $oid: "5d9c54e055f83417e0174375",
@@ -2423,7 +2423,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e4",
     },
-    name: "Zimbabwe",
+    value: "Zimbabwe",
     code: "ZW",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2433,7 +2433,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e5",
     },
-    name: "Zambia",
+    value: "Zambia",
     code: "ZM",
     region: {
       $oid: "5d9c54ff55f83417e0174378",
@@ -2443,7 +2443,7 @@ module.exports = [
     _id: {
       $oid: "5d9c6583bc285002f213a0e6",
     },
-    name: "Viet Nam",
+    value: "Viet Nam",
     code: "VN",
     region: {
       $oid: "5d9c54b555f83417e0174372",
