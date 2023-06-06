@@ -50,9 +50,15 @@ export const updateUserResp =
     //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
     //   { user_resp }
     // );
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    console.log("bench id", id);
+    const data = {
+      userId: obj._id,
+      user_resp,
+    };
     let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
-      { user_resp }
+      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id.trim()}`,
+      data
     );
     toast.success("User response submitted successfully!");
 

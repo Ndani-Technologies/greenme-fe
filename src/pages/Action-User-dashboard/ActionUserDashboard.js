@@ -422,21 +422,23 @@ const ActionUserDashboard = () => {
   const navigate = useNavigate();
   const [actionData, setActionData] = useState([]);
   const getRAbyUser = () => {
-    let data = arr.map((value) => {
-      return {
-        title: value?.title,
-        category: value?.categoryId?.title,
-        stat: value?.status ? "true" : "false",
-        potential: value?.potentialId?.title,
-        cost: value?.costId?.title,
-        timescale: value?.timescaleId?.title,
-        ...value,
-      };
-    });
-    setActionData(data);
-    // getAllAdminActionsByUser().then((resp) => {
-    //   setActionData(resp);
-    // }).catch(() => toast.error("error in fetching table data"))
+    // let data = arr.map((value) => {
+    //   return {
+    //     title: value?.title,
+    //     category: value?.categoryId?.title,
+    //     stat: value?.status ? "true" : "false",
+    //     potential: value?.potentialId?.title,
+    //     cost: value?.costId?.title,
+    //     timescale: value?.timescaleId?.title,
+    //     ...value,
+    //   };
+    // });
+    // setActionData(data);
+    getAllAdminActionsByUser()
+      .then((resp) => {
+        setActionData(resp);
+      })
+      .catch(() => toast.error("error in fetching table data"));
   };
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,

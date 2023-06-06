@@ -17,12 +17,15 @@ import StarsRating from "./StarsRating";
 import { useFormik } from "formik";
 import classnames from "classnames";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import { updateSaveActionStep } from "../../slices/thunks";
+import { toast, ToastContainer } from "react-toastify";
 
 const ActionUserDetail = () => {
   const [value, setValue] = useState(1);
   const location = useLocation();
+  const navigate = useNavigate();
   let { data } = location.state;
   console.log("contact data1", data);
   const validation = useFormik({
@@ -36,7 +39,24 @@ const ActionUserDetail = () => {
       init: 5,
     },
     onSubmit: (values) => {
-      console.log("in handle submit", values);
+      console.log("in handle submit", values, stepData);
+      let steps = stepData.map((value) => {
+        if (value.isCheckBoxCompleted) {
+          value.step.isCompleted = true;
+          value.step.status = true;
+        }
+        return value.step;
+      });
+
+      console.log("steps", steps);
+      updateSaveActionStep(data._id, steps)
+        .then((resp) => {
+          if (resp != undefined) {
+            toast.success("Successfully submitted");
+            navigate("/actionuserdashboard");
+          }
+        })
+        .catch((err) => toast.error("error in updating."));
     },
   });
   // <!-- Left Icon Accordions -->
@@ -221,21 +241,25 @@ const ActionUserDetail = () => {
 
                         <Collapse
                           isOpen={activeIndex === index}
-                          className="accordion-collapse"
+                          className="accordion-collapse "
                           id={`accor_lefticonExamplecollapse${index + 1}`}
                         >
-                          <div className="accordion-body">
+                          <div className="accordion-body d-flex justify-content-between">
                             {step.description}
 
                             <div
                               className="Discription"
                               style={{ width: "200px" }}
                             >
-                              <span>Status: Incomplete</span>
-                              <div>Points: 23</div>
+                              <span>
+                                Status:{" "}
+                                {step?.status ? "Completed" : "Incomplete"}
+                              </span>
+                              <div>Points: {step.score}</div>
                               <div className="d-flex align-items-center gap-1">
                                 <input
                                   type="checkbox"
+                                  //isCompleted
                                   onChange={() => handleCheckBox(step, index)}
                                 />
                                 <span>Mark as complete</span>
@@ -316,6 +340,7 @@ const ActionUserDetail = () => {
             </Col>
           </form>
         </div>
+        <ToastContainer closeButton={false} limit={1} />
       </React.Fragment>
     </div>
   );
