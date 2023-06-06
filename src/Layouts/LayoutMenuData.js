@@ -311,26 +311,28 @@ const Navdata = () => {
         updateIconSidebar(e);
       },
       stateVariables: isRecommend,
-      // subItems: [
-      //   {
-      //     id: 1,
-      //     label: "Report",
-      //     link: "/userreport",
-      //     parentId: "Recommended Actions",
-      //   },
-      //   {
-      //     id: 2,
-      //     label: "User Summary",
-      //     link: "/usersummary",
-      //     parentId: "Recommended Actions",
-      //   },
-      //   {
-      //     id: 3,
-      //     label: "User Details",
-      //     link: "/actionuserdetail",
-      //     parentId: "Recommended Actions",
-      //   },
-      // ],
+      subItems: [
+        {
+          id: 1,
+          label: "Report",
+          link: "/userreport",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "User Summary",
+          link: "/usersummary",
+          parentId: "Recommended Actions",
+        },
+
+        {
+          id: 3,
+          label: "User Dashboard",
+          link: "/actionuserdashboard",
+          parentId: "Recommended Actions",
+        },
+      ],
+
     },
 
     {

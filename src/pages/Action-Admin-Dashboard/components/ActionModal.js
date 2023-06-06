@@ -307,7 +307,9 @@ const ActionModal = ({
       costId: isCostClick,
       potentialId: isPotentialClick,
       timescaleId: isScaleClick,
-      answerRelationshipId: isRelationshipClick,
+      // answerRelationshipId: isRelationshipClick,
+      answerRelationshipId: null,
+
     };
     console.log("hanlde submit", mappedData);
     if (title !== "" && description !== "") {

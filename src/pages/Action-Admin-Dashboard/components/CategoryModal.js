@@ -532,7 +532,6 @@ const CategoryModal = ({
                 </Button>
               </div>
             </Col>
-
             <DragDropContext onDragEnd={handleDragEnds}>
               <Col lg={12} className="border p-3 rounded bg-white">
                 {FieldName}
