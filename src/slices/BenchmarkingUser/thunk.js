@@ -57,11 +57,13 @@ export const updateUserResp = async (id, user_resp, history) => {
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
     { user_resp }
   );
+  console.log(resp, "RESP INSIDE THUNK");
   toast.success("User response submitted successfully!");
 
   // Wait for the toast notification to be displayed for a brief duration
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (resp) history("/benchmarking");
+  return resp;
 };
 
 export const updateUserRespSave =

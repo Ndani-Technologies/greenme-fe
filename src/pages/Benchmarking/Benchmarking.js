@@ -52,7 +52,6 @@ const Benchmarking = () => {
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
       if (value.category?._id === arr[0]._id) return value;
     });
-    console.log("benchmark by cateogry", benchmarkByCategory);
     setQuestions(benchmarkByCategory);
   };
   useEffect(() => {
@@ -108,7 +107,6 @@ const Benchmarking = () => {
           if (value.category?._id === tab) return value;
         }
       );
-      console.log("benchmark by cateogry", benchmarkByCategory);
       setQuestions(benchmarkByCategory);
       setjustifyPillsTab(tab);
     }
@@ -246,19 +244,17 @@ const Benchmarking = () => {
         const userResponse = benchmark?.user_resp?.find(
           (resp) => resp?.questionId === item?._id
         );
-        console.log("userResponse", userResponse);
+
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
           (option) =>
             option?._id === userResponse?.selectedOption.map((val) => val)
         );
-        const resp = userResponse?.selectedOption[0];
-        console.log(resp, "RESP");
+
         const selectedOption = item?.answerOptions?.find(
           (option) => option?._id === userResponse?.selectedOption[0]
         );
 
-        console.log(selectedOption, "OPTION");
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {item.index}</h5>
@@ -394,268 +390,11 @@ const Benchmarking = () => {
                     );
                   })}
               </div>
-              //         <div className="d-flex mt-4">
-              //           {item.answerOptions &&
-              //             item.answerOptions.map((btn, btnIndex) => {
-              //               <div className="buttons-container" key={btnIndex}>
-              //                 <button
-              //                   className={`button ${
-              //                     activeButtonIndex === btnIndex ? "active" : ""
-              //                   }`}
-              //                   onClick={() =>
-              //                     handleButtonClick(
-              //                       (currentPage - 1) * numPages + index,
-              //                       btnIndex,
-              //                       btn.answerOption,
-              //                       item?._id,
-              //                       btn?._id
-              //                     )
-              //                   }
-              //                 >
-              //                   {btn.answerOption}
-              //                 </button>
-              //               </div>
-              // })}
-              //         </div>
             )}
-
-            {/* {benchmark.user_resp?.length > 0 ? (
-              <div className="d-flex mt-4">
-                {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => {
-                    let isSelected;
-                    // let isCheck =!seletectedArrayIndexes.includes(index)
-                    // if( flag) {
-                    //   console.log("question", index, "button", btn.answerOption,btnIndex, "selected", selectedOptionIndex )
-                    //   isSelected = selectedOptionIndex === btnIndex;
-                    //   seletectedArrayIndexes.push(index)
-                    // }
-                    console.log("isSelected", isSelected);
-                    // const isUserResponse =
-                    //   userResponse?.selectedOption === btn?._id;
-
-                    let buttonClass =
-                      selectedOption?._id !== undefined
-                        ? selectedOption?._id === btn._id
-                          ? "button active"
-                          : "button "
-                        : activeButtonIndex === btnIndex
-                        ? "button active"
-                        : "button ";
-                    // let buttonClass = index == btnIndex ? "button active" : "button"
-
-                    return (
-                      <div className="buttons-container" key={btnIndex}>
-                        <button
-                          onClick={() => {
-                            // setFlag(selectedOptionIndex == userResponse?.selectedOption)
-                            // isSelected = false
-                            setBenchmark((prevState) => {
-                              // find index of the current user response
-                              const userRespIndex =
-                                prevState.user_resp.findIndex(
-                                  (resp) => resp.questionId === item._id
-                                );
-                              // copy previous state
-                              const newUserResp = [...prevState.user_resp];
-                              // update selectedOption of the current user response
-                              newUserResp[userRespIndex] = {
-                                ...newUserResp[userRespIndex],
-                                selectedOption: btn._id,
-                              };
-                              // return new state
-                              return {
-                                ...prevState,
-                                user_resp: newUserResp,
-                              };
-                            });
-                            handleButtonClick(
-                              (currentPage - 1) * numPages + index,
-                              btnIndex,
-                              btn.answerOption,
-                              item?._id,
-                              btn?._id
-                            );
-
-                            console.log(
-                              "isSelected2",
-                              selectedOption?._id,
-                              selectedOption?._id !== undefined
-                                ? selectedOption?._id === btn._id
-                                  ? "button active1"
-                                  : "button1 "
-                                : activeButtonIndex === btnIndex
-                                ? "button active2"
-                                : "button2 "
-                            );
-                          }}
-                          className={buttonClass}
-                        >
-                          {btn.answerOption}
-                        </button>
-                      </div>
-                    );
-                  })}
-              </div>
-            ) : (
-              <div className="d-flex mt-4">
-                {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => (
-                    <div className="buttons-container" key={btnIndex}>
-                      <button
-                        className={`button ${
-                          activeButtonIndex === btnIndex ? "active" : ""
-                        }`}
-                        onClick={() =>
-                          handleButtonClick(
-                            (currentPage - 1) * numPages + index,
-                            btnIndex,
-                            btn.answerOption,
-                            item?._id,
-                            btn?._id
-                          )
-                        }
-                      >
-                        {btn.answerOption}
-                      </button>
-                    </div>
-                  ))}
-              </div>
-            )} */}
           </div>
         );
       });
 
-  // const renderedQuestions =
-  //   benchmark?.questionnaire?.length > 0 &&
-  //   benchmark.questionnaire.map((item, qid) => {
-  //     let isHighlighted;
-  //     const activeButtonIndex = activeIndexes[qid];
-
-  //     const userResponse = benchmark.user_resp.find(
-  //       (resp) => resp.questionId === item?._id
-  //     );
-  //     const selectedOptionIndex = item.answerOptions.findIndex(
-  //       (option) => option?._id === userResponse?.selectedOption
-  //     );
-  //     const selectedOption = item.answerOptions.find(
-  //       (option) => option?._id === userResponse?.selectedOption
-  //     );
-  //     return (
-  //       <div className="row w-50 " key={qid}>
-  //         <h5>Question {qid + 1}</h5>
-  //         <p className="w-75 fs-5">{item.title}</p>
-  //         <p>{item.description}</p>
-  //         <div className="d-flex gap-2">
-  //           {benchmark.user_resp.length > 0
-  //             ? item.answerOptions.length > 0 &&
-  //               item.answerOptions.map((btn, buttonIndex) => {
-  //                 let buttonClass =
-  //                   selectedOption?._id === btn._id
-  //                     ? "button active"
-  //                     : "button ";
-  //                 return (
-  //                   <div>
-  //                     {btn.includeExplanation && (
-  //                       <textarea
-  //                         type="text"
-  //                         className="w-75 p-2"
-  //                         rows={3}
-  //                         placeholder="Comments"
-  //                       />
-  //                     )}
-  //                     <div className="d-flex mt-4">
-  //                       <div className="buttons-container" key={buttonIndex}>
-  //                         {console.log(
-  //                           "button checks",
-  //                           selectedOptionIndex,
-  //                           buttonIndex,
-  //                           selectedOptionIndex === buttonIndex
-  //                         )}
-
-  //                         <button
-  //                           className={buttonClass}
-  //                           onClick={() => {
-  //                             setBenchmark((prevState) => {
-  //                               // find index of the current user response
-  //                               const userRespIndex =
-  //                                 prevState.user_resp.findIndex(
-  //                                   (resp) => resp.questionId === item._id
-  //                                 );
-  //                               // copy previous state
-  //                               const newUserResp = [...prevState.user_resp];
-  //                               // update selectedOption of the current user response
-  //                               newUserResp[userRespIndex] = {
-  //                                 ...newUserResp[userRespIndex],
-  //                                 selectedOption: btn._id,
-  //                               };
-  //                               // return new state
-  //                               return {
-  //                                 ...prevState,
-  //                                 user_resp: newUserResp,
-  //                               };
-  //                             });
-  //                             const mapData = {
-  //                               questionId: item._id,
-  //                               selectedOption: btn._id,
-  //                               comment: "",
-  //                             };
-  //                             setUser_resp([...user_resp, mapData]);
-  //                           }}
-  //                         >
-  //                           {btn.answerOption}
-  //                         </button>
-  //                       </div>
-  //                     </div>
-  //                   </div>
-  //                 );
-  //               })
-  //             : item.answerOptions.length > 0 &&
-  //               item.answerOptions.map((btn, buttonIndex) => {
-  //                 let buttonClass =
-  //                   selectedOption?._id === btn._id
-  //                     ? "button active"
-  //                     : "button ";
-  //                 return (
-  //                   <div>
-  //                     {btn.includeExplanation && (
-  //                       <textarea
-  //                         type="text"
-  //                         className="w-75 p-2"
-  //                         rows={3}
-  //                         placeholder="Comments"
-  //                       />
-  //                     )}
-  //                     <div className="d-flex mt-4">
-  //                       <div className="buttons-container" key={buttonIndex}>
-  //                         <button
-  //                           className={`button ${
-  //                             activeButtonIndex === buttonIndex ? "active" : ""
-  //                           }`}
-  //                           onClick={() => {
-  //                             setActiveIndexes((prevState) => ({
-  //                               ...prevState,
-  //                               [qid]: buttonIndex,
-  //                             }));
-  //                             const mapData = {
-  //                               questionId: item._id,
-  //                               selectedOption: btn._id,
-  //                               comment: "",
-  //                             };
-  //                             setUser_resp([...user_resp, mapData]);
-  //                           }}
-  //                         >
-  //                           {btn.answerOption}
-  //                         </button>
-  //                       </div>
-  //                     </div>
-  //                   </div>
-  //                 );
-  //               })}
-  //         </div>
-  //       </div>
-  //     );
-  //   });
   const handleSubmit = () => {
     toast.success("benchmark is successfully submitted");
     dispatch(updateUserResp(benchmark?._id, user_resp, navigate));
@@ -825,9 +564,10 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              dispatch(
-                                updateUserRespSave(benchmark?._id, user_resp)
-                              );
+                              updateUserResp(benchmark?._id, user_resp);
+                              // dispatch(
+                              //   updateUserRespSave(benchmark?._id, user_resp)
+                              // );
                             }}
                           >
                             SAVE

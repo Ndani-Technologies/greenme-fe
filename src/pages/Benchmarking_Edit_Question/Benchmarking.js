@@ -104,182 +104,6 @@ const Benchmarking = () => {
     // Your other logic here
   };
 
-  // const renderedQuestions = benchmark?.questionnaire
-  // .slice((currentPage - 1) * numPages, currentPage * numPages)
-  // .map((item, index) => {
-  //   const activeButtonIndex = activeIndexes[index];
-
-  //   // Find the user response for the current question
-  //   const userResponse = benchmark.user_resp.find(
-  //     (resp) => resp.questionId === item._id
-  //   );
-
-  //   // Get the index of the selected option
-  //   const selectedOptionIndex = item.answerOptions.findIndex(
-  //     (option) => option._id === userResponse?.selectedOption
-  //   );
-
-  //   return (
-  //     <div className="row w-50" key={index}>
-  //       <h5>Question {item.index}</h5>
-  //       <p className="w-75 fs-5">{item.title}</p>
-  //       <p>{item.description}</p>
-  //       {item.answerOptions &&
-  //         item.answerOptions.map((btn, btnIndex) => (
-  //           <>
-  //             {btn.includeExplanation && activeButtonIndex === btnIndex && (
-  //               <textarea
-  //                 type="text"
-  //                 className="w-75 p-2"
-  //                 rows={3}
-  //                 key={btnIndex}
-  //                 placeholder="Comments"
-  //                 onChange={handleExplanationChange}
-  //               />
-  //             )}
-  //           </>
-  //         ))}
-  //       <div className="d-flex mt-4">
-  //         {item.answerOptions &&
-  //           item.answerOptions.map((btn, btnIndex) => (
-  //             <div className="buttons-container" key={btnIndex}>
-  //               <button
-  //                 className={`button ${
-  //                   selectedOptionIndex === btnIndex ? "active" : ""
-  //                 }`}
-  //                 onClick={() =>
-  //                   handleButtonClick(
-  //                     (currentPage - 1) * numPages + index,
-  //                     btnIndex,
-  //                     btn.answerOption,
-  //                     item._id,
-  //                     btn._id
-  //                   )
-  //                 }
-  //               >
-  //                 {btn.answerOption}
-  //               </button>
-  //             </div>
-  //           ))}
-  //       </div>
-  //     </div>
-  //   );
-  // });
-
-  /* working code */
-  // const renderedQuestions = benchmark.questionnaire?.length>=0 &&  benchmark?.questionnaire
-  // const renderedQuestions =
-  //   questions?.length >= 0 &&
-  //   questions
-  //     .slice((currentPage - 1) * numPages, currentPage * numPages)
-  //     .map((item, index) => {
-  //       const activeButtonIndex = activeIndexes[index];
-
-  //       // Find the user response for the current question
-  //       const userResponse = benchmark.user_resp.find(
-  //         (resp) => resp.questionId === item._id
-  //       );
-
-  //       // Get the index of the selected option
-  //       const selectedOptionIndex = item.answerOptions.findIndex(
-  //         (option) => option._id === userResponse?.selectedOption
-  //       );
-
-  //       return (
-  //         <div className="row w-50 " disabled key={index}>
-  //           <h5>Question {item.index}</h5>
-  //           <p className="w-75 fs-5">{item.title}</p>
-  //           <p>{item.description}</p>
-  //           {benchmark.user_resp?.length > 0
-  //             ? item.answerOptions &&
-  //               item.answerOptions.map((btn, btnIndex) => (
-  //                 <>
-  //                   {btn.includeExplanation &&
-  //                     activeButtonIndex === btnIndex && (
-  //                       <textarea
-  //                         type="text"
-  //                         className="w-75 p-2"
-  //                         rows={3}
-  //                         key={btnIndex}
-  //                         placeholder="Comments"
-  //                         onChange={handleExplanationChange}
-  //                       />
-  //                     )}
-  //                 </>
-  //               ))
-  //             : item.answerOptions.map((btn, btnIndex) => (
-  //                 <>
-  //                   {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
-
-  //                   {btn.includeExplanation && (
-  //                     <textarea
-  //                       type="text"
-  //                       className="w-75 p-2"
-  //                       rows={3}
-  //                       placeholder="Comments"
-  //                       onChange={handleExplanationChange}
-  //                     />
-  //                   )}
-  //                 </>
-  //               ))}
-
-  //           {benchmark.user_resp?.length > 0 ? (
-  //             <div className="d-flex mt-4">
-  //               {item.answerOptions &&
-  //                 item.answerOptions.map((btn, btnIndex) => {
-  //                   const isSelected = selectedOptionIndex === btnIndex;
-  //                   const isUserResponse =
-  //                     userResponse?.selectedOption === btn._id;
-  //                   const buttonClass = isSelected ? "button active" : "button";
-
-  //                   return (
-  //                     <div className="buttons-container" key={btnIndex}>
-  //                       <button
-  //                         className={buttonClass}
-  //                         onClick={() =>
-  //                           handleButtonClick(
-  //                             (currentPage - 1) * numPages + index,
-  //                             btnIndex,
-  //                             btn.answerOption,
-  //                             item._id,
-  //                             btn._id
-  //                           )
-  //                         }
-  //                       >
-  //                         {btn.answerOption}
-  //                       </button>
-  //                     </div>
-  //                   );
-  //                 })}
-  //             </div>
-  //           ) : (
-  //             <div className="d-flex mt-4">
-  //               {item.answerOptions &&
-  //                 item.answerOptions.map((btn, btnIndex) => (
-  //                   <div className="buttons-container" key={btnIndex}>
-  //                     <button
-  //                       className={`button ${
-  //                         activeButtonIndex === btnIndex ? "active" : ""
-  //                       }`}
-  //                       onClick={() =>
-  //                         handleButtonClick(
-  //                           (currentPage - 1) * numPages + index,
-  //                           btnIndex,
-  //                           btn.answerOption,
-  //                           item._id,
-  //                           btn._id
-  //                         )
-  //                       }
-  //                     >
-  //                       {btn.answerOption}
-  //                     </button>
-  //                   </div>
-  //                 ))}
-  //             </div>
-  //           )}
-  //         </div>
-  //       );
-  //     });
   const [isBelow1440, setIsBelow1440] = useState(false);
 
   useEffect(() => {
@@ -355,14 +179,6 @@ const Benchmarking = () => {
                     ) {
                       buttonClass += " active";
                     }
-
-                    // let buttonClass = "button";
-                    // if (
-                    //   selectedAnswerIds[item._id] &&
-                    //   selectedAnswerIds[item._id].includes(btn._id)
-                    // ) {
-                    //   buttonClass += " active";
-                    // }
 
                     return (
                       <div className="buttons-container" key={btnIndex}>
@@ -461,134 +277,7 @@ const Benchmarking = () => {
                     );
                   })}
               </div>
-              //         <div className="d-flex mt-4">
-              //           {item.answerOptions &&
-              //             item.answerOptions.map((btn, btnIndex) => {
-              //               <div className="buttons-container" key={btnIndex}>
-              //                 <button
-              //                   className={`button ${
-              //                     activeButtonIndex === btnIndex ? "active" : ""
-              //                   }`}
-              //                   onClick={() =>
-              //                     handleButtonClick(
-              //                       (currentPage - 1) * numPages + index,
-              //                       btnIndex,
-              //                       btn.answerOption,
-              //                       item?._id,
-              //                       btn?._id
-              //                     )
-              //                   }
-              //                 >
-              //                   {btn.answerOption}
-              //                 </button>
-              //               </div>
-              // })}
-              //         </div>
             )}
-
-            {/* {benchmark.user_resp?.length > 0 ? (
-            <div className="d-flex mt-4">
-              {item.answerOptions &&
-                item.answerOptions.map((btn, btnIndex) => {
-                  let isSelected;
-                  // let isCheck =!seletectedArrayIndexes.includes(index)
-                  // if( flag) {
-                  //   console.log("question", index, "button", btn.answerOption,btnIndex, "selected", selectedOptionIndex )
-                  //   isSelected = selectedOptionIndex === btnIndex;
-                  //   seletectedArrayIndexes.push(index)
-                  // }
-                  console.log("isSelected", isSelected);
-                  // const isUserResponse =
-                  //   userResponse?.selectedOption === btn?._id;
-
-                  let buttonClass =
-                    selectedOption?._id !== undefined
-                      ? selectedOption?._id === btn._id
-                        ? "button active"
-                        : "button "
-                      : activeButtonIndex === btnIndex
-                      ? "button active"
-                      : "button ";
-                  // let buttonClass = index == btnIndex ? "button active" : "button"
-
-                  return (
-                    <div className="buttons-container" key={btnIndex}>
-                      <button
-                        onClick={() => {
-                          // setFlag(selectedOptionIndex == userResponse?.selectedOption)
-                          // isSelected = false
-                          setBenchmark((prevState) => {
-                            // find index of the current user response
-                            const userRespIndex =
-                              prevState.user_resp.findIndex(
-                                (resp) => resp.questionId === item._id
-                              );
-                            // copy previous state
-                            const newUserResp = [...prevState.user_resp];
-                            // update selectedOption of the current user response
-                            newUserResp[userRespIndex] = {
-                              ...newUserResp[userRespIndex],
-                              selectedOption: btn._id,
-                            };
-                            // return new state
-                            return {
-                              ...prevState,
-                              user_resp: newUserResp,
-                            };
-                          });
-                          handleButtonClick(
-                            (currentPage - 1) * numPages + index,
-                            btnIndex,
-                            btn.answerOption,
-                            item?._id,
-                            btn?._id
-                          );
-
-                          console.log(
-                            "isSelected2",
-                            selectedOption?._id,
-                            selectedOption?._id !== undefined
-                              ? selectedOption?._id === btn._id
-                                ? "button active1"
-                                : "button1 "
-                              : activeButtonIndex === btnIndex
-                              ? "button active2"
-                              : "button2 "
-                          );
-                        }}
-                        className={buttonClass}
-                      >
-                        {btn.answerOption}
-                      </button>
-                    </div>
-                  );
-                })}
-            </div>
-          ) : (
-            <div className="d-flex mt-4">
-              {item.answerOptions &&
-                item.answerOptions.map((btn, btnIndex) => (
-                  <div className="buttons-container" key={btnIndex}>
-                    <button
-                      className={`button ${
-                        activeButtonIndex === btnIndex ? "active" : ""
-                      }`}
-                      onClick={() =>
-                        handleButtonClick(
-                          (currentPage - 1) * numPages + index,
-                          btnIndex,
-                          btn.answerOption,
-                          item?._id,
-                          btn?._id
-                        )
-                      }
-                    >
-                      {btn.answerOption}
-                    </button>
-                  </div>
-                ))}
-            </div>
-          )} */}
           </div>
         );
       });
@@ -641,11 +330,7 @@ const Benchmarking = () => {
                 activeTab={justifyPillsTab}
                 className="text-muted p-4 pt-0 "
               >
-                <TabPane
-                  tabId={justifyPillsTab}
-                  id="pill-justified-home-1"
-                  style={{ pointerEvents: "none" }}
-                >
+                <TabPane tabId={justifyPillsTab} id="pill-justified-home-1">
                   <div className="row d-flex gap-5 justify-content-between w-100 mt-4 pt-4 pb-4 border-top border-dark disabled">
                     {renderedQuestions}
                   </div>
@@ -683,7 +368,7 @@ const Benchmarking = () => {
                             Do you consent to other users contacting you based
                             on the topics where you have answered yes?
                           </p>
-                          <div class="form-check form-switch mb-2">
+                          <div class="form-check form-switch mb-2 disabled">
                             <input
                               class="form-check-input "
                               type="checkbox"
