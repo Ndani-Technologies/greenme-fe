@@ -154,6 +154,23 @@ export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
 });
 
 //ADMIN ACTIONS CRUD FUNCTIONALITY
+export const updateSaveActionStep = async (id, steps) => {
+  try {
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    const ob = {
+      userId: obj._id,
+      steps,
+    };
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/update/stepsave/ByUser/${id}`,
+      ob
+    );
+
+    return res;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
 
 export const getAllAdminActions = async () => {
   try {

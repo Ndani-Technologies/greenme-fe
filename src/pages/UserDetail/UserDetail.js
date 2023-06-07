@@ -140,9 +140,7 @@ const Profile = () => {
         banner: coverPhoto && coverPhoto,
       };
       console.log(mappedData, "MAPPED DAATA");
-      updateUser(userObj._id, mappedData).then(() =>
-        toast.success("Data updated.")
-      );
+      updateUser(userObj._id, mappedData);
     },
   });
 
