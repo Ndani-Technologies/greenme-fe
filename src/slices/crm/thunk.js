@@ -270,7 +270,8 @@ export const createAdminResources = async (data, category) => {
     return res;
   } catch (error) {
     console.error(error);
-    return {};
+    toast.error("link already exist");
+    return undefined;
   }
 };
 

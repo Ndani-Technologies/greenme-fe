@@ -553,6 +553,7 @@ const ActionAdminDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
+
                         setIsDataUpdated(true);
                         setmodal_grid(true);
                       }}
@@ -847,7 +848,7 @@ const ActionAdminDashboard = () => {
           <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {adminActions && adminActions.length ? (
+                {adminActions.length >= 0 ? (
                   <TableContainer
                     columns={columns}
                     data={adminActions || []}

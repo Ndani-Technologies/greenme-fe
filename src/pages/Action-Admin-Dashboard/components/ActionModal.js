@@ -1,4 +1,10 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+} from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
@@ -90,8 +96,21 @@ const ActionModal = ({
   const [actionScore, setActionScore] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
+  console.log("inof", info, adminCategories);
   //Data values States
+  useEffect(() => {
+    if (isDataUpdated) {
+      setAdminSteps(info.steps);
+      // setAdminResources(info.adminResources)
+      setCategorySelectTitle(info.categoryId);
+      setCostSelectTitle(info.costId);
+      setScaleSelectTitle(info.timescaleId);
+      setPotentialSelectTitle(info.potentialId);
+    } else {
+      setAdminSteps([]);
+      setAdminResources([]);
+    }
+  }, []);
 
   const [selectedLanguage, setSelectedLanguage] = useState("ENGLISH");
   const handleClick = (language) => {
@@ -131,10 +150,11 @@ const ActionModal = ({
         categoryId: index, // Update the answerRelationshipId with the clicked item's ID
       }));
       setIsCategoryClick(index);
-      setCategorySelectTitle(index.title);
+      setCategorySelectTitle(index);
     }
     setIsCategoryClick(index);
-    setCategorySelectTitle(index.title);
+    isOpen(!open);
+    setCategorySelectTitle(index);
   };
 
   const handleCostClick = (index) => {
@@ -143,11 +163,12 @@ const ActionModal = ({
         ...prevInfo,
         costId: index, // Update the answerRelationshipId with the clicked item's ID
       }));
-      setIsCostClick(index);
-      setCostSelectTitle(index.title);
+      setIsCost(!isCost);
+      setCostSelectTitle(index);
     }
     setIsCostClick(index);
-    setCostSelectTitle(index.title);
+    setIsCost(!isCost);
+    setCostSelectTitle(index);
   };
   const handleScaleClick = (index) => {
     if (isDataUpdated) {
@@ -155,11 +176,12 @@ const ActionModal = ({
         ...prevInfo,
         timescaleId: index, // Update the answerRelationshipId with the clicked item's ID
       }));
-      setIsScaleClick(index);
-      setScaleSelectTitle(index.title);
+      setIsScale(!isScale);
+      setScaleSelectTitle(index);
     }
     setIsScaleClick(index);
-    setScaleSelectTitle(index.title);
+    setIsScale(!isScale);
+    setScaleSelectTitle(index);
   };
   const handlePotentialClick = (index) => {
     if (isDataUpdated) {
@@ -167,11 +189,12 @@ const ActionModal = ({
         ...prevInfo,
         potentialId: index, // Update the answerRelationshipId with the clicked item's ID
       }));
-      setIsPotentialClick(index);
-      setPotentialSelectTitle(index.title);
+      setIsPotential(!isPotential);
+      setPotentialSelectTitle(index);
     }
     setIsPotentialClick(index);
-    setPotentialSelectTitle(index.title);
+    setPotentialSelectTitle(index);
+    setIsPotential(!isPotential);
   };
 
   //HANDLING DELETE
@@ -240,8 +263,11 @@ const ActionModal = ({
         //create
         createAdminResources(mappedData)
           .then((data) => {
-            setAdminResources([...adminResources, data]);
-            setResourceInput("");
+            if (data !== undefined) {
+              setAdminResources([...adminResources, data]);
+              setResourceInput("");
+            }
+            console.log("resounce link ", data);
           })
           .catch(() => toast.error("Error in adding link"));
       }
@@ -273,7 +299,7 @@ const ActionModal = ({
       } else {
         createAdminStep(mappedData)
           .then((res) => {
-            setAdminSteps([...adminSteps, mappedData]);
+            setAdminSteps([...adminSteps, res]);
           })
           .catch(() => toast.error("Error in adding step"));
       }
@@ -294,7 +320,6 @@ const ActionModal = ({
   };
 
   const handleDelete = (id) => {
-    console.log("delte id", id);
     deleteAdminStep(id)
       .then((res) => {
         if (res !== undefined) {
@@ -330,13 +355,14 @@ const ActionModal = ({
       description,
       stat: isChecked5,
       visibility: isChecked6,
-      steps: adminSteps.map((value) => value._id),
+      steps: adminSteps.length > 0 && adminSteps.map((value) => value._id),
+      resourcelinkId: adminResources.map((value) => value._id),
       categoryId: isCategoryClick._id,
       costId: isCostClick._id,
       potentialId: isPotentialClick._id,
       timescaleId: isScaleClick._id,
     };
-    console.log("hanlde submit", mappedData);
+    console.log("hanlde submit", mappedData, adminSteps);
 
     if (title !== "" && description !== "") {
       createAdminActions(mappedData)
@@ -380,7 +406,9 @@ const ActionModal = ({
         toast.error("Error in updating action");
       });
   };
-
+  function tog_grid() {
+    setmodal_grid(!modal_grid);
+  }
   const [scoreError, setScoreError] = useState(false);
 
   const handleScoreChange = (e) => {
@@ -396,7 +424,6 @@ const ActionModal = ({
       setScoreError(true);
     }
   };
-
   return (
     <>
       <Modal
@@ -498,10 +525,11 @@ const ActionModal = ({
                         className="form-check-input code-switcher"
                         type="checkbox"
                         value="active"
-                        checked={isChecked5}
+                        checked={isDataUpdated ? info.status : isChecked5}
                         onChange={handleCheckboxChange5}
                         style={{
-                          backgroundColor: isChecked5 ? "#88C756" : "#fff",
+                          backgroundColor:
+                            info.status || isChecked5 ? "#88C756" : "#fff",
                           width: "80px",
                           border: "0",
                         }}
@@ -520,10 +548,11 @@ const ActionModal = ({
                         className="form-check-input code-switcher"
                         type="checkbox"
                         value="active"
-                        checked={isChecked6}
+                        checked={isDataUpdated ? info.visibilty : isChecked6}
                         onChange={handleCheckboxChange6}
                         style={{
-                          backgroundColor: isChecked6 ? "#88c765" : "#fff",
+                          backgroundColor:
+                            info.visibilty || isChecked6 ? "#88c765" : "#fff",
                           width: "50px",
                           border: "0",
                         }}
@@ -558,11 +587,16 @@ const ActionModal = ({
                 <div className="ck-editor-reverse">
                   <CKEditor
                     editor={ClassicEditor}
+                    onReady={(editor) => {
+                      editor.setData(
+                        isDataUpdated ? info.description : description
+                      );
+                    }}
                     onChange={(e, editor) => {
                       const value = editor.getData();
                       const div = document.createElement("div");
                       div.innerHTML = value;
-                      const pValue = div.querySelector("p").innerHTML;
+                      const pValue = div.querySelector("p")?.innerHTML;
                       if (isDataUpdated) {
                         // If data is updated, handle changes differently
                         const updatedInfo = {
@@ -661,7 +695,39 @@ const ActionModal = ({
                             {tab.id == 2 && (
                               <Col xxl={12} className="p-0 mb-2">
                                 <label>Add Description</label>
-                                <Input
+                                <CKEditor
+                                  editor={ClassicEditor}
+                                  onReady={(editor) => {
+                                    editor.setData(actionDescription);
+                                  }}
+                                  onChange={(e, editor) => {
+                                    const value = editor.getData();
+                                    const div = document.createElement("div");
+                                    div.innerHTML = value;
+                                    const pValue =
+                                      div.querySelector("p")?.innerHTML;
+
+                                    // If data is not updated, update the local state
+                                    setActionDescription(pValue);
+                                  }}
+                                  validate={{
+                                    required: { value: true },
+                                  }}
+                                  class="form-control"
+                                  placeholder="Description"
+                                  id="floatingTextarea"
+                                  value={
+                                    isDataUpdated
+                                      ? info.description
+                                      : description
+                                  }
+                                  style={{
+                                    height: "120px",
+                                    overflow: "hidden",
+                                    backgroundColor: "#dfdfdf",
+                                  }}
+                                />
+                                {/* <Input
                                   type="text"
                                   className="form-control"
                                   id="firstName"
@@ -670,7 +736,7 @@ const ActionModal = ({
                                   onChange={(e) =>
                                     setActionDescription(e.target.value)
                                   }
-                                />
+                                /> */}
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
                                     <i class="ri-error-warning-line"></i>
@@ -748,78 +814,6 @@ const ActionModal = ({
                               </div>
                             </Col>
 
-                            {/* <Col className="d-flex justify-content-between">
-                              <div className="text-end mb-4">
-                                {activeTab > 1 && (
-                                  <button
-                                    className="btn btn-light btn-label left ms-auto"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handlePrevTab;
-                                    }}
-                                  >
-                                    <i className="ri-arrow-left-line label-icon align-bottom fs-16"></i>{" "}
-                                    Back
-                                  </button>
-                                )}
-                              </div>
-                              <div className="text-end mb-4">
-                                <Button
-                                  className={`p-4 pt-2 pb-2`}
-                                  color="secondary"
-                                  onClick={handleAddActions}
-                                >
-                                  Save
-                                </Button>
-                              </div>
-                              <div className="text-end mb-4">
-                                {activeTab < tabs.length && (
-                                  <button
-                                    className="btn btn-info btn-label right ms-auto"
-                                    onClick={(e) => {
-                                      e.preventDefault();
-                                      handleNextTab;
-                                    }}
-                                  >
-                                    <i className="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>{" "}
-                                    Next
-                                  </button>
-                                )}
-                              </div>
-                            </Col> */}
-                            {/* <Col className="d-flex justify-content-between">
-                              <div className="text-end mb-4">
-                                {activeTab > 1 && (
-                                  <button
-                                    className="btn btn-light btn-label left ms-auto"
-                                    onClick={handleBack}
-                                  >
-                                    <i className="ri-arrow-left-line label-icon align-bottom fs-16"></i>{" "}
-                                    Back
-                                  </button>
-                                )}
-                              </div>
-                              <div className="text-end mb-4">
-                                <Button
-                                  className={`p-4 pt-2 pb-2`}
-                                  color="secondary"
-                                  onClick={handleAddActions}
-                                >
-                                  Save
-                                </Button>
-                              </div>
-                              <div className="text-end mb-4">
-                                {activeTab < tabs.length && (
-                                  <button
-                                    className="btn btn-info btn-label right ms-auto"
-                                    onClick={handleNext}
-                                  >
-                                    <i className="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i>{" "}
-                                    Next
-                                  </button>
-                                )}
-                              </div>
-                            </Col> */}
                             {tab.id &&
                               adminSteps.map((action) => {
                                 return (
@@ -927,15 +921,15 @@ const ActionModal = ({
                   </Col>
                 </Col>
               </Col>
-              <Col lg={12} className="d-flex justify-content-between">
-                <Col lg={5} className="p-0 ">
+              <Col lg={12} className="d-flex  gap-2 mt-2 ">
+                <Col lg={6} className="p-0 ">
                   <Col
-                    lg={5}
+                    lg={6}
                     onClick={() => isOpen(!open)}
                     disable
                     className="form-select "
                   >
-                    {categorySelectTitle || "Select a Category"}
+                    {categorySelectTitle?.title || "Select a Category"}
                   </Col>
                   <div style={{ position: "relative" }}>
                     {open && (
@@ -979,7 +973,7 @@ const ActionModal = ({
                     disable
                     className="form-select "
                   >
-                    {costSelectTitle || "Select a Cost"}
+                    {costSelectTitle?.title || "Select a Cost"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
@@ -1026,7 +1020,7 @@ const ActionModal = ({
                     disable
                     className="form-select "
                   >
-                    {scaleSelectTitle || "Select a Scale"}
+                    {scaleSelectTitle?.title || "Select a Scale"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
@@ -1071,7 +1065,7 @@ const ActionModal = ({
                     disable
                     className="form-select "
                   >
-                    {potentialSelectTitle || "Select a Potential"}
+                    {potentialSelectTitle?.title || "Select a Potential"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
                   </Col>
                   <div style={{ position: "relative" }}>
