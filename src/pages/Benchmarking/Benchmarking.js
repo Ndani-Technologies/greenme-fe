@@ -446,65 +446,6 @@ const Benchmarking = () => {
                   <div>
                     <div className="d-flex align-items-center border-top border-dark">
                       <div className="w-50">
-                        {/* <Pagination className="mt-4">
-                          <PaginationItem>
-                            <PaginationItem disabled={currentPage === 1}>
-                              {" "}
-                              <PaginationLink
-                                to="#"
-                                onClick={() =>
-                                  setCurrentPage(() => currentPage - 1)
-                                }
-                              >
-                                {" "}
-                                ← &nbsp; prev{" "}
-                              </PaginationLink>{" "}
-                            </PaginationItem>
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(1)}
-                            >
-                              {" "}
-                              1{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(2)}
-                            >
-                              {" "}
-                              2{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(3)}
-                            >
-                              {" "}
-                              3{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              disabled={currentPage === numPages}
-                              onClick={() =>
-                                setCurrentPage(() => currentPage + 1)
-                              }
-                            >
-                              {" "}
-                              Next &nbsp; →{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                        </Pagination> */}
                         <Card className=" border-none mt-3">
                           {progressPercentage && (
                             <CardBody className="p-0">
