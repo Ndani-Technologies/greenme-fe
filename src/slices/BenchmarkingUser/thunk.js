@@ -48,16 +48,24 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
-export const updateUserResp = async (id, user_resp, history) => {
-  // let resp = await axios.patch(
-  //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
-  //   { user_resp }
-  // );
-  let resp = await axios.patch(
-    `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
-    { user_resp }
-  );
-  toast.success("User response submitted successfully!");
+export const updateUserResp =
+  (id, user_resp, history) => async (dispatch, getState) => {
+    // let resp = await axios.patch(
+    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+    //   { user_resp }
+    // );
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    console.log("bench id", id);
+    const data = {
+      userId: obj._id,
+      user_resp,
+    };
+    let resp = await axios.patch(
+      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id.trim()}`,
+      data
+    );
+    toast.success("User response submitted successfully!");
+
 
   // Wait for the toast notification to be displayed for a brief duration
   await new Promise((resolve) => setTimeout(resolve, 1000));

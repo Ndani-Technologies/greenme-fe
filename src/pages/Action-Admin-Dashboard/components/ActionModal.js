@@ -355,6 +355,7 @@ const ActionModal = ({
       description,
       stat: isChecked5,
       visibility: isChecked6,
+
       steps: adminSteps.length > 0 && adminSteps.map((value) => value._id),
       resourcelinkId: adminResources.map((value) => value._id),
       categoryId: isCategoryClick._id,

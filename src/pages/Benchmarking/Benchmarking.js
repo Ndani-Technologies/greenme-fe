@@ -658,7 +658,9 @@ const Benchmarking = () => {
   //   });
   const handleSubmit = () => {
     toast.success("benchmark is successfully submitted");
-    dispatch(updateUserResp(benchmark?._id, user_resp, navigate));
+    dispatch(
+      updateUserResp(benchmark?._id.toString().trim(), user_resp, navigate)
+    );
   };
 
   return (
