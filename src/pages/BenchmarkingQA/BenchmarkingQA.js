@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Col,
   Card,
@@ -1041,7 +1043,44 @@ const BenchmarkingQA = () => {
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">
-                        <div>
+                        <div className="ck-editor-reverse">
+                          <CKEditor
+                            editor={ClassicEditor}
+                            onReady={(editor) => {
+                              // You can store the "editor" and use when it is needed.
+                            }}
+                            onChange={(event, editor) => {
+                              editor.getData();
+                              validation.handleChange;
+                            }}
+                            class="form-control"
+                            placeholder="Description"
+                            id="description"
+                            validate={{
+                              required: { value: true },
+                            }}
+                            onBlur={validation.handleBlur}
+                            value={validation.values.description || ""}
+                            invalid={
+                              validation.touched.description &&
+                              validation.errors.description
+                                ? true
+                                : false
+                            }
+                            style={{
+                              height: "120px",
+                              overflow: "hidden",
+                              backgroundColor: "#dfdfdf",
+                            }}
+                          />
+                        </div>
+                        {validation.touched.description &&
+                        validation.errors.description ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.description}
+                          </FormFeedback>
+                        ) : null}
+                        {/* <div>
                           <Input
                             type="textarea"
                             class="form-control"
@@ -1072,7 +1111,7 @@ const BenchmarkingQA = () => {
                               {validation.errors.description}
                             </FormFeedback>
                           ) : null}
-                        </div>
+                        </div> */}
                       </Col>
                       <Col xxl={12} className="p-0">
                         <Input
@@ -1150,6 +1189,7 @@ const BenchmarkingQA = () => {
                                                 <div
                                                   className="d-flex align-items-center justify-content-between w-100 p-0"
                                                   style={{
+                                                    width: "33%",
                                                     color:
                                                       isSelected ||
                                                       isCheckedAnswer
@@ -1158,7 +1198,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOption"
                                                       onBlur={() => {
@@ -1211,42 +1251,93 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
+                                                    <Checkbox
+                                                      name="includeExplanation"
+                                                      onBlur={() => {
+                                                        validation.setFieldValue(
+                                                          "includeExplanation",
+                                                          selectedIndexes2.map(
+                                                            (i) =>
+                                                              info[i]
+                                                                ?.includeExplanation
+                                                          )
+                                                        );
+                                                      }}
+                                                      value={index}
+                                                      checked={
+                                                        isCheckedAnswer ||
+                                                        selectedIndexes2.includes(
+                                                          index
+                                                        )
+                                                      }
+                                                      onChange={(e) => {
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        if (checked) {
+                                                          setSelectedIndexes2([
+                                                            ...selectedIndexes2,
+                                                            index,
+                                                          ]);
+                                                        } else {
+                                                          setSelectedIndexes2(
+                                                            selectedIndexes2.filter(
+                                                              (i) => i !== index
+                                                            )
+                                                          );
+                                                        }
+                                                        validation.setFieldValue(
+                                                          "includeExplanation",
+                                                          selectedIndexes2.map(
+                                                            (i) =>
+                                                              info[i]
+                                                                ?.includeExplanation
+                                                          )
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
                                                     >
-                                                      Include Explanation
+                                                      Include Input Field
                                                     </Label>
-                                                    <Input
+                                                    <Checkbox
                                                       id={`form-grid-showcode-${index}`}
-                                                      className="form-check-input code-switcher"
-                                                      type="checkbox"
-                                                      value="active"
+                                                      name="includeInputField"
                                                       checked={
-                                                        value.includeExplanation
-                                                      } // Access includeExplanation from value object
+                                                        value.includeInputField
+                                                      }
                                                       onChange={(e) => {
                                                         const updatedAnswers = [
                                                           ...allAnswers,
                                                         ];
                                                         updatedAnswers[
                                                           index
-                                                        ].includeExplanation =
+                                                        ].includeInputField =
                                                           e.target.checked;
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           updatedAnswers
                                                         );
                                                       }}
-                                                      style={{
-                                                        backgroundColor:
-                                                          value.includeExplanation
-                                                            ? "#88C756"
-                                                            : "#fff",
-                                                        width: "50px",
-                                                        border: "0",
-                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
                                                     />
                                                   </div>
                                                 </div>
@@ -1286,7 +1377,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOption"
                                                       onBlur={() => {
@@ -1335,8 +1426,77 @@ const BenchmarkingQA = () => {
                                                     />
                                                     {value.answerOption}
                                                   </div>
-
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
+                                                    <Label
+                                                      htmlFor={`form-grid-showcode-${index}`}
+                                                      className="form-label text-muted"
+                                                    >
+                                                      Include Explanation
+                                                    </Label>
+                                                    <Checkbox
+                                                      id={`form-grid-showcode-${index}`}
+                                                      name="includeExplanation"
+                                                      checked={
+                                                        value.includeExplanation
+                                                      }
+                                                      onChange={(e) => {
+                                                        const updatedAnswers = [
+                                                          ...allAnswers,
+                                                        ];
+                                                        updatedAnswers[
+                                                          index
+                                                        ].includeExplanation =
+                                                          e.target.checked;
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          updatedAnswers
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
+                                                    <Label
+                                                      htmlFor={`form-grid-showcode-${index}`}
+                                                      className="form-label text-muted"
+                                                    >
+                                                      Include Input Field
+                                                    </Label>
+                                                    <Checkbox
+                                                      id={`form-grid-showcode-${index}`}
+                                                      name="includeInputField"
+                                                      checked={
+                                                        value.includeInputField
+                                                      }
+                                                      onChange={(e) => {
+                                                        const updatedAnswers = [
+                                                          ...allAnswers,
+                                                        ];
+                                                        updatedAnswers[
+                                                          index
+                                                        ].includeInputField =
+                                                          e.target.checked;
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          updatedAnswers
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+                                                  {/* <div className="form-check form-switch form-switch-right form-switch-md">
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
@@ -1373,7 +1533,7 @@ const BenchmarkingQA = () => {
                                                         border: "0",
                                                       }}
                                                     />
-                                                  </div>
+                                                  </div> */}
                                                 </div>
                                               </div>
                                             )}

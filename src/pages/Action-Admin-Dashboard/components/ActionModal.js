@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Col,
   Label,
@@ -329,10 +331,10 @@ const ActionModal = ({
       stat: isChecked5,
       visibility: isChecked6,
       steps: adminSteps.map((value) => value._id),
-      categoryId: isCategoryClick,
-      costId: isCostClick,
-      potentialId: isPotentialClick,
-      timescaleId: isScaleClick,
+      categoryId: isCategoryClick._id,
+      costId: isCostClick._id,
+      potentialId: isPotentialClick._id,
+      timescaleId: isScaleClick._id,
     };
     console.log("hanlde submit", mappedData);
 
@@ -342,9 +344,10 @@ const ActionModal = ({
           if (resp !== undefined) {
             setAdminActions([...adminActions, resp]);
             setmodal_grid(false);
+            toast.success("Successfully Created Action");
           }
         })
-        .catch((err) => toast.error("Error in creating action."));
+        .catch((err) => toast.error("Error in creating action"));
     } else {
       toast.error("title or description can not be null");
     }
@@ -356,10 +359,10 @@ const ActionModal = ({
       description,
       stat: isChecked5,
       visibility: isChecked6,
-      categoryId: isCategoryClick,
-      costId: isCostClick,
-      potentialId: isPotentialClick,
-      timescaleId: isScaleClick,
+      categoryId: isCategoryClick._id,
+      costId: isCostClick._id,
+      potentialId: isPotentialClick._id,
+      timescaleId: isScaleClick._id,
     };
 
     console.log(mappedData, "MAPPED DATA");
@@ -552,32 +555,40 @@ const ActionModal = ({
                 </div>
               </Col>
               <Col xxl={12} className="p-0">
-                <div>
-                  <textarea
-                    class="form-control"
-                    placeholder="Description"
-                    id="floatingTextarea"
-                    value={isDataUpdated ? info.description : description}
-                    onChange={(e) => {
+                <div className="ck-editor-reverse">
+                  <CKEditor
+                    editor={ClassicEditor}
+                    onChange={(e, editor) => {
+                      const value = editor.getData();
+                      const div = document.createElement("div");
+                      div.innerHTML = value;
+                      const pValue = div.querySelector("p").innerHTML;
                       if (isDataUpdated) {
                         // If data is updated, handle changes differently
                         const updatedInfo = {
                           ...info,
-                          description: e.target.value,
+                          description: pValue,
                         };
                         setInfo(updatedInfo);
                         setDescription(updatedInfo.description);
                       } else {
                         // If data is not updated, update the local state
-                        setDescription(e.target.value);
+                        setDescription(pValue);
                       }
                     }}
+                    validate={{
+                      required: { value: true },
+                    }}
+                    class="form-control"
+                    placeholder="Description"
+                    id="floatingTextarea"
+                    value={isDataUpdated ? info.description : description}
                     style={{
                       height: "120px",
                       overflow: "hidden",
                       backgroundColor: "#dfdfdf",
                     }}
-                  ></textarea>
+                  />
                 </div>
               </Col>
               <Col xxl={12} className="p-0">

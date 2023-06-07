@@ -170,13 +170,15 @@ export const getAllAdminActions = async () => {
         ...value,
       };
     });
+    console.log(data, "DATA IN");
     return data;
   } catch (err) {
     console.log("Error in getting data", err);
   }
 };
 
-export const createAdminActions = async (data, category) => {
+export const createAdminActions = async (data) => {
+  console.log(data, "CREATE DATA");
   try {
     const res = await axios.post(
       `${process.env.REACT_APP_RA_URL}actionsteps`,
@@ -192,6 +194,7 @@ export const createAdminActions = async (data, category) => {
         timescale: res?.timescaleId?.title,
         ...res,
       };
+      console.log(res, "CREATE RES", createdResp);
       return createdResp;
     }
     return res;
