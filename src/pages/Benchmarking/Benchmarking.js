@@ -385,7 +385,6 @@ const Benchmarking = () => {
         );
       });
 
-
   const obj = JSON.parse(sessionStorage.getItem("authUser"));
   const userId = obj._id;
   const requestBody = {
@@ -397,7 +396,6 @@ const Benchmarking = () => {
     toast.success("benchmark is successfully submitted");
 
     updateUserResp(benchmark?._id, requestBody, navigate);
-
   };
 
   return (
@@ -505,9 +503,7 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-
                               updateUserRespSave(benchmark?._id, requestBody);
-
                             }}
                           >
                             SAVE

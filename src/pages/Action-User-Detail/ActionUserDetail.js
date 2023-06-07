@@ -23,8 +23,6 @@ import { useEffect } from "react";
 import { updateSaveActionStep } from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
 
-
-
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -183,8 +181,7 @@ const ActionUserDetail = () => {
               >
                 <span className="fs-7">Start Date</span>
                 <div>
-                  <span className="span">{data.startdate}</span>
-g
+                  <span className="span">{data.startdate}</span>g
                 </div>
               </div>
               <div
@@ -290,7 +287,6 @@ g
                   className="w-100 p-2"
                   rows={4}
                   placeholder="Leave us some feed back here"
-
                 />
                 <Button>Send</Button>
               </div>

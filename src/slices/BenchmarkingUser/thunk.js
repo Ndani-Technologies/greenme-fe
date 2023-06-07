@@ -48,8 +48,6 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
-
-
 export const updateUserResp = async (id, user_resp, navigate) => {
   console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
 
@@ -71,7 +69,6 @@ export const updateUserResp = async (id, user_resp, navigate) => {
     navigate("/benchmarking");
   }
   return resp;
-
 };
 
 export const updateUserRespSave = async (id, user_resp) => {

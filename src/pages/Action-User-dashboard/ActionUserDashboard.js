@@ -26,7 +26,6 @@ import {
   addNewContact as onAddNewContact,
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
-  getAllAdminActionsByUser,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -36,419 +35,130 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
-import { useNavigate } from "react-router-dom";
 const arr = [
   {
-    visibilty: true,
-    steps: [],
-    _id: "6479c485b49314b09519f3e3",
-    title: "Action steps title",
-    description: "this is the description of actionstep",
-    isCompleted: false,
-    points: 25,
-    score: 10,
-    feedback: "This is feedback field",
-    assignedTo: [],
-    organization: "org-02",
-    country: "Pakistan",
-    categoryId: {
-      _id: "6479b8fa92f3fa9c5b1d6f93",
-      language: "English",
-      title: "Shift",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d492f3fa9c5b1d6f1c",
-      language: "English",
-      title: "Cheap",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479961692f3fa9c5b1d6f2c",
-      language: "English",
-      title: "Risk",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479baee92f3fa9c5b1d6fb7",
-      language: "English",
-      title: "Short term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986092f3fa9c5b1d6f4b",
-      language: "English",
-      title: "Low",
-      __v: 0,
-    },
-    startdate: "2023-06-02T10:29:25.914Z",
-    createdAt: "2023-06-02T10:29:25.940Z",
-    updatedAt: "2023-06-02T10:29:25.940Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebf1",
+    name: "Does your organisation have environmental commitments?",
+    phone: "Max",
+    email: "low",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    lead_score: "Avoid",
+    tags: "active",
+    response: "low",
+    Scale: "intermediate",
   },
   {
-    visibilty: true,
-    steps: [],
-    _id: "6479c4a1b49314b09519f3e5",
-    title: "Action steps title 2nd",
-    description: "this is the description of actionstep",
-    isCompleted: false,
-    points: 25,
-    score: 10,
-    feedback: "This is feedback field",
-    assignedTo: [],
-    organization: "org-02",
-    country: "Pakistan",
-    categoryId: {
-      _id: "6479b8fa92f3fa9c5b1d6f93",
-      language: "English",
-      title: "Shift",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d492f3fa9c5b1d6f1c",
-      language: "English",
-      title: "Cheap",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479961692f3fa9c5b1d6f2c",
-      language: "English",
-      title: "Risk",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479baee92f3fa9c5b1d6fb7",
-      language: "English",
-      title: "Short term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986092f3fa9c5b1d6f4b",
-      language: "English",
-      title: "Low",
-      __v: 0,
-    },
-    startdate: "2023-06-02T10:29:53.941Z",
-    createdAt: "2023-06-02T10:29:53.943Z",
-    updatedAt: "2023-06-02T10:29:53.943Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebf3",
+    name: "Does your organisation have a ‘green’ strategy?",
+    phone: "Max",
+    email: "low",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    lead_score: "Improve",
+    tags: "In progress",
+    response: "low",
+    Scale: "Short term",
   },
   {
-    visibilty: true,
-    steps: [],
-    _id: "6479c50bb49314b09519f3ee",
-    title: "Action steps title 3nd",
-    description: "this is the description of actionstep",
-    isCompleted: false,
-    points: 25,
-    score: 10,
-    feedback: "This is feedback field",
-    assignedTo: [],
-    organization: "org-02",
-    country: "Pakistan",
-    categoryId: {
-      _id: "6479b90092f3fa9c5b1d6f95",
-      language: "English",
-      title: "Improve",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d492f3fa9c5b1d6f1c",
-      language: "English",
-      title: "Cheap",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479961692f3fa9c5b1d6f2c",
-      language: "English",
-      title: "Risk",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479baee92f3fa9c5b1d6fb7",
-      language: "English",
-      title: "Short term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986092f3fa9c5b1d6f4b",
-      language: "English",
-      title: "Low",
-      __v: 0,
-    },
-    startdate: "2023-06-02T10:31:39.184Z",
-    createdAt: "2023-06-02T10:31:39.188Z",
-    updatedAt: "2023-06-02T10:31:39.188Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebee",
+    name: "Does your fleet policy contain references to a green strategy or environmental sustainability?",
+    phone: "Max",
+    email: "low",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
+    Scale: "intermediate",
   },
   {
-    _id: "647d062c5e7d88e006a33f43",
-    title: "RA-1",
-    description: "description of RA-1",
-    status: true,
-    visibilty: true,
-    steps: [],
-    isCompleted: false,
-    assignedTo: [],
-    categoryId: {
-      _id: "6479b8f492f3fa9c5b1d6f91",
-      language: "English",
-      title: "Avoid",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d092f3fa9c5b1d6f1a",
-      language: "English",
-      title: "Expensive",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479961692f3fa9c5b1d6f2c",
-      language: "English",
-      title: "Risk",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479baee92f3fa9c5b1d6fb7",
-      language: "English",
-      title: "Short term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986092f3fa9c5b1d6f4b",
-      language: "English",
-      title: "Low",
-      __v: 0,
-    },
-    startdate: "2023-06-04T21:46:20.763Z",
-    createdAt: "2023-06-04T21:46:20.774Z",
-    updatedAt: "2023-06-04T21:46:20.774Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebf0",
+    name: "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
+    phone: "Medium",
+    email: "Very High",
+    lead_score: "Avoid",
+    tags: "In progress",
+    response: "low",
+    Scale: "Medium term",
   },
   {
-    _id: "647d0a24ed4fb779d6e6657e",
-    title: "RA-2",
-    description: "RA-2",
-    status: true,
-    visibilty: true,
-    steps: [],
-    isCompleted: false,
-    assignedTo: [],
-    categoryId: {
-      _id: "6479b8f492f3fa9c5b1d6f91",
-      language: "English",
-      title: "Avoid",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d492f3fa9c5b1d6f1c",
-      language: "English",
-      title: "Cheap",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479961b92f3fa9c5b1d6f2e",
-      language: "English",
-      title: "Risk2",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479baee92f3fa9c5b1d6fb7",
-      language: "English",
-      title: "Short term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986692f3fa9c5b1d6f4d",
-      language: "English",
-      title: "Medium",
-      __v: 0,
-    },
-    startdate: "2023-06-04T22:03:16.948Z",
-    createdAt: "2023-06-04T22:03:16.967Z",
-    updatedAt: "2023-06-04T22:03:16.967Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebf2",
+    name: "Do you have standardised fleet procurement (global framework agreement…)?",
+    phone: "Medium",
+    email: "Medium",
+    lead_score: "Improve",
+    tags: "In progress",
+    response: "low",
+    Scale: "intermediate",
   },
   {
-    _id: "647d9d838d243725a446a76f",
-    title: "Optimize your fleet’s routing",
-    description:
-      "All journeys should include a route plan. \nA good route plan identifies hazards along a route and guides\ndrivers on how to negotiate each hazard. They also include \ninformation about safe stopping/rest areas, and details of \nemergency service support along the route, including \nemergency contact numbers (e.g. police, medical, WHO \ncontacts, etc.). To assist in route planning, the Organization \nneeds to identify preferred routes and alternative routes in \nthe event of an emergency. It is equally important to identify\nthose routes and areas that should be avoided. It is essential \nto brief drivers before each journey, whether new to the \nroute or not, so that any changes or new hazards are \nrecognized before they commence their journey. It is \nparticularly important for route planning to be carried out in \nhigher-risk countries and areas. (who handbook 2019)",
-    status: true,
-    visibilty: true,
-    steps: [],
-    isCompleted: false,
-    assignedTo: [],
-    categoryId: {
-      _id: "6479b8f492f3fa9c5b1d6f91",
-      language: "English",
-      title: "Avoid",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d492f3fa9c5b1d6f1c",
-      language: "English",
-      title: "Cheap",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479b95192f3fa9c5b1d6f9e",
-      language: "English",
-      title: "Low",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479bb1c92f3fa9c5b1d6fb9",
-      language: "English",
-      title: "Medium term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986692f3fa9c5b1d6f4d",
-      language: "English",
-      title: "Medium",
-      __v: 0,
-    },
-    startdate: "2023-06-05T08:32:03.722Z",
-    createdAt: "2023-06-05T08:32:03.723Z",
-    updatedAt: "2023-06-05T08:32:03.723Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebeb",
+    name: "Do you use sustainability criteria to assess/ select suppliers?",
+    phone: "Low",
+    company: "iTest Factory",
+    designation: "UI / UX Designer",
+    email: "low",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
+    Scale: "Medium term",
   },
   {
-    _id: "647dae0f8d243725a446a882",
-    title: "Yes",
-    description: "yes",
-    status: true,
-    visibilty: true,
-    steps: [
-      {
-        _id: "647d9b668d243725a446a756",
-        title:
-          "Identify the factors/constraints that impact your  daily operations",
-        description:
-          "Identify the factors/constraints that impact your  daily operations",
-        score: 10,
-        createdAt: "2023-06-05T08:23:02.223Z",
-        updatedAt: "2023-06-05T08:23:02.223Z",
-        __v: 0,
-      },
-      {
-        _id: "647d9b888d243725a446a758",
-        title: "Review current and past transport demand",
-        description: "Review current and past transport demand",
-        score: 10,
-        createdAt: "2023-06-05T08:23:36.614Z",
-        updatedAt: "2023-06-05T08:23:36.614Z",
-        __v: 0,
-      },
-      {
-        _id: "647d9bba8d243725a446a75a",
-        title: "Visualize and set routes",
-        description: "Visualize and set routes",
-        score: 10,
-        createdAt: "2023-06-05T08:24:26.394Z",
-        updatedAt: "2023-06-05T08:24:26.394Z",
-        __v: 0,
-      },
-      {
-        _id: "647d9bd88d243725a446a75c",
-        title: "Assign tasks/routes across your entire fleet",
-        description: "Assign tasks/routes across your entire fleet",
-        score: 30,
-        createdAt: "2023-06-05T08:24:56.923Z",
-        updatedAt: "2023-06-05T08:24:56.923Z",
-        __v: 0,
-      },
-      {
-        _id: "647d9bec8d243725a446a75e",
-        title: "Involve drivers/ passengers",
-        description: "Involve drivers/ passengers",
-        score: 30,
-        createdAt: "2023-06-05T08:25:16.336Z",
-        updatedAt: "2023-06-05T08:25:16.336Z",
-        __v: 0,
-      },
-      {
-        _id: "647d9bfb8d243725a446a760",
-        title: "Review",
-        description: "Review ",
-        score: 100,
-        createdAt: "2023-06-05T08:25:31.810Z",
-        updatedAt: "2023-06-05T11:43:00.485Z",
-        __v: 0,
-      },
-    ],
-    isCompleted: false,
-    assignedTo: [],
-    categoryId: {
-      _id: "6479b8fa92f3fa9c5b1d6f93",
-      language: "English",
-      title: "Shift",
-      __v: 0,
-    },
-    costId: {
-      _id: "647995d492f3fa9c5b1d6f1c",
-      language: "English",
-      title: "Cheap",
-      __v: 0,
-    },
-    potentialId: {
-      _id: "6479961b92f3fa9c5b1d6f2e",
-      language: "English",
-      title: "Risk2",
-      __v: 0,
-    },
-    timescaleId: {
-      _id: "6479bb1c92f3fa9c5b1d6fb9",
-      language: "English",
-      title: "Medium term",
-      __v: 0,
-    },
-    answerRelationshipId: {
-      _id: "6479986692f3fa9c5b1d6f4d",
-      language: "English",
-      title: "Medium",
-      __v: 0,
-    },
-    startdate: "2023-06-05T09:42:39.850Z",
-    createdAt: "2023-06-05T09:42:39.851Z",
-    updatedAt: "2023-06-05T11:43:44.357Z",
-    __v: 0,
+    _id: "625d3cd5923ccd040209ebec",
+    name: "How do you dispose of vehicles?",
+    phone: "Max",
+    company: "Force Medicines",
+    designation: "PHP Developer",
+    email: "Medium",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    lead_score: "General",
+    tags: "In progress",
+    response: "low",
+    Scale: "Short term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebea",
+    name: "Do you take the environmental impact into consideration when planning for disposal ?",
+    phone: "Medium",
+    company: "Nesta Technologies",
+    designation: "Lead Designer / Developer",
+    email: "High",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
+    Scale: "intermediate",
+  },
+
+  {
+    _id: "625d3cd5923ccd040209ebef",
+    name: "How do you dispose of vehicles?",
+    phone: "Max",
+    company: "Micro Design",
+    designation: "Asp.Net Developer",
+    email: "Very High",
+    lead_score: "Improve",
+    tags: "In progress",
+    response: "low",
+    Scale: "Long term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebed",
+    name: "How do you dispose of vehicles?",
+    phone: "Low",
+    company: "Digitech Galaxy",
+    designation: "Full Stack Developer",
+    email: "low",
+    lead_score: "Shift",
+    tags: "In progress",
+    response: "low",
+    Scale: "intermediate",
   },
 ];
 const ActionUserDashboard = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [actionData, setActionData] = useState([]);
-  const getRAbyUser = () => {
-    // let data = arr.map((value) => {
-    //   return {
-    //     title: value?.title,
-    //     category: value?.categoryId?.title,
-    //     stat: value?.status ? "true" : "false",
-    //     potential: value?.potentialId?.title,
-    //     cost: value?.costId?.title,
-    //     timescale: value?.timescaleId?.title,
-    //     ...value,
-    //   };
-    // });
-    // setActionData(data);
-    getAllAdminActionsByUser()
-      .then((resp) => {
-        setActionData(resp);
-      })
-      .catch(() => toast.error("error in fetching table data"));
-  };
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
     crmcontacts: state.Crm.crmcontacts,
     isContactCreated: state.Crm.isContactCreated,
     isContactSuccess: state.Crm.isContactSuccess,
     error: state.Crm.error,
   }));
-  useEffect(() => {
-    getRAbyUser();
-  }, []);
   useEffect(() => {
     dispatch(onGetContacts(arr));
   }, [dispatch, crmcontacts]);
@@ -660,21 +370,12 @@ const ActionUserDashboard = () => {
   const columns = useMemo(
     () => [
       {
-        Header: (
-          <input
-            type="checkbox"
-            id="checkBoxAll"
-            className="form-check-input"
-            onClick={() => checkedAll()}
-          />
-        ),
-
         Cell: (cellProps) => {
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
-              value={cellProps.row.original}
+              value={cellProps.row.original._id}
               onChange={() => deleteCheckbox()}
             />
           );
@@ -683,14 +384,14 @@ const ActionUserDashboard = () => {
       },
       {
         Header: "Title",
-        accessor: "title",
+        accessor: "name",
         filterable: false,
         Cell: (contact) => (
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div className="flex-grow-1 ms-2 name">
-                {contact.row.original.title}
+                {contact.row.original.name}
               </div>
             </div>
           </>
@@ -698,26 +399,30 @@ const ActionUserDashboard = () => {
       },
       {
         Header: "Category",
-        accessor: "category",
+        accessor: "lead_score",
         filterable: false,
       },
       {
+        Header: "Weight",
+        accessor: "phone",
+      },
+      {
         Header: "Status",
-        accessor: "stat",
+        accessor: "tags",
       },
       {
         Header: "Potential",
-        accessor: "potential",
+        accessor: "email",
         filterable: false,
       },
       {
         Header: "Cost",
-        accessor: "cost",
+        accessor: "response",
         filterable: false,
       },
       {
         Header: "Timescale",
-        accessor: "timescale",
+        accessor: "Scale",
         filterable: false,
       },
       {
@@ -740,9 +445,7 @@ const ActionUserDashboard = () => {
                       className="dropdown-item"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        navigate("/actionuserdetail", {
-                          state: { data: contactData },
-                        });
+                        setInfo(contactData);
                       }}
                     >
                       View
@@ -751,6 +454,7 @@ const ActionUserDashboard = () => {
                       className="dropdown-item"
                       onClick={() => {
                         const contactData = cellProps.row.original;
+                        setInfo(contactData);
                       }}
                     >
                       Edit
@@ -821,6 +525,74 @@ const ActionUserDashboard = () => {
     setAssignTag(assigned);
   }
 
+  //   const tags = [
+  //     { label: "Exiting", value: "Exiting" },
+  //     { label: "Lead", value: "Lead" },
+  //     { label: "Long-term", value: "Long-term" },
+  //     { label: "Partner", value: "Partner" },
+  //   ];
+
+  //   const categories = [
+  //     { id: 1, name: "Avoid" },
+  //     { id: 2, name: "Shift" },
+  //     { id: 3, name: "Improve" },
+  //   ];
+
+  //   const weight = [
+  //     { id: 1, name: "Low" },
+  //     { id: 2, name: "Medium" },
+  //     { id: 3, name: "Max" },
+  //   ];
+  //   const Status = [
+  //     { id: 1, name: "Not started" },
+  //     { id: 2, name: "In progress" },
+  //     { id: 3, name: "Completed" },
+  //   ];
+  //   const Potential = [
+  //     { id: 1, name: "Low" },
+  //     { id: 2, name: "Medium" },
+  //     { id: 3, name: "High" },
+  //   ];
+  //   const Cost = [
+  //     { id: 1, name: "Low" },
+  //     { id: 2, name: "Medium" },
+  //     { id: 3, name: "High" },
+  //   ];
+  //   const scale = [
+  //     { id: 1, name: "Short term" },
+  //     { id: 2, name: "Intermediate" },
+  //     { id: 3, name: "Medium term" },
+  //   ];
+
+  //   // SideBar Contact Deatail
+  //   const [info, setInfo] = useState([]);
+
+  //   // Export Modal
+  //   const [modals_grid, setmodals_grid] = useState(false);
+  //   function tog_grids() {
+  //     setmodals_grid(!modals_grid);
+  //   }
+  //   const [modal_grid, setmodal_grid] = useState(false);
+  //   function tog_grid() {
+  //     setmodal_grid(!modal_grid);
+  //   }
+  //   const [data, setData] = useState([]);
+  //   const handleModal = (e) => {
+  //     if (e.target.name == "manage_categories") {
+  //       setData(categories);
+  //     } else if (e.target.name == "manage_weight") {
+  //       setData(weight);
+  //     } else if (e.target.name == "manage_Status") {
+  //       setData(Status);
+  //     } else if (e.target.name == "manage_Potential") {
+  //       setData(Potential);
+  //     } else if (e.target.name == "manage_Costs") {
+  //       setData(Cost);
+  //     } else if (e.target.name == "manage_Scale") {
+  //       setData(scale);
+  //     }
+  //     setmodals_grid(true);
+  //   };
   document.title = "Recomended Action Dashboard | GreenMe";
   return (
     <React.Fragment>
@@ -835,15 +607,15 @@ const ActionUserDashboard = () => {
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
-                {actionData && actionData.length >= 0 ? (
+                {console.log("contact", crmcontacts)}
+                {isContactSuccess && crmcontacts && crmcontacts.length ? (
                   <TableContainer
                     columns={columns}
-                    data={actionData || []}
+                    data={crmcontacts || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
                     isFooter={true}
-                    setInfo={() => {}}
                     customPageSize={8}
                     className="custom-header-css"
                     divClass="table-responsive table-card mb-0"
