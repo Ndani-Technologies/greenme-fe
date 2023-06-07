@@ -553,6 +553,7 @@ const ActionAdminDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
+
                         setIsDataUpdated(true);
                         setmodal_grid(true);
                       }}

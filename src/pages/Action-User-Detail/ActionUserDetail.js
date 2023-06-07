@@ -181,7 +181,7 @@ const ActionUserDetail = () => {
               >
                 <span className="fs-7">Start Date</span>
                 <div>
-                  <span className="span">{data.startdate}</span>
+                  <span className="span">{data.startdate}</span>g
                 </div>
               </div>
               <div
