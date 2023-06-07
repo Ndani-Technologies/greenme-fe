@@ -48,45 +48,43 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
-export const updateUserResp = async (id, user_resp, history) => {
+export const updateUserResp = async (id, user_resp, navigate) => {
+  console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
   // let resp = await axios.patch(
   //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
   //   { user_resp }
   // );
   let resp = await axios.patch(
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
-    { user_resp }
+    user_resp
   );
   console.log(resp, "RESP INSIDE THUNK");
-  toast.success("User response submitted successfully!");
 
   // Wait for the toast notification to be displayed for a brief duration
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  if (resp) history("/benchmarking");
+  if (resp) {
+    toast.success("User response submitted successfully!");
+    navigate("/benchmarking");
+  }
   return resp;
 };
 
-export const updateUserRespSave =
-  (id, user_resp) => async (dispatch, getState) => {
-    // let resp = await axios.patch(
-    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_save/${id}`,
+export const updateUserRespSave = async (id, user_resp) => {
+  console.log(user_resp, "SAVE RESPONSE IN THUNK");
+  console.log("benchmark  user_resp_update req", user_resp);
 
-    //   { user_resp }
-    // );
-    console.log("benchmark  user_resp_update req", user_resp);
-
-    let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
-      { user_resp }
-    );
-    if (resp) {
-      toast.success("progress is successfullly saved");
-      console.log(resp);
-    } else {
-      toast.error("Unable to save progress");
-    }
-    return resp;
-  };
+  let resp = await axios.patch(
+    `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
+    user_resp
+  );
+  if (resp) {
+    toast.success("progress is successfullly saved");
+    console.log(resp);
+  } else {
+    toast.error("Unable to save progress");
+  }
+  return resp;
+};
 
 export const addBenchmark = async (benchmark) => {
   let resp;
