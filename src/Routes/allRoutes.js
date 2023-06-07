@@ -53,9 +53,9 @@ const authProtectedRoutes = [
   //benchmarking user
   { path: "/benchmarking", component: <BenchmarkingDashboard /> },
   { path: `/benchmarking/:id`, component: <Benchmarking /> },
-  { path: `/adminbenchmarking/:id`, component: <BenchmarkingEdit /> },
   { path: "/benchmarking/summary/:id", component: <BenhmarkSummary /> },
   //benchmarking admin
+  { path: `/adminbenchmarking/:id`, component: <BenchmarkingEdit /> },
   { path: "/adminbenchmarking", component: <BenchmarkAdmin /> },
   {
     path: `/adminbenchmarking/summary/:id`,

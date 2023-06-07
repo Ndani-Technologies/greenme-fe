@@ -377,7 +377,7 @@ const BenchmarkingDashboard = () => {
         ),
       },
       {
-        Header: "End Date",
+        Header: "Completion Date",
         accessor: "end_data",
         Cell: (contact) => (
           <>

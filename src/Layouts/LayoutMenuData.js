@@ -324,6 +324,12 @@ const Navdata = () => {
           link: "/usersummary",
           parentId: "Recommended Actions",
         },
+        {
+          id: 3,
+          label: "User Details",
+          link: "/actionuserdetail",
+          parentId: "Recommended Actions",
+        },
 
         {
           id: 3,
@@ -342,12 +348,13 @@ const Navdata = () => {
       link: "/",
       disable: true,
     },
+
     {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "/",
-      disable: true,
+      link: "/UserCollaboration",
+      disable: false,
     },
     {
       id: 6,

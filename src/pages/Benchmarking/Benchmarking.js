@@ -52,7 +52,6 @@ const Benchmarking = () => {
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
       if (value.category?._id === arr[0]._id) return value;
     });
-    console.log("benchmark by cateogry", benchmarkByCategory);
     setQuestions(benchmarkByCategory);
   };
   useEffect(() => {
@@ -62,12 +61,37 @@ const Benchmarking = () => {
     // setBenchmark(benchmarkByCategory);
   }, []);
 
+  //HANDLING STYLE CHANGE ON SCREEN SIZE CHANGE
+
+  const [isBelow1440, setIsBelow1440] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsBelow1440(window.innerWidth < 1440);
+    };
+
+    // Add event listener to detect window resize
+    window.addEventListener("resize", handleResize);
+
+    // Initial check on component mount
+    handleResize();
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
+
   const getProgressPercentage = async () => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
-    console.log(obj, "user object");
+
     const res = await getUserProgress(obj._id);
-    console.log(res, "percentage API result");
-    setProgressPercentage(res);
+
+    const floorPercentage = Math.floor(res.percentage);
+
+    setProgressPercentage(floorPercentage);
   };
 
   const [justifyPillsTab, setjustifyPillsTab] = useState(
@@ -83,19 +107,20 @@ const Benchmarking = () => {
           if (value.category?._id === tab) return value;
         }
       );
-      console.log("benchmark by cateogry", benchmarkByCategory);
       setQuestions(benchmarkByCategory);
       setjustifyPillsTab(tab);
     }
   };
   const [comment, SetComment] = useState("");
-  const handleExplanationChange = (event) => {
-    const { value } = event.target;
+  const handleExplanationChange = (value) => {
     SetComment(value);
   };
 
-  const [activeIndexes, setActiveIndexes] = useState({});
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+
   const [user_resp, setUser_resp] = useState([]);
+  const [activeIndexes, setActiveIndexes] = useState({});
+  const [selectedAnswerIds, setSelectedAnswerIds] = useState([]);
 
   const handleButtonClick = (
     questionIndex,
@@ -108,169 +133,96 @@ const Benchmarking = () => {
       ...prevState,
       [questionIndex]: buttonIndex,
     }));
-    const mapData = {
-      questionId: qid,
-      selectedOption: aid,
-      comment: comment,
-    };
-    setUser_resp([...user_resp, mapData]);
-    console.log("mapdata user resp", mapData);
+
+    setUser_resp((prevUserResp) => {
+      const newUserResp = [...prevUserResp];
+      const userRespIndex = newUserResp.findIndex(
+        (resp) => resp.questionId === qid
+      );
+
+      if (userRespIndex !== -1) {
+        const updatedUserResp = {
+          ...newUserResp[userRespIndex],
+          selectedOption: [...newUserResp[userRespIndex].selectedOption],
+        };
+
+        if (updatedUserResp.selectedOption.includes(aid)) {
+          // Remove the answer ID if it already exists in the array
+          updatedUserResp.selectedOption =
+            updatedUserResp.selectedOption.filter((id) => id !== aid);
+        } else {
+          // Add the answer ID if it doesn't exist in the array
+          updatedUserResp.selectedOption.push(aid);
+        }
+
+        newUserResp[userRespIndex] = updatedUserResp;
+      } else {
+        // Add new user response to the array
+        // let arr = [];
+        // arr.push(aid);
+        newUserResp.push({
+          questionId: qid,
+          selectedOption: [aid],
+          comment: "",
+        });
+      }
+
+      return newUserResp;
+    });
+
+    console.log("user_resp", user_resp);
     // Your other logic here
   };
-  const [flag, setFlag] = useState(true);
-  const [activeButtonIndexes, setActiveButtonIndexes] = useState([]);
 
-  let [benchmark2, setBenchmark2] = useState({
-    title: "Benchmark",
-    status: "Active",
-    completion_level: 100,
-    country: "uk",
-    start_date: "2023-05-24T13:46:12.874Z",
-    end_data: "2023-05-24T17:48:52.227Z",
-    _id: "646e1524d4faa913432362b3",
-    user: {
-      _id: "6468d0ebe01631c2604a2376",
-      email: "info@ndani.co.ke",
-      organization: "Fleet Forum",
-      firstName: "Ndani",
-      lastName: "Tester 1",
-      scope: [],
-      otherCountries: [],
-      areaOfExpertise: [],
-      profilePic:
-        "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
-      uid: 1380,
-      role: {
-        _id: "6467ade8a992a3cf078ac815",
-        title: "user",
-        permissions: [
-          {
-            _id: "6467adbfa992a3cf078ac810",
-            title: "get user",
-            route: "can get users",
-            createdAt: "2023-05-19T17:11:27.244Z",
-            updatedAt: "2023-05-19T17:11:27.244Z",
-            __v: 0,
-          },
-        ],
-        createdAt: "2023-05-19T17:12:08.959Z",
-        updatedAt: "2023-05-19T17:12:08.959Z",
-        __v: 0,
-      },
-      timezone: "GMT",
-      state: "active",
-      createdAt: "2023-05-20T13:53:47.519Z",
-      updatedAt: "2023-05-22T13:12:21.765Z",
-      __v: 0,
-      country: "",
-    },
-    questionnaire: [
-      {
-        whoHasAnswer: {
-          userId: [],
-          totalUsers: 0,
-        },
-        _id: "646debeea8104724da361852",
-        languageSelector: "English",
-        status: true,
-        visibility: true,
-        title:
-          "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) contain references to a green strategy or environmental sustainability? ",
-        description: "For example, how to reduce emissions or waste?",
-        category: {
-          _id: "646ba306f9cf2ce9b1d5669d",
-          language: "English",
-          titleEng: "Data",
-          __v: 0,
-        },
-        answerOptions: [
-          {
-            _id: "646d05b2a8104724da360f73",
-            language: "English",
-            answerOption: "Yes",
-            includeExplanation: false,
-            __v: 0,
-          },
-          {
-            _id: "646d05b5a8104724da360f75",
-            language: "English",
-            answerOption: "No",
-            includeExplanation: false,
-            __v: 0,
-          },
-          {
-            _id: "646b4ba4be4f8222b0b44b8d",
-            language: "English",
-            answerOption: "We don't have a policy",
-            includeExplanation: false,
-            __v: 0,
-          },
-        ],
-        __v: 1,
-      },
-      {
-        whoHasAnswer: {
-          userId: [],
-          totalUsers: 0,
-        },
-        _id: "646decb2a8104724da36186f",
-        languageSelector: "English",
-        status: true,
-        visibility: true,
-        title:
-          "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) include guidance to use the best option vehicle with the lowest environmental impact? ",
-        description:
-          "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) include guidance to use the best option vehicle with the lowest environmental impact? ",
-        category: {
-          _id: "646ba306f9cf2ce9b1d5669d",
-          language: "English",
-          titleEng: "Data",
-          __v: 0,
-        },
-        answerOptions: [
-          {
-            _id: "646d05b2a8104724da360f73",
-            language: "English",
-            answerOption: "Yes",
-            includeExplanation: false,
-            __v: 0,
-          },
-          {
-            _id: "646d05b5a8104724da360f75",
-            language: "English",
-            answerOption: "No",
-            includeExplanation: false,
-            __v: 0,
-          },
-          {
-            _id: "646b4ba4be4f8222b0b44b8d",
-            language: "English",
-            answerOption: "We don't have a policy",
-            includeExplanation: false,
-            __v: 0,
-          },
-        ],
-        __v: 0,
-      },
-    ],
-    completionLevel: 100,
-    user_resp: [
-      {
-        questionId: "646debeea8104724da361852",
-        selectedOption: "646d05b5a8104724da360f75",
-        comment: "",
-        _id: "646e4e04d4faa9134323699a",
-      },
-      {
-        questionId: "646decb2a8104724da36186f",
-        selectedOption: "646b4ba4be4f8222b0b44b8d",
-        comment: "",
-        _id: "646e4e04d4faa9134323699b",
-      },
-    ],
-    __v: 0,
-    end_date: "2023-05-24T17:48:52.227Z",
-  });
+  // const handleButtonClick = (
+  //   questionIndex,
+  //   buttonIndex,
+  //   answerOption,
+  //   qid,
+  //   aid
+  // ) => {
+  //   setActiveIndexes((prevState) => ({
+  //     ...prevState,
+  //     [questionIndex]: buttonIndex,
+  //   }));
+
+  //   setUser_resp((prevUserResp) => {
+  //     const newUserResp = [...prevUserResp];
+  //     const userRespIndex = newUserResp.findIndex((resp) => resp.qid === qid);
+
+  //     if (userRespIndex !== -1) {
+  //       const updatedUserResp = {
+  //         ...newUserResp[userRespIndex],
+  //         aid: [...newUserResp[userRespIndex].aid],
+  //       };
+
+  //       if (updatedUserResp.aid.includes(aid)) {
+  //         // Remove the answer ID if it already exists in the array
+  //         updatedUserResp.aid = updatedUserResp.aid.filter((id) => id !== aid);
+  //       } else {
+  //         // Add the answer ID if it doesn't exist in the array
+  //         updatedUserResp.aid.push(aid);
+  //       }
+
+  //       newUserResp[userRespIndex] = updatedUserResp;
+  //     } else {
+  //       // Add new user response to the array
+  //       let arr = [];
+  //       arr.push(aid);
+  //       newUserResp.push({
+  //         questionId: qid,
+  //         selectedOption: arr,
+  //         comment: "",
+  //       });
+  //     }
+
+  //     return newUserResp;
+  //   });
+
+  //   console.log("user_resp", user_resp);
+  //   // Your other logic here
+  // };
+
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
@@ -279,123 +231,89 @@ const Benchmarking = () => {
         const activeButtonIndex = activeIndexes[index];
 
         // Find the user response for the current question
-        const userResponse = benchmark.user_resp.find(
-          (resp) => resp.questionId === item?._id
+        const userResponse = benchmark?.user_resp?.find(
+          (resp) => resp?.questionId === item?._id
         );
-        console.log("userResponse", userResponse);
+
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
-          (option) => option?._id === userResponse?.selectedOption
+          (option) =>
+            option?._id === userResponse?.selectedOption.map((val) => val)
         );
-        const selectedOption = item.answerOptions.find(
-          (option) => option?._id === userResponse?.selectedOption
+
+        const selectedOption = item?.answerOptions?.find(
+          (option) => option?._id === userResponse?.selectedOption[0]
         );
+
         return (
-          <div className="row w-50" key={index}>
+          <div className={rowClassName} key={index}>
             <h5>Question {item.index}</h5>
             <p className="w-75 fs-5">{item.title}</p>
             <p>{item.description}</p>
-            {benchmark.user_resp?.length > 0
-              ? item.answerOptions &&
-                item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {btn.includeExplanation &&
-                      activeButtonIndex === btnIndex && (
-                        <textarea
-                          type="text"
-                          className="w-75 p-2"
-                          rows={3}
-                          key={btnIndex}
-                          placeholder="Comments"
-                          onChange={handleExplanationChange}
-                        />
-                      )}
-                  </>
-                ))
-              : item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
-
-                    {btn.includeExplanation && (
-                      <textarea
-                        type="text"
-                        className="w-75 p-2"
-                        rows={3}
-                        placeholder="Comments"
-                        onChange={handleExplanationChange}
-                      />
-                    )}
-                  </>
-                ))}
-
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
-                    let isSelected;
-                    // let isCheck =!seletectedArrayIndexes.includes(index)
-                    // if( flag) {
-                    //   console.log("question", index, "button", btn.answerOption,btnIndex, "selected", selectedOptionIndex )
-                    //   isSelected = selectedOptionIndex === btnIndex;
-                    //   seletectedArrayIndexes.push(index)
-                    // }
-                    console.log("isSelected", isSelected);
-                    // const isUserResponse =
-                    //   userResponse?.selectedOption === btn?._id;
+                    // Check if the answer is already selected for the current question
+                    const isSelected =
+                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
 
-                    let buttonClass =
+                    let buttonClass = "button";
+
+                    if (
+                      selectedAnswerIds[item._id] &&
+                      selectedAnswerIds[item._id].includes(btn._id)
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    if (
                       selectedOption?._id !== undefined
                         ? selectedOption?._id === btn._id
-                          ? "button active"
-                          : "button "
                         : activeButtonIndex === btnIndex
-                        ? "button active"
-                        : "button ";
-                    // let buttonClass = index == btnIndex ? "button active" : "button"
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    // let buttonClass = "button";
+                    // if (
+                    //   selectedAnswerIds[item._id] &&
+                    //   selectedAnswerIds[item._id].includes(btn._id)
+                    // ) {
+                    //   buttonClass += " active";
+                    // }
 
                     return (
                       <div className="buttons-container" key={btnIndex}>
                         <button
                           onClick={() => {
-                            // setFlag(selectedOptionIndex == userResponse?.selectedOption)
-                            // isSelected = false
-                            setBenchmark((prevState) => {
-                              // find index of the current user response
-                              const userRespIndex =
-                                prevState.user_resp.findIndex(
-                                  (resp) => resp.questionId === item._id
-                                );
-                              // copy previous state
-                              const newUserResp = [...prevState.user_resp];
-                              // update selectedOption of the current user response
-                              newUserResp[userRespIndex] = {
-                                ...newUserResp[userRespIndex],
-                                selectedOption: btn._id,
-                              };
-                              // return new state
-                              return {
-                                ...prevState,
-                                user_resp: newUserResp,
-                              };
+                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                              const questionId = item._id;
+                              const selectedIds =
+                                prevSelectedAnswerIds[questionId] || [];
+
+                              if (isSelected) {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: selectedIds.filter(
+                                    (id) => id !== btn._id
+                                  ),
+                                };
+                              } else {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: [...selectedIds, btn._id],
+                                };
+                              }
                             });
+
                             handleButtonClick(
                               (currentPage - 1) * numPages + index,
                               btnIndex,
                               btn.answerOption,
                               item?._id,
-                              btn?._id
-                            );
-
-                            console.log(
-                              "isSelected2",
-                              selectedOption?._id,
-                              selectedOption?._id !== undefined
-                                ? selectedOption?._id === btn._id
-                                  ? "button active1"
-                                  : "button1 "
-                                : activeButtonIndex === btnIndex
-                                ? "button active2"
-                                : "button2 "
+                              btn._id
+                              // selectedAnswerIds[btn._id] || [] // Pass the selected answer IDs for the current question
                             );
                           }}
                           className={buttonClass}
@@ -409,167 +327,76 @@ const Benchmarking = () => {
             ) : (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => (
-                    <div className="buttons-container" key={btnIndex}>
-                      <button
-                        className={`button ${
-                          activeButtonIndex === btnIndex ? "active" : ""
-                        }`}
-                        onClick={() =>
-                          handleButtonClick(
-                            (currentPage - 1) * numPages + index,
-                            btnIndex,
-                            btn.answerOption,
-                            item?._id,
-                            btn?._id
-                          )
-                        }
-                      >
-                        {btn.answerOption}
-                      </button>
-                    </div>
-                  ))}
+                  item.answerOptions.map((btn, btnIndex) => {
+                    // Check if the answer is already selected for the current question
+                    const isSelected =
+                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+                    let buttonClass = "button";
+                    if (
+                      selectedAnswerIds[item._id] &&
+                      selectedAnswerIds[item._id].includes(btn._id)
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    return (
+                      <div className="buttons-container" key={btnIndex}>
+                        <button
+                          onClick={() => {
+                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                              const questionId = item._id;
+                              const selectedIds =
+                                prevSelectedAnswerIds[questionId] || [];
+
+                              if (isSelected) {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: selectedIds.filter(
+                                    (id) => id !== btn._id
+                                  ),
+                                };
+                              } else {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: [...selectedIds, btn._id],
+                                };
+                              }
+                            });
+
+                            handleButtonClick(
+                              (currentPage - 1) * numPages + index,
+                              btnIndex,
+                              btn.answerOption,
+                              item?._id,
+                              btn._id
+                            );
+                          }}
+                          className={buttonClass}
+                        >
+                          {btn.answerOption}
+                        </button>
+                      </div>
+                    );
+                  })}
               </div>
             )}
           </div>
         );
       });
 
-  // const renderedQuestions =
-  //   benchmark?.questionnaire?.length > 0 &&
-  //   benchmark.questionnaire.map((item, qid) => {
-  //     let isHighlighted;
-  //     const activeButtonIndex = activeIndexes[qid];
 
-  //     const userResponse = benchmark.user_resp.find(
-  //       (resp) => resp.questionId === item?._id
-  //     );
-  //     const selectedOptionIndex = item.answerOptions.findIndex(
-  //       (option) => option?._id === userResponse?.selectedOption
-  //     );
-  //     const selectedOption = item.answerOptions.find(
-  //       (option) => option?._id === userResponse?.selectedOption
-  //     );
-  //     return (
-  //       <div className="row w-50 " key={qid}>
-  //         <h5>Question {qid + 1}</h5>
-  //         <p className="w-75 fs-5">{item.title}</p>
-  //         <p>{item.description}</p>
-  //         <div className="d-flex gap-2">
-  //           {benchmark.user_resp.length > 0
-  //             ? item.answerOptions.length > 0 &&
-  //               item.answerOptions.map((btn, buttonIndex) => {
-  //                 let buttonClass =
-  //                   selectedOption?._id === btn._id
-  //                     ? "button active"
-  //                     : "button ";
-  //                 return (
-  //                   <div>
-  //                     {btn.includeExplanation && (
-  //                       <textarea
-  //                         type="text"
-  //                         className="w-75 p-2"
-  //                         rows={3}
-  //                         placeholder="Comments"
-  //                       />
-  //                     )}
-  //                     <div className="d-flex mt-4">
-  //                       <div className="buttons-container" key={buttonIndex}>
-  //                         {console.log(
-  //                           "button checks",
-  //                           selectedOptionIndex,
-  //                           buttonIndex,
-  //                           selectedOptionIndex === buttonIndex
-  //                         )}
+  const obj = JSON.parse(sessionStorage.getItem("authUser"));
+  const userId = obj._id;
+  const requestBody = {
+    userId: userId,
+    user_resp: user_resp,
+  };
 
-  //                         <button
-  //                           className={buttonClass}
-  //                           onClick={() => {
-  //                             setBenchmark((prevState) => {
-  //                               // find index of the current user response
-  //                               const userRespIndex =
-  //                                 prevState.user_resp.findIndex(
-  //                                   (resp) => resp.questionId === item._id
-  //                                 );
-  //                               // copy previous state
-  //                               const newUserResp = [...prevState.user_resp];
-  //                               // update selectedOption of the current user response
-  //                               newUserResp[userRespIndex] = {
-  //                                 ...newUserResp[userRespIndex],
-  //                                 selectedOption: btn._id,
-  //                               };
-  //                               // return new state
-  //                               return {
-  //                                 ...prevState,
-  //                                 user_resp: newUserResp,
-  //                               };
-  //                             });
-  //                             const mapData = {
-  //                               questionId: item._id,
-  //                               selectedOption: btn._id,
-  //                               comment: "",
-  //                             };
-  //                             setUser_resp([...user_resp, mapData]);
-  //                           }}
-  //                         >
-  //                           {btn.answerOption}
-  //                         </button>
-  //                       </div>
-  //                     </div>
-  //                   </div>
-  //                 );
-  //               })
-  //             : item.answerOptions.length > 0 &&
-  //               item.answerOptions.map((btn, buttonIndex) => {
-  //                 let buttonClass =
-  //                   selectedOption?._id === btn._id
-  //                     ? "button active"
-  //                     : "button ";
-  //                 return (
-  //                   <div>
-  //                     {btn.includeExplanation && (
-  //                       <textarea
-  //                         type="text"
-  //                         className="w-75 p-2"
-  //                         rows={3}
-  //                         placeholder="Comments"
-  //                       />
-  //                     )}
-  //                     <div className="d-flex mt-4">
-  //                       <div className="buttons-container" key={buttonIndex}>
-  //                         <button
-  //                           className={`button ${
-  //                             activeButtonIndex === buttonIndex ? "active" : ""
-  //                           }`}
-  //                           onClick={() => {
-  //                             setActiveIndexes((prevState) => ({
-  //                               ...prevState,
-  //                               [qid]: buttonIndex,
-  //                             }));
-  //                             const mapData = {
-  //                               questionId: item._id,
-  //                               selectedOption: btn._id,
-  //                               comment: "",
-  //                             };
-  //                             setUser_resp([...user_resp, mapData]);
-  //                           }}
-  //                         >
-  //                           {btn.answerOption}
-  //                         </button>
-  //                       </div>
-  //                     </div>
-  //                   </div>
-  //                 );
-  //               })}
-  //         </div>
-  //       </div>
-  //     );
-  //   });
   const handleSubmit = () => {
     toast.success("benchmark is successfully submitted");
-    dispatch(
-      updateUserResp(benchmark?._id.toString().trim(), user_resp, navigate)
-    );
+    updateUserResp(benchmark?._id, requestBody, navigate);
+
   };
 
   return (
@@ -621,80 +448,16 @@ const Benchmarking = () => {
                   <div>
                     <div className="d-flex align-items-center border-top border-dark">
                       <div className="w-50">
-                        {/* <Pagination className="mt-4">
-                          <PaginationItem>
-                            <PaginationItem disabled={currentPage === 1}>
-                              {" "}
-                              <PaginationLink
-                                to="#"
-                                onClick={() =>
-                                  setCurrentPage(() => currentPage - 1)
-                                }
-                              >
-                                {" "}
-                                ← &nbsp; prev{" "}
-                              </PaginationLink>{" "}
-                            </PaginationItem>
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(1)}
-                            >
-                              {" "}
-                              1{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(2)}
-                            >
-                              {" "}
-                              2{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              onClick={() => setCurrentPage(3)}
-                            >
-                              {" "}
-                              3{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                          <PaginationItem>
-                            {" "}
-                            <PaginationLink
-                              to="#"
-                              disabled={currentPage === numPages}
-                              onClick={() =>
-                                setCurrentPage(() => currentPage + 1)
-                              }
-                            >
-                              {" "}
-                              Next &nbsp; →{" "}
-                            </PaginationLink>{" "}
-                          </PaginationItem>
-                        </Pagination> */}
                         <Card className=" border-none mt-3">
-                          {progressPercentage.percentage && (
+                          {progressPercentage && (
                             <CardBody className="p-0">
                               <div className="d-flex align-items-center mb-2 mt-4">
                                 <div className="flex-grow-1 d-flex justify-content-between w-100">
                                   <h5 className="card-title mb-0">
-                                    <span>
-                                      {progressPercentage?.percentage}
-                                    </span>{" "}
-                                    Benchmark progress
+                                    <span>{progressPercentage}</span> Benchmark
+                                    progress
                                   </h5>
-                                  <h5>
-                                    {100 - progressPercentage?.percentage} to
-                                    go!
-                                  </h5>
+                                  <h5>{100 - progressPercentage} to go!</h5>
                                 </div>
                               </div>
                               <div className="progress animated-progress custom-progress progress-label mt-3">
@@ -702,11 +465,9 @@ const Benchmarking = () => {
                                   className="progress-bar bg- "
                                   role="progressbar"
                                   style={{
-                                    width:
-                                      progressPercentage.percentage.toString() +
-                                      "%",
+                                    width: progressPercentage.toString() + "%",
                                   }}
-                                  aria-valuenow={progressPercentage.percentage}
+                                  aria-valuenow={progressPercentage}
                                   aria-valuemin="0"
                                   aria-valuemax="100"
                                 >
@@ -743,9 +504,9 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              dispatch(
-                                updateUserRespSave(benchmark?._id, user_resp)
-                              );
+
+                              updateUserRespSave(benchmark?._id, requestBody);
+
                             }}
                           >
                             SAVE
