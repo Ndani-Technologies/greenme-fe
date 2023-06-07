@@ -468,6 +468,7 @@ const ActionAdminDashboard = () => {
   const [isDataUpdated, setIsDataUpdated] = useState(true);
   console.log(info, "INFO");
 
+
   // Column
   const columns = useMemo(
     () => [
@@ -514,6 +515,7 @@ const ActionAdminDashboard = () => {
         filterable: false,
       },
       {
+
         Header: "Status",
         accessor: "stat",
       },
@@ -556,6 +558,7 @@ const ActionAdminDashboard = () => {
 
                         setIsDataUpdated(true);
                         setmodal_grid(true);
+
                       }}
                     >
                       Edit
@@ -635,6 +638,7 @@ const ActionAdminDashboard = () => {
     { id: 3, name: "High" },
   ];
 
+
   // Export Modal
   const [modalName, setModalName] = useState("");
   const [modalField, setModalField] = useState("");
@@ -649,6 +653,7 @@ const ActionAdminDashboard = () => {
   }
   const [data, setData] = useState([]);
   const handleModal = (e) => {
+
     if (e.target.name == "manage_Scale") {
       setModalName("Manage Scale");
       setModalField("Add new Scale");
@@ -682,6 +687,7 @@ const ActionAdminDashboard = () => {
     }
     setmodals_grid(true);
   };
+
 
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
   const [deleteId, setDeleteId] = useState();
@@ -736,6 +742,7 @@ const ActionAdminDashboard = () => {
                 <ActionModal
                   info={info}
                   setInfo={setInfo}
+
                   adminSteps={adminSteps}
                   setAdminSteps={setAdminSteps}
                   modal_grid={modal_grid}

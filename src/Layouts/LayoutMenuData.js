@@ -324,7 +324,6 @@ const Navdata = () => {
           link: "/usersummary",
           parentId: "Recommended Actions",
         },
-
         {
           id: 3,
           label: "User Dashboard",

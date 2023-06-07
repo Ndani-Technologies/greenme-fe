@@ -214,10 +214,12 @@ export const updateCompleteActionStep = async (id, steps) => {
 };
 
 
+
 export const getAllAdminActions = async () => {
   try {
     const res = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
     let data;
+
     data = res.map((value) => {
       return {
         title: value?.title,
@@ -229,12 +231,15 @@ export const getAllAdminActions = async () => {
         ...value,
       };
     });
+
     console.log(data, "DATA IN");
+
     return data;
   } catch (err) {
     console.log("Error in getting data", err);
   }
 };
+
 
 export const createAdminActions = async (data) => {
   console.log(data, "CREATE DATA");
@@ -267,16 +272,19 @@ export const updatedAdminActions = async (data, id) => {
   try {
     const res = await axios.patch(
       `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
+
       data
     );
     if (res !== undefined) {
       const updatedResp = {
+
         title: res?.title,
         category: res?.categoryId?.title,
         stat: res?.status ? "true" : "false",
         potential: res?.potentialId?.title,
         cost: res?.costId?.title,
         timescale: res?.timescaleId?.title,
+
         ...res,
       };
       return updatedResp;
