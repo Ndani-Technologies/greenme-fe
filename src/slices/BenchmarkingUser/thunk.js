@@ -64,6 +64,7 @@ export const updateUserResp = async (id, user_resp, navigate) => {
 
   console.log(resp, "RESP INSIDE THUNK");
 
+
   // Wait for the toast notification to be displayed for a brief duration
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (resp) {

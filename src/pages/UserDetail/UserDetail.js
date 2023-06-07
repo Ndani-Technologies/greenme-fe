@@ -143,6 +143,7 @@ const Profile = () => {
       updateUser(userObj._id, mappedData).then(() =>
         toast.success("Data updated.")
       );
+
     },
   });
 
