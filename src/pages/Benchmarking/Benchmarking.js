@@ -136,30 +136,34 @@ const Benchmarking = () => {
 
     setUser_resp((prevUserResp) => {
       const newUserResp = [...prevUserResp];
-      const userRespIndex = newUserResp.findIndex((resp) => resp.qid === qid);
+      const userRespIndex = newUserResp.findIndex(
+        (resp) => resp.questionId === qid
+      );
 
       if (userRespIndex !== -1) {
         const updatedUserResp = {
           ...newUserResp[userRespIndex],
-          aid: [...newUserResp[userRespIndex].aid],
+          selectedOption: [...newUserResp[userRespIndex].selectedOption],
         };
 
-        if (updatedUserResp.aid.includes(aid)) {
+        if (updatedUserResp.selectedOption.includes(aid)) {
           // Remove the answer ID if it already exists in the array
-          updatedUserResp.aid = updatedUserResp.aid.filter((id) => id !== aid);
+          updatedUserResp.selectedOption =
+            updatedUserResp.selectedOption.filter((id) => id !== aid);
         } else {
           // Add the answer ID if it doesn't exist in the array
-          updatedUserResp.aid.push(aid);
+          updatedUserResp.selectedOption.push(aid);
         }
 
         newUserResp[userRespIndex] = updatedUserResp;
       } else {
         // Add new user response to the array
-        let arr = [];
-        arr.push(aid);
+        // let arr = [];
+        // arr.push(aid);
         newUserResp.push({
-          qid: qid,
-          aid: arr,
+          questionId: qid,
+          selectedOption: [aid],
+          comment: "",
         });
       }
 
@@ -170,68 +174,54 @@ const Benchmarking = () => {
     // Your other logic here
   };
 
-  //
-  //  {benchmark.user_resp?.length > 0
-  //   ? item.answerOptions &&
-  //     item.answerOptions.map((btn, btnIndex) => (
-  //       <>
-  //         {btn.includeExplanation &&
-  //           activeButtonIndex === btnIndex && (
-  //             <div className="ck-editor-reverse">
-  //               <CKEditor
-  //                 editor={ClassicEditor}
-  //                 onChange={(e, editor) => {
-  //                   const value = editor.getData();
-  //                   const div = document.createElement("div");
-  //                   div.innerHTML = value;
-  //                   const pValue = div.querySelector("p").innerHTML;
-  //                   handleExplanationChange(pValue);
-  //                 }}
-  //                 validate={{
-  //                   required: { value: true },
-  //                 }}
-  //                 class="form-control"
-  //                 placeholder="Description"
-  //                 id="floatingTextarea"
-  //                 value={comment}
-  //                 style={{
-  //                   height: "120px",
-  //                   overflow: "hidden",
-  //                   backgroundColor: "#dfdfdf",
-  //                 }}
-  //               />
-  //             </div>
+  // const handleButtonClick = (
+  //   questionIndex,
+  //   buttonIndex,
+  //   answerOption,
+  //   qid,
+  //   aid
+  // ) => {
+  //   setActiveIndexes((prevState) => ({
+  //     ...prevState,
+  //     [questionIndex]: buttonIndex,
+  //   }));
 
-  //             // <textarea
-  //             //   type="text"
-  //             //   className="w-75 p-2"
-  //             //   rows={3}
-  //             //   key={btnIndex}
-  //             //   placeholder="Comments"
-  //             //   onChange={handleExplanationChange}
-  //             // />
-  //           )}
-  //       </>
-  //     ))
-  //   : item.answerOptions.map((btn, btnIndex) => (
-  //       <>
-  //         {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
+  //   setUser_resp((prevUserResp) => {
+  //     const newUserResp = [...prevUserResp];
+  //     const userRespIndex = newUserResp.findIndex((resp) => resp.qid === qid);
 
-  //         {btn.includeExplanation && (
-  //           <textarea
-  //             type="text"
-  //             className="w-75 p-2"
-  //             rows={3}
-  //             placeholder="Comments"
-  //             onChange={handleExplanationChange}
-  //           />
-  //         )}
-  //       </>
-  //     ))}
-  //
+  //     if (userRespIndex !== -1) {
+  //       const updatedUserResp = {
+  //         ...newUserResp[userRespIndex],
+  //         aid: [...newUserResp[userRespIndex].aid],
+  //       };
 
-  const [flag, setFlag] = useState(true);
-  const [activeButtonIndexes, setActiveButtonIndexes] = useState([]);
+  //       if (updatedUserResp.aid.includes(aid)) {
+  //         // Remove the answer ID if it already exists in the array
+  //         updatedUserResp.aid = updatedUserResp.aid.filter((id) => id !== aid);
+  //       } else {
+  //         // Add the answer ID if it doesn't exist in the array
+  //         updatedUserResp.aid.push(aid);
+  //       }
+
+  //       newUserResp[userRespIndex] = updatedUserResp;
+  //     } else {
+  //       // Add new user response to the array
+  //       let arr = [];
+  //       arr.push(aid);
+  //       newUserResp.push({
+  //         questionId: qid,
+  //         selectedOption: arr,
+  //         comment: "",
+  //       });
+  //     }
+
+  //     return newUserResp;
+  //   });
+
+  //   console.log("user_resp", user_resp);
+  //   // Your other logic here
+  // };
 
   const renderedQuestions =
     questions?.length >= 0 &&
@@ -395,11 +385,18 @@ const Benchmarking = () => {
         );
       });
 
+
+  const obj = JSON.parse(sessionStorage.getItem("authUser"));
+  const userId = obj._id;
+  const requestBody = {
+    userId: userId,
+    user_resp: user_resp,
+  };
+
   const handleSubmit = () => {
     toast.success("benchmark is successfully submitted");
-    dispatch(
-      updateUserResp(benchmark?._id.toString().trim(), user_resp, navigate)
-    );
+    updateUserResp(benchmark?._id, requestBody, navigate);
+
   };
 
   return (
@@ -507,10 +504,9 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              updateUserResp(benchmark?._id, user_resp);
-                              // dispatch(
-                              //   updateUserRespSave(benchmark?._id, user_resp)
-                              // );
+
+                              updateUserRespSave(benchmark?._id, requestBody);
+
                             }}
                           >
                             SAVE
