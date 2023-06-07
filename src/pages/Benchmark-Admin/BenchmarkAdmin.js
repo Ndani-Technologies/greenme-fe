@@ -364,6 +364,16 @@ const BenchmarkAdmin = () => {
         Header: "Completion Level",
         accessor: "completionLevel",
         filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div className="flex-grow-1 ms-2 name">
+                {Math.floor(cellProps.row.original.completionLevel)}
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Benchmark Title",
@@ -388,29 +398,6 @@ const BenchmarkAdmin = () => {
           </>
         ),
       },
-
-      // {
-      //   Header: "Benchmark Title",
-      //   accessor: "title",
-      //   filterable: false,
-      //   Cell: (cellProps) => (
-      //     <>
-      //       <div className="d-flex align-items-center">
-      //         <div className="flex-shrink-0"></div>
-      //         <div
-      //           className="flex-grow-1 ms-2 name"
-      //           href={`/adminbenchmarking/${cellProps.row.original._id}`}
-      //           onClick={() => {
-      //             const contactData = cellProps.row.original;
-      //             setInfo(contactData);
-      //           }}
-      //         >
-      //           {cellProps.row.original.title}
-      //         </div>
-      //       </div>
-      //     </>
-      //   ),
-      // },
       {
         Header: "Status",
         accessor: "status",

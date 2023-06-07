@@ -32,6 +32,7 @@ import * as Countries from "./Countries";
 import { Box, Chip, MenuItem, OutlinedInput, useTheme } from "@mui/material";
 import Select from "react-select";
 import { Padding } from "@mui/icons-material";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   document.title = "Profile | GreenMe";
@@ -49,12 +50,20 @@ const Profile = () => {
 
   const user = useSelector((state) => state.Login.user);
   const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+  const userDutyStationCountry = {
+    value: userObj.country,
+    label: userObj.country,
+  };
 
   const getProgressPercentage = async () => {
     getUserProgress(userObj._id)
-      .then((res) => setProgressPercentage(res))
+      .then((res) => {
+        console.log(res.JSON(), "PROGRESS");
+        setProgressPercentage(res);
+      })
       .catch((err) => console.log("error in percentage benchmarking"));
   };
+  console.log(progressPercentage, "PERCENT");
 
   const [countryOptions, setCountryOptions] = useState([]);
 
@@ -64,8 +73,10 @@ const Profile = () => {
     { value: "Choices 3", label: "Choices 3" },
     { value: "Choices 4", label: "Choices 4" },
   ];
+  const [userPercentage, setUserPercentage] = useState(0);
   useEffect(() => {
     getProgressPercentage();
+    setSelectedCountry([userDutyStationCountry]);
     const options = Countries.map((country) => {
       return {
         value: country.value,
@@ -73,6 +84,34 @@ const Profile = () => {
       };
     });
     setCountryOptions(options);
+    if (userPercentage < 1) {
+      if (userObj.firstName) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+      if (userObj.lastName) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+
+      if (userObj.email) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+
+      if (userObj.organization) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+      if (userObj?.scope.length > 0) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+      if (userObj.country) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+      if (userObj.otherCountries.length > 0) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+      if (userObj?.role?.title) {
+        setUserPercentage((prev) => prev + 12.5);
+      }
+    }
   }, []);
 
   const tabChange = (tab) => {
@@ -93,15 +132,18 @@ const Profile = () => {
       otherCountries: userObj?.otherCountries || [],
     },
 
-    onSubmit: (values) => {
+    onSubmit: (values, { resetForm }) => {
       const mappedData = {
         ...values,
-        otherCountries: countryName && countryName,
+        country: selectedCountry && selectedCountry,
+        otherCountries: selectedCountries && selectedCountries,
         banner: coverPhoto && coverPhoto,
       };
+      console.log(mappedData, "MAPPED DAATA");
       updateUser(userObj._id, mappedData);
     },
   });
+
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
   const MenuProps = {
@@ -122,31 +164,29 @@ const Profile = () => {
     };
   }
 
-  // const handleChange = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   setCountryName(typeof value === "string" ? value.split(",") : value, () => {
-  //     validation.setFieldValue(
-  //       "otherCountries",
-  //       countryName.map((country) => country)
-  //     );
-  //   });
-  // };
   const handleCoverPhotoChange = (event) => {
     const file = event.target.files[0];
     setCoverPhoto(URL.createObjectURL(file));
   };
 
+  const [selectedCountry, setSelectedCountry] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
 
+  const handleChange1 = (selectedOption) => {
+    if (selectedOption) {
+      setSelectedCountry(selectedOption.value);
+    } else {
+      setSelectedCountry([userDutyStationCountry]);
+    }
+  };
+
   const handleChange = (selectedOptions) => {
+    console.log(selectedOptions, "SELECTED");
+
     setSelectedCountries(selectedOptions.map((option) => option.value));
   };
 
-  // const handleMulti = (selectedOptions) => {
-  //   setSelectedCountries(selectedOptions.map((option) => option.value));
-  // };
+  console.log(selectedCountries, "SELECTED COUNTRIES");
 
   return (
     <React.Fragment>
@@ -245,17 +285,18 @@ const Profile = () => {
                     <div
                       className="progress-bar bg-"
                       role="progressbar"
-                      style={{ width: "80%" }}
+                      style={{ width: userPercentage + "%" }}
                       aria-valuenow="80%"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >
-                      <div className="label">"80%"</div>
+                      if{}
+                      <div className="label">{userPercentage}%</div>
                     </div>
                   </div>
                 </CardBody>
               </Card>
-              <Card>
+              {/* <Card>
                 <CardBody>
                   <div className="progress animated-progress custom-progress progress-label mt-4">
                     {progressPercentage?.percentage >= 0 && (
@@ -281,8 +322,8 @@ const Profile = () => {
                     </div>
                   </div>
                 </CardBody>
-              </Card>
-              <Card>
+              </Card> */}
+              {/* <Card>
                 <CardBody>
                   <div>
                     <div className="progress animated-progress custom-progress progress-label mt-4">
@@ -306,7 +347,7 @@ const Profile = () => {
                     </div>
                   </div>
                 </CardBody>
-              </Card>
+              </Card> */}
             </Col>
             <Col xxl={9}>
               <div className="mt-xxl-n5 card">
@@ -651,13 +692,35 @@ const Profile = () => {
                               >
                                 Duty Station Country
                               </Label>
-                              <Input
-                                type="text"
-                                className="form-control"
-                                id="countryInput"
-                                placeholder=""
-                                value={validation.values.country}
-                                disabled
+                              <Select
+                                isClearable={true}
+                                value={selectedCountry.value}
+                                onChange={handleChange1}
+                                defaultValue={{
+                                  value: userObj.country,
+                                  label: userObj.country,
+                                }}
+                                options={countryOptions}
+                                input={
+                                  <OutlinedInput
+                                    id="select-multiple-chip"
+                                    label="Chip"
+                                  />
+                                }
+                                renderValue={(selected) => (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: 0.5,
+                                    }}
+                                  >
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} />
+                                    ))}
+                                  </Box>
+                                )}
+                                MenuProps={MenuProps}
                               />
                             </div>
                           </Col>
@@ -669,15 +732,19 @@ const Profile = () => {
                               >
                                 Other Countries of Operation
                               </Label>
-                              // Render the Select component
                               <Select
-                                value={selectedCountries}
                                 isMulti={true}
-                                onChange={handleChange(selectedCountries)}
+                                onChange={handleChange} // Pass the callback function without invoking it
                                 options={countryOptions}
                                 sx={{ width: "100%" }}
+                                defaultValue={userObj.otherCountries.map(
+                                  (country) => ({
+                                    value: country,
+                                    label: country,
+                                  })
+                                )}
                                 placeholder=""
-                                style={{ Padding: "1px" }}
+                                style={{ padding: "1px" }} // Correct the casing of 'padding'
                                 labelId="demo-multiple-chip-label"
                                 id="demo-multiple-chip"
                                 input={

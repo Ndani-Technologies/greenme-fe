@@ -87,11 +87,11 @@ const Benchmarking = () => {
 
   const getProgressPercentage = async () => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
-    console.log(obj, "user object");
+
     const res = await getUserProgress(obj._id);
-    console.log(res, "percentage API result");
+
     const floorPercentage = Math.floor(res.percentage);
-    console.log(floorPercentage, "FLOOR");
+
     setProgressPercentage(floorPercentage);
   };
 
@@ -172,55 +172,65 @@ const Benchmarking = () => {
     // Your other logic here
   };
 
-  // const handleButtonClick = (
-  //   questionIndex,
-  //   buttonIndex,
-  //   answerOption,
-  //   qid,
-  //   aid
-  // ) => {
-  //   setActiveIndexes((prevState) => ({
-  //     ...prevState,
-  //     [questionIndex]: buttonIndex,
-  //   }));
+  //
+  //  {benchmark.user_resp?.length > 0
+  //   ? item.answerOptions &&
+  //     item.answerOptions.map((btn, btnIndex) => (
+  //       <>
+  //         {btn.includeExplanation &&
+  //           activeButtonIndex === btnIndex && (
+  //             <div className="ck-editor-reverse">
+  //               <CKEditor
+  //                 editor={ClassicEditor}
+  //                 onChange={(e, editor) => {
+  //                   const value = editor.getData();
+  //                   const div = document.createElement("div");
+  //                   div.innerHTML = value;
+  //                   const pValue = div.querySelector("p").innerHTML;
+  //                   handleExplanationChange(pValue);
+  //                 }}
+  //                 validate={{
+  //                   required: { value: true },
+  //                 }}
+  //                 class="form-control"
+  //                 placeholder="Description"
+  //                 id="floatingTextarea"
+  //                 value={comment}
+  //                 style={{
+  //                   height: "120px",
+  //                   overflow: "hidden",
+  //                   backgroundColor: "#dfdfdf",
+  //                 }}
+  //               />
+  //             </div>
 
-  //   setUser_resp((prevUserResp) => {
-  //     const newUserResp = [...prevUserResp];
-  //     const userRespIndex = newUserResp.findIndex(
-  //       (resp) => resp.questionId === qid
-  //     );
+  //             // <textarea
+  //             //   type="text"
+  //             //   className="w-75 p-2"
+  //             //   rows={3}
+  //             //   key={btnIndex}
+  //             //   placeholder="Comments"
+  //             //   onChange={handleExplanationChange}
+  //             // />
+  //           )}
+  //       </>
+  //     ))
+  //   : item.answerOptions.map((btn, btnIndex) => (
+  //       <>
+  //         {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
 
-  //     if (userRespIndex !== -1) {
-  //       const updatedUserResp = {
-  //         ...newUserResp[userRespIndex],
-  //         selectedOption: [...newUserResp[userRespIndex].selectedOption],
-  //       };
-
-  //       if (updatedUserResp.selectedOption.includes(aid)) {
-  //         // Remove the answer ID if it already exists in the array
-  //         updatedUserResp.selectedOption =
-  //           updatedUserResp.selectedOption.filter((id) => id !== aid);
-  //       } else {
-  //         // Add the answer ID if it doesn't exist in the array
-  //         updatedUserResp.selectedOption.push(aid);
-  //       }
-
-  //       newUserResp[userRespIndex] = updatedUserResp;
-  //     } else {
-  //       // Add new user response to the array
-  //       newUserResp.push({
-  //         questionId: qid,
-  //         selectedOption: [aid],
-  //         comment: comment,
-  //       });
-  //     }
-
-  //     return newUserResp;
-  //   });
-
-  //   console.log("user_resp", user_resp);
-  //   // Your other logic here
-  // };
+  //         {btn.includeExplanation && (
+  //           <textarea
+  //             type="text"
+  //             className="w-75 p-2"
+  //             rows={3}
+  //             placeholder="Comments"
+  //             onChange={handleExplanationChange}
+  //           />
+  //         )}
+  //       </>
+  //     ))}
+  //
 
   const [flag, setFlag] = useState(true);
   const [activeButtonIndexes, setActiveButtonIndexes] = useState([]);
@@ -239,73 +249,21 @@ const Benchmarking = () => {
         console.log("userResponse", userResponse);
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
-          (option) => option?._id === userResponse?.selectedOption
+          (option) =>
+            option?._id === userResponse?.selectedOption.map((val) => val)
         );
-        const selectedOption = item.answerOptions.find(
-          (option) => option?._id === userResponse?.selectedOption
+        const resp = userResponse?.selectedOption[0];
+        console.log(resp, "RESP");
+        const selectedOption = item?.answerOptions?.find(
+          (option) => option?._id === userResponse?.selectedOption[0]
         );
+
+        console.log(selectedOption, "OPTION");
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {item.index}</h5>
             <p className="w-75 fs-5">{item.title}</p>
             <p>{item.description}</p>
-            {benchmark.user_resp?.length > 0
-              ? item.answerOptions &&
-                item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {btn.includeExplanation &&
-                      activeButtonIndex === btnIndex && (
-                        <div className="ck-editor-reverse">
-                          <CKEditor
-                            editor={ClassicEditor}
-                            onChange={(e, editor) => {
-                              const value = editor.getData();
-                              const div = document.createElement("div");
-                              div.innerHTML = value;
-                              const pValue = div.querySelector("p").innerHTML;
-                              handleExplanationChange(pValue);
-                            }}
-                            validate={{
-                              required: { value: true },
-                            }}
-                            class="form-control"
-                            placeholder="Description"
-                            id="floatingTextarea"
-                            value={comment}
-                            style={{
-                              height: "120px",
-                              overflow: "hidden",
-                              backgroundColor: "#dfdfdf",
-                            }}
-                          />
-                        </div>
-
-                        // <textarea
-                        //   type="text"
-                        //   className="w-75 p-2"
-                        //   rows={3}
-                        //   key={btnIndex}
-                        //   placeholder="Comments"
-                        //   onChange={handleExplanationChange}
-                        // />
-                      )}
-                  </>
-                ))
-              : item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
-
-                    {btn.includeExplanation && (
-                      <textarea
-                        type="text"
-                        className="w-75 p-2"
-                        rows={3}
-                        placeholder="Comments"
-                        onChange={handleExplanationChange}
-                      />
-                    )}
-                  </>
-                ))}
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
