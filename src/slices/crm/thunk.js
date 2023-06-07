@@ -154,6 +154,65 @@ export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
 });
 
 //ADMIN ACTIONS CRUD FUNCTIONALITY
+export const getAllAdminActionsByUser = async () => {
+  try {
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    const res = await axios.get(
+      `${process.env.REACT_APP_RA_URL}actionsteps/filter/ByUser/${obj._id}`
+    );
+    let data;
+    console.log("resp", res);
+    data = res.map((value) => {
+      return {
+        title: value?.title,
+        category: value?.categoryId?.title,
+        stat: value?.status ? "true" : "false",
+        potential: value?.potentialId?.title,
+        cost: value?.costId?.title,
+        timescale: value?.timescaleId?.title,
+        ...value,
+      };
+    });
+    return data;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
+export const updateSaveActionStep = async (id, steps) => {
+  try {
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    const ob = {
+      userId: obj._id,
+      steps,
+    };
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/update/stepsave/ByUser/${id}`,
+      ob
+    );
+
+    return res;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
+export const updateCompleteActionStep = async (id, steps) => {
+  try {
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    const ob = {
+      userId: obj._id,
+      steps,
+    };
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/update/stepcomplete/byUser/${id}`,
+      ob
+    );
+
+    return res;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
+
 
 
 export const getAllAdminActions = async () => {
@@ -278,7 +337,8 @@ export const createAdminResources = async (data, category) => {
     return res;
   } catch (error) {
     console.error(error);
-    return {};
+    toast.error("link already exist");
+    return undefined;
   }
 };
 

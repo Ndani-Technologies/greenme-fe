@@ -395,6 +395,7 @@ const Benchmarking = () => {
 
   const handleSubmit = () => {
     toast.success("benchmark is successfully submitted");
+
     updateUserResp(benchmark?._id, requestBody, navigate);
 
   };
