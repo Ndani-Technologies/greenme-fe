@@ -154,7 +154,23 @@ export const getContacts = createAsyncThunk("crm/getContacts", async (arr) => {
 });
 
 //ADMIN ACTIONS CRUD FUNCTIONALITY
+export const updateSaveActionStep = async (id, steps) => {
+  try {
+    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+    const ob = {
+      userId: obj._id,
+      steps,
+    };
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/update/stepsave/ByUser/${id}`,
+      ob
+    );
 
+    return res;
+  } catch (err) {
+    console.log("Error in getting data", err);
+  }
+};
 
 export const getAllAdminActions = async () => {
   try {
@@ -181,12 +197,13 @@ export const getAllAdminActions = async () => {
   }
 };
 
-
 export const createAdminActions = async (data) => {
   console.log(data, "CREATE DATA");
+
   try {
-    const res = await axios.post(
-      `${process.env.REACT_APP_RA_URL}actionsteps`,
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
+
       data
     );
     if (res !== undefined) {
@@ -218,7 +235,6 @@ export const updatedAdminActions = async (data, id) => {
     );
     if (res !== undefined) {
       const updatedResp = {
-
         title: res?.title,
         category: res?.categoryId?.title,
         stat: res?.status ? "true" : "false",
@@ -278,7 +294,8 @@ export const createAdminResources = async (data, category) => {
     return res;
   } catch (error) {
     console.error(error);
-    return {};
+    toast.error("link already exist");
+    return undefined;
   }
 };
 
