@@ -178,6 +178,7 @@ export const getAllAdminActionsByUser = async () => {
     console.log("Error in getting data", err);
   }
 };
+
 export const updateSaveActionStep = async (id, steps) => {
   try {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
@@ -206,6 +207,7 @@ export const updateCompleteActionStep = async (id, steps) => {
       `${process.env.REACT_APP_RA_URL}actionsteps/update/stepcomplete/byUser/${id}`,
       ob
     );
+
 
     return res;
   } catch (err) {
@@ -240,9 +242,11 @@ export const getAllAdminActions = async () => {
 
 export const createAdminActions = async (data) => {
   console.log(data, "CREATE DATA");
+
   try {
-    const res = await axios.post(
-      `${process.env.REACT_APP_RA_URL}actionsteps`,
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
+
       data
     );
     if (res !== undefined) {
