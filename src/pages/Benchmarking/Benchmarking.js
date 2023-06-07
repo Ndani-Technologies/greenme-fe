@@ -255,7 +255,6 @@ const Benchmarking = () => {
           (option) => option?._id === userResponse?.selectedOption[0]
         );
 
-
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {item.index}</h5>
@@ -391,7 +390,7 @@ const Benchmarking = () => {
                     );
                   })}
               </div>
-            )} */}
+            )}
           </div>
         );
       });
@@ -450,7 +449,6 @@ const Benchmarking = () => {
                   <div>
                     <div className="d-flex align-items-center border-top border-dark">
                       <div className="w-50">
-                       
                         <Card className=" border-none mt-3">
                           {progressPercentage && (
                             <CardBody className="p-0">
