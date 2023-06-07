@@ -48,8 +48,10 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
+
 export const updateUserResp = async (id, user_resp, navigate) => {
   console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
+
   // let resp = await axios.patch(
   //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
   //   { user_resp }
@@ -58,6 +60,7 @@ export const updateUserResp = async (id, user_resp, navigate) => {
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
     user_resp
   );
+
   console.log(resp, "RESP INSIDE THUNK");
 
   // Wait for the toast notification to be displayed for a brief duration
@@ -67,6 +70,7 @@ export const updateUserResp = async (id, user_resp, navigate) => {
     navigate("/benchmarking");
   }
   return resp;
+
 };
 
 export const updateUserRespSave = async (id, user_resp) => {
