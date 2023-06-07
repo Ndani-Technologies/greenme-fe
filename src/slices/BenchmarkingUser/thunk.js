@@ -16,7 +16,7 @@ export const getAllBenchmarks = async () => {
       return {
         title: value?.title,
         status: value?.status,
-        completion_level: value?.completionLevel,
+        completion_level: Math.floor(value?.completionLevel),
         country: value?.country,
         start_date: value?.start_date,
         end_data: value?.end_date,
@@ -30,8 +30,11 @@ export const getAllBenchmarks = async () => {
     console.error(error);
   }
 };
+
 export const getSingleBenchmark = async (id) => {
   let resp = await axios.get(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`);
+  // let resp = await axios.get(`http://192.168.137.120:5001/api/v1/bench/benchmarking/${id}`);
+
   // let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
   console.log("benchmark get single", resp && resp);
   return resp;
@@ -41,6 +44,7 @@ export const getUserProgress = async (id) => {
   let resp = await axios.get(
     `${process.env.REACT_APP_BENCHMARK_URL}/percentage/percentageOfBenchmarks/${id}`
   );
+  console.log(resp, "PROGRESS IN THUNK");
   return resp;
 };
 
@@ -62,10 +66,11 @@ export const updateUserResp =
     );
     toast.success("User response submitted successfully!");
 
-    // Wait for the toast notification to be displayed for a brief duration
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (resp) history("/benchmarking");
-  };
+
+  // Wait for the toast notification to be displayed for a brief duration
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  if (resp) history("/benchmarking");
+};
 
 export const updateUserRespSave =
   (id, user_resp) => async (dispatch, getState) => {
@@ -159,7 +164,7 @@ export const getAllQA = async () => {
     data = resp.map((value) => {
       return {
         ...value,
-        response: 0,
+        response: value.response !== undefined ? value.response : 0,
         answered: value.whoHasAnswer?.totalUsers,
         category: value?.category?.titleEng,
         status: value?.status ? "active" : "In-active",

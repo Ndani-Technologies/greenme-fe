@@ -462,6 +462,12 @@ const ActionAdminDashboard = () => {
     setDeleteConfirmation2(true);
   };
 
+  // SideBar Contact Deatail
+  const [info, setInfo] = useState([]);
+  const [modal_grid, setmodal_grid] = useState(false);
+  const [isDataUpdated, setIsDataUpdated] = useState(true);
+  console.log(info, "INFO");
+
   // Column
   const columns = useMemo(
     () => [
@@ -508,10 +514,6 @@ const ActionAdminDashboard = () => {
         filterable: false,
       },
       {
-        Header: "Weight",
-        accessor: "weight",
-      },
-      {
         Header: "Status",
         accessor: "stat",
       },
@@ -551,6 +553,9 @@ const ActionAdminDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
+
+                        setIsDataUpdated(true);
+                        setmodal_grid(true);
                       }}
                     >
                       Edit
@@ -630,9 +635,6 @@ const ActionAdminDashboard = () => {
     { id: 3, name: "High" },
   ];
 
-  // SideBar Contact Deatail
-  const [info, setInfo] = useState([]);
-
   // Export Modal
   const [modalName, setModalName] = useState("");
   const [modalField, setModalField] = useState("");
@@ -641,13 +643,12 @@ const ActionAdminDashboard = () => {
   function tog_grids() {
     setmodals_grid(!modals_grid);
   }
-  const [modal_grid, setmodal_grid] = useState(false);
+
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
   const [data, setData] = useState([]);
   const handleModal = (e) => {
-    // console.log("targer", e.target.name)
     if (e.target.name == "manage_Scale") {
       setModalName("Manage Scale");
       setModalField("Add new Scale");
@@ -682,7 +683,6 @@ const ActionAdminDashboard = () => {
     setmodals_grid(true);
   };
 
-  const [isDataUpdated, setIsDataUpdated] = useState(true);
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const confirmDelete2 = () => {
@@ -734,6 +734,8 @@ const ActionAdminDashboard = () => {
               </Button>
               {modal_grid && (
                 <ActionModal
+                  info={info}
+                  setInfo={setInfo}
                   adminSteps={adminSteps}
                   setAdminSteps={setAdminSteps}
                   modal_grid={modal_grid}
@@ -846,7 +848,7 @@ const ActionAdminDashboard = () => {
           <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {adminActions && adminActions.length ? (
+                {adminActions.length >= 0 ? (
                   <TableContainer
                     columns={columns}
                     data={adminActions || []}

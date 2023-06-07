@@ -15,12 +15,17 @@ import {
 import { Links } from "./Details";
 import StarsRating from "./StarsRating";
 import { useFormik } from "formik";
+
 import classnames from "classnames";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { updateSaveActionStep } from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
+
+
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const ActionUserDetail = () => {
   const [value, setValue] = useState(1);
@@ -247,6 +252,7 @@ const ActionUserDetail = () => {
                           <div className="accordion-body d-flex justify-content-between">
                             {step.description}
 
+
                             <div
                               className="Discription"
                               style={{ width: "200px" }}
@@ -286,6 +292,7 @@ const ActionUserDetail = () => {
                 />
                 <Button>Send</Button>
               </div>
+
             </div>
           </div>
           <form
