@@ -10,6 +10,11 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
   Row,
   TabContent,
   TabPane,
@@ -82,6 +87,7 @@ const Benchmarking = () => {
     };
   }, []);
 
+  console.log(benchmark, "bench");
   const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
 
   const getProgressPercentage = async () => {
@@ -349,6 +355,18 @@ const Benchmarking = () => {
     updateUserResp(benchmark?._id, requestBody, navigate);
   };
 
+  const [benchmarkCreation, setbenchmarkCreation] = useState(false);
+
+  const [modal_center, setmodal_center] = useState(false);
+
+  const tog_center = () => {
+    setmodal_center(!modal_center);
+  };
+
+  const handleSubmitModal = () => {
+    tog_center();
+  };
+
   return (
     <React.Fragment>
       {/* <Layouts> */}
@@ -461,13 +479,133 @@ const Benchmarking = () => {
                           </button>
                           <button
                             type="button"
-                            onClick={handleSubmit}
+                            onClick={handleSubmitModal}
                             className="btn btn-secondary"
                           >
                             SUBMIT
                           </button>
                         </div>
                       </Col>
+
+                      <Modal
+                        isOpen={modal_center}
+                        toggle={() => {
+                          tog_center();
+                        }}
+                        centered
+                      >
+                        <ModalHeader
+                          className="d-flex justify-content-start"
+                          style={{ border: "none" }}
+                        >
+                          Are you sure you want to submit your benchmark
+                        </ModalHeader>
+                        <ModalBody
+                          className="d-flex justify-content-center"
+                          style={{ fontSize: "20px" }}
+                        >
+                          <p>
+                            You have answered{" "}
+                            <span style={{ fontSize: "24px" }}>
+                              {user_resp?.length}
+                            </span>{" "}
+                            questions out of{" "}
+                            <span style={{ fontSize: "24px" }}>
+                              {benchmark?.questionnaire?.length}
+                            </span>{" "}
+                            questions, and you will not be able to edit your
+                            response after submitting
+                          </p>
+                        </ModalBody>
+                        <ModalFooter className="d-flex justify-content-center">
+                          <Button color="primary" onClick={handleSubmit}>
+                            Confirm
+                          </Button>
+                          <Button
+                            color="secondary"
+                            onClick={() => tog_center()}
+                          >
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                      {/* <Modal
+                        isOpen={benchmarkCreation}
+                        toggle={cancelCreation}
+                        centered
+                        style={{ height: "300px" }}
+                      >
+                        <ModalHeader
+                          className="d-flex justify-content-start"
+                          style={{ border: "none" }}
+                        >
+                          Are you sure you want to submit your benchmark
+                        </ModalHeader>
+                        <ModalBody
+                          className="d-flex justify-content-center"
+                          style={{ fontSize: "20px" }}
+                        >
+                          <p>
+                            You have answered{" "}
+                            <span style={{ fontSize: "24px" }}>
+                              {user_resp?.length}
+                            </span>{" "}
+                            questions out of{" "}
+                            <span style={{ fontSize: "24px" }}>
+                              {benchmark?.questionnaire?.length}
+                            </span>{" "}
+                            questions, and you will not be able to edit your
+                            response after submitting
+                          </p>
+                        </ModalBody>
+                        <ModalFooter className="d-flex justify-content-center">
+                          <Button color="primary" onClick={handleSubmit}>
+                            Confirm
+                          </Button>
+                          <Button color="secondary" onClick={cancelCreation}>
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </Modal> */}
+
+                      {/* <Modal
+                        isOpen={benchmarkCreation}
+                        toggle={cancelCreation}
+                        centered
+                        style={{ height: "300px" }}
+                      >
+                        <ModalHeader
+                          toggle={cancelCreation}
+                          className="d-flex justify-content-center"
+                        >
+                          Are you sure you want to submit your benchmark
+                        </ModalHeader>
+                        <ModalBody
+                          className="d-flex justify-content-center"
+                          style={{ fontSize: "20px" }}
+                        >
+                          <p>
+                            You have answered{" "}
+                            <span style={{ fontSize: "24px" }}>
+                              {user_resp?.length}
+                            </span>{" "}
+                            questions out of{" "}
+                            <span style={{ fontSize: "24px" }}>
+                              {benchmark?.questionnaire?.length}
+                            </span>{" "}
+                            questions, and you will not be able to edit your
+                            response after submitting
+                          </p>
+                        </ModalBody>
+                        <ModalFooter className="d-flex justify-content-center">
+                          <Button color="primary" onClick={handleSubmit}>
+                            Confirm
+                          </Button>
+                          <Button color="secondary" onClick={cancelCreation}>
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </Modal> */}
                     </div>
                   </div>
                 </TabPane>

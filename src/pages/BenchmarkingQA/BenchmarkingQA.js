@@ -188,72 +188,67 @@ const BenchmarkingQA = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
-      description: Yup.string().required("Please Enter description"),
+      // description: Yup.string().required("Please Enter description"),
       category: Yup.string().required("Please select category"),
     }),
+
     onSubmit: async (values) => {
       const cd = allCategories.find((value) => {
+        console.log(
+          "categories",
+          value.titleEng,
+          values.category,
+          value.titleEng.toString().includes(values.category)
+        );
         if (value.titleEng.toString().includes(values.category)) return value;
       });
 
       const answerIds = [];
 
-      // values?.answerOption?.length &&
-      //   values?.answerOption.forEach((value) => {
-      //     allAnswers.forEach((val) => {
-      //       if (value === val?.answerOption) {
-      //         // console.log(value, "VLAUW")
-      //         const ob = {
-      //           // includeExplanation: value?.includeExplanation,
-      //           answerOption: val._id
-      //         }
-      //         answerIds.push(ob);
-      //       }
-      //       validation.setValues(answerIds);
-      //     })
-      //   });
-
-      console.log(answerIds, "Answer IDS");
+      values?.answerOption.length &&
+        values?.answerOption.forEach((value) => {
+          allAnswers.forEach((val) => {
+            if (value === val.answerOption) {
+              answerIds.push(val._id);
+            }
+            validation.setValues(answerIds);
+          });
+        });
       const mappedData = {
         ...values,
         category: cd?._id,
-        answerOptions: values.arr,
+        answerOptions: answerIds,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
         // response: parseInt(values.response.split("%")[0]),
       };
-      console.log(mappedData, "Mapped Data", values);
-      // if (isDataUpdated) {
-      //   updateQuestion(questionId, mappedData)
-      //     .then((resp) => {
-      //       getAllQA()
-      //         .then((resp) => setQA(resp))
-      //         .catch((err) => console.log("qa all error", err));
-      //       toast.success("Successfully Updated");
-      //     })
-      //     .catch((err) => {
-      //       toast.error(`Error in updating question`);
-      //     });
-      // } else {
-      //   addQuestion(mappedData, values.category)
-      //     .then((resp) => {
-      //       if(resp === undefined ) {
-      //       setQA([...qa]);
-      //       toast.error(`Error in adding question `);
-      //       }
-      //       else{
+      if (isDataUpdated) {
+        updateQuestion(questionId, mappedData)
+          .then((resp) => {
+            getAllQA()
+              .then((resp) => setQA(resp))
+              .catch((err) => console.log("qa all error", err));
+            toast.success("Successfully Updated");
+          })
+          .catch((err) => {
+            toast.error(`Error in updating question`);
+          });
+      } else {
+        addQuestion(mappedData, values.category)
+          .then((resp) => {
+            toast.success("Successfully Added");
 
-      //         setQA([...qa, resp]);
-      //         toast.success("Successfully Added");
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       toast.error(`Error in adding question ${err}`);
-      //     });
-      //   }
-      setSelectedIndexes([]);
-      validation.resetForm();
+            setQA([...qa, resp]);
+            setSelectedIndexes([]);
+            validation.resetForm();
+          })
+          .catch((err) => {
+            toast.error(`Error in adding question ${err}`);
+          });
+      }
+
       setIsDataUpdated(false);
+      console.log("values formik", mappedData);
       setmodal_grid(false);
 
       toggle();
@@ -428,8 +423,6 @@ const BenchmarkingQA = () => {
 
             deleteCheckbox();
           };
-
-          console.log(toBeDeleted, "TO BE DELETED");
 
           return (
             <input
@@ -890,6 +883,7 @@ const BenchmarkingQA = () => {
                 <ModalHeader className="border-bottom border-dark p-4 pt-0">
                   <h4 className="modal-title">Create new Question</h4>
                 </ModalHeader>
+
                 <ModalBody>
                   <form
                     className="p-4 pt-2 pb-2"
@@ -1043,44 +1037,7 @@ const BenchmarkingQA = () => {
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">
-                        <div className="ck-editor-reverse">
-                          <CKEditor
-                            editor={ClassicEditor}
-                            onReady={(editor) => {
-                              // You can store the "editor" and use when it is needed.
-                            }}
-                            onChange={(event, editor) => {
-                              editor.getData();
-                              validation.handleChange;
-                            }}
-                            class="form-control"
-                            placeholder="Description"
-                            id="description"
-                            validate={{
-                              required: { value: true },
-                            }}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.description || ""}
-                            invalid={
-                              validation.touched.description &&
-                              validation.errors.description
-                                ? true
-                                : false
-                            }
-                            style={{
-                              height: "120px",
-                              overflow: "hidden",
-                              backgroundColor: "#dfdfdf",
-                            }}
-                          />
-                        </div>
-                        {validation.touched.description &&
-                        validation.errors.description ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.description}
-                          </FormFeedback>
-                        ) : null}
-                        {/* <div>
+                        <div>
                           <Input
                             type="textarea"
                             class="form-control"
@@ -1111,7 +1068,7 @@ const BenchmarkingQA = () => {
                               {validation.errors.description}
                             </FormFeedback>
                           ) : null}
-                        </div> */}
+                        </div>
                       </Col>
                       <Col xxl={12} className="p-0">
                         <Input
@@ -1189,7 +1146,6 @@ const BenchmarkingQA = () => {
                                                 <div
                                                   className="d-flex align-items-center justify-content-between w-100 p-0"
                                                   style={{
-                                                    width: "33%",
                                                     color:
                                                       isSelected ||
                                                       isCheckedAnswer
@@ -1198,7 +1154,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div style={{ width: "33%" }}>
+                                                  <div>
                                                     <Checkbox
                                                       name="answerOption"
                                                       onBlur={() => {
@@ -1207,7 +1163,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                ?.answerOption
+                                                                .answerOption
                                                           )
                                                         );
                                                       }}
@@ -1239,7 +1195,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                ?.answerOption
+                                                                .answerOption
                                                           )
                                                         );
                                                       }}
@@ -1251,93 +1207,42 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div
-                                                    className="form-check form-switch form-switch-right form-switch-md"
-                                                    style={{ width: "33%" }}
-                                                  >
-                                                    <Checkbox
-                                                      name="includeExplanation"
-                                                      onBlur={() => {
-                                                        validation.setFieldValue(
-                                                          "includeExplanation",
-                                                          selectedIndexes2.map(
-                                                            (i) =>
-                                                              info[i]
-                                                                ?.includeExplanation
-                                                          )
-                                                        );
-                                                      }}
-                                                      value={index}
-                                                      checked={
-                                                        isCheckedAnswer ||
-                                                        selectedIndexes2.includes(
-                                                          index
-                                                        )
-                                                      }
-                                                      onChange={(e) => {
-                                                        e.preventDefault();
-                                                        const { checked } =
-                                                          e.target;
-                                                        if (checked) {
-                                                          setSelectedIndexes2([
-                                                            ...selectedIndexes2,
-                                                            index,
-                                                          ]);
-                                                        } else {
-                                                          setSelectedIndexes2(
-                                                            selectedIndexes2.filter(
-                                                              (i) => i !== index
-                                                            )
-                                                          );
-                                                        }
-                                                        validation.setFieldValue(
-                                                          "includeExplanation",
-                                                          selectedIndexes2.map(
-                                                            (i) =>
-                                                              info[i]
-                                                                ?.includeExplanation
-                                                          )
-                                                        );
-                                                      }}
-                                                      icon={<CropSquareIcon />}
-                                                      checkedIcon={
-                                                        <SquareRoundedIcon />
-                                                      }
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className="form-check form-switch form-switch-right form-switch-md"
-                                                    style={{ width: "33%" }}
-                                                  >
+                                                  <div className="form-check form-switch form-switch-right form-switch-md">
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
                                                     >
-                                                      Include Input Field
+                                                      Include Explanation
                                                     </Label>
-                                                    <Checkbox
+                                                    <Input
                                                       id={`form-grid-showcode-${index}`}
-                                                      name="includeInputField"
+                                                      className="form-check-input code-switcher"
+                                                      type="checkbox"
+                                                      value="active"
                                                       checked={
-                                                        value.includeInputField
-                                                      }
+                                                        value.includeExplanation
+                                                      } // Access includeExplanation from value object
                                                       onChange={(e) => {
                                                         const updatedAnswers = [
                                                           ...allAnswers,
                                                         ];
                                                         updatedAnswers[
                                                           index
-                                                        ].includeInputField =
+                                                        ].includeExplanation =
                                                           e.target.checked;
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           updatedAnswers
                                                         );
                                                       }}
-                                                      icon={<CropSquareIcon />}
-                                                      checkedIcon={
-                                                        <SquareRoundedIcon />
-                                                      }
+                                                      style={{
+                                                        backgroundColor:
+                                                          value.includeExplanation
+                                                            ? "#88C756"
+                                                            : "#fff",
+                                                        width: "50px",
+                                                        border: "0",
+                                                      }}
                                                     />
                                                   </div>
                                                 </div>
@@ -1377,7 +1282,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div style={{ width: "33%" }}>
+                                                  <div>
                                                     <Checkbox
                                                       name="answerOption"
                                                       onBlur={() => {
@@ -1426,77 +1331,8 @@ const BenchmarkingQA = () => {
                                                     />
                                                     {value.answerOption}
                                                   </div>
-                                                  <div
-                                                    className="form-check form-switch form-switch-right form-switch-md"
-                                                    style={{ width: "33%" }}
-                                                  >
-                                                    <Label
-                                                      htmlFor={`form-grid-showcode-${index}`}
-                                                      className="form-label text-muted"
-                                                    >
-                                                      Include Explanation
-                                                    </Label>
-                                                    <Checkbox
-                                                      id={`form-grid-showcode-${index}`}
-                                                      name="includeExplanation"
-                                                      checked={
-                                                        value.includeExplanation
-                                                      }
-                                                      onChange={(e) => {
-                                                        const updatedAnswers = [
-                                                          ...allAnswers,
-                                                        ];
-                                                        updatedAnswers[
-                                                          index
-                                                        ].includeExplanation =
-                                                          e.target.checked;
-                                                        validation.setFieldValue(
-                                                          "answerOptions",
-                                                          updatedAnswers
-                                                        );
-                                                      }}
-                                                      icon={<CropSquareIcon />}
-                                                      checkedIcon={
-                                                        <SquareRoundedIcon />
-                                                      }
-                                                    />
-                                                  </div>
-                                                  <div
-                                                    className="form-check form-switch form-switch-right form-switch-md"
-                                                    style={{ width: "33%" }}
-                                                  >
-                                                    <Label
-                                                      htmlFor={`form-grid-showcode-${index}`}
-                                                      className="form-label text-muted"
-                                                    >
-                                                      Include Input Field
-                                                    </Label>
-                                                    <Checkbox
-                                                      id={`form-grid-showcode-${index}`}
-                                                      name="includeInputField"
-                                                      checked={
-                                                        value.includeInputField
-                                                      }
-                                                      onChange={(e) => {
-                                                        const updatedAnswers = [
-                                                          ...allAnswers,
-                                                        ];
-                                                        updatedAnswers[
-                                                          index
-                                                        ].includeInputField =
-                                                          e.target.checked;
-                                                        validation.setFieldValue(
-                                                          "answerOptions",
-                                                          updatedAnswers
-                                                        );
-                                                      }}
-                                                      icon={<CropSquareIcon />}
-                                                      checkedIcon={
-                                                        <SquareRoundedIcon />
-                                                      }
-                                                    />
-                                                  </div>
-                                                  {/* <div className="form-check form-switch form-switch-right form-switch-md">
+
+                                                  <div className="form-check form-switch form-switch-right form-switch-md">
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
@@ -1533,7 +1369,7 @@ const BenchmarkingQA = () => {
                                                         border: "0",
                                                       }}
                                                     />
-                                                  </div> */}
+                                                  </div>
                                                 </div>
                                               </div>
                                             )}
