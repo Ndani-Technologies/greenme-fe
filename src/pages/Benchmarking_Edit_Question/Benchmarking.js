@@ -152,7 +152,7 @@ const Benchmarking = () => {
         console.log(selectedOption, "OPTION");
         return (
           <div className={rowClassName} key={index}>
-            <h5>Question {item.index}</h5>
+            <h5>Question {index + 1}</h5>
             <p className="w-75 fs-5">{item.title}</p>
             <p>{item.description}</p>
             {benchmark.user_resp?.length > 0 ? (
@@ -342,9 +342,15 @@ const Benchmarking = () => {
                             <div className="d-flex align-items-center mb-2 mt-4">
                               <div className="flex-grow-1 d-flex justify-content-between w-100">
                                 <h5 className="card-title mb-0">
-                                  <span>60% </span> Benchmark progress
+                                  <span>
+                                    {Math.floor(benchmark.completionLevel)}{" "}
+                                  </span>{" "}
+                                  Benchmark progress
                                 </h5>
-                                <h5>40% to go!</h5>
+                                <h5>
+                                  {Math.floor(100 - benchmark.completionLevel)}{" "}
+                                  to go
+                                </h5>
                               </div>
                             </div>
                             <div className="progress animated-progress custom-progress progress-label mt-3">

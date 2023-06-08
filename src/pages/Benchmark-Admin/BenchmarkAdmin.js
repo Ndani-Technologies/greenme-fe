@@ -413,7 +413,7 @@ const BenchmarkAdmin = () => {
         ),
       },
       {
-        Header: "End Date",
+        Header: "Completion Date",
         accessor: "end_date",
         Cell: (contact) => (
           <>

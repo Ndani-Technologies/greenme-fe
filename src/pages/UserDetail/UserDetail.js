@@ -32,7 +32,7 @@ import * as Countries from "./Countries";
 import { Box, Chip, MenuItem, OutlinedInput, useTheme } from "@mui/material";
 import Select from "react-select";
 import { Padding } from "@mui/icons-material";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 const Profile = () => {
   document.title = "Profile | GreenMe";
@@ -48,12 +48,12 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("1");
   // const [userData, setUserData] = useState({firstName, lastName, email, organization, role, scope, country, otherCountries})
 
-  const user = useSelector((state) => state.Login.user);
-  const userObj = JSON.parse(sessionStorage.getItem("authUser"));
-  const userDutyStationCountry = {
-    value: userObj.country,
-    label: userObj.country,
-  };
+  // const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+  // console.log(userObj, "IN BENCH")
+  // const userDutyStationCountry = {
+  //   value: userObj.country,
+  //   label: userObj.country,
+  // };
 
   const getProgressPercentage = async () => {
     getUserProgress(userObj._id)
@@ -63,7 +63,34 @@ const Profile = () => {
       })
       .catch((err) => console.log("error in percentage benchmarking"));
   };
-  console.log(progressPercentage, "PERCENT");
+
+  const [userObj, setUserObj] = useState(
+    JSON.parse(sessionStorage.getItem("authUser"))
+  );
+
+  useEffect(() => {
+    const handleStorageChange = (event) => {
+      if (
+        event.storageArea === window.sessionStorage &&
+        event.key === "authUser"
+      ) {
+        setUserObj(JSON.parse(event.newValue));
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  console.log(userObj, "IN BENCH");
+
+  const userDutyStationCountry = {
+    value: userObj.country,
+    label: userObj.country,
+  };
 
   const [countryOptions, setCountryOptions] = useState([]);
 
@@ -140,7 +167,12 @@ const Profile = () => {
         banner: coverPhoto && coverPhoto,
       };
       console.log(mappedData, "MAPPED DAATA");
-      updateUser(userObj._id, mappedData);
+      updateUser(userObj._id, mappedData)
+        .then((res) => toast.success("Updated Successfully"))
+        .catch((err) => {
+          toast.error("Unable to Update");
+          console.log(err);
+        });
     },
   });
 
@@ -1450,6 +1482,7 @@ const Profile = () => {
               </Card>
             </Col>
           </Row>
+          <ToastContainer />
         </Container>
       </div>
     </React.Fragment>

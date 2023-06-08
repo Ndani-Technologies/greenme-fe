@@ -96,7 +96,7 @@ export const addBenchmark = async (benchmark) => {
     let { _id } = user;
     let mapData = {
       title: benchmark.title,
-      country: benchmark.country,
+      country: benchmark.country.value,
       userId: _id,
     };
     resp = await axios.post(process.env.REACT_APP_BENCHMARK_URL, mapData);
