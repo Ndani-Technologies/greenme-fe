@@ -569,15 +569,6 @@ const BenchmarkingDashboard = () => {
       },
     },
   };
-  const [selectedCountry, setSelectedCountry] = useState([]);
-
-  const handleChange1 = (e, selectedOption) => {
-    if (selectedOption) {
-      setSelectedCountry(selectedOption.value);
-    } else {
-      setSelectedCountry([]);
-    }
-  };
 
   const handleChangeCountry = (selectedOption) => {
     if (!selectedOption || !selectedOption.value) {
