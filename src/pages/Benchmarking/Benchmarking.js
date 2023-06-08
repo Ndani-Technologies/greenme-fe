@@ -174,55 +174,6 @@ const Benchmarking = () => {
     // Your other logic here
   };
 
-  // const handleButtonClick = (
-  //   questionIndex,
-  //   buttonIndex,
-  //   answerOption,
-  //   qid,
-  //   aid
-  // ) => {
-  //   setActiveIndexes((prevState) => ({
-  //     ...prevState,
-  //     [questionIndex]: buttonIndex,
-  //   }));
-
-  //   setUser_resp((prevUserResp) => {
-  //     const newUserResp = [...prevUserResp];
-  //     const userRespIndex = newUserResp.findIndex((resp) => resp.qid === qid);
-
-  //     if (userRespIndex !== -1) {
-  //       const updatedUserResp = {
-  //         ...newUserResp[userRespIndex],
-  //         aid: [...newUserResp[userRespIndex].aid],
-  //       };
-
-  //       if (updatedUserResp.aid.includes(aid)) {
-  //         // Remove the answer ID if it already exists in the array
-  //         updatedUserResp.aid = updatedUserResp.aid.filter((id) => id !== aid);
-  //       } else {
-  //         // Add the answer ID if it doesn't exist in the array
-  //         updatedUserResp.aid.push(aid);
-  //       }
-
-  //       newUserResp[userRespIndex] = updatedUserResp;
-  //     } else {
-  //       // Add new user response to the array
-  //       let arr = [];
-  //       arr.push(aid);
-  //       newUserResp.push({
-  //         questionId: qid,
-  //         selectedOption: arr,
-  //         comment: "",
-  //       });
-  //     }
-
-  //     return newUserResp;
-  //   });
-
-  //   console.log("user_resp", user_resp);
-  //   // Your other logic here
-  // };
-
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
@@ -247,7 +198,7 @@ const Benchmarking = () => {
 
         return (
           <div className={rowClassName} key={index}>
-            <h5>Question {item.index}</h5>
+            <h5>Question {index + 1}</h5>
             <p className="w-75 fs-5">{item.title}</p>
             <p>{item.description}</p>
             {benchmark.user_resp?.length > 0 ? (
