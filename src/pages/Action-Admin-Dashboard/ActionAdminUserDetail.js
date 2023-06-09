@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layouts from "../../Layouts";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
-import Details from "./Details";
+import Details from "./components/Details2";
 import {
   Accordion,
   AccordionItem,
@@ -12,9 +12,10 @@ import {
   Collapse,
   Input,
 } from "reactstrap";
-import StarsRating from "./StarsRating";
+import { Links } from "./components/Details2";
+import StarsRating from "./components/StarsRating";
 import { useFormik } from "formik";
-import he from "he";
+
 import classnames from "classnames";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -30,17 +31,7 @@ const ActionUserDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let { data } = location.state;
-  const entities = {
-    "&nbsp;": " ",
-    "<br>": "\n",
-    "&lt;": "<",
-    "&gt;": ">",
-    "&amp;": "&",
-    "&quot;": '"',
-    "&apos;": "'",
-  };
   console.log("contact data1", data);
-
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -53,8 +44,6 @@ const ActionUserDetail = () => {
     },
     onSubmit: (values) => {
       console.log("in handle submit", values, stepData);
-      let completedSteps = data.steps.filter((value) => value.isCompleted);
-
       let steps = stepData.map((value) => {
         if (value.isCheckBoxCompleted) {
           value.step.isCompleted = true;
@@ -62,23 +51,16 @@ const ActionUserDetail = () => {
         }
         return value.step;
       });
-      completedSteps.forEach((value) => {
-        if (steps.some((e) => e._id !== value._id)) {
-          steps.push(value);
-        }
-        if (steps.length === 0) {
-          steps.push(value);
-        }
-      });
-      console.log("steps", completedSteps, steps);
-      // updateSaveActionStep(data._id, steps)
-      //   .then((resp) => {
-      //     if (resp != undefined) {
-      //       toast.success("Successfully submitted");
-      //       navigate("/actionuserdashboard");
-      //     }
-      //   })
-      //   .catch((err) => toast.error("error in updating."));
+
+      console.log("steps", steps);
+      updateSaveActionStep(data._id, steps)
+        .then((resp) => {
+          if (resp != undefined) {
+            toast.success("Successfully submitted");
+            navigate("/actionuserdashboard");
+          }
+        })
+        .catch((err) => toast.error("error in updating."));
     },
   });
   // <!-- Left Icon Accordions -->
@@ -103,6 +85,15 @@ const ActionUserDetail = () => {
     setlefticonCol3(!lefticonCol3);
     setlefticonCol1(false);
     setlefticonCol2(false);
+  };
+  const entities = {
+    "&nbsp;": " ",
+    "<br>": "\n",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&amp;": "&",
+    "&quot;": '"',
+    "&apos;": "'",
   };
   const [activeIndex, setActiveIndex] = useState(null);
   const [checkboxValues, setCheckboxValues] = useState({});
@@ -258,6 +249,7 @@ const ActionUserDetail = () => {
                         id={`accor_lefticonExamplecollapse${index + 1}`}
                       >
                         <div className="accordion-body d-flex justify-content-between">
+                          {/* {step.description} */}
                           {step.description.replace(
                             /(&nbsp;|<br>|&lt;|&gt;|&amp;|&quot;|&apos;)/g,
                             (match) => entities[match]
@@ -276,7 +268,6 @@ const ActionUserDetail = () => {
                               <input
                                 type="checkbox"
                                 //isCompleted
-                                checked={step.isCompleted ? true : null}
                                 onChange={() => handleCheckBox(step, index)}
                               />
                               <span>Mark as complete</span>
