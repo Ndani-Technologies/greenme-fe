@@ -31,7 +31,17 @@ const ActionUserDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let { data } = location.state;
-  console.log("contact data1", data);
+  console.log("data", data);
+  const entities = {
+    "&nbsp;": " ",
+    "<br>": "\n",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&amp;": "&",
+    "&quot;": '"',
+    "&apos;": "'",
+  };
+
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
     enableReinitialize: true,
@@ -42,28 +52,39 @@ const ActionUserDetail = () => {
       impactful: 0,
       init: 5,
     },
-    onSubmit: (values) => {
-      console.log("in handle submit", values, stepData);
-      let steps = stepData.map((value) => {
-        if (value.isCheckBoxCompleted) {
-          value.step.isCompleted = true;
-          value.step.status = true;
-        }
-        return value.step;
-      });
+    onSubmit: async (values) => {
+      // let completedSteps = data.steps.filter((value)=>value.isCompleted)
 
-      console.log("steps", steps);
-      updateSaveActionStep(data._id, steps)
-        .then((resp) => {
-          if (resp != undefined) {
-            toast.success("Successfully submitted");
-            navigate("/actionuserdashboard");
-          }
-        })
-        .catch((err) => toast.error("error in updating."));
+      // let steps = stepData.map((value) => {
+      //   if (value.isCheckBoxCompleted) {
+      //     value.step.isCompleted = true;
+      //     value.step.status = true;
+      //   }
+      //   return value.step;
+      // });
+      // completedSteps.forEach((value)=>{
+      //   if(steps.some((e)=>e._id !== value._id)){
+      //     steps.push(value)
+      //   }
+      //   if(steps.length===0){
+      //     steps.push(value)
+
+      //   }
+      // })
+
+      try {
+        // for (const stepObject of steps) {
+        //   await updateAdminStep(stepObject._id, stepObject);
+        //       console.log(`Successfully updated step with ID: ${stepObject._id}`);
+        // }
+
+        // toast.success("All steps successfully updated");
+        navigate("/actionuserdashboard");
+      } catch (err) {
+        toast.error("Error in updating.");
+      }
     },
   });
-  // <!-- Left Icon Accordions -->
 
   const [lefticonCol1, setlefticonCol1] = useState(true);
   const [lefticonCol2, setlefticonCol2] = useState(false);
@@ -85,15 +106,6 @@ const ActionUserDetail = () => {
     setlefticonCol3(!lefticonCol3);
     setlefticonCol1(false);
     setlefticonCol2(false);
-  };
-  const entities = {
-    "&nbsp;": " ",
-    "<br>": "\n",
-    "&lt;": "<",
-    "&gt;": ">",
-    "&amp;": "&",
-    "&quot;": '"',
-    "&apos;": "'",
   };
   const [activeIndex, setActiveIndex] = useState(null);
   const [checkboxValues, setCheckboxValues] = useState({});
@@ -249,7 +261,6 @@ const ActionUserDetail = () => {
                         id={`accor_lefticonExamplecollapse${index + 1}`}
                       >
                         <div className="accordion-body d-flex justify-content-between">
-                          {/* {step.description} */}
                           {step.description.replace(
                             /(&nbsp;|<br>|&lt;|&gt;|&amp;|&quot;|&apos;)/g,
                             (match) => entities[match]
@@ -268,6 +279,7 @@ const ActionUserDetail = () => {
                               <input
                                 type="checkbox"
                                 //isCompleted
+                                checked={step.isCompleted ? true : null}
                                 onChange={() => handleCheckBox(step, index)}
                               />
                               <span>Mark as complete</span>

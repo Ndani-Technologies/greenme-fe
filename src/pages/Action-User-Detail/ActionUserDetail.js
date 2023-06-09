@@ -19,7 +19,7 @@ import classnames from "classnames";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { updateSaveActionStep } from "../../slices/thunks";
+import { updateAdminStep, updateSaveActionStep } from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -39,7 +39,6 @@ const ActionUserDetail = () => {
     "&quot;": '"',
     "&apos;": "'",
   };
-  console.log("contact data1", data);
 
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -51,8 +50,7 @@ const ActionUserDetail = () => {
       impactful: 0,
       init: 5,
     },
-    onSubmit: (values) => {
-      console.log("in handle submit", values, stepData);
+    onSubmit: async (values) => {
       let completedSteps = data.steps.filter((value) => value.isCompleted);
 
       let steps = stepData.map((value) => {
@@ -70,18 +68,21 @@ const ActionUserDetail = () => {
           steps.push(value);
         }
       });
-      console.log("steps", completedSteps, steps);
-      // updateSaveActionStep(data._id, steps)
-      //   .then((resp) => {
-      //     if (resp != undefined) {
-      //       toast.success("Successfully submitted");
-      //       navigate("/actionuserdashboard");
-      //     }
-      //   })
-      //   .catch((err) => toast.error("error in updating."));
+
+      try {
+        for (const stepObject of steps) {
+          await updateAdminStep(stepObject._id, stepObject);
+          console.log(`Successfully updated step with ID: ${stepObject._id}`);
+        }
+
+        // Show a final toast message after all updates are completed
+        toast.success("All steps successfully updated");
+        navigate("/actionuserdashboard");
+      } catch (err) {
+        toast.error("Error in updating.");
+      }
     },
   });
-  // <!-- Left Icon Accordions -->
 
   const [lefticonCol1, setlefticonCol1] = useState(true);
   const [lefticonCol2, setlefticonCol2] = useState(false);
