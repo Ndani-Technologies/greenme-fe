@@ -183,8 +183,7 @@ const BenchmarkingQA = () => {
       visibility: true,
       description: "",
       category: "",
-      includeExplanation: false,
-      arr: [{ includeExplanation: false, answerOption: "" }],
+      answerOptions: [],
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -202,54 +201,55 @@ const BenchmarkingQA = () => {
         );
         if (value.titleEng.toString().includes(values.category)) return value;
       });
+      console.log(cd, "CD");
 
-      const answerIds = [];
+      // const answerIds = [];
 
-      values?.answerOption.length &&
-        values?.answerOption.forEach((value) => {
-          allAnswers.forEach((val) => {
-            if (value === val.answerOption) {
-              answerIds.push(val._id);
-            }
-            validation.setValues(answerIds);
-          });
-        });
+      // values?.answerOption.length &&
+      //   values?.answerOption.forEach((value) => {
+      //     allAnswers.forEach((val) => {
+      //       if (value === val.answerOption) {
+      //         answerIds.push(val._id);
+      //       }
+      //       validation.setValues(answerIds);
+      //     });
+      //   });
       const mappedData = {
         ...values,
         category: cd?._id,
-        answerOptions: answerIds,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
         // response: parseInt(values.response.split("%")[0]),
       };
-      if (isDataUpdated) {
-        updateQuestion(questionId, mappedData)
-          .then((resp) => {
-            getAllQA()
-              .then((resp) => setQA(resp))
-              .catch((err) => console.log("qa all error", err));
-            toast.success("Successfully Updated");
-          })
-          .catch((err) => {
-            toast.error(`Error in updating question`);
-          });
-      } else {
-        addQuestion(mappedData, values.category)
-          .then((resp) => {
-            toast.success("Successfully Added");
+      console.log(mappedData, "MAPPED");
+      // if (isDataUpdated) {
+      //   updateQuestion(questionId, mappedData)
+      //     .then((resp) => {
+      //       getAllQA()
+      //         .then((resp) => setQA(resp))
+      //         .catch((err) => console.log("qa all error", err));
+      //       toast.success("Successfully Updated");
+      //     })
+      //     .catch((err) => {
+      //       toast.error(`Error in updating question`);
+      //     });
+      // } else {
+      //   addQuestion(mappedData, values.category)
+      //     .then((resp) => {
+      //       toast.success("Successfully Added");
 
-            setQA([...qa, resp]);
-            setSelectedIndexes([]);
-            validation.resetForm();
-          })
-          .catch((err) => {
-            toast.error(`Error in adding question ${err}`);
-          });
-      }
+      //       setQA([...qa, resp]);
+      //       setSelectedIndexes([]);
+      //       validation.resetForm();
+      //     })
+      //     .catch((err) => {
+      //       toast.error(`Error in adding question ${err}`);
+      //     });
+      // }
 
       setIsDataUpdated(false);
-      console.log("values formik", mappedData);
-      setmodal_grid(false);
+      console.log("values formik", values);
+      // setmodal_grid(false);
 
       toggle();
     },
@@ -827,6 +827,7 @@ const BenchmarkingQA = () => {
     setDeleteId(null);
   };
   const [selectedIndexes, setSelectedIndexes] = useState([]);
+  const [selectedIndexesIE, setSelectedIndexesIE] = useState([]);
   const [selectedIndexes2, setSelectedIndexes2] = useState(info);
 
   document.title = "Benchmaking QA | GreenMe";
@@ -1037,38 +1038,46 @@ const BenchmarkingQA = () => {
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">
-                        <div>
-                          <Input
-                            type="textarea"
+                        <div className="ck-editor-reverse">
+                          <CKEditor
+                            editor={ClassicEditor}
+                            onReady={(editor) => {
+                              // You can store the "editor" and use when it is needed.
+                            }}
+                            onChange={(event, editor) => {
+                              const value = editor.getData();
+                              const div = document.createElement("div");
+                              div.innerHTML = value;
+                              const pValue = div.querySelector("p")?.innerHTML;
+                              validation.setFieldValue("description", pValue);
+                            }}
                             class="form-control"
                             placeholder="Description"
                             id="description"
-                            name="description"
                             validate={{
                               required: { value: true },
                             }}
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
+                            onBlur={(event, editor) => {
+                              const value = editor.getData();
+                              const div = document.createElement("div");
+                              div.innerHTML = value;
+                              const pValue = div.querySelector("p")?.innerHTML;
+                              validation.setFieldValue("description", pValue);
+                            }}
                             value={validation.values.description || ""}
-                            invalid={
-                              validation.touched.description &&
-                              validation.errors.description
-                                ? true
-                                : false
-                            }
                             style={{
                               height: "120px",
                               overflow: "hidden",
                               backgroundColor: "#dfdfdf",
                             }}
-                          ></Input>
-                          {validation.touched.description &&
-                          validation.errors.description ? (
-                            <FormFeedback type="invalid">
-                              {validation.errors.description}
-                            </FormFeedback>
-                          ) : null}
+                          />
                         </div>
+                        {validation.touched.description &&
+                        validation.errors.description ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.description}
+                          </FormFeedback>
+                        ) : null}
                       </Col>
                       <Col xxl={12} className="p-0">
                         <Input
@@ -1214,14 +1223,12 @@ const BenchmarkingQA = () => {
                                                     >
                                                       Include Explanation
                                                     </Label>
-                                                    <Input
+                                                    <Checkbox
                                                       id={`form-grid-showcode-${index}`}
-                                                      className="form-check-input code-switcher"
-                                                      type="checkbox"
-                                                      value="active"
+                                                      name="includeExplanation"
                                                       checked={
                                                         value.includeExplanation
-                                                      } // Access includeExplanation from value object
+                                                      }
                                                       onChange={(e) => {
                                                         const updatedAnswers = [
                                                           ...allAnswers,
@@ -1235,14 +1242,10 @@ const BenchmarkingQA = () => {
                                                           updatedAnswers
                                                         );
                                                       }}
-                                                      style={{
-                                                        backgroundColor:
-                                                          value.includeExplanation
-                                                            ? "#88C756"
-                                                            : "#fff",
-                                                        width: "50px",
-                                                        border: "0",
-                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
                                                     />
                                                   </div>
                                                 </div>
@@ -1256,9 +1259,32 @@ const BenchmarkingQA = () => {
                                     })
                                   : allAnswers &&
                                     allAnswers.map((value, index) => {
-                                      // const isSelected = selectedIndexes.includes(index);
+                                      // Check if the current answer option is selected
                                       const isSelected =
-                                        selectedIndexes.includes(index);
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption ===
+                                            value.answerOption
+                                        );
+
+                                      // Check if the include explanation checkbox is selected
+                                      const isSelectedIE =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption ===
+                                              value.answerOption &&
+                                            option.includeExplanation
+                                        );
+
+                                      // Check if the include input field checkbox is selected
+                                      const isSelectedIF =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption ===
+                                              value.answerOption &&
+                                            option.includeInputField
+                                        );
+
                                       return (
                                         <>
                                           <Draggable
@@ -1284,44 +1310,52 @@ const BenchmarkingQA = () => {
                                                 >
                                                   <div>
                                                     <Checkbox
-                                                      name="answerOption"
+                                                      name="answerOptions"
                                                       onBlur={() => {
                                                         validation.setFieldValue(
-                                                          "answerOption",
-                                                          selectedIndexes.map(
-                                                            (i) =>
-                                                              allAnswers[i]
-                                                                .answerOption
-                                                          )
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
                                                         );
                                                       }}
                                                       value={index}
-                                                      checked={selectedIndexes.includes(
-                                                        index
-                                                      )}
+                                                      checked={isSelected}
                                                       onChange={(e) => {
                                                         e.preventDefault();
                                                         const { checked } =
                                                           e.target;
+                                                        const answerOption =
+                                                          value.answerOption;
+                                                        // const id= value._id;
+                                                        const includeExplanation =
+                                                          isSelectedIE;
+                                                        const includeInputField =
+                                                          isSelectedIF;
+
                                                         if (checked) {
-                                                          setSelectedIndexes([
-                                                            ...selectedIndexes,
-                                                            index,
-                                                          ]);
+                                                          selectedAnswerOptions.push(
+                                                            {
+                                                              answerOption,
+                                                              includeExplanation,
+                                                              includeInputField,
+                                                              // id
+                                                            }
+                                                          );
                                                         } else {
-                                                          setSelectedIndexes(
-                                                            selectedIndexes.filter(
-                                                              (i) => i !== index
-                                                            )
+                                                          const indexToRemove =
+                                                            selectedAnswerOptions.findIndex(
+                                                              (option) =>
+                                                                option.answerOption ===
+                                                                answerOption
+                                                            );
+                                                          selectedAnswerOptions.splice(
+                                                            indexToRemove,
+                                                            1
                                                           );
                                                         }
+
                                                         validation.setFieldValue(
-                                                          "answerOption",
-                                                          selectedIndexes.map(
-                                                            (i) =>
-                                                              allAnswers[i]
-                                                                .answerOption
-                                                          )
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
                                                         );
                                                       }}
                                                       icon={<CropSquareIcon />}
@@ -1339,35 +1373,91 @@ const BenchmarkingQA = () => {
                                                     >
                                                       Include Explanation
                                                     </Label>
-                                                    <Input
+                                                    <Checkbox
                                                       id={`form-grid-showcode-${index}`}
-                                                      className="form-check-input code-switcher"
-                                                      type="checkbox"
-                                                      value="active"
-                                                      checked={
-                                                        value.includeExplanation
-                                                      } // Access includeExplanation from value object
+                                                      name="includeExplanation"
+                                                      value={index}
+                                                      checked={isSelectedIE}
+                                                      onChange={(e) => {
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        const answerOption =
+                                                          value.answerOption;
+
+                                                        const selectedOption =
+                                                          selectedAnswerOptions.find(
+                                                            (option) =>
+                                                              option.answerOption ===
+                                                              answerOption
+                                                          );
+
+                                                        if (selectedOption) {
+                                                          selectedOption.includeExplanation =
+                                                            checked;
+                                                        }
+
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      onBlur={() => {
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
+                                                    <Label
+                                                      htmlFor={`form-grid-showcode-${index}`}
+                                                      className="form-label text-muted"
+                                                    >
+                                                      Include Input Field
+                                                    </Label>
+                                                    <Checkbox
+                                                      id={`form-grid-showcode-${index}`}
+                                                      name="includeInputField"
+                                                      checked={isSelectedIF}
                                                       onChange={(e) => {
                                                         const updatedAnswers = [
                                                           ...allAnswers,
                                                         ];
                                                         updatedAnswers[
                                                           index
-                                                        ].includeExplanation =
+                                                        ].includeInputField =
                                                           e.target.checked;
+
+                                                        const selectedOption =
+                                                          selectedAnswerOptions.find(
+                                                            (option) =>
+                                                              option.answerOption ===
+                                                              value.answerOption
+                                                          );
+                                                        if (selectedOption) {
+                                                          selectedOption.includeInputField =
+                                                            e.target.checked;
+                                                        }
+
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           updatedAnswers
                                                         );
                                                       }}
-                                                      style={{
-                                                        backgroundColor:
-                                                          value.includeExplanation
-                                                            ? "#88C756"
-                                                            : "#fff",
-                                                        width: "50px",
-                                                        border: "0",
-                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
                                                     />
                                                   </div>
                                                 </div>
@@ -1376,9 +1466,8 @@ const BenchmarkingQA = () => {
                                           </Draggable>
                                         </>
                                       );
-
-                                      // )
                                     })}
+
                                 {provided.placeholder}
                               </div>
                             )}
