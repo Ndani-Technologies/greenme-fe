@@ -134,6 +134,7 @@ const ActionModal = ({
       setactiveArrowTab(index);
     }
   }
+  const editorRef = useRef();
   const [isCategoryClick, setIsCategoryClick] = useState(0);
   const [categorySelectTitle, setCategorySelectTitle] = useState("");
   const [isCostClick, setIsCostClick] = useState(0);
@@ -276,6 +277,7 @@ const ActionModal = ({
 
   const handleAddActions = () => {
     if (actionTitle !== "" && actionDescription !== "" && actionScore) {
+      const editor = editorRef.current.editor;
       const mappedData = {
         title: actionTitle,
         description: actionDescription,
@@ -296,10 +298,12 @@ const ActionModal = ({
             return updateAdminResources;
           });
         });
+        editor.setData("");
       } else {
         createAdminStep(mappedData)
           .then((res) => {
             setAdminSteps([...adminSteps, res]);
+            editor.setData("");
           })
           .catch(() => toast.error("Error in adding step"));
       }
@@ -317,6 +321,8 @@ const ActionModal = ({
     setActionDescription(data.description);
     setActionScore(data.score);
     setIsActionStepUpdate(true);
+    const editor = editorRef.current.editor;
+    editor.setData(data.description);
   };
 
   const handleDelete = (id) => {
@@ -698,6 +704,7 @@ const ActionModal = ({
                                 <label>Add Description</label>
                                 <CKEditor
                                   editor={ClassicEditor}
+                                  ref={editorRef}
                                   onReady={(editor) => {
                                     editor.setData(actionDescription);
                                   }}
@@ -707,7 +714,7 @@ const ActionModal = ({
                                     div.innerHTML = value;
                                     const pValue =
                                       div.querySelector("p")?.innerHTML;
-
+                                    console.log("update desc", pValue);
                                     // If data is not updated, update the local state
                                     setActionDescription(pValue);
                                   }}
