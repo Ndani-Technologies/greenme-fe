@@ -148,89 +148,92 @@ const ActionUserDetail = () => {
             Text={
               "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
             }
+            ra_title={data.title}
           />
-          <div className="card">
-            <div className="d-flex">
-              <div
-                className={`w-25 p-2  border-end custom-padding
+          <div className="card-wrapper">
+            <div className="card ">
+              <div className="d-flex ">
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">Category</span>
-                <div>
-                  <span className="span">{data.categoryId.title}</span>
+                >
+                  <span className="fs-7">Category</span>
+                  <div>
+                    <span className="span">{data.categoryId.title}</span>
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`w-25 p-2  border-end custom-padding
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">Status</span>
-                <div>
-                  <span className="span">{data.status}</span>
+                >
+                  <span className="fs-7">Status</span>
+                  <div>
+                    <span className="span">{data.status}</span>
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`w-25 p-2  border-end custom-padding
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">Potential</span>
-                <div>
-                  <span className="span">{data.potentialId.title}</span>
+                >
+                  <span className="fs-7">Potential</span>
+                  <div>
+                    <span className="span">{data.potentialId.title}</span>
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`w-25 p-2  border-end custom-padding
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">Cost</span>
-                <div>
-                  <span className="span">{data.costId.title}</span>
+                >
+                  <span className="fs-7">Cost</span>
+                  <div>
+                    <span className="span">{data.costId.title}</span>
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`w-25 p-2  border-end custom-padding
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">Time scale</span>
-                <div>
-                  <span className="span">{data.timescaleId.title}</span>
+                >
+                  <span className="fs-7">Time scale</span>
+                  <div>
+                    <span className="span">{data.timescaleId.title}</span>
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`w-25 p-2  border-end custom-padding
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">Start Date</span>
-                <div>
-                  <span className="span">{data.startdate}</span>g
+                >
+                  <span className="fs-7">Start Date</span>
+                  <div>
+                    <span className="span">{data.startdate}</span>g
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`w-25 p-2  border-end custom-padding
+                <div
+                  className={`w-25 p-2  border-end custom-padding
                     }`}
-              >
-                <span className="fs-7">End Date</span>
-                <div>
-                  <span className="span">{data.enddate}</span>
+                >
+                  <span className="fs-7">End Date</span>
+                  <div>
+                    <span className="span">{data.enddate}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <Col className="mb-5" lg={12}>
+          <Col className="card-wrapper mb-5 ml-3" lg={12}>
             <h4>Description</h4>
             {/* <Input
                   type="text"
                   placeholder="Some description should go  here"
                 /> */}
-            <p>
-              {data.description.replace(
+            <p dangerouslySetInnerHTML={{ __html: data.description }}>
+              {/* {data.description.replace(
                 /(&nbsp;|<br>|&lt;|&gt;|&amp;|&quot;|&apos;)/g,
                 (match) => entities[match]
-              )}
+              )} */}
             </p>
           </Col>
-          <Col lg={12}>
-            <Card>
+          <Col lg={12} className="card-wrapper">
+            <Card className="card-wrapper-one">
               <h4 className="mb-0 m-3">Action Steps</h4>
               <CardBody>
                 <Accordion
@@ -261,14 +264,24 @@ const ActionUserDetail = () => {
                         id={`accor_lefticonExamplecollapse${index + 1}`}
                       >
                         <div className="accordion-body d-flex justify-content-between">
-                          {step.description.replace(
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: step.description,
+                            }}
+                          />
+
+                          {/* {step.description.replace(
                             /(&nbsp;|<br>|&lt;|&gt;|&amp;|&quot;|&apos;)/g,
                             (match) => entities[match]
-                          )}
+                          )} */}
 
                           <div
                             className="Discription"
-                            style={{ width: "200px" }}
+                            style={{
+                              width: "200px",
+                              border: "1px solid grey",
+                              backgroundColor: "#bec887",
+                            }}
                           >
                             <span>
                               Status:{" "}
@@ -293,7 +306,7 @@ const ActionUserDetail = () => {
               </CardBody>
             </Card>
           </Col>
-          <Col lg={12} className="d-flex justify-content-between">
+          <Col lg={12} className="card-wrapper d-flex justify-content-between">
             <Col lg={5}>
               <h4 className="mb-4">Resource Links</h4>
               {data.resourcelinkId.map((item) => (
@@ -307,7 +320,7 @@ const ActionUserDetail = () => {
                 </div>
               ))}
             </Col>
-            <Col lg={6} className="Feeedback">
+            <Col lg={6} className="card-wrapper-one Feeedback">
               <h4>
                 Here you can leave some feedback / experience that you have had.
               </h4>
@@ -316,26 +329,27 @@ const ActionUserDetail = () => {
                 className="w-100 p-2"
                 rows={4}
                 placeholder="Leave us some feed back here"
+                disabled
               />
-              <Button>Send</Button>
+              <Button disabled>Send</Button>
             </Col>
           </Col>
-
           <form
             onSubmit={(e) => {
               e.preventDefault();
               validation.handleSubmit();
             }}
+            className="card-wrapper"
           >
             <Col className="d-flex align-items-center justify-content-between pt-3">
-              <Col className="Stars">
+              <Col className="Stars ">
                 <h4>Please leave a rating </h4>
                 <div className="Rating">
                   <StarsRating
                     Title="Relevant"
                     Rating={` ${validation.values.relevant} out of 5`}
-                    validation={validation}
-                    value={value}
+                    // validation={validation}
+                    // value={value}
                   />
                   <StarsRating
                     Title="Difficult"
@@ -356,7 +370,7 @@ const ActionUserDetail = () => {
                   Get in touch with the administrator <br /> for any
                   clarification need.
                 </p>
-                <Button>Contact Administrator</Button>
+                <Button disabled>Contact Administrator</Button>
               </Col>
               <Col className="d-flex justify-content-center gap-2">
                 <Button
@@ -364,17 +378,29 @@ const ActionUserDetail = () => {
                     setValue(0);
                     validation.resetForm();
                   }}
+                  className="btn btn-danger"
                 >
                   Reset
                 </Button>
                 <Button type="submit">Save</Button>
-                <Button>Complete</Button>
+                <Button color="primary">Complete</Button>
               </Col>
             </Col>
           </form>
         </div>
         <ToastContainer closeButton={false} limit={1} />
       </React.Fragment>
+      <style>
+        {`
+      .card-wrapper {
+        margin-left: 30px;
+        margin-right:23px
+      }
+      .card-wrapper-one {
+        margin-right:45px
+      }
+    `}
+      </style>
     </div>
   );
 };

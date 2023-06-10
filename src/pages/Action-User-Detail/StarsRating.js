@@ -17,13 +17,14 @@ const StarsRating = ({ Title, Rating, validation, value }) => {
           <span>{Title}</span>
           <ReactStars
             count={5}
-            onChange={ratingChanged}
+            // onChange={ratingChanged}
             size={24}
-            isHalf={true}
-            emptyIcon={<i className="far fa-star"></i>}
-            halfIcon={<i className="fa fa-star-half-alt"></i>}
-            fullIcon={<i className="fa fa-star"></i>}
-            activeColor={value === 0 ? "red" : "#ffd700"}
+            // isHalf={true}
+            // emptyIcon={<i className="far fa-star"></i>}
+            // halfIcon={<i className="fa fa-star-half-alt"></i>}
+            // fullIcon={<i className="fa fa-star"></i>}
+            // activeColor={value === 0 ? "red" : "#ffd700"}
+            edit={false}
           />
           <span>{Rating}</span>
         </Col>

@@ -454,14 +454,29 @@ const BenchmarkingQA = () => {
                 className="flex-grow-1 ms-2 name"
                 onClick={() => {
                   const contactData = cellProps.row.original;
-                  const answerOptions = contactData.answerOptions.map(
-                    (answerId) => {
-                      const answer = allAnswers.find(
-                        (item) => item._id === answerId
-                      );
-                      return answer ? answer.answerOption : "";
-                    }
-                  );
+                  console.log("contact data", contactData);
+                  let answerOptions;
+                  if (contactData.answerOptions) {
+                    answerOptions = contactData?.answerOptions.map(
+                      (answerId) => {
+                        const answer = allAnswers.find(
+                          (item) => item._id === answerId
+                        );
+                        return answer ? answer.answerOption : "";
+                      }
+                    );
+                  } else {
+                    toast.info("couldn't open modal.");
+                  }
+
+                  // const answerOptions = contactData?.answerOptions.map(
+                  //   (answerId) => {
+                  //     const answer = allAnswers.find(
+                  //       (item) => item._id === answerId
+                  //     );
+                  //     return answer ? answer.answerOption : "";
+                  //   }
+                  // );
 
                   const result = {
                     ...contactData,
@@ -1126,7 +1141,7 @@ const BenchmarkingQA = () => {
                                       const isSelected =
                                         selectedIndexes2.includes(index);
                                       const isCheckedAnswer =
-                                        info.answerOptions.find((val, ind) => {
+                                        info?.answerOptions.find((val, ind) => {
                                           return val._id == value._id;
                                         });
                                       return (
