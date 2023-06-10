@@ -104,7 +104,7 @@ const ActionModal = ({
       setAdminSteps(info.steps);
       setTitle(info.title);
       setDescription(info.description);
-      // setAdminResources(info.adminResources)
+      setAdminResources(info.resourcelinkId);
       setCategorySelectTitle(info.categoryId);
       setCostSelectTitle(info.costId);
       setScaleSelectTitle(info.timescaleId);

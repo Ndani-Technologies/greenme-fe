@@ -208,7 +208,7 @@ const ActionUserDetail = () => {
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">End Date</span>
+                  <span className="fs-7">Completed Date</span>
                   <div>
                     <span className="span">{data.enddate}</span>
                   </div>
