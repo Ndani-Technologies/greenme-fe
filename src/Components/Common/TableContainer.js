@@ -326,6 +326,7 @@ const TableContainer = ({
                         {...column.getSortByToggleProps()}
                       >
                         {column.render("Header")}
+                        {/* <i class="bi bi-sort-alpha-up-alt"></i> */}
                         {generateSortingIndicator(column)}
                       </th>
                     ))}
