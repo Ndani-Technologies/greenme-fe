@@ -280,6 +280,7 @@ const ActionUserDetail = () => {
                               height: "80px",
                               padding: "5px",
                               borderRadius: "10px",
+
                               border: "1px solid grey",
                               backgroundColor: "#bec887",
                             }}

@@ -776,6 +776,7 @@ const ActionModal = ({
                                       div.querySelector("p")?.innerHTML;
                                     // If data is not updated, update the local state
                                     setActionDescription(value);
+
                                   }}
                                   validate={{
                                     required: { value: true },
