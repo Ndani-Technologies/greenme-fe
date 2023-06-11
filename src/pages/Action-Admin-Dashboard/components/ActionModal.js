@@ -97,7 +97,6 @@ const ActionModal = ({
   const [actionScore, setActionScore] = useState();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  console.log("inof", info, adminCategories);
   //Data values States
   useEffect(() => {
     if (isDataUpdated) {
@@ -204,12 +203,19 @@ const ActionModal = ({
   //HANDLING DELETE
 
   const [deleteId, setDeleteId] = useState(null);
+  const [deleteStepId, setDeleteStepId] = useState(null);
   const handleResourceDelete = (id) => {
     setDeleteId(id);
     setDeleteConfirmation2(true);
   };
+  const handleStepConfirmationDelete = (id) => {
+    setDeleteStepId(id);
+    setDeleteConfirmationStep(true);
+  };
 
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
+  const [deleteConfirmationStep, setDeleteConfirmationStep] = useState(false);
+  const [closeMainModal, setCloseMainModal] = useState(false);
   const confirmDelete2 = () => {
     deleteAdminResources(deleteId)
       .then((resp) => {
@@ -221,7 +227,6 @@ const ActionModal = ({
       })
       .catch((err) => {
         toast.error(toast.error("Unable to Delete"));
-        console.log("err in deleteing Resource", err);
       });
     setDeleteConfirmation2(false);
     setDeleteId(null);
@@ -231,10 +236,14 @@ const ActionModal = ({
     setDeleteConfirmation2(false);
     setDeleteId(null);
   };
-
+  const cancelDeleteStep = () => {
+    setDeleteConfirmationStep(false);
+    setDeleteStepId(null);
+  };
+  const [isResourceLinkEdit, setIsResourceLinkEdit] = useState(false);
   const handleResourceEdit = (data) => {
     // setEditingDataId(dataId);
-
+    setIsResourceLinkEdit(true);
     setIsManageResourceUpdate(true);
     setResourceManageId(data._id);
     setResourceInput(data?.title);
@@ -271,10 +280,10 @@ const ActionModal = ({
               setAdminResources([...adminResources, data]);
               setResourceInput("");
             }
-            console.log("resounce link ", data);
           })
           .catch(() => toast.error("Error in adding link"));
       }
+      setIsResourceLinkEdit(false);
     }
   };
 
@@ -328,20 +337,21 @@ const ActionModal = ({
     editor.setData(data.description);
   };
 
-  const handleDelete = (id) => {
-    deleteAdminStep(id)
+  const handleDelete = () => {
+    deleteAdminStep(deleteStepId)
       .then((res) => {
         if (res !== undefined) {
           setAdminSteps((prev) => {
             const updateAdminResources = prev.filter(
-              (value) => value._id !== id
+              (value) => value._id !== deleteStepId
             );
             return updateAdminResources;
           });
           toast.success("Step deleted.");
+          setDeleteConfirmationStep(false);
         }
       })
-      .catch(() => toast.error("Error in adding step"));
+      .catch(() => toast.error("Error in deleting step"));
   };
 
   //HANDLING TABS CLICK ON NEXT AND BACK
@@ -372,7 +382,6 @@ const ActionModal = ({
       potentialId: isPotentialClick._id,
       timescaleId: isScaleClick._id,
     };
-    console.log("hanlde submit", mappedData, adminSteps);
 
     if (title !== "" && description !== "") {
       createAdminActions(mappedData)
@@ -401,8 +410,6 @@ const ActionModal = ({
       timescaleId: isScaleClick._id,
     };
 
-    console.log(mappedData, "MAPPED DATA");
-
     updatedAdminActions(mappedData, id)
       .then((resp) => {
         getAllAdminActions().then((res) => {
@@ -412,7 +419,6 @@ const ActionModal = ({
         });
       })
       .catch((err) => {
-        console.log("error in updating", err);
         toast.error("Error in updating action");
       });
   };
@@ -434,6 +440,19 @@ const ActionModal = ({
       setScoreError(true);
     }
   };
+  const handleDragEnds = (result) => {
+    if (!result.destination) {
+      return;
+    }
+
+    const newData = [...adminSteps];
+    const draggedCategory = newData[result.source.index];
+
+    newData.splice(result.source.index, 1);
+    newData.splice(result.destination.index, 0, draggedCategory);
+
+    setAdminSteps(newData);
+  };
   return (
     <>
       <Modal
@@ -441,7 +460,7 @@ const ActionModal = ({
         className="postion-relative m-0 float-end"
         isOpen={modal_grid} //null
         toggle={() => {
-          tog_grid();
+          setCloseMainModal(true);
         }}
       >
         <div
@@ -451,7 +470,7 @@ const ActionModal = ({
           <Button
             type="button"
             onClick={() => {
-              setmodal_grid(false);
+              setCloseMainModal(true);
             }}
             className="btn-close color-black bg-white border border-dark rounded-circle "
             aria-label="close"
@@ -605,7 +624,7 @@ const ActionModal = ({
                 </div>
               </Col>
               <Col xxl={12} className="p-0">
-                <div className="ck-editor-reverse">
+                <div className="">
                   <CKEditor
                     editor={ClassicEditor}
                     onReady={(editor) => {
@@ -746,7 +765,6 @@ const ActionModal = ({
                                     div.innerHTML = value;
                                     const pValue =
                                       div.querySelector("p")?.innerHTML;
-                                    console.log("update desc", pValue, value);
                                     // If data is not updated, update the local state
                                     setActionDescription(value);
                                   }}
@@ -756,9 +774,9 @@ const ActionModal = ({
                                     div.innerHTML = value;
                                     const pValue =
                                       div.querySelector("p")?.innerHTML;
-                                    console.log("update desc", pValue, value);
                                     // If data is not updated, update the local state
                                     setActionDescription(value);
+
                                   }}
                                   validate={{
                                     required: { value: true },
@@ -864,38 +882,72 @@ const ActionModal = ({
                               </div>
                             </Col>
 
-                            {tab.id &&
-                              adminSteps.map((action) => {
-                                return (
-                                  <div className="border rounded mb-2 p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center">
-                                    <div className="d-flex align-items-center justify-content-beetween w-100">
-                                      <div className="d-flex align-items-center gap-2">
-                                        <i
-                                          className="ri-drag-move-2-line fs-24"
-                                          style={{ color: "#4A7BA4" }}
-                                        ></i>
-                                        <h5 className="m-0">{action?.title}</h5>
-                                      </div>
-                                      <div className="d-flex gap-2 justify-content-end w-25  mt-1">
-                                        <img src={Medal} />
-                                        {action?.score}
-                                      </div>
+                            {tab.id && (
+                              <DragDropContext onDragEnd={handleDragEnds}>
+                                <Droppable droppableId="adminSteps">
+                                  {(provided) => (
+                                    <div
+                                      ref={provided.innerRef}
+                                      {...provided.droppableProps}
+                                    >
+                                      {adminSteps.map((action, index) => (
+                                        <Draggable
+                                          key={action._id}
+                                          draggableId={action._id}
+                                          index={index}
+                                        >
+                                          {(provided) => (
+                                            <div
+                                              className="border rounded mb-2 p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                              ref={provided.innerRef}
+                                              {...provided.draggableProps}
+                                              {...provided.dragHandleProps}
+                                            >
+                                              <div className="d-flex align-items-center justify-content-beetween w-100">
+                                                <div className="d-flex align-items-center gap-2">
+                                                  <i
+                                                    className="ri-drag-move-2-line fs-24"
+                                                    style={{ color: "#4A7BA4" }}
+                                                  ></i>
+                                                  <h5 className="m-0">
+                                                    Step {index + 1} :{" "}
+                                                    {action?.title}
+                                                  </h5>
+                                                </div>
+                                                <div className="d-flex gap-2 justify-content-end w-25 mt-1">
+                                                  <img src={Medal} alt="" />
+                                                  {action?.score}
+                                                </div>
+                                              </div>
+                                              <div className="d-flex justify-content-end gap-2 w-25">
+                                                <i
+                                                  className="ri-pencil-fill fs-18"
+                                                  style={{ color: "gray" }}
+                                                  onClick={() =>
+                                                    handleEdit(action)
+                                                  }
+                                                ></i>
+                                                <i
+                                                  className="ri-delete-bin-2-line fs-18"
+                                                  style={{ color: "red" }}
+                                                  // onClick={() => handleDelete(action._id)}
+                                                  onClick={() =>
+                                                    handleStepConfirmationDelete(
+                                                      action._id
+                                                    )
+                                                  }
+                                                ></i>
+                                              </div>
+                                            </div>
+                                          )}
+                                        </Draggable>
+                                      ))}
+                                      {provided.placeholder}
                                     </div>
-                                    <div className="d-flex justify-content-end gap-2 w-25">
-                                      <i
-                                        className="ri-pencil-fill fs-18"
-                                        style={{ color: "gray" }}
-                                        onClick={() => handleEdit(action)}
-                                      ></i>
-                                      <i
-                                        className="ri-delete-bin-2-line fs-18"
-                                        style={{ color: "red" }}
-                                        onClick={() => handleDelete(action._id)}
-                                      ></i>
-                                    </div>
-                                  </div>
-                                );
-                              })}
+                                  )}
+                                </Droppable>
+                              </DragDropContext>
+                            )}
                           </TabPane>
                         ))}
                       </TabContent>
@@ -939,7 +991,7 @@ const ActionModal = ({
                       Confirm Deletion
                     </ModalHeader>
                     <ModalBody>
-                      Are you sure you want to delete this category variation?
+                      Are you sure you want to delete this link?
                     </ModalBody>
                     <ModalFooter>
                       <Button color="danger" onClick={confirmDelete2}>
@@ -947,6 +999,61 @@ const ActionModal = ({
                       </Button>
                       <Button color="secondary" onClick={cancelDelete2}>
                         Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                  <Modal
+                    isOpen={deleteConfirmationStep}
+                    toggle={cancelDeleteStep}
+                  >
+                    <ModalHeader toggle={cancelDeleteStep}>
+                      Confirm Deletion
+                    </ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to delete this step?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" onClick={handleDelete}>
+                        Delete
+                      </Button>
+                      <Button color="secondary" onClick={cancelDeleteStep}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                  <Modal
+                    isOpen={closeMainModal}
+                    toggle={() => {
+                      setCloseMainModal(false);
+                    }}
+                  >
+                    <ModalHeader
+                      toggle={() => {
+                        setCloseMainModal(false);
+                      }}
+                    >
+                      Confirm Close
+                    </ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to close? You will loose all unsaved
+                      changes.
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        color="danger"
+                        onClick={() => {
+                          tog_grid();
+                        }}
+                      >
+                        Yes
+                      </Button>
+                      <Button
+                        color="secondary"
+                        onClick={() => {
+                          setCloseMainModal(false);
+                        }}
+                      >
+                        No
                       </Button>
                     </ModalFooter>
                   </Modal>
@@ -962,10 +1069,17 @@ const ActionModal = ({
                           placeholder="Manage Resource link"
                           onChange={(e) => setResourceInput(e.target.value)}
                         />
-                        <i
-                          className="ri-add-line cursor-pointer"
-                          onClick={handleManageResource}
-                        ></i>
+                        {isResourceLinkEdit ? (
+                          <i
+                            className="ri-save-line  cursor-pointer"
+                            onClick={handleManageResource}
+                          ></i>
+                        ) : (
+                          <i
+                            className={`ri-add-line cursor-pointer`}
+                            onClick={handleManageResource}
+                          ></i>
+                        )}
                       </div>
                     </div>
                   </Col>
@@ -1156,32 +1270,41 @@ const ActionModal = ({
               </Col>
               <div className="col-lg-12 d-flex gap-3">
                 <div className="hstack gap-2 justify-content-start">
-                  <Button className="btn btn-danger p-4 pt-2 pb-2">
+                  <Button
+                    className="btn btn-danger p-4 pt-2 pb-2"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setCloseMainModal(true);
+                    }}
+                  >
                     Cancel
                   </Button>
                 </div>
                 <div className="hstack gap-2 justify-content-start">
-                  <Button
-                    className={`p-4 pt-2 pb-2 ${
-                      isDataUpdated ? "disabled" : ""
-                    }`}
-                    color="secondary"
-                    onClick={handleSubmit}
-                    disabled={isDataUpdated}
-                  >
-                    Save
-                  </Button>
+                  {isDataUpdated ? (
+                    <Button
+                      className={`p-4 pt-2 pb-2 ${
+                        !isDataUpdated ? "disabled" : ""
+                      }`}
+                      color="primary"
+                      disabled={!isDataUpdated}
+                      onClick={() => handleUpdate(info._id)}
+                    >
+                      Update
+                    </Button>
+                  ) : (
+                    <Button
+                      className={`p-4 pt-2 pb-2 ${
+                        isDataUpdated ? "disabled" : ""
+                      }`}
+                      color="secondary"
+                      onClick={handleSubmit}
+                      disabled={isDataUpdated}
+                    >
+                      Save
+                    </Button>
+                  )}
                 </div>
-                <Button
-                  className={`p-4 pt-2 pb-2 ${
-                    !isDataUpdated ? "disabled" : ""
-                  }`}
-                  color="primary"
-                  disabled={!isDataUpdated}
-                  onClick={() => handleUpdate(info._id)}
-                >
-                  Update
-                </Button>
               </div>
             </div>
           </form>

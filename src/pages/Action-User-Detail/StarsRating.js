@@ -7,9 +7,7 @@ const StarsRating = ({ Title, Rating, validation, value }) => {
     if (Title == "Relevant") validation.setFieldValue("relevant", newRating);
     if (Title == "Difficult") validation.setFieldValue("difficult", newRating);
     if (Title == "Impactful") validation.setFieldValue("impactful", newRating);
-    console.log(newRating);
   };
-  console.log(value);
   return (
     <div>
       <Col>

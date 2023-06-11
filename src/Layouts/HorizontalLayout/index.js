@@ -312,7 +312,6 @@ const HorizontalLayout = (props) => {
                     <i className={item.icon}></i>{" "}
                     <span>{props.t(item.label)}</span>
                   </Link> */}
-                  {console.log("item nav data", item)}
                   {item.disable ? (
                     <span className="nav-link menu-link disabled">
                       <i className={item.icon}></i>
