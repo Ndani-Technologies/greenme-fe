@@ -53,6 +53,7 @@ import {
 } from "../../../slices/thunks";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { set } from "lodash";
+import { html } from "gridjs";
 const ActionModal = ({
   info,
   setInfo,
@@ -101,7 +102,9 @@ const ActionModal = ({
   useEffect(() => {
     if (isDataUpdated) {
       setAdminSteps(info.steps);
-      // setAdminResources(info.adminResources)
+      setTitle(info.title);
+      setDescription(info.description);
+      setAdminResources(info.resourcelinkId);
       setCategorySelectTitle(info.categoryId);
       setCostSelectTitle(info.costId);
       setScaleSelectTitle(info.timescaleId);
@@ -318,7 +321,7 @@ const ActionModal = ({
   const handleEdit = (data) => {
     setActionStepId(data._id);
     setActionTitle(data.title);
-    setActionDescription(data.description);
+    // setActionDescription(data.description);
     setActionScore(data.score);
     setIsActionStepUpdate(true);
     const editor = editorRef.current.editor;
@@ -587,6 +590,17 @@ const ActionModal = ({
                         setTitle(e.target.value);
                       }
                     }}
+                    onBlur={(e) => {
+                      if (isDataUpdated) {
+                        // If data is updated, handle changes differently
+                        const updatedInfo = { ...info, title: e.target.value };
+                        setInfo(updatedInfo);
+                        setTitle(updatedInfo.title);
+                      } else {
+                        // If data is not updated, update the local state
+                        setTitle(e.target.value);
+                      }
+                    }}
                   />
                 </div>
               </Col>
@@ -605,16 +619,30 @@ const ActionModal = ({
                       div.innerHTML = value;
                       const pValue = div.querySelector("p")?.innerHTML;
                       if (isDataUpdated) {
-                        // If data is updated, handle changes differently
                         const updatedInfo = {
                           ...info,
-                          description: pValue,
+                          description: value,
                         };
                         setInfo(updatedInfo);
                         setDescription(updatedInfo.description);
                       } else {
-                        // If data is not updated, update the local state
-                        setDescription(pValue);
+                        setDescription(value);
+                      }
+                    }}
+                    onBlur={(e, editor) => {
+                      const value = editor.getData();
+                      const div = document.createElement("div");
+                      div.innerHTML = value;
+                      const pValue = div.querySelector("p")?.innerHTML;
+                      if (isDataUpdated) {
+                        const updatedInfo = {
+                          ...info,
+                          description: value,
+                        };
+                        setInfo(updatedInfo);
+                        setDescription(updatedInfo.description);
+                      } else {
+                        setDescription(value);
                       }
                     }}
                     validate={{
@@ -704,9 +732,13 @@ const ActionModal = ({
                                 <label>Add Description</label>
                                 <CKEditor
                                   editor={ClassicEditor}
+                                  config={{
+                                    htmlFilter: false,
+                                  }}
                                   ref={editorRef}
                                   onReady={(editor) => {
-                                    editor.setData(actionDescription);
+                                    // editor.setData(actionDescription);
+                                    // editor.setData('<ul><li>a</li><li>b</li><li>c</li><li>d</li><li>e</li></ul>');
                                   }}
                                   onChange={(e, editor) => {
                                     const value = editor.getData();
@@ -714,9 +746,19 @@ const ActionModal = ({
                                     div.innerHTML = value;
                                     const pValue =
                                       div.querySelector("p")?.innerHTML;
-                                    console.log("update desc", pValue);
+                                    console.log("update desc", pValue, value);
                                     // If data is not updated, update the local state
-                                    setActionDescription(pValue);
+                                    setActionDescription(value);
+                                  }}
+                                  onBlur={(e, editor) => {
+                                    const value = editor.getData();
+                                    const div = document.createElement("div");
+                                    div.innerHTML = value;
+                                    const pValue =
+                                      div.querySelector("p")?.innerHTML;
+                                    console.log("update desc", pValue, value);
+                                    // If data is not updated, update the local state
+                                    setActionDescription(value);
                                   }}
                                   validate={{
                                     required: { value: true },
