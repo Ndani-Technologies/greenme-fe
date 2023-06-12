@@ -85,13 +85,13 @@ const BenchmarkingQA = () => {
   const allQA = () => {
     getAllQA()
       .then((resp) => setQA(resp))
-      .catch((err) => console.log("qa all error", err));
+      .catch((err) => toast.error("qa all error"));
     getAllAnswers()
       .then((resp) => setAllAnswers(resp))
-      .catch((err) => console.log("answer all error", err));
+      .catch((err) => toast.error("answer all error"));
     getAllCategories()
       .then((resp) => setAllCategories(resp))
-      .catch((err) => console.log("category all error", err));
+      .catch((err) => toast.error("category all error"));
   };
 
   useEffect(() => {
@@ -166,12 +166,6 @@ const BenchmarkingQA = () => {
 
     onSubmit: async (values) => {
       const cd = allCategories.find((value) => {
-        console.log(
-          "categories",
-          value.titleEng,
-          values.category,
-          value.titleEng.toString().includes(values.category)
-        );
         if (value.titleEng.toString().includes(values.category)) return value;
       });
 
@@ -181,13 +175,12 @@ const BenchmarkingQA = () => {
         status: "active" ? true : false,
         visibility: "True" ? true : false,
       };
-      console.log(mappedData, "MAPPED");
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
           .then((resp) => {
             getAllQA()
               .then((resp) => setQA(resp))
-              .catch((err) => console.log("qa all error", err));
+              .catch((err) => toast.error("qa all error"));
             toast.success("Successfully Updated");
           })
           .catch((err) => {
@@ -206,9 +199,8 @@ const BenchmarkingQA = () => {
             toast.error(`Error in adding question ${err}`);
           });
       }
-
+      setSelectedAnswerOptions([]);
       setIsDataUpdated(false);
-      console.log("values formik", values);
       setmodal_grid(false);
 
       toggle();
@@ -412,15 +404,17 @@ const BenchmarkingQA = () => {
                 className="flex-grow-1 ms-2 name"
                 onClick={() => {
                   const contactData = cellProps.row.original;
-                  console.log("row", contactData);
                   setInfo(contactData);
-                  // console.log(contactData, "CD");
-                  // const answerOptions = contactData.answerOptions;
-                  // console.log(answerOptions,"answerOptions")
-                  // setInfo(cellProps.row.original);
-                  // setInfo1(cellProps.row.original);
-                  // validation?.setValues(cellProps.row.original.answerOptions);
-                  // setSelectedIndexes(info.answerOptions);
+                  setSelectedAnswerOptions(
+                    contactData.answerOptions.map((value) => {
+                      return {
+                        answerOption: value.answerOption._id,
+                        includeExplanation: value.includeExplanation,
+                        includeInputField: value.includeInputField,
+                      };
+                    })
+                  );
+
                   setQuestionId(cellProps.row.original._id);
                   setmodal_grid(true);
                   setIsDataUpdated(true);
@@ -499,32 +493,20 @@ const BenchmarkingQA = () => {
                       className="dropdown-item"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        const answerOptions = contactData.answerOptions.map(
-                          (answerId) => {
-                            const answer = allAnswers.find(
-                              (item) => item._id === answerId
-                            );
-                            return answer ? answer.answerOption : "";
-                          }
+                        setInfo(contactData);
+                        setSelectedAnswerOptions(
+                          contactData.answerOptions.map((value) => {
+                            return {
+                              answerOption: value.answerOption._id,
+                              includeExplanation: value.includeExplanation,
+                              includeInputField: value.includeInputField,
+                            };
+                          })
                         );
 
-                        const result = {
-                          ...contactData,
-                          answerOptions: answerOptions,
-                        };
-                        setInfo(contactData.answerOptions);
-                        console.log("contact row", contactData);
-                        // const data = contactData.map((value)=>{
-                        //   return {
-                        //     ...value,
-                        //     answerOption
-                        //   }
-                        // })
-                        validation.setValues(result);
-                        // setSelectedIndexes(contactData.answerOptions);
                         setQuestionId(cellProps.row.original._id);
-                        setIsDataUpdated(true);
                         setmodal_grid(true);
+                        setIsDataUpdated(true);
                       }}
                     >
                       Edit
@@ -554,7 +536,6 @@ const BenchmarkingQA = () => {
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
-  console.log(info, "INFO");
 
   // Export Modal
   const [modal_grid, setmodal_grid] = useState(false);
@@ -590,7 +571,6 @@ const BenchmarkingQA = () => {
       })
       .catch((err) => {
         toast.error("Error in updating answer");
-        console.log("error in updating answer", err);
       });
     setEditingAnswerId(null);
     setInputFields("");
@@ -614,7 +594,6 @@ const BenchmarkingQA = () => {
         })
         .catch((err) => {
           toast.error("Unable to update");
-          console.log("adding in answer", err);
         });
       setInputFields("");
     }
@@ -634,7 +613,7 @@ const BenchmarkingQA = () => {
         });
         setAllAnswers(updatedAnswers);
       })
-      .catch((err) => console.log("error in deleting answer", err));
+      .catch((err) => toast.error("error in deleting answer"));
     setDeleteConfirmation(false);
     setDeleteId(null);
   };
@@ -672,7 +651,6 @@ const BenchmarkingQA = () => {
         })
         .catch((err) => {
           toast.error("Unable to Update");
-          console.log("error in adding category", err);
         });
       setInputField("");
     }
@@ -702,7 +680,6 @@ const BenchmarkingQA = () => {
       })
       .catch((err) => {
         toast.error("Unable to Update");
-        console.log("err in updating category", err);
       });
     setEditingCategoryId(null);
     setInputField("");
@@ -720,7 +697,7 @@ const BenchmarkingQA = () => {
         );
         setAllCategories(updatedCategories);
       })
-      .catch((err) => console.log("err in deleteing category", err));
+      .catch((err) => toast.error("err in deleteing category"));
     setDeleteConfirmation2(false);
     setDeleteId(null);
   };
@@ -825,7 +802,8 @@ const BenchmarkingQA = () => {
                   <Button
                     type="button"
                     onClick={() => {
-                      // validation.resetForm();
+                      validation.resetForm();
+                      setSelectedAnswerOptions([]);
                       setIsDataUpdated(false);
                       setmodal_grid(false);
                     }}
@@ -994,7 +972,7 @@ const BenchmarkingQA = () => {
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">
-                        <div className="ck-editor-reverse">
+                        <div className="">
                           <CKEditor
                             editor={ClassicEditor}
                             ref={editorRef}
@@ -1095,111 +1073,6 @@ const BenchmarkingQA = () => {
                               >
                                 {isDataUpdated
                                   ? allAnswers &&
-                                    // allAnswers.map((value, index) => {
-                                    //   const isSelected =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //       {
-                                    //         return option.answerOption._id === value._id
-                                    //       }
-                                    //     );
-                                    //   const isSelectedIE =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //         option.answerOption._id === value._id &&
-                                    //         option.includeExplanation
-                                    //     );
-
-                                    //   const isSelectedIF =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //         option.answerOption._id === value._id &&
-                                    //         option.includeInputField
-                                    //     );
-
-                                    //   return (
-                                    //     <Draggable key={value._id} draggableId={value._id.toString()} index={index}>
-                                    //       {(provided) => (
-                                    //         <div
-                                    //           className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                    //           {...provided.draggableProps}
-                                    //           {...provided.dragHandleProps}
-                                    //           ref={provided.innerRef}
-                                    //         >
-                                    //           <div
-                                    //             className="d-flex align-items-center justify-content-between w-100 p-0"
-                                    //             style={{
-                                    //               color: isSelected ? "black" : "#cccccc",
-                                    //             }}
-                                    //             key={index}
-                                    //           >
-                                    //             <div>
-                                    //                 <Checkbox
-                                    //                   name="answerOptions"
-                                    //                   onBlur={() => {
-                                    //                     validation.setFieldValue(
-                                    //                       "answerOptions",
-                                    //                       selectedAnswerOptions
-                                    //                     );
-                                    //                   }}
-                                    //                   value={index}
-                                    //                   checked={isSelected}
-                                    //                   onChange={(e) => {
-                                    //                     e.preventDefault();
-                                    //                     const { checked } =
-                                    //                       e.target;
-
-                                    //                   }}
-                                    //                   icon={<CropSquareIcon />}
-                                    //                   checkedIcon={
-                                    //                     <SquareRoundedIcon />
-                                    //                   }
-                                    //                 />
-                                    //                 {value.answerOption}
-                                    //               </div>
-                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
-                                    //               <Label
-                                    //                 htmlFor={`form-grid-showcode-${index}`}
-                                    //                 className="form-label text-muted"
-                                    //               >
-                                    //                 Include Explanation
-                                    //               </Label>
-                                    //               <Checkbox
-                                    //                 id={`form-grid-showcode-${index}`}
-                                    //                 name="includeExplanation"
-                                    //                 checked={isSelectedIE}
-                                    //                 onChange={(e) => {
-                                    //                   e.preventDefault();
-                                    //                   const { checked } = e.target;
-                                    //                 }}
-
-                                    //                 icon={<CropSquareIcon />}
-                                    //                 checkedIcon={<SquareRoundedIcon />}
-                                    //               />
-                                    //             </div>
-
-                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
-                                    //               <Label
-                                    //                 htmlFor={`form-grid-showcode-${index}`}
-                                    //                 className="form-label text-muted"
-                                    //               >
-                                    //                 Include Input Field
-                                    //               </Label>
-                                    //               <Checkbox
-                                    //                 id={`form-grid-showcode-${index}`}
-                                    //                 name="includeInputField"
-                                    //                 checked={isSelectedIF}
-                                    //                 icon={<CropSquareIcon />}
-                                    //                 checkedIcon={<SquareRoundedIcon />}
-                                    //               />
-                                    //             </div>
-                                    //           </div>
-                                    //         </div>
-                                    //       )}
-                                    //     </Draggable>
-                                    //   );
-                                    // })
-
                                     allAnswers.map((value, index) => {
                                       // Check if the current answer option is selected
                                       const isSelected =
@@ -1257,13 +1130,7 @@ const BenchmarkingQA = () => {
                                                         );
                                                       }}
                                                       value={index}
-                                                      checked={
-                                                        info.answerOptions.some(
-                                                          (option) =>
-                                                            option.answerOption
-                                                              ._id === value._id
-                                                        ) && isSelected
-                                                      }
+                                                      checked={isSelected}
                                                       onChange={(e) => {
                                                         e.preventDefault();
                                                         // setInfo((prev)=>{
@@ -1280,22 +1147,7 @@ const BenchmarkingQA = () => {
                                                           isSelectedIE;
                                                         const includeInputField =
                                                           isSelectedIF;
-                                                        setSelectedAnswerOptions(
-                                                          info.answerOptions.map(
-                                                            (value) => {
-                                                              return {
-                                                                answerOption:
-                                                                  value
-                                                                    .answerOption
-                                                                    ._id,
-                                                                includeExplanation:
-                                                                  value.includeExplanation,
-                                                                includeInputField:
-                                                                  value.includeInputField,
-                                                              };
-                                                            }
-                                                          )
-                                                        );
+
                                                         if (checked) {
                                                           const updatedOption =
                                                             {
@@ -1319,31 +1171,6 @@ const BenchmarkingQA = () => {
                                                               )
                                                           );
                                                         }
-                                                        const ans =
-                                                          allAnswers.answerOptions.filter(
-                                                            (value) => {
-                                                              return selectedAnswerOptions.filter(
-                                                                (val) =>
-                                                                  val.answerOption ===
-                                                                  value._id
-                                                              );
-                                                            }
-                                                          );
-                                                        setInfo((prev) => {
-                                                          prev.map((value) => {
-                                                            return {
-                                                              ...value,
-                                                              answerOptions:
-                                                                ans,
-                                                            };
-                                                          });
-                                                        });
-                                                        console.log(
-                                                          "selectedAns",
-                                                          selectedAnswerOptions,
-                                                          ans,
-                                                          info
-                                                        );
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           selectedAnswerOptions
@@ -1368,15 +1195,7 @@ const BenchmarkingQA = () => {
                                                       id={`form-grid-showcode-${index}`}
                                                       name="includeExplanation"
                                                       value={index}
-                                                      checked={
-                                                        info.answerOptions.some(
-                                                          (option) =>
-                                                            option.answerOption
-                                                              ._id ===
-                                                              value._id &&
-                                                            option.includeExplanation
-                                                        ) || isSelectedIE
-                                                      }
+                                                      checked={isSelectedIE}
                                                       onChange={(e) => {
                                                         e.preventDefault();
                                                         const { checked } =
@@ -1660,13 +1479,11 @@ const BenchmarkingQA = () => {
                                                       name="includeInputField"
                                                       checked={isSelectedIF}
                                                       onChange={(e) => {
-                                                        const updatedAnswers = [
-                                                          ...allAnswers,
-                                                        ];
-                                                        updatedAnswers[
-                                                          index
-                                                        ].includeInputField =
-                                                          e.target.checked;
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        const answerOption =
+                                                          value._id;
 
                                                         setSelectedAnswerOptions(
                                                           (prevOptions) =>
@@ -1674,13 +1491,12 @@ const BenchmarkingQA = () => {
                                                               (option) => {
                                                                 if (
                                                                   option.answerOption ===
-                                                                  value._id
+                                                                  answerOption
                                                                 ) {
                                                                   return {
                                                                     ...option,
                                                                     includeInputField:
-                                                                      e.target
-                                                                        .checked,
+                                                                      checked,
                                                                   };
                                                                 }
                                                                 return option;
@@ -1688,6 +1504,13 @@ const BenchmarkingQA = () => {
                                                             )
                                                         );
 
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      onBlur={(e) => {
+                                                        e.preventDefault();
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           selectedAnswerOptions
@@ -1718,7 +1541,8 @@ const BenchmarkingQA = () => {
                           <Button
                             className="btn btn-danger p-4 pt-2 pb-2"
                             onClick={() => {
-                              // validation.resetForm();
+                              validation.resetForm();
+                              setSelectedAnswerOptions([]);
                               setIsDataUpdated(false);
                               setmodal_grid(false);
                             }}
@@ -1747,7 +1571,7 @@ const BenchmarkingQA = () => {
                 onClick={() => {
                   getAllAnswers()
                     .then((res) => setAllAnswers(res))
-                    .catch((err) => console.log("err in getting answers", err));
+                    .catch((err) => toast.error("err in getting answers"));
                   setmodals_Answer(true);
                 }}
               >
@@ -2001,7 +1825,7 @@ const BenchmarkingQA = () => {
                   getAllCategories()
                     .then((res) => setAllCategories(res))
                     .catch((err) =>
-                      console.log("err in getting cateories", err)
+                      toast.error("err in getting cateories", err)
                     );
                   setmodals_grid(true);
                 }}

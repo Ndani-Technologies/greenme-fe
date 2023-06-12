@@ -53,6 +53,7 @@ const Benchmarking = () => {
       new Set(arr.map((item) => item?.titleEng))
     ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
     // console.log("benchmark single", bench, benchmark)
+    if (uniqueArr.length > 0) setjustifyPillsTab(uniqueArr[0]._id);
     setCategory(uniqueArr);
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
       if (value.category?._id === arr[0]._id) return value;
@@ -87,7 +88,7 @@ const Benchmarking = () => {
     };
   }, []);
 
-  console.log(benchmark, "bench");
+  console.log(benchmark, category, "bench");
   const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
 
   const getProgressPercentage = async () => {
@@ -206,7 +207,12 @@ const Benchmarking = () => {
           <div className={rowClassName} key={index}>
             <h5>Question {index + 1}</h5>
             <p className="w-75 fs-5">{item.title}</p>
-            <p>{item.description}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: item.description,
+              }}
+            ></p>
+
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
@@ -275,7 +281,7 @@ const Benchmarking = () => {
                           }}
                           className={buttonClass}
                         >
-                          {btn.answerOption}
+                          {btn.answerOption.answerOption}
                         </button>
                       </div>
                     );
@@ -331,7 +337,7 @@ const Benchmarking = () => {
                           }}
                           className={buttonClass}
                         >
-                          {btn.answerOption}
+                          {btn.answerOption.answerOption}
                         </button>
                       </div>
                     );
@@ -365,6 +371,9 @@ const Benchmarking = () => {
 
   const handleSubmitModal = () => {
     tog_center();
+  };
+  const cancelCreation = () => {
+    setbenchmarkCreation(!benchmarkCreation);
   };
 
   return (
@@ -414,37 +423,76 @@ const Benchmarking = () => {
                     {renderedQuestions}
                   </div>
                   <div>
-                    <div className="d-flex align-items-center border-top border-dark">
-                      <div className="w-50">
-                        <Card className=" border-none mt-3">
-                          {progressPercentage && (
-                            <CardBody className="p-0">
-                              <div className="d-flex align-items-center mb-2 mt-4">
-                                <div className="flex-grow-1 d-flex justify-content-between w-100">
-                                  <h5 className="card-title mb-0">
-                                    <span>{progressPercentage}</span> Benchmark
-                                    progress
-                                  </h5>
-                                  <h5>{100 - progressPercentage} to go!</h5>
+                    <div className="">
+                      <div className="d-flex justify-content-between border-top border-dark">
+                        <Button
+                          onClick={() => {
+                            let currentIndex = category.findIndex(
+                              (value) => value._id === justifyPillsTab
+                            );
+                            let previousIndex = currentIndex - 1;
+
+                            if (previousIndex < 0) {
+                              previousIndex = category.length - 1; // Go to the last index
+                            }
+
+                            setjustifyPillsTab(category[previousIndex]._id);
+                            justifyPillsToggle(category[previousIndex]._id);
+                          }}
+                        >
+                          Back
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            const currentIndex = category.findIndex(
+                              (value) => value._id === justifyPillsTab
+                            );
+                            let nextIndex = currentIndex + 1;
+
+                            if (nextIndex >= category.length) {
+                              nextIndex = 0; // Go back to the first index
+                            }
+
+                            setjustifyPillsTab(category[nextIndex]._id);
+                            justifyPillsToggle(category[nextIndex]._id);
+                          }}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                      <div className="d-flex align-items-center ">
+                        <div className="w-50">
+                          <Card className=" border-none mt-3">
+                            {progressPercentage && (
+                              <CardBody className="p-0">
+                                <div className="d-flex align-items-center mb-2 mt-4">
+                                  <div className="flex-grow-1 d-flex justify-content-between w-100">
+                                    <h5 className="card-title mb-0">
+                                      <span>{progressPercentage}</span>{" "}
+                                      Benchmark progress
+                                    </h5>
+                                    <h5>{100 - progressPercentage} to go!</h5>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="progress animated-progress custom-progress progress-label mt-3">
-                                <div
-                                  className="progress-bar bg- "
-                                  role="progressbar"
-                                  style={{
-                                    width: progressPercentage.toString() + "%",
-                                  }}
-                                  aria-valuenow={progressPercentage}
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                >
-                                  {/* <div className="label">40%</div> */}
+                                <div className="progress animated-progress custom-progress progress-label mt-3">
+                                  <div
+                                    className="progress-bar bg- "
+                                    role="progressbar"
+                                    style={{
+                                      width:
+                                        progressPercentage.toString() + "%",
+                                    }}
+                                    aria-valuenow={progressPercentage}
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  >
+                                    {/* <div className="label">40%</div> */}
+                                  </div>
                                 </div>
-                              </div>
-                            </CardBody>
-                          )}
-                        </Card>
+                              </CardBody>
+                            )}
+                          </Card>
+                        </div>
                       </div>
                       <Col>
                         <div className="d-flex flex-column align-items-end">
@@ -568,7 +616,7 @@ const Benchmarking = () => {
                         </ModalFooter>
                       </Modal> */}
 
-                      {/* <Modal
+                      <Modal
                         isOpen={benchmarkCreation}
                         toggle={cancelCreation}
                         centered
@@ -605,7 +653,7 @@ const Benchmarking = () => {
                             Cancel
                           </Button>
                         </ModalFooter>
-                      </Modal> */}
+                      </Modal>
                     </div>
                   </div>
                 </TabPane>
