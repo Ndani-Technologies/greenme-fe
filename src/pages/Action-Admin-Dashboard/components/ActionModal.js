@@ -765,6 +765,7 @@ const ActionModal = ({
                                     div.innerHTML = value;
                                     const pValue =
                                       div.querySelector("p")?.innerHTML;
+                                    console.log("update desc", pValue, value);
                                     // If data is not updated, update the local state
                                     setActionDescription(value);
                                   }}
@@ -774,9 +775,9 @@ const ActionModal = ({
                                     div.innerHTML = value;
                                     const pValue =
                                       div.querySelector("p")?.innerHTML;
+                                    console.log("update desc", pValue, value);
                                     // If data is not updated, update the local state
                                     setActionDescription(value);
-
                                   }}
                                   validate={{
                                     required: { value: true },
