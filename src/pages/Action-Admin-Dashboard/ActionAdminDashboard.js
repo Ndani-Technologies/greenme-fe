@@ -41,6 +41,7 @@ import ActionModal from "./components/ActionModal";
 import CategoryModal from "./components/CategoryModal";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import Layouts from "../../Layouts";
+import { useNavigate } from "react-router";
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
@@ -436,7 +437,7 @@ const ActionAdminDashboard = () => {
 
   const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
-
+  const navigate = useNavigate();
   const deleteMultiple = () => {
     const checkall = document.getElementById("checkBoxAll");
     selectedCheckBoxDelete.forEach((element) => {
@@ -461,6 +462,11 @@ const ActionAdminDashboard = () => {
     setDeleteId(id);
     setDeleteConfirmation2(true);
   };
+
+  // SideBar Contact Deatail
+  const [info, setInfo] = useState([]);
+  const [modal_grid, setmodal_grid] = useState(false);
+  const [isDataUpdated, setIsDataUpdated] = useState(true);
 
   // Column
   const columns = useMemo(
@@ -490,13 +496,18 @@ const ActionAdminDashboard = () => {
       {
         Header: "Title",
         accessor: "title",
-        filterable: false,
+        filterable: true,
+        isSorted: true,
         Cell: (contact) => (
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
+              <div className="flex-grow-1 ms-2 name ">
                 {contact.row.original.title}
+                {/* <span>
+                      <i class="ri-arrow-right-line"></i>
+                    </span> */}
+                {/* <i class="bi bi-sort-alpha-up-alt"></i> */}
               </div>
             </div>
           </>
@@ -506,10 +517,6 @@ const ActionAdminDashboard = () => {
         Header: "Category",
         accessor: "category",
         filterable: false,
-      },
-      {
-        Header: "Weight",
-        accessor: "weight",
       },
       {
         Header: "Status",
@@ -550,7 +557,21 @@ const ActionAdminDashboard = () => {
                       className="dropdown-item"
                       onClick={() => {
                         const contactData = cellProps.row.original;
+                        navigate("/actionadminuserdetail", {
+                          state: { data: contactData },
+                        });
+                      }}
+                    >
+                      View
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
                         setInfo(contactData);
+
+                        setIsDataUpdated(true);
+                        setmodal_grid(true);
                       }}
                     >
                       Edit
@@ -630,9 +651,6 @@ const ActionAdminDashboard = () => {
     { id: 3, name: "High" },
   ];
 
-  // SideBar Contact Deatail
-  const [info, setInfo] = useState([]);
-
   // Export Modal
   const [modalName, setModalName] = useState("");
   const [modalField, setModalField] = useState("");
@@ -641,13 +659,12 @@ const ActionAdminDashboard = () => {
   function tog_grids() {
     setmodals_grid(!modals_grid);
   }
-  const [modal_grid, setmodal_grid] = useState(false);
+
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
   const [data, setData] = useState([]);
   const handleModal = (e) => {
-    // console.log("targer", e.target.name)
     if (e.target.name == "manage_Scale") {
       setModalName("Manage Scale");
       setModalField("Add new Scale");
@@ -682,7 +699,6 @@ const ActionAdminDashboard = () => {
     setmodals_grid(true);
   };
 
-  const [isDataUpdated, setIsDataUpdated] = useState(true);
   const [deleteConfirmation2, setDeleteConfirmation2] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const confirmDelete2 = () => {
@@ -694,7 +710,6 @@ const ActionAdminDashboard = () => {
       })
       .catch((err) => {
         toast.error("Unable to Delete");
-        console.log("err in deleteing Resource", err);
       });
     setDeleteConfirmation2(false);
     setDeleteId(null);
@@ -734,6 +749,8 @@ const ActionAdminDashboard = () => {
               </Button>
               {modal_grid && (
                 <ActionModal
+                  info={info}
+                  setInfo={setInfo}
                   adminSteps={adminSteps}
                   setAdminSteps={setAdminSteps}
                   modal_grid={modal_grid}
@@ -846,7 +863,7 @@ const ActionAdminDashboard = () => {
           <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {adminActions && adminActions.length ? (
+                {adminActions.length >= 0 ? (
                   <TableContainer
                     columns={columns}
                     data={adminActions || []}
@@ -884,7 +901,12 @@ const ActionAdminDashboard = () => {
                   </ModalFooter>
                 </Modal>
 
-                <Button onClick={() => deleteMultiple()}>Delete All</Button>
+                <Button
+                  // onClick={() => deleteMultiple()}
+                  disabled
+                >
+                  Delete All
+                </Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>

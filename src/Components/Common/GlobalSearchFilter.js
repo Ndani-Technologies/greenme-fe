@@ -98,6 +98,7 @@ const FilterBenchmarkAction = ({
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <div className="d-flex align-items-center justify-content-between w-100 p-0">
       <div className="d-flex align-items-center border border-dark p-1  rounded">
@@ -302,6 +303,31 @@ const FilterAction = () => {
 };
 
 const FilterA = () => {
+  const cssCode = `
+  .switch-label:before {
+    content: attr(data-incomplete);
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .switch-label:after {
+    content: attr(data-complete);
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.375rem 0.75rem;
+  }
+
+  input[type="checkbox"].code-switcher:checked ~ .switch-label:before {
+    content: attr(data-complete);
+  }
+
+  input[type="checkbox"].code-switcher:checked ~ .switch-label:after {
+    content: attr(data-incomplete);
+  }
+`;
   return (
     <div className="d-flex justify-content-between align-items-center w-100">
       <div
@@ -334,21 +360,39 @@ const FilterA = () => {
           <i class="ri-calendar-2-line"></i>
         </div>
       </div>
-      <div className="flex-shrink-0">
-        <div className="form-check form-switch form-switch-right form-switch-md">
-          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
-            Status:
-          </Label>
-          <Input
-            className="form-check-input code-switcher"
-            type="checkbox"
-            value="active"
-            defaultValue="Incomplete"
-          />
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "200px" }}
+      >
+        <div>
+          <style>{cssCode}</style>
+
+          {/* Your JSX code */}
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            {/* <label
+              htmlFor="form-grid-showcode"
+              className="form-label text-muted"
+            >
+              Status:
+            </label> */}
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value="active"
+              defaultValue="Incomplete"
+              id="form-grid-showcode"
+            />
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              data-incomplete="Incomplete"
+              data-complete="Complete"
+            ></label>
+          </div>
         </div>
       </div>
       <div
-        className="d-flex align-items-center gap-4"
+        className="d-flex align-items-center gap-3 flex-shrink-0"
         style={{ width: "220px" }}
       >
         <span style={{ color: "black" }}>Filter by </span>

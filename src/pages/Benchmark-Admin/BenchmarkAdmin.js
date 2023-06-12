@@ -36,7 +36,7 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Select } from "@mui/material";
 
 const BenchmarkAdmin = () => {
@@ -69,6 +69,8 @@ const BenchmarkAdmin = () => {
       setIsEdit(false);
     }
   }, [crmcontacts]);
+
+  const navigate = useNavigate();
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -362,11 +364,39 @@ const BenchmarkAdmin = () => {
         Header: "Completion Level",
         accessor: "completionLevel",
         filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div className="flex-grow-1 ms-2 name">
+                {Math.floor(cellProps.row.original.completionLevel)}
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Benchmark Title",
         accessor: "title",
         filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div
+                className="flex-grow-1 ms-2 name"
+                onClick={(event) => {
+                  event.preventDefault();
+                  const contactData = cellProps.row.original;
+                  setInfo(contactData);
+                  navigate(`/adminbenchmarking/${cellProps.row.original._id}`);
+                }}
+              >
+                {cellProps.row.original.title}
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Status",
@@ -383,7 +413,7 @@ const BenchmarkAdmin = () => {
         ),
       },
       {
-        Header: "End Date",
+        Header: "Completion Date",
         accessor: "end_date",
         Cell: (contact) => (
           <>

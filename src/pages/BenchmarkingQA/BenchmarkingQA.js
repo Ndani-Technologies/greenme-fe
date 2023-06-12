@@ -2,6 +2,8 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import * as moment from "moment";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Col,
   Card,
@@ -186,72 +188,67 @@ const BenchmarkingQA = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
-      description: Yup.string().required("Please Enter description"),
+      // description: Yup.string().required("Please Enter description"),
       category: Yup.string().required("Please select category"),
     }),
+
     onSubmit: async (values) => {
       const cd = allCategories.find((value) => {
+        console.log(
+          "categories",
+          value.titleEng,
+          values.category,
+          value.titleEng.toString().includes(values.category)
+        );
         if (value.titleEng.toString().includes(values.category)) return value;
       });
 
       const answerIds = [];
 
-      // values?.answerOption?.length &&
-      //   values?.answerOption.forEach((value) => {
-      //     allAnswers.forEach((val) => {
-      //       if (value === val?.answerOption) {
-      //         // console.log(value, "VLAUW")
-      //         const ob = {
-      //           // includeExplanation: value?.includeExplanation,
-      //           answerOption: val._id
-      //         }
-      //         answerIds.push(ob);
-      //       }
-      //       validation.setValues(answerIds);
-      //     })
-      //   });
-
-      console.log(answerIds, "Answer IDS");
+      values?.answerOption.length &&
+        values?.answerOption.forEach((value) => {
+          allAnswers.forEach((val) => {
+            if (value === val.answerOption) {
+              answerIds.push(val._id);
+            }
+            validation.setValues(answerIds);
+          });
+        });
       const mappedData = {
         ...values,
         category: cd?._id,
-        answerOptions: values.arr,
+        answerOptions: answerIds,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
         // response: parseInt(values.response.split("%")[0]),
       };
-      console.log(mappedData, "Mapped Data", values);
-      // if (isDataUpdated) {
-      //   updateQuestion(questionId, mappedData)
-      //     .then((resp) => {
-      //       getAllQA()
-      //         .then((resp) => setQA(resp))
-      //         .catch((err) => console.log("qa all error", err));
-      //       toast.success("Successfully Updated");
-      //     })
-      //     .catch((err) => {
-      //       toast.error(`Error in updating question`);
-      //     });
-      // } else {
-      //   addQuestion(mappedData, values.category)
-      //     .then((resp) => {
-      //       if(resp === undefined ) {
-      //       setQA([...qa]);
-      //       toast.error(`Error in adding question `);
-      //       }
-      //       else{
+      if (isDataUpdated) {
+        updateQuestion(questionId, mappedData)
+          .then((resp) => {
+            getAllQA()
+              .then((resp) => setQA(resp))
+              .catch((err) => console.log("qa all error", err));
+            toast.success("Successfully Updated");
+          })
+          .catch((err) => {
+            toast.error(`Error in updating question`);
+          });
+      } else {
+        addQuestion(mappedData, values.category)
+          .then((resp) => {
+            toast.success("Successfully Added");
 
-      //         setQA([...qa, resp]);
-      //         toast.success("Successfully Added");
-      //       }
-      //     })
-      //     .catch((err) => {
-      //       toast.error(`Error in adding question ${err}`);
-      //     });
-      //   }
-      setSelectedIndexes([]);
-      validation.resetForm();
+            setQA([...qa, resp]);
+            setSelectedIndexes([]);
+            validation.resetForm();
+          })
+          .catch((err) => {
+            toast.error(`Error in adding question ${err}`);
+          });
+      }
+
       setIsDataUpdated(false);
+      console.log("values formik", mappedData);
       setmodal_grid(false);
 
       toggle();
@@ -427,8 +424,6 @@ const BenchmarkingQA = () => {
             deleteCheckbox();
           };
 
-          console.log(toBeDeleted, "TO BE DELETED");
-
           return (
             <input
               type="checkbox"
@@ -459,14 +454,29 @@ const BenchmarkingQA = () => {
                 className="flex-grow-1 ms-2 name"
                 onClick={() => {
                   const contactData = cellProps.row.original;
-                  const answerOptions = contactData.answerOptions.map(
-                    (answerId) => {
-                      const answer = allAnswers.find(
-                        (item) => item._id === answerId
-                      );
-                      return answer ? answer.answerOption : "";
-                    }
-                  );
+                  console.log("contact data", contactData);
+                  let answerOptions;
+                  if (contactData.answerOptions) {
+                    answerOptions = contactData?.answerOptions.map(
+                      (answerId) => {
+                        const answer = allAnswers.find(
+                          (item) => item._id === answerId
+                        );
+                        return answer ? answer.answerOption : "";
+                      }
+                    );
+                  } else {
+                    toast.info("couldn't open modal.");
+                  }
+
+                  // const answerOptions = contactData?.answerOptions.map(
+                  //   (answerId) => {
+                  //     const answer = allAnswers.find(
+                  //       (item) => item._id === answerId
+                  //     );
+                  //     return answer ? answer.answerOption : "";
+                  //   }
+                  // );
 
                   const result = {
                     ...contactData,
@@ -888,6 +898,7 @@ const BenchmarkingQA = () => {
                 <ModalHeader className="border-bottom border-dark p-4 pt-0">
                   <h4 className="modal-title">Create new Question</h4>
                 </ModalHeader>
+
                 <ModalBody>
                   <form
                     className="p-4 pt-2 pb-2"
@@ -1130,7 +1141,7 @@ const BenchmarkingQA = () => {
                                       const isSelected =
                                         selectedIndexes2.includes(index);
                                       const isCheckedAnswer =
-                                        info.answerOptions.find((val, ind) => {
+                                        info?.answerOptions.find((val, ind) => {
                                           return val._id == value._id;
                                         });
                                       return (
@@ -1167,7 +1178,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                ?.answerOption
+                                                                .answerOption
                                                           )
                                                         );
                                                       }}
@@ -1199,7 +1210,7 @@ const BenchmarkingQA = () => {
                                                           selectedIndexes2.map(
                                                             (i) =>
                                                               info[i]
-                                                                ?.answerOption
+                                                                .answerOption
                                                           )
                                                         );
                                                       }}

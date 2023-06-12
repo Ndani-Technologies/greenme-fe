@@ -16,7 +16,7 @@ export const getAllBenchmarks = async () => {
       return {
         title: value?.title,
         status: value?.status,
-        completion_level: value?.completionLevel,
+        completion_level: Math.floor(value?.completionLevel),
         country: value?.country,
         start_date: value?.start_date,
         end_data: value?.end_date,
@@ -30,8 +30,11 @@ export const getAllBenchmarks = async () => {
     console.error(error);
   }
 };
+
 export const getSingleBenchmark = async (id) => {
   let resp = await axios.get(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`);
+  // let resp = await axios.get(`http://192.168.137.120:5001/api/v1/bench/benchmarking/${id}`);
+
   // let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
   console.log("benchmark get single", resp && resp);
   return resp;
@@ -41,47 +44,49 @@ export const getUserProgress = async (id) => {
   let resp = await axios.get(
     `${process.env.REACT_APP_BENCHMARK_URL}/percentage/percentageOfBenchmarks/${id}`
   );
+  console.log(resp, "PROGRESS IN THUNK");
   return resp;
 };
 
-export const updateUserResp =
-  (id, user_resp, history) => async (dispatch, getState) => {
-    // let resp = await axios.patch(
-    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
-    //   { user_resp }
-    // );
-    let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
-      { user_resp }
-    );
+export const updateUserResp = async (id, user_resp, navigate) => {
+  console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
+
+  // let resp = await axios.patch(
+  //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+  //   { user_resp }
+  // );
+  let resp = await axios.patch(
+    `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
+    user_resp
+  );
+
+  console.log(resp, "RESP INSIDE THUNK");
+
+  // Wait for the toast notification to be displayed for a brief duration
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  if (resp) {
     toast.success("User response submitted successfully!");
+    navigate("/benchmarking");
+  }
+  return resp;
+};
 
-    // Wait for the toast notification to be displayed for a brief duration
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    if (resp) history("/benchmarking");
-  };
+export const updateUserRespSave = async (id, user_resp) => {
+  console.log(user_resp, "SAVE RESPONSE IN THUNK");
+  console.log("benchmark  user_resp_update req", user_resp);
 
-export const updateUserRespSave =
-  (id, user_resp) => async (dispatch, getState) => {
-    // let resp = await axios.patch(
-    //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_save/${id}`,
-
-    //   { user_resp }
-    // );
-    console.log("benchmark  user_resp_update req", user_resp);
-
-    let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
-      { user_resp }
-    );
-    if (resp) {
-      toast.success("progress is successfullly saved");
-      console.log(resp);
-    } else {
-      toast.error("Unable to save progress");
-    }
-    return resp;
-  };
+  let resp = await axios.patch(
+    `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
+    user_resp
+  );
+  if (resp) {
+    toast.success("progress is successfullly saved");
+    console.log(resp);
+  } else {
+    toast.error("Unable to save progress");
+  }
+  return resp;
+};
 
 export const addBenchmark = async (benchmark) => {
   let resp;
@@ -91,7 +96,7 @@ export const addBenchmark = async (benchmark) => {
     let { _id } = user;
     let mapData = {
       title: benchmark.title,
-      country: benchmark.country,
+      country: benchmark.country.value,
       userId: _id,
     };
     resp = await axios.post(process.env.REACT_APP_BENCHMARK_URL, mapData);
@@ -153,7 +158,7 @@ export const getAllQA = async () => {
     data = resp.map((value) => {
       return {
         ...value,
-        response: 0,
+        response: value.response !== undefined ? value.response : 0,
         answered: value.whoHasAnswer?.totalUsers,
         category: value?.category?.titleEng,
         status: value?.status ? "active" : "In-active",

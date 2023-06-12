@@ -406,7 +406,7 @@ const AdminRelation = () => {
           <Card id="contactList" style={{ width: "98%" }}>
             <CardBody className="pt-0">
               <div>
-                {recommendedRelation.length > 0 ? (
+                {recommendedRelation.length >= 0 ? (
                   <TableContainer
                     columns={columns}
                     data={recommendedRelation || []}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Layouts from "../../Layouts";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
-import Details from "./Details";
+import Details from "./components/Details2";
 import {
   Accordion,
   AccordionItem,
@@ -12,14 +12,15 @@ import {
   Collapse,
   Input,
 } from "reactstrap";
-import StarsRating from "./StarsRating";
+import { Links } from "./components/Details2";
+import StarsRating from "./components/StarsRating";
 import { useFormik } from "formik";
-import he from "he";
+
 import classnames from "classnames";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { updateAdminStep, updateSaveActionStep } from "../../slices/thunks";
+import { updateSaveActionStep } from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -30,6 +31,7 @@ const ActionUserDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let { data } = location.state;
+  console.log("data", data);
   const entities = {
     "&nbsp;": " ",
     "<br>": "\n",
@@ -51,32 +53,32 @@ const ActionUserDetail = () => {
       init: 5,
     },
     onSubmit: async (values) => {
-      let completedSteps = data.steps.filter((value) => value.isCompleted);
+      // let completedSteps = data.steps.filter((value)=>value.isCompleted)
 
-      let steps = stepData.map((value) => {
-        if (value.isCheckBoxCompleted) {
-          value.step.isCompleted = true;
-          value.step.status = true;
-        }
-        return value.step;
-      });
-      completedSteps.forEach((value) => {
-        if (steps.some((e) => e._id !== value._id)) {
-          steps.push(value);
-        }
-        if (steps.length === 0) {
-          steps.push(value);
-        }
-      });
+      // let steps = stepData.map((value) => {
+      //   if (value.isCheckBoxCompleted) {
+      //     value.step.isCompleted = true;
+      //     value.step.status = true;
+      //   }
+      //   return value.step;
+      // });
+      // completedSteps.forEach((value)=>{
+      //   if(steps.some((e)=>e._id !== value._id)){
+      //     steps.push(value)
+      //   }
+      //   if(steps.length===0){
+      //     steps.push(value)
+
+      //   }
+      // })
 
       try {
-        for (const stepObject of steps) {
-          await updateAdminStep(stepObject._id, stepObject);
-          console.log(`Successfully updated step with ID: ${stepObject._id}`);
-        }
+        // for (const stepObject of steps) {
+        //   await updateAdminStep(stepObject._id, stepObject);
+        //       console.log(`Successfully updated step with ID: ${stepObject._id}`);
+        // }
 
-        // Show a final toast message after all updates are completed
-        toast.success("All steps successfully updated");
+        // toast.success("All steps successfully updated");
         navigate("/actionuserdashboard");
       } catch (err) {
         toast.error("Error in updating.");
@@ -146,10 +148,11 @@ const ActionUserDetail = () => {
             Text={
               "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
             }
+            ra_title={data.title}
           />
           <div className="card-wrapper">
-            <div className="card">
-              <div className="d-flex">
+            <div className="card ">
+              <div className="d-flex ">
                 <div
                   className={`w-25 p-2  border-end custom-padding
                     }`}
@@ -216,20 +219,18 @@ const ActionUserDetail = () => {
               </div>
             </div>
           </div>
-          <Col className="card-wrapper mb-5" lg={12}>
+          <Col className="card-wrapper mb-5 ml-3" lg={12}>
             <h4>Description</h4>
             {/* <Input
                   type="text"
                   placeholder="Some description should go  here"
                 /> */}
-            <p dangerouslySetInnerHTML={{ __html: data.description }}></p>
-
-            {/* <p>
-              {data.description.replace(
+            <p dangerouslySetInnerHTML={{ __html: data.description }}>
+              {/* {data.description.replace(
                 /(&nbsp;|<br>|&lt;|&gt;|&amp;|&quot;|&apos;)/g,
                 (match) => entities[match]
-              )}
-            </p> */}
+              )} */}
+            </p>
           </Col>
           <Col lg={12} className="card-wrapper">
             <Card className="card-wrapper-one">
@@ -333,7 +334,6 @@ const ActionUserDetail = () => {
               <Button disabled>Send</Button>
             </Col>
           </Col>
-
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -342,14 +342,14 @@ const ActionUserDetail = () => {
             className="card-wrapper"
           >
             <Col className="d-flex align-items-center justify-content-between pt-3">
-              <Col className="Stars">
+              <Col className="Stars ">
                 <h4>Please leave a rating </h4>
                 <div className="Rating">
                   <StarsRating
                     Title="Relevant"
                     Rating={` ${validation.values.relevant} out of 5`}
-                    validation={validation}
-                    value={value}
+                    // validation={validation}
+                    // value={value}
                   />
                   <StarsRating
                     Title="Difficult"
@@ -378,7 +378,7 @@ const ActionUserDetail = () => {
                     setValue(0);
                     validation.resetForm();
                   }}
-                  className="btn btn-dangeer"
+                  className="btn btn-danger"
                 >
                   Reset
                 </Button>
