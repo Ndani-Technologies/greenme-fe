@@ -72,7 +72,6 @@ const ActionUserDetail = () => {
       try {
         for (const stepObject of steps) {
           await updateAdminStep(stepObject._id, stepObject);
-          console.log(`Successfully updated step with ID: ${stepObject._id}`);
         }
 
         // Show a final toast message after all updates are completed
@@ -208,7 +207,7 @@ const ActionUserDetail = () => {
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">End Date</span>
+                  <span className="fs-7">Completed Date</span>
                   <div>
                     <span className="span">{data.enddate}</span>
                   </div>
@@ -277,7 +276,11 @@ const ActionUserDetail = () => {
                           <div
                             className="Discription"
                             style={{
-                              width: "200px",
+                              width: "250px",
+                              height: "80px",
+                              padding: "5px",
+                              borderRadius: "10px",
+
                               border: "1px solid grey",
                               backgroundColor: "#bec887",
                             }}
@@ -308,16 +311,27 @@ const ActionUserDetail = () => {
           <Col lg={12} className="card-wrapper d-flex justify-content-between">
             <Col lg={5}>
               <h4 className="mb-4">Resource Links</h4>
-              {data.resourcelinkId.map((item) => (
-                <div className="hover">
-                  <div className="Links d-flex justify-content-between">
-                    <a>{item.title}</a>
-                    <span>
-                      <i class="ri-arrow-right-line"></i>
-                    </span>
+              {data.resourcelinkId.map((item) => {
+                const isExternal = item.title.includes(
+                  "(greenme.fleetforum.org)"
+                )
+                  ? false
+                  : true;
+                const linkTarget = isExternal ? "_blank" : "_self";
+
+                return (
+                  <div className="hover" key={item.id}>
+                    <div className="Links d-flex justify-content-between">
+                      <a href={item.title} target={linkTarget}>
+                        {item.title}
+                      </a>
+                      <span>
+                        <i class="ri-arrow-right-line"></i>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </Col>
             <Col lg={6} className="card-wrapper-one Feeedback">
               <h4>

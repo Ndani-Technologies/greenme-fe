@@ -78,12 +78,10 @@ const RelationModal = ({
   const [count, setCount] = useState(0);
 
   const handleQuestionClicked = (index) => {
-    console.log("question clicked", questionList[index].title);
     setIsQuestionClicked(index);
   };
 
   const handleAnswerOptionChange = (qid, aid, index) => {
-    console.log("answer and question clicked", qid, aid);
     setSelectedAnswerOptions((prevState) => {
       const updatedSelectedAnswerOptions = [...prevState];
       updatedSelectedAnswerOptions[index] = { qid, aid };
@@ -91,11 +89,9 @@ const RelationModal = ({
     });
   };
   const handleAnswerRelationChange = (arId) => {
-    console.log("answer relation selected", selectedAnswerRelation);
     setSelectedAnswerRelation([arId]);
   };
   const handlePercentageOptionChange = (pid, index) => {
-    console.log("percentage", pid, index);
     setSelectedPercentageOptions((prevState) => {
       const updatedSelectedOptions = [...prevState];
       updatedSelectedOptions[index] = { pid };
@@ -104,14 +100,12 @@ const RelationModal = ({
   };
 
   function addAnotherBenchmarkQuestion(index) {
-    console.log("add");
     setBenchmarkCounter([
       ...benchmarkCounter,
       { id: benchmarkCounter.length + 1 },
     ]);
   }
   const removeBenchmarkQuestion = (index) => {
-    console.log("remove", index);
     // if(benchmarkCounter.length!==1){
     const updatedCounter = benchmarkCounter.filter((item) => item.id !== index);
     setBenchmarkCounter(updatedCounter);
@@ -159,7 +153,6 @@ const RelationModal = ({
             number_of_assignment: resp?.number_of_assignment,
           };
 
-          console.log("here", data);
           setRecommendedRelation([...recommendedRelation, data]);
           toast.success("Relation Succesfully Created.");
           setmodal_grid(false);
@@ -375,10 +368,6 @@ const RelationModal = ({
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey"
                       >
-                        {console.log(
-                          "question clicked",
-                          questionList[isQuestionClicked]
-                        )}
                         {questionList[isQuestionClicked]?.answerOptions.map(
                           (option, optionIndex) => (
                             <li
@@ -508,13 +497,11 @@ const RelationModal = ({
                         index + 1 <
                         questionList[isQuestionClicked]?.answerOptions.length
                       ) {
-                        console.log("here1");
                         addAnotherBenchmarkQuestion();
                       } else {
                         toast.info(
                           `only ${selectedAnswerOptions.length} can be selected.`
                         );
-                        console.log("here2");
                       }
                     }}
                     className="ri-add-circle-fill cursor-pointer"
@@ -523,10 +510,8 @@ const RelationModal = ({
                     style={{ color: "#C7C9CA" }}
                     onClick={() => {
                       if (benchmarkCounter.length === 1) {
-                        console.log("here1");
                         toast.info(`Can't delete more.`);
                       } else {
-                        console.log("here2");
                         removeBenchmarkQuestion(value.id);
                       }
                     }}

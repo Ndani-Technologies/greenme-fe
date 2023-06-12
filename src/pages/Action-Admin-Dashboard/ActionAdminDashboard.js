@@ -467,7 +467,6 @@ const ActionAdminDashboard = () => {
   const [info, setInfo] = useState([]);
   const [modal_grid, setmodal_grid] = useState(false);
   const [isDataUpdated, setIsDataUpdated] = useState(true);
-  console.log(info, "INFO");
 
   // Column
   const columns = useMemo(
@@ -497,13 +496,18 @@ const ActionAdminDashboard = () => {
       {
         Header: "Title",
         accessor: "title",
-        filterable: false,
+        filterable: true,
+        isSorted: true,
         Cell: (contact) => (
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
+              <div className="flex-grow-1 ms-2 name ">
                 {contact.row.original.title}
+                {/* <span>
+                      <i class="ri-arrow-right-line"></i>
+                    </span> */}
+                {/* <i class="bi bi-sort-alpha-up-alt"></i> */}
               </div>
             </div>
           </>
@@ -706,7 +710,6 @@ const ActionAdminDashboard = () => {
       })
       .catch((err) => {
         toast.error("Unable to Delete");
-        console.log("err in deleteing Resource", err);
       });
     setDeleteConfirmation2(false);
     setDeleteId(null);
@@ -898,7 +901,12 @@ const ActionAdminDashboard = () => {
                   </ModalFooter>
                 </Modal>
 
-                <Button onClick={() => deleteMultiple()}>Delete All</Button>
+                <Button
+                  // onClick={() => deleteMultiple()}
+                  disabled
+                >
+                  Delete All
+                </Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>

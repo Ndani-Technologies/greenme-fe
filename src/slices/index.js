@@ -12,6 +12,8 @@ import AccountReducer from "./auth/register/reducer";
 import ForgetPasswordReducer from "./auth/forgetpwd/reducer";
 import ProfileReducer from "./auth/profile/reducer";
 
+import ChatReducer from "./chat/reducer";
+
 //Crm
 import CrmReducer from "./crm/reducer";
 
@@ -24,6 +26,7 @@ import BenchmarkReducer from "./BenchmarkingUser/reducer";
 const rootReducer = combineReducers({
   Benchmark: BenchmarkReducer,
   Layout: LayoutReducer,
+  Chat: ChatReducer,
   Login: LoginReducer,
   Account: AccountReducer,
   ForgetPassword: ForgetPasswordReducer,

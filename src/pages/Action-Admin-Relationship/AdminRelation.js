@@ -157,13 +157,13 @@ const AdminRelation = () => {
   const fetchAPIs = () => {
     getAllQA()
       .then((resp) => setQuestionList(resp))
-      .catch((err) => console.log("qa all error", err));
+      .catch((err) => toast.error("qa all error"));
     getAllRecommendedAction()
       .then((resp) => setRecommendedAction(resp))
-      .catch((err) => console.log("recommend action error", err));
+      .catch((err) => toast.error("recommend action error"));
     getAllRecommendedRelation()
       .then((resp) => setRecommendedRelation(resp))
-      .catch((err) => console.log("recommend action error", err));
+      .catch((err) => toast.error("recommend action error"));
   };
   useEffect(() => {
     fetchAPIs();
@@ -186,7 +186,6 @@ const AdminRelation = () => {
   const [info, setInfo] = useState([]);
 
   const onClickDelete = (contact) => {
-    console.log("row", contact);
     deleteRecommendActionRelation(contact._id)
       .then(() => {
         toast.success("Relation successfully deleted");
