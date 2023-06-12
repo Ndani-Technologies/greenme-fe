@@ -13,7 +13,7 @@ const StarsRating = ({ Title, Rating, validation, value }) => {
   return (
     <div>
       <Col>
-        <Col className="d-flex align-items-center gap-2">
+        <Col className="d-flex align-items-center gap-2 disabled">
           <span>{Title}</span>
           <ReactStars
             count={5}

@@ -16,6 +16,7 @@ import {
   ProductsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterLeaderBoard,
   FilterBenchmarkAction,
   FilterCollaboration,
   CustomersGlobalFilter,
@@ -37,6 +38,7 @@ function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
+  selectedData,
   isBenchmarkingQASearch,
   isCustomerFilter,
   isOrderFilter,
@@ -53,6 +55,7 @@ function GlobalFilter({
   SearchPlaceholder,
   isFilterA,
   isFilterAction,
+  isFilterLeaderBoard,
   isFilterBenchmarkAction,
   isSearchInput,
 }) {
@@ -106,6 +109,9 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {isFilterLeaderBoard && (
+              <FilterLeaderBoard selectedData={selectedData} />
+            )}
             {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
@@ -127,10 +133,12 @@ function GlobalFilter({
 
 const TableContainer = ({
   columns,
+  selectedData,
   setInfo,
   isBenchmarkingQASearch,
   isFilterA,
   isFilterAction,
+  FilterLeaderBoard,
   isFilterBenchmarkAction,
   isAllQaFilters,
   isHorzontal,
@@ -243,6 +251,8 @@ const TableContainer = ({
             isBenchmarkingQASearch={isBenchmarkingQASearch}
             isFilterA={isFilterA}
             isFilterAction={isFilterAction}
+            selectedData={selectedData}
+            isFilterLeaderBoard={FilterLeaderBoard}
             isFilterBenchmarkAction={isFilterBenchmarkAction}
             isAllQaFilters={isAllQaFilters}
             setGlobalFilter={setGlobalFilter}

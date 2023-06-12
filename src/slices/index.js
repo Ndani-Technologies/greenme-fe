@@ -20,11 +20,13 @@ import APIKeyReducer from "./apiKey/reducer";
 
 //Benchmark
 import BenchmarkReducer from "./BenchmarkingUser/reducer";
+import ChatReducer from "./chat/reducer";
 
 const rootReducer = combineReducers({
   Benchmark: BenchmarkReducer,
   Layout: LayoutReducer,
   Login: LoginReducer,
+  Chat: ChatReducer,
   Account: AccountReducer,
   ForgetPassword: ForgetPasswordReducer,
   Profile: ProfileReducer,

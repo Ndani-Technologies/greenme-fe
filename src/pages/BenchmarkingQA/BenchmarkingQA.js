@@ -421,6 +421,7 @@ const BenchmarkingQA = () => {
                   // setInfo1(cellProps.row.original);
                   // validation?.setValues(cellProps.row.original.answerOptions);
                   // setSelectedIndexes(info.answerOptions);
+
                   setQuestionId(cellProps.row.original._id);
                   setmodal_grid(true);
                   setIsDataUpdated(true);
