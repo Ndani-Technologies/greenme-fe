@@ -34,8 +34,11 @@ import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
-import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
 import ActionUserDashboard from "../pages/Action-User-dashboard/ActionUserDashboard";
+import LeaderBord from "../pages/LeaderBoard/LeaderBord";
+import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
+import LeaderBoardTable from "../pages/LeaderBoardTable/LeaderBoardTable";
+import TableCard from "../pages/LeaderBoardTable/TableCard";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/index", component: <DashboardEcommerce /> },
@@ -83,7 +86,11 @@ const authProtectedRoutes = [
   { path: "/AdminRelationship", component: <AdminRelation /> },
   //User Collaboration
   { path: "/UserCollaboration", component: <UserCollaboration /> },
-  { path: "/collaborationChat", component: <CollaborationChat /> },
+  { path: "/collaborationchat", component: <CollaborationChat /> },
+  //LeaderBoard
+  { path: "/leaderboard", component: <LeaderBord /> },
+  { path: "/leaderboardtable", component: <LeaderBoardTable /> },
+  { path: "/leaderboardtablecard", component: <TableCard /> },
 ];
 
 const publicRoutes = [

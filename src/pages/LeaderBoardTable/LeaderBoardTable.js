@@ -35,123 +35,163 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
+import { useLeaderBoardContext } from "../../context/leaderBoardContext";
+import Img from "../../../src/assets/images/card-pic.png";
+
 const arr = [
   {
     _id: "625d3cd5923ccd040209ebf1",
-    name: "Does your organisation have environmental commitments?",
-    phone: "Max",
-    email: "low",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Avoid",
-    tags: "active",
-    response: "low",
-    Scale: "intermediate",
+    name: "Nancy Martino",
+    Orgnaisation: "FleetMGT Co. H",
+    TotalPoints: "120",
+    ActionPoints: "01",
+    CollabPoints: "24",
+    DisscussPoints: "05",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebf3",
-    name: "Does your organisation have a ‘green’ strategy?",
-    phone: "Max",
-    email: "low",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Improve",
-    tags: "In progress",
-    response: "low",
-    Scale: "Short term",
+    Image: Img,
+    name: "Henry Baird",
+    Orgnaisation: "FleetMGT Co. B",
+    Position: "Lead Designer / Developer",
+    TotalPoints: "88",
+    ActionPoints: "04",
+    CollabPoints: "12",
+    DisscussPoints: "08",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebee",
-    name: "Does your fleet policy contain references to a green strategy or environmental sustainability?",
-    phone: "Max",
-    email: "low",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
+    name: "Frank Hook",
+    Orgnaisation: "FleetMGT Co. C",
+    TotalPoints: "63",
+    ActionPoints: "07",
+    CollabPoints: "14",
+    DisscussPoints: "12",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebf0",
-    name: "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
-    phone: "Medium",
-    email: "Very High",
-    lead_score: "Avoid",
-    tags: "In progress",
-    response: "low",
-    Scale: "Medium term",
+    name: "Jennifer Carter",
+    Orgnaisation: "FleetMGT Co. D",
+    TotalPoints: "58",
+    ActionPoints: "20",
+    CollabPoints: "13",
+    DisscussPoints: "18",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebf2",
-    name: "Do you have standardised fleet procurement (global framework agreement…)?",
-    phone: "Medium",
-    email: "Medium",
-    lead_score: "Improve",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
+    name: "Megan Elmore",
+    Orgnaisation: "FleetMGT Co. H",
+    TotalPoints: "51",
+    ActionPoints: "44",
+    CollabPoints: "19",
+    DisscussPoints: "20",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebeb",
-    name: "Do you use sustainability criteria to assess/ select suppliers?",
-    phone: "Low",
-    company: "iTest Factory",
-    designation: "UI / UX Designer",
-    email: "low",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "Medium term",
+    name: "Alexis Clarke",
+    Orgnaisation: "FleetMGT Co. H",
+    TotalPoints: "48",
+    ActionPoints: "23",
+    CollabPoints: "30",
+    DisscussPoints: "22",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebec",
-    name: "How do you dispose of vehicles?",
-    phone: "Max",
-    company: "Force Medicines",
-    designation: "PHP Developer",
-    email: "Medium",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "In progress",
-    response: "low",
-    Scale: "Short term",
+    name: "Nathan Cole",
+    Orgnaisation: "FleetMGT Co. E",
+    TotalPoints: "48",
+    ActionPoints: "20",
+    CollabPoints: "44",
+    DisscussPoints: "28",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebea",
-    name: "Do you take the environmental impact into consideration when planning for disposal ?",
-    phone: "Medium",
-    company: "Nesta Technologies",
-    designation: "Lead Designer / Developer",
-    email: "High",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
+    name: "Joseph Parker",
+    Orgnaisation: "FleetMGT Co. F",
+    TotalPoints: "36",
+    ActionPoints: "22",
+    CollabPoints: "32",
+    DisscussPoints: "20",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
 
   {
     _id: "625d3cd5923ccd040209ebef",
-    name: "How do you dispose of vehicles?",
-    phone: "Max",
-    company: "Micro Design",
-    designation: "Asp.Net Developer",
-    email: "Very High",
-    lead_score: "Improve",
-    tags: "In progress",
-    response: "low",
-    Scale: "Long term",
+    name: "Erica Kernan",
+    Orgnaisation: "FleetMGT Co. A",
+    TotalPoints: "39",
+    ActionPoints: "24",
+    CollabPoints: "44",
+    DisscussPoints: "21",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
   {
     _id: "625d3cd5923ccd040209ebed",
-    name: "How do you dispose of vehicles?",
-    phone: "Low",
-    company: "Digitech Galaxy",
-    designation: "Full Stack Developer",
-    email: "low",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
+    name: "Donald Palmer",
+    Orgnaisation: "FleetMGT Co. H",
+    TotalPoints: "29",
+    ActionPoints: "25",
+    CollabPoints: "34",
+    DisscussPoints: "11",
+    Image: Img,
+    Position: "Lead Designer / Developer",
+    email: "tanyanoble@velzon.com",
+    phone: "414-453-5725",
+    lead_score: "154",
+    tags: "Lead",
   },
 ];
-const ActionUserDashboard = () => {
+const LeaderBoardTable = () => {
   const [info, setInfo] = useState([]);
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
@@ -235,23 +275,23 @@ const ActionUserDashboard = () => {
     initialValues: {
       // img: (contact && contact.img) || '',
       name: (contact && contact.name) || "",
-      reeponse: (contact && contact.response) || "",
+      reeponse: (contact && contact.CollabPoints) || "",
       company: (contact && contact.company) || "",
       designation: (contact && contact.designation) || "",
-      email: (contact && contact.email) || "",
-      Scale: (contact && contact.Scale) || "",
-      phone: (contact && contact.phone) || "",
-      lead_score: (contact && contact.lead_score) || "",
-      tags: (contact && contact.tags) || [],
+      ActionPoints: (contact && contact.ActionPoints) || "",
+      DisscussPoints: (contact && contact.DisscussPoints) || "",
+      Position: (contact && contact.Position) || "",
+      Orgnaisation: (contact && contact.Orgnaisation) || "",
+      TotalPoints: (contact && contact.TotalPoints) || [],
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Please Enter Name"),
-      response: Yup.string().required("Please Enter Name"),
+      CollabPoints: Yup.string().required("Please Enter Name"),
       company: Yup.string().required("Please Enter Company"),
       designation: Yup.string().required("Please Enter Designation"),
-      email: Yup.string().required("Please Enter Email"),
-      phone: Yup.string().required("Please Enter Phone"),
-      lead_score: Yup.string().required("Please Enter lead_score"),
+      ActionPoints: Yup.string().required("Please Enter ActionPoints"),
+      Position: Yup.string().required("Please Enter Position"),
+      Orgnaisation: Yup.string().required("Please Enter Orgnaisation"),
     }),
     onSubmit: (values) => {
       if (isEdit) {
@@ -259,17 +299,17 @@ const ActionUserDashboard = () => {
           _id: contact ? contact._id : 0,
           // img: values.img,
           name: values.name,
-          response: assignResponse,
-          Scale: assignScale,
+          CollabPoints: assignCollabPoints,
+          DisscussPoints: assignDisscussPoints,
           company: values.company,
           designation: values.designation,
-          email: values.email,
-          Scale: values.Scale,
-          phone: values.phone,
-          lead_score: values.lead_score,
+          ActionPoints: values.ActionPoints,
+          DisscussPoints: values.DisscussPoints,
+          Position: values.Position,
+          Orgnaisation: values.Orgnaisation,
           last_contacted: dateFormat(),
           // time: timeFormat(),
-          tags: assignTag,
+          TotalPoints: assignTag,
         };
         // update Contact
         dispatch(onUpdateContact(updateContact));
@@ -279,16 +319,16 @@ const ActionUserDashboard = () => {
           _id: (Math.floor(Math.random() * (30 - 20)) + 20).toString(),
           // img: values["img"],
           name: values["name"],
-          response: values["response"],
+          CollabPoints: values["CollabPoints"],
           company: values["company"],
           designation: values["designation"],
-          email: values["email"],
-          Scale: values["Scale"],
-          phone: values["phone"],
-          lead_score: values["lead_score"],
+          ActionPoints: values["ActionPoints"],
+          DisscussPoints: values["DisscussPoints"],
+          Position: values["Position"],
+          Orgnaisation: values["Orgnaisation"],
           last_contacted: dateFormat(),
           // time: timeFormat(),
-          tags: assignTag,
+          TotalPoints: assignTag,
         };
         // save new Contact
         dispatch(onAddNewContact(newContact));
@@ -307,16 +347,16 @@ const ActionUserDashboard = () => {
         contactId: contact.contactId,
         // img: contact.img,
         name: contact.name,
-        response: contact.reeponse,
+        CollabPoints: contact.reeponse,
         company: contact.company,
-        email: contact.email,
-        Scale: contact.Scale,
+        ActionPoints: contact.ActionPoints,
+        DisscussPoints: contact.DisscussPoints,
         designation: contact.designation,
-        phone: contact.phone,
-        lead_score: contact.lead_score,
+        Position: contact.Position,
+        Orgnaisation: contact.Orgnaisation,
         last_contacted: contact.date,
         // time: contact.time,
-        tags: contact.tags,
+        TotalPoints: contact.TotalPoints,
       });
 
       setIsEdit(true);
@@ -346,7 +386,7 @@ const ActionUserDashboard = () => {
 
   const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
-
+  const { setIsCompareBtnDisable } = useLeaderBoardContext();
   const deleteMultiple = () => {
     const checkall = document.getElementById("checkBoxAll");
     selectedCheckBoxDelete.forEach((element) => {
@@ -359,32 +399,55 @@ const ActionUserDashboard = () => {
     checkall.checked = false;
   };
 
-  const deleteCheckbox = () => {
+  const deleteCheckbox = (row) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
+    // setSelectedData([...selectedData, row]);
+    // console.log("row 1", row, selectedData);
     ele.length > 0
       ? setIsMultiDeleteButton(true)
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
+
+    // if (ele.length > 1) {
+    //   setIsCompareBtnDisable(false);
+    // } else {
+    //   setIsCompareBtnDisable(true);
+    // }
   };
 
+  const [selectedData, setSelectedData] = useState([]);
   // Column
+  console.log("row 1", selectedData);
   const columns = useMemo(
     () => [
       {
-        Cell: (cellProps) => {
+        Cell: (cellProps, item) => {
           return (
             <input
               type="checkbox"
               className="contactCheckBox form-check-input"
               value={cellProps.row.original._id}
-              onChange={() => deleteCheckbox()}
+              onChange={(e) => {
+                if (e.target.checked) {
+                  const arr = selectedData;
+                  arr.push(cellProps.row.original);
+                  setSelectedData(arr);
+                } else {
+                  setSelectedData((prev) =>
+                    prev.filter((ob) => ob._id !== cellProps.row.original._id)
+                  );
+                }
+                console.log("e", e.target.checked);
+
+                deleteCheckbox(cellProps.row.original);
+              }}
             />
           );
         },
         id: "#",
       },
       {
-        Header: "Title",
+        Header: "Name",
         accessor: "name",
         filterable: false,
         Cell: (contact) => (
@@ -399,31 +462,31 @@ const ActionUserDashboard = () => {
         ),
       },
       {
-        Header: "Category",
-        accessor: "lead_score",
+        Header: "Organisation",
+        accessor: "Orgnaisation",
         filterable: false,
       },
       {
-        Header: "Weight",
-        accessor: "phone",
+        Header: "Position",
+        accessor: "Position",
       },
       {
-        Header: "Status",
-        accessor: "tags",
+        Header: "Total points",
+        accessor: "TotalPoints",
       },
       {
-        Header: "Potential",
-        accessor: "email",
+        Header: "Action points",
+        accessor: "ActionPoints",
         filterable: false,
       },
       {
-        Header: "Cost",
-        accessor: "response",
+        Header: "Collaboration points",
+        accessor: "CollabPoints",
         filterable: false,
       },
       {
-        Header: "Timescale",
-        accessor: "Scale",
+        Header: "Discussion points",
+        accessor: "DisscussPoints",
         filterable: false,
       },
       {
@@ -443,53 +506,35 @@ const ActionUserDashboard = () => {
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-menu-end">
                     <DropdownItem
-                      className="dropdown-item"
+                      className="dropdown-item d-flex align-items-center gap-2"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
                       }}
                     >
+                      <i class="ri-eye-fill"></i>
                       View
                     </DropdownItem>
                     <DropdownItem
-                      className="dropdown-item"
+                      className="dropdown-item d-flex align-items-center gap-2"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
                       }}
                     >
-                      Edit
+                      <i class="ri-restart-line"></i>
+                      Reset
                     </DropdownItem>
                     <DropdownItem
-                      className="dropdown-item remove-item-btn"
+                      className="dropdown-item remove-item-btn d-flex align-items-center gap-2"
                       href="#"
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         onClickDelete(contactData);
                       }}
                     >
+                      <i class="ri-delete-bin-2-line"></i>
                       Delete
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Active
-                    </DropdownItem>
-
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Manage
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -506,7 +551,7 @@ const ActionUserDashboard = () => {
     <React.Fragment>
       <div className="page-content overflow-auto ">
         <ActionMain
-          Title={"Recommended Actions"}
+          Title={"Leader Board"}
           Text={
             "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
           }
@@ -519,12 +564,14 @@ const ActionUserDashboard = () => {
                 {isContactSuccess && crmcontacts && crmcontacts.length ? (
                   <TableContainer
                     columns={columns}
+                    selectedData={selectedData}
                     data={crmcontacts || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
                     setInfo={setInfo}
                     isFooter={true}
+                    FilterLeaderBoard={true}
                     customPageSize={8}
                     className="custom-header-css"
                     divClass="table-responsive table-card mb-0"
@@ -547,4 +594,4 @@ const ActionUserDashboard = () => {
   );
 };
 
-export default ActionUserDashboard;
+export default LeaderBoardTable;

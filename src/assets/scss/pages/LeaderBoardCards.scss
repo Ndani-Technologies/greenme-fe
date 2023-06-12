@@ -1,0 +1,23 @@
+// .profile-offcanvas.p-0{
+//     border-radius: 30px;
+// }
+.Card {
+  background-color: #fff;
+  text-align: center;
+  margin-top: 130px;
+  padding: 0 15px 15px 15px;
+
+  p {
+    color: #8288a5;
+    margin: 0;
+  }
+}
+.avatar-lg.img-thumbnail.rounded-circle.mx-auto {
+  margin-top: -50px;
+}
+
+.Content {
+  display: flex;
+  justify-content: space-between;
+  text-align: start;
+}

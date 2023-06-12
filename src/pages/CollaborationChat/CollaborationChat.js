@@ -80,6 +80,8 @@ const CollaborationChat = () => {
     name: "Anna Adame",
     isActive: true,
   });
+  const obj = useSelector((state) => state);
+  console.log("state", obj);
   const { chats, messages, channels } = useSelector((state) => ({
     chats: state.Chat.chats,
     messages: state.Chat.messages,
@@ -206,7 +208,7 @@ const CollaborationChat = () => {
     setcurMessage(emoji);
   };
 
-  document.title = "Chat | Velzon - React Admin & Dashboard Template";
+  document.title = "Chat";
   return (
     <React.Fragment>
       <div className="page-content">
