@@ -2,9 +2,10 @@ import React from "react";
 
 const ActionMain = ({ Title, Text, ra_title }) => {
   return (
-    <div className="Main mx-n4 mt-n4 w-100">
+    <div className="Main mx-n2 mt-n4 w-100">
       <div className="d-flex  justify-content-between align-items-center">
         <div>
+
           <h1>{Title}</h1>
           <p>{Text}</p>
           {ra_title && <div style={{ color: "white" }}>Title : {ra_title}</div>}

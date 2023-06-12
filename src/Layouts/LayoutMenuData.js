@@ -12,6 +12,7 @@ const Navdata = () => {
   const [isPages, setIsPages] = useState(false);
   const [isBanchmarking, setIsBanchmarking] = useState(false);
   const [isRecommend, setIsRecommend] = useState(false);
+  const [isLeaderBoard, setIsLeaderBoard] = useState(false);
   const [isRecommended, setIsRecommended] = useState(false);
   const [isBaseUi, setIsBaseUi] = useState(false);
   const [isAdvanceUi, setIsAdvanceUi] = useState(false);
@@ -324,6 +325,12 @@ const Navdata = () => {
           link: "/usersummary",
           parentId: "Recommended Actions",
         },
+//         {
+//           id: 3,
+//           label: "User Details",
+//           link: "/actionuserdetail",
+//           parentId: "Recommended Actions",
+//         },
 
         {
           id: 3,
@@ -357,11 +364,31 @@ const Navdata = () => {
       disable: true,
     },
     {
-      id: 7,
-      icon: "ri-rocket-line",
-      label: "Leaderboard",
-      link: "/",
-      disable: true,
+      id: "Leaderboard",
+      icon: "ri-pencil-ruler-2-line",
+      label: "Leader Board",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsLeaderBoard(!isLeaderBoard);
+        setIscurrentState("LeaderBoard");
+        updateIconSidebar(e);
+      },
+      stateVariables: isLeaderBoard,
+      subItems: [
+        {
+          id: 1,
+          label: "User Leaderboard",
+          link: "/leaderboard",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "Dashboard",
+          link: "/leaderboardtable",
+          parentId: "Recommended Actions",
+        },
+      ],
     },
     {
       id: 8,

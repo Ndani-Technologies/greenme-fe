@@ -208,7 +208,6 @@ export const updateCompleteActionStep = async (id, steps) => {
       ob
     );
 
-
     return res;
   } catch (err) {
     console.log("Error in getting data", err);
@@ -244,9 +243,8 @@ export const createAdminActions = async (data) => {
   console.log(data, "CREATE DATA");
 
   try {
-    const res = await axios.patch(
-      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
-
+    const res = await axios.post(
+      `${process.env.REACT_APP_RA_URL}actionsteps`,
       data
     );
     if (res !== undefined) {
