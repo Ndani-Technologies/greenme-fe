@@ -1,6 +1,10 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import * as moment from "moment";
-import axios from "axios";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -63,11 +67,7 @@ import { Link } from "feather-icons-react/build/IconComponents";
 import { ToastContainer, toast } from "react-toastify";
 
 const BenchmarkingQA = () => {
-  // const [isGrey, setIsGrey] = useState(false);
-  // const [isGrey2, setIsGrey2] = useState(false);
-  // const [isGrey3, setIsGrey3] = useState(false);
-  // const [isGrey4, setIsGrey4] = useState(false);
-  // const [isGrey5, setIsGrey5] = useState(false);
+  const editorRef = useRef(null);
   const [questionId, setQuestionId] = useState(null);
   const [allChecked, setAllChecked] = useState(false);
   const dispatch = useDispatch();
@@ -96,6 +96,9 @@ const BenchmarkingQA = () => {
 
   useEffect(() => {
     allQA();
+    if (isDataUpdated) {
+      setSelectedAnswerOptions[info.answerOptions];
+    }
   }, []);
   useEffect(() => {
     dispatch(onGetContacts(crmcontacts));
@@ -141,37 +144,7 @@ const BenchmarkingQA = () => {
     toggle();
   };
 
-  // Date & Time Format
-
-  const dateFormat = () => {
-    var d = new Date(),
-      months = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-      ];
-    return d.getDate() + " " + months[d.getMonth()] + ", " + d.getFullYear();
-  };
-  const timeFormat = () => {
-    let d = new Date();
-    let minutes =
-      d.getMinutes().toString().length === 1
-        ? "0" + d.getMinutes()
-        : d.getMinutes();
-    let hours = d.getHours().toString() % 12 || 12;
-    hours = hours <= 9 ? (hours = "0" + hours) : hours;
-    let ampm = d.getHours() >= 12 ? "PM" : "AM";
-    return hours + ":" + minutes + ampm;
-  };
+  const [QaResp, setQaResp] = useState(null);
 
   // validation
   const validation = useFormik({
@@ -183,8 +156,7 @@ const BenchmarkingQA = () => {
       visibility: true,
       description: "",
       category: "",
-      includeExplanation: false,
-      arr: [{ includeExplanation: false, answerOption: "" }],
+      answerOptions: [],
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -203,25 +175,13 @@ const BenchmarkingQA = () => {
         if (value.titleEng.toString().includes(values.category)) return value;
       });
 
-      const answerIds = [];
-
-      values?.answerOption.length &&
-        values?.answerOption.forEach((value) => {
-          allAnswers.forEach((val) => {
-            if (value === val.answerOption) {
-              answerIds.push(val._id);
-            }
-            validation.setValues(answerIds);
-          });
-        });
       const mappedData = {
         ...values,
         category: cd?._id,
-        answerOptions: answerIds,
         status: "active" ? true : false,
         visibility: "True" ? true : false,
-        // response: parseInt(values.response.split("%")[0]),
       };
+      console.log(mappedData, "MAPPED");
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
           .then((resp) => {
@@ -237,8 +197,8 @@ const BenchmarkingQA = () => {
         addQuestion(mappedData, values.category)
           .then((resp) => {
             toast.success("Successfully Added");
-
             setQA([...qa, resp]);
+            setQaResp(resp);
             setSelectedIndexes([]);
             validation.resetForm();
           })
@@ -248,7 +208,7 @@ const BenchmarkingQA = () => {
       }
 
       setIsDataUpdated(false);
-      console.log("values formik", mappedData);
+      console.log("values formik", values);
       setmodal_grid(false);
 
       toggle();
@@ -262,7 +222,6 @@ const BenchmarkingQA = () => {
 
       setContact({
         contactId: contact.contactId,
-        // img: contact.img,
         name: contact.name,
         response: contact.reeponse,
         company: contact.company,
@@ -271,7 +230,6 @@ const BenchmarkingQA = () => {
         phone: contact.phone,
         lead_score: contact.lead_score,
         last_contacted: contact.date,
-        // time: contact.time,
         tags: contact.tags,
       });
 
@@ -374,7 +332,6 @@ const BenchmarkingQA = () => {
 
   const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
-    console.log("id", id);
     ele.length > 0
       ? setIsMultiDeleteButton(true)
       : setIsMultiDeleteButton(false);
@@ -390,6 +347,7 @@ const BenchmarkingQA = () => {
     navigate("/adminbenchmarking/questions/compare", { state: uniqueIds });
   };
 
+  const [info1, setInfo1] = useState();
   // Column
   const columns = useMemo(
     () => [
@@ -454,47 +412,19 @@ const BenchmarkingQA = () => {
                 className="flex-grow-1 ms-2 name"
                 onClick={() => {
                   const contactData = cellProps.row.original;
-                  console.log("contact data", contactData);
-                  let answerOptions;
-                  if (contactData.answerOptions) {
-                    answerOptions = contactData?.answerOptions.map(
-                      (answerId) => {
-                        const answer = allAnswers.find(
-                          (item) => item._id === answerId
-                        );
-                        return answer ? answer.answerOption : "";
-                      }
-                    );
-                  } else {
-                    toast.info("couldn't open modal.");
-                  }
+                  console.log("row", contactData);
+                  setInfo(contactData);
+                  // console.log(contactData, "CD");
+                  // const answerOptions = contactData.answerOptions;
+                  // console.log(answerOptions,"answerOptions")
+                  // setInfo(cellProps.row.original);
+                  // setInfo1(cellProps.row.original);
+                  // validation?.setValues(cellProps.row.original.answerOptions);
+                  // setSelectedIndexes(info.answerOptions);
 
-                  // const answerOptions = contactData?.answerOptions.map(
-                  //   (answerId) => {
-                  //     const answer = allAnswers.find(
-                  //       (item) => item._id === answerId
-                  //     );
-                  //     return answer ? answer.answerOption : "";
-                  //   }
-                  // );
-
-                  const result = {
-                    ...contactData,
-                    answerOptions: answerOptions,
-                  };
-                  setInfo(contactData.answerOptions);
-                  console.log("contact row", contactData);
-                  // const data = contactData.map((value)=>{
-                  //   return {
-                  //     ...value,
-                  //     answerOption
-                  //   }
-                  // })
-                  validation.setValues(result);
-                  // setSelectedIndexes(contactData.answerOptions);
                   setQuestionId(cellProps.row.original._id);
-                  setIsDataUpdated(true);
                   setmodal_grid(true);
+                  setIsDataUpdated(true);
                 }}
               >
                 {cellProps.row.original.title}
@@ -561,7 +491,6 @@ const BenchmarkingQA = () => {
                       // href={`/adminbenchmarking/questions/summary/${_id}`}
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        console.log("contact ", contactData);
                         setInfo(contactData);
                       }}
                     >
@@ -626,6 +555,7 @@ const BenchmarkingQA = () => {
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
+  console.log(info, "INFO");
 
   // Export Modal
   const [modal_grid, setmodal_grid] = useState(false);
@@ -645,7 +575,8 @@ const BenchmarkingQA = () => {
     setInputFields(Answer.answerOption);
   };
 
-  const handleUpdates = () => {
+  const handleUpdates = (e) => {
+    e.preventDefault();
     const updatedAnswerName = inputFields;
     updateAnswer(editingAnswerId, { answerOption: updatedAnswerName })
       .then(() => {
@@ -669,7 +600,8 @@ const BenchmarkingQA = () => {
   // const [updAnswers, setUpdAnswers] = useState([]);
   // const [updCategories, setUpdCategories] = useState([]);
 
-  const handleAnswerAdd = () => {
+  const handleAnswerAdd = (e) => {
+    e.preventDefault();
     const newName = inputFields;
     if (newName) {
       const newAnswer = {
@@ -726,7 +658,8 @@ const BenchmarkingQA = () => {
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [inputField, setInputField] = useState("");
 
-  const handleAdd = () => {
+  const handleAdd = (e) => {
+    e.preventDefault();
     const newCategoryName = inputField;
     if (newCategoryName) {
       const newCategory = {
@@ -734,7 +667,8 @@ const BenchmarkingQA = () => {
       };
       addCategory(newCategory)
         .then((resp) => {
-          setData([...data, resp]);
+          // setData([...data, resp]);
+          setAllCategories([...allCategories, resp]);
           toast.success("Successfully Added");
         })
         .catch((err) => {
@@ -750,7 +684,8 @@ const BenchmarkingQA = () => {
     setInputField(category.titleEng);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (e) => {
+    e.preventDefault();
     const updatedCategoryName = inputField;
     const mappedData = {
       titleEng: updatedCategoryName,
@@ -842,7 +777,11 @@ const BenchmarkingQA = () => {
     setDeleteId(null);
   };
   const [selectedIndexes, setSelectedIndexes] = useState([]);
+  const [selectedIndexesIE, setSelectedIndexesIE] = useState([]);
   const [selectedIndexes2, setSelectedIndexes2] = useState(info);
+  const [isSelected, setIsSelected] = useState();
+  const [isSelectedIE, setIsSelectedIE] = useState();
+  const [isSelectedIF, setIsSelectedIF] = useState();
 
   document.title = "Benchmaking QA | GreenMe";
   const [ob, setOb] = useState([]);
@@ -887,7 +826,7 @@ const BenchmarkingQA = () => {
                   <Button
                     type="button"
                     onClick={() => {
-                      validation.resetForm();
+                      // validation.resetForm();
                       setIsDataUpdated(false);
                       setmodal_grid(false);
                     }}
@@ -983,7 +922,7 @@ const BenchmarkingQA = () => {
                                 name="status"
                                 onChange={validation.handleChange}
                                 onBlur={validation.handleBlur}
-                                checked={validation.values.status}
+                                checked={validation?.values?.status}
                                 style={{
                                   backgroundColor: validation.values.status
                                     ? "#88C756"
@@ -1034,7 +973,11 @@ const BenchmarkingQA = () => {
                             }}
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={validation.values.title || ""}
+                            value={
+                              isDataUpdated
+                                ? info.title
+                                : validation.values.title || ""
+                            }
                             invalid={
                               validation.touched.title &&
                               validation.errors.title
@@ -1052,38 +995,55 @@ const BenchmarkingQA = () => {
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">
-                        <div>
-                          <Input
-                            type="textarea"
+                        <div className="ck-editor-reverse">
+                          <CKEditor
+                            editor={ClassicEditor}
+                            ref={editorRef}
+                            onReady={(editor) => {
+                              // You can store the "editor" and use when it is needed.
+                              if (isDataUpdated) {
+                                editor.setData(info?.description);
+                              }
+                            }}
+                            onChange={(event, editor) => {
+                              const value = editor.getData();
+                              const div = document.createElement("div");
+                              div.innerHTML = value;
+                              const pValue = div.querySelector("p")?.innerHTML;
+                              validation.setFieldValue("description", value);
+                            }}
                             class="form-control"
                             placeholder="Description"
                             id="description"
-                            name="description"
                             validate={{
                               required: { value: true },
                             }}
-                            onChange={validation.handleChange}
-                            onBlur={validation.handleBlur}
-                            value={validation.values.description || ""}
-                            invalid={
-                              validation.touched.description &&
-                              validation.errors.description
-                                ? true
-                                : false
+                            onBlur={(event, editor) => {
+                              const value = editor.getData();
+                              const div = document.createElement("div");
+                              div.innerHTML = value;
+                              const pValue = div.querySelector("p")?.innerHTML;
+                              validation.setFieldValue("description", value);
+                            }}
+                            value={
+                              isDataUpdated
+                                ? info?.description
+                                : validation.values.description
                             }
+                            // value={validation.values.description || ""}
                             style={{
                               height: "120px",
                               overflow: "hidden",
                               backgroundColor: "#dfdfdf",
                             }}
-                          ></Input>
-                          {validation.touched.description &&
-                          validation.errors.description ? (
-                            <FormFeedback type="invalid">
-                              {validation.errors.description}
-                            </FormFeedback>
-                          ) : null}
+                          />
                         </div>
+                        {validation.touched.description &&
+                        validation.errors.description ? (
+                          <FormFeedback type="invalid">
+                            {validation.errors.description}
+                          </FormFeedback>
+                        ) : null}
                       </Col>
                       <Col xxl={12} className="p-0">
                         <Input
@@ -1136,144 +1096,135 @@ const BenchmarkingQA = () => {
                               >
                                 {isDataUpdated
                                   ? allAnswers &&
-                                    allAnswers.map((value, index) => {
-                                      // const isSelected = selectedIndexes.includes(index);
-                                      const isSelected =
-                                        selectedIndexes2.includes(index);
-                                      const isCheckedAnswer =
-                                        info?.answerOptions.find((val, ind) => {
-                                          return val._id == value._id;
-                                        });
-                                      return (
-                                        <>
-                                          <Draggable
-                                            key={value._id}
-                                            draggableId={value._id.toString()}
-                                            index={index}
-                                          >
-                                            {(provided) => (
-                                              <div
-                                                className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                ref={provided.innerRef}
-                                              >
-                                                <div
-                                                  className="d-flex align-items-center justify-content-between w-100 p-0"
-                                                  style={{
-                                                    color:
-                                                      isSelected ||
-                                                      isCheckedAnswer
-                                                        ? "black"
-                                                        : "#cccccc",
-                                                  }}
-                                                  key={index}
-                                                >
-                                                  <div>
-                                                    <Checkbox
-                                                      name="answerOption"
-                                                      onBlur={() => {
-                                                        validation.setFieldValue(
-                                                          "answerOption",
-                                                          selectedIndexes2.map(
-                                                            (i) =>
-                                                              info[i]
-                                                                .answerOption
-                                                          )
-                                                        );
-                                                      }}
-                                                      value={index}
-                                                      checked={
-                                                        isCheckedAnswer ||
-                                                        selectedIndexes2.includes(
-                                                          index
-                                                        )
-                                                      }
-                                                      onChange={(e) => {
-                                                        e.preventDefault();
-                                                        const { checked } =
-                                                          e.target;
-                                                        if (checked) {
-                                                          setSelectedIndexes2([
-                                                            ...selectedIndexes2,
-                                                            index,
-                                                          ]);
-                                                        } else {
-                                                          setSelectedIndexes2(
-                                                            selectedIndexes2.filter(
-                                                              (i) => i !== index
-                                                            )
-                                                          );
-                                                        }
-                                                        validation.setFieldValue(
-                                                          "answerOption",
-                                                          selectedIndexes2.map(
-                                                            (i) =>
-                                                              info[i]
-                                                                .answerOption
-                                                          )
-                                                        );
-                                                      }}
-                                                      icon={<CropSquareIcon />}
-                                                      checkedIcon={
-                                                        <SquareRoundedIcon />
-                                                      }
-                                                    />
-                                                    {value.answerOption}
-                                                  </div>
+                                    // allAnswers.map((value, index) => {
+                                    //   const isSelected =
+                                    //     info.answerOptions.some(
+                                    //       (option) =>
+                                    //       {
+                                    //         return option.answerOption._id === value._id
+                                    //       }
+                                    //     );
+                                    //   const isSelectedIE =
+                                    //     info.answerOptions.some(
+                                    //       (option) =>
+                                    //         option.answerOption._id === value._id &&
+                                    //         option.includeExplanation
+                                    //     );
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
-                                                    <Label
-                                                      htmlFor={`form-grid-showcode-${index}`}
-                                                      className="form-label text-muted"
-                                                    >
-                                                      Include Explanation
-                                                    </Label>
-                                                    <Input
-                                                      id={`form-grid-showcode-${index}`}
-                                                      className="form-check-input code-switcher"
-                                                      type="checkbox"
-                                                      value="active"
-                                                      checked={
-                                                        value.includeExplanation
-                                                      } // Access includeExplanation from value object
-                                                      onChange={(e) => {
-                                                        const updatedAnswers = [
-                                                          ...allAnswers,
-                                                        ];
-                                                        updatedAnswers[
-                                                          index
-                                                        ].includeExplanation =
-                                                          e.target.checked;
-                                                        validation.setFieldValue(
-                                                          "answerOptions",
-                                                          updatedAnswers
-                                                        );
-                                                      }}
-                                                      style={{
-                                                        backgroundColor:
-                                                          value.includeExplanation
-                                                            ? "#88C756"
-                                                            : "#fff",
-                                                        width: "50px",
-                                                        border: "0",
-                                                      }}
-                                                    />
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            )}
-                                          </Draggable>
-                                        </>
-                                      );
+                                    //   const isSelectedIF =
+                                    //     info.answerOptions.some(
+                                    //       (option) =>
+                                    //         option.answerOption._id === value._id &&
+                                    //         option.includeInputField
+                                    //     );
 
-                                      // )
-                                    })
-                                  : allAnswers &&
+                                    //   return (
+                                    //     <Draggable key={value._id} draggableId={value._id.toString()} index={index}>
+                                    //       {(provided) => (
+                                    //         <div
+                                    //           className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                    //           {...provided.draggableProps}
+                                    //           {...provided.dragHandleProps}
+                                    //           ref={provided.innerRef}
+                                    //         >
+                                    //           <div
+                                    //             className="d-flex align-items-center justify-content-between w-100 p-0"
+                                    //             style={{
+                                    //               color: isSelected ? "black" : "#cccccc",
+                                    //             }}
+                                    //             key={index}
+                                    //           >
+                                    //             <div>
+                                    //                 <Checkbox
+                                    //                   name="answerOptions"
+                                    //                   onBlur={() => {
+                                    //                     validation.setFieldValue(
+                                    //                       "answerOptions",
+                                    //                       selectedAnswerOptions
+                                    //                     );
+                                    //                   }}
+                                    //                   value={index}
+                                    //                   checked={isSelected}
+                                    //                   onChange={(e) => {
+                                    //                     e.preventDefault();
+                                    //                     const { checked } =
+                                    //                       e.target;
+
+                                    //                   }}
+                                    //                   icon={<CropSquareIcon />}
+                                    //                   checkedIcon={
+                                    //                     <SquareRoundedIcon />
+                                    //                   }
+                                    //                 />
+                                    //                 {value.answerOption}
+                                    //               </div>
+                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
+                                    //               <Label
+                                    //                 htmlFor={`form-grid-showcode-${index}`}
+                                    //                 className="form-label text-muted"
+                                    //               >
+                                    //                 Include Explanation
+                                    //               </Label>
+                                    //               <Checkbox
+                                    //                 id={`form-grid-showcode-${index}`}
+                                    //                 name="includeExplanation"
+                                    //                 checked={isSelectedIE}
+                                    //                 onChange={(e) => {
+                                    //                   e.preventDefault();
+                                    //                   const { checked } = e.target;
+                                    //                 }}
+
+                                    //                 icon={<CropSquareIcon />}
+                                    //                 checkedIcon={<SquareRoundedIcon />}
+                                    //               />
+                                    //             </div>
+
+                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
+                                    //               <Label
+                                    //                 htmlFor={`form-grid-showcode-${index}`}
+                                    //                 className="form-label text-muted"
+                                    //               >
+                                    //                 Include Input Field
+                                    //               </Label>
+                                    //               <Checkbox
+                                    //                 id={`form-grid-showcode-${index}`}
+                                    //                 name="includeInputField"
+                                    //                 checked={isSelectedIF}
+                                    //                 icon={<CropSquareIcon />}
+                                    //                 checkedIcon={<SquareRoundedIcon />}
+                                    //               />
+                                    //             </div>
+                                    //           </div>
+                                    //         </div>
+                                    //       )}
+                                    //     </Draggable>
+                                    //   );
+                                    // })
+
                                     allAnswers.map((value, index) => {
-                                      // const isSelected = selectedIndexes.includes(index);
+                                      // Check if the current answer option is selected
                                       const isSelected =
-                                        selectedIndexes.includes(index);
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption === value._id
+                                        );
+
+                                      // Check if the include explanation checkbox is selected
+                                      const isSelectedIE =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption === value._id &&
+                                            option.includeExplanation
+                                        );
+
+                                      // Check if the include input field checkbox is selected
+                                      const isSelectedIF =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption === value._id &&
+                                            option.includeInputField
+                                        );
+
                                       return (
                                         <>
                                           <Draggable
@@ -1299,44 +1250,104 @@ const BenchmarkingQA = () => {
                                                 >
                                                   <div>
                                                     <Checkbox
-                                                      name="answerOption"
+                                                      name="answerOptions"
                                                       onBlur={() => {
                                                         validation.setFieldValue(
-                                                          "answerOption",
-                                                          selectedIndexes.map(
-                                                            (i) =>
-                                                              allAnswers[i]
-                                                                .answerOption
-                                                          )
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
                                                         );
                                                       }}
                                                       value={index}
-                                                      checked={selectedIndexes.includes(
-                                                        index
-                                                      )}
+                                                      checked={
+                                                        info.answerOptions.some(
+                                                          (option) =>
+                                                            option.answerOption
+                                                              ._id === value._id
+                                                        ) && isSelected
+                                                      }
                                                       onChange={(e) => {
                                                         e.preventDefault();
+                                                        // setInfo((prev)=>{
+                                                        //   return {
+                                                        //     ...prev,
+                                                        //     answerOptions:
+                                                        //   }
+                                                        // })
                                                         const { checked } =
                                                           e.target;
+                                                        const answerOption =
+                                                          value._id;
+                                                        const includeExplanation =
+                                                          isSelectedIE;
+                                                        const includeInputField =
+                                                          isSelectedIF;
+                                                        setSelectedAnswerOptions(
+                                                          info.answerOptions.map(
+                                                            (value) => {
+                                                              return {
+                                                                answerOption:
+                                                                  value
+                                                                    .answerOption
+                                                                    ._id,
+                                                                includeExplanation:
+                                                                  value.includeExplanation,
+                                                                includeInputField:
+                                                                  value.includeInputField,
+                                                              };
+                                                            }
+                                                          )
+                                                        );
                                                         if (checked) {
-                                                          setSelectedIndexes([
-                                                            ...selectedIndexes,
-                                                            index,
-                                                          ]);
+                                                          const updatedOption =
+                                                            {
+                                                              answerOption,
+                                                              includeExplanation,
+                                                              includeInputField,
+                                                            };
+                                                          setSelectedAnswerOptions(
+                                                            (prevOptions) => [
+                                                              ...prevOptions,
+                                                              updatedOption,
+                                                            ]
+                                                          );
                                                         } else {
-                                                          setSelectedIndexes(
-                                                            selectedIndexes.filter(
-                                                              (i) => i !== index
-                                                            )
+                                                          setSelectedAnswerOptions(
+                                                            (prevOptions) =>
+                                                              prevOptions.filter(
+                                                                (option) =>
+                                                                  option.answerOption !==
+                                                                  answerOption
+                                                              )
                                                           );
                                                         }
+                                                        const ans =
+                                                          allAnswers.answerOptions.filter(
+                                                            (value) => {
+                                                              return selectedAnswerOptions.filter(
+                                                                (val) =>
+                                                                  val.answerOption ===
+                                                                  value._id
+                                                              );
+                                                            }
+                                                          );
+                                                        setInfo((prev) => {
+                                                          prev.map((value) => {
+                                                            return {
+                                                              ...value,
+                                                              answerOptions:
+                                                                ans,
+                                                            };
+                                                          });
+                                                        });
+                                                        console.log(
+                                                          "selectedAns",
+                                                          selectedAnswerOptions,
+                                                          ans,
+                                                          info
+                                                        );
                                                         validation.setFieldValue(
-                                                          "answerOption",
-                                                          selectedIndexes.map(
-                                                            (i) =>
-                                                              allAnswers[i]
-                                                                .answerOption
-                                                          )
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
                                                         );
                                                       }}
                                                       icon={<CropSquareIcon />}
@@ -1354,35 +1365,115 @@ const BenchmarkingQA = () => {
                                                     >
                                                       Include Explanation
                                                     </Label>
-                                                    <Input
+                                                    <Checkbox
                                                       id={`form-grid-showcode-${index}`}
-                                                      className="form-check-input code-switcher"
-                                                      type="checkbox"
-                                                      value="active"
+                                                      name="includeExplanation"
+                                                      value={index}
                                                       checked={
-                                                        value.includeExplanation
-                                                      } // Access includeExplanation from value object
+                                                        info.answerOptions.some(
+                                                          (option) =>
+                                                            option.answerOption
+                                                              ._id ===
+                                                              value._id &&
+                                                            option.includeExplanation
+                                                        ) || isSelectedIE
+                                                      }
+                                                      onChange={(e) => {
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        const answerOption =
+                                                          value._id;
+
+                                                        setSelectedAnswerOptions(
+                                                          (prevOptions) =>
+                                                            prevOptions.map(
+                                                              (option) => {
+                                                                if (
+                                                                  option.answerOption ===
+                                                                  answerOption
+                                                                ) {
+                                                                  return {
+                                                                    ...option,
+                                                                    includeExplanation:
+                                                                      checked,
+                                                                  };
+                                                                }
+                                                                return option;
+                                                              }
+                                                            )
+                                                        );
+
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      onBlur={() => {
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
+                                                    <Label
+                                                      htmlFor={`form-grid-showcode-${index}`}
+                                                      className="form-label text-muted"
+                                                    >
+                                                      Include Input Field
+                                                    </Label>
+                                                    <Checkbox
+                                                      id={`form-grid-showcode-${index}`}
+                                                      name="includeInputField"
+                                                      checked={isSelectedIF}
                                                       onChange={(e) => {
                                                         const updatedAnswers = [
                                                           ...allAnswers,
                                                         ];
                                                         updatedAnswers[
                                                           index
-                                                        ].includeExplanation =
+                                                        ].includeInputField =
                                                           e.target.checked;
+
+                                                        setSelectedAnswerOptions(
+                                                          (prevOptions) =>
+                                                            prevOptions.map(
+                                                              (option) => {
+                                                                if (
+                                                                  option.answerOption ===
+                                                                  value._id
+                                                                ) {
+                                                                  return {
+                                                                    ...option,
+                                                                    includeInputField:
+                                                                      e.target
+                                                                        .checked,
+                                                                  };
+                                                                }
+                                                                return option;
+                                                              }
+                                                            )
+                                                        );
+
                                                         validation.setFieldValue(
                                                           "answerOptions",
-                                                          updatedAnswers
+                                                          selectedAnswerOptions
                                                         );
                                                       }}
-                                                      style={{
-                                                        backgroundColor:
-                                                          value.includeExplanation
-                                                            ? "#88C756"
-                                                            : "#fff",
-                                                        width: "50px",
-                                                        border: "0",
-                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
                                                     />
                                                   </div>
                                                 </div>
@@ -1391,9 +1482,232 @@ const BenchmarkingQA = () => {
                                           </Draggable>
                                         </>
                                       );
+                                    })
+                                  : allAnswers &&
+                                    allAnswers.map((value, index) => {
+                                      // Check if the current answer option is selected
+                                      const isSelected =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption === value._id
+                                        );
 
-                                      // )
+                                      // Check if the include explanation checkbox is selected
+                                      const isSelectedIE =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption === value._id &&
+                                            option.includeExplanation
+                                        );
+
+                                      // Check if the include input field checkbox is selected
+                                      const isSelectedIF =
+                                        selectedAnswerOptions.some(
+                                          (option) =>
+                                            option.answerOption === value._id &&
+                                            option.includeInputField
+                                        );
+
+                                      return (
+                                        <>
+                                          <Draggable
+                                            key={value._id}
+                                            draggableId={value._id.toString()}
+                                            index={index}
+                                          >
+                                            {(provided) => (
+                                              <div
+                                                className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                                ref={provided.innerRef}
+                                              >
+                                                <div
+                                                  className="d-flex align-items-center justify-content-between w-100 p-0"
+                                                  style={{
+                                                    color: isSelected
+                                                      ? "black"
+                                                      : "#cccccc",
+                                                  }}
+                                                  key={index}
+                                                >
+                                                  <div>
+                                                    <Checkbox
+                                                      name="answerOptions"
+                                                      onBlur={() => {
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      value={index}
+                                                      checked={isSelected}
+                                                      onChange={(e) => {
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        const answerOption =
+                                                          value._id;
+                                                        const includeExplanation =
+                                                          isSelectedIE;
+                                                        const includeInputField =
+                                                          isSelectedIF;
+
+                                                        if (checked) {
+                                                          const updatedOption =
+                                                            {
+                                                              answerOption,
+                                                              includeExplanation,
+                                                              includeInputField,
+                                                            };
+                                                          setSelectedAnswerOptions(
+                                                            (prevOptions) => [
+                                                              ...prevOptions,
+                                                              updatedOption,
+                                                            ]
+                                                          );
+                                                        } else {
+                                                          setSelectedAnswerOptions(
+                                                            (prevOptions) =>
+                                                              prevOptions.filter(
+                                                                (option) =>
+                                                                  option.answerOption !==
+                                                                  answerOption
+                                                              )
+                                                          );
+                                                        }
+
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                    {value.answerOption}
+                                                  </div>
+
+                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                    <Label
+                                                      htmlFor={`form-grid-showcode-${index}`}
+                                                      className="form-label text-muted"
+                                                    >
+                                                      Include Explanation
+                                                    </Label>
+                                                    <Checkbox
+                                                      id={`form-grid-showcode-${index}`}
+                                                      name="includeExplanation"
+                                                      value={index}
+                                                      checked={isSelectedIE}
+                                                      onChange={(e) => {
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        const answerOption =
+                                                          value._id;
+
+                                                        setSelectedAnswerOptions(
+                                                          (prevOptions) =>
+                                                            prevOptions.map(
+                                                              (option) => {
+                                                                if (
+                                                                  option.answerOption ===
+                                                                  answerOption
+                                                                ) {
+                                                                  return {
+                                                                    ...option,
+                                                                    includeExplanation:
+                                                                      checked,
+                                                                  };
+                                                                }
+                                                                return option;
+                                                              }
+                                                            )
+                                                        );
+
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      onBlur={() => {
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
+                                                    <Label
+                                                      htmlFor={`form-grid-showcode-${index}`}
+                                                      className="form-label text-muted"
+                                                    >
+                                                      Include Input Field
+                                                    </Label>
+                                                    <Checkbox
+                                                      id={`form-grid-showcode-${index}`}
+                                                      name="includeInputField"
+                                                      checked={isSelectedIF}
+                                                      onChange={(e) => {
+                                                        const updatedAnswers = [
+                                                          ...allAnswers,
+                                                        ];
+                                                        updatedAnswers[
+                                                          index
+                                                        ].includeInputField =
+                                                          e.target.checked;
+
+                                                        setSelectedAnswerOptions(
+                                                          (prevOptions) =>
+                                                            prevOptions.map(
+                                                              (option) => {
+                                                                if (
+                                                                  option.answerOption ===
+                                                                  value._id
+                                                                ) {
+                                                                  return {
+                                                                    ...option,
+                                                                    includeInputField:
+                                                                      e.target
+                                                                        .checked,
+                                                                  };
+                                                                }
+                                                                return option;
+                                                              }
+                                                            )
+                                                        );
+
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      icon={<CropSquareIcon />}
+                                                      checkedIcon={
+                                                        <SquareRoundedIcon />
+                                                      }
+                                                    />
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            )}
+                                          </Draggable>
+                                        </>
+                                      );
                                     })}
+
                                 {provided.placeholder}
                               </div>
                             )}
@@ -1405,7 +1719,7 @@ const BenchmarkingQA = () => {
                           <Button
                             className="btn btn-danger p-4 pt-2 pb-2"
                             onClick={() => {
-                              validation.resetForm();
+                              // validation.resetForm();
                               setIsDataUpdated(false);
                               setmodal_grid(false);
                             }}
@@ -1658,11 +1972,13 @@ const BenchmarkingQA = () => {
                               </Col>
                               <div className="d-flex gap-3 col-lg-12 mt-3">
                                 <div className="d-flex gap-2">
-                                  <Button onClick={handleUpdates}>Save</Button>
+                                  <Button onClick={(e) => handleUpdates(e)}>
+                                    Save
+                                  </Button>
 
                                   <Button
                                     color="primary"
-                                    onClick={handleAnswerAdd}
+                                    onClick={(e) => handleAnswerAdd(e)}
                                   >
                                     Add new item to list
                                   </Button>
@@ -1908,11 +2224,14 @@ const BenchmarkingQA = () => {
                                 <div className="d-flex gap-2">
                                   <Button
                                     color="primary"
-                                    onClick={handleUpdate}
+                                    onClick={(e) => handleUpdate(e)}
                                   >
                                     Update Category
                                   </Button>
-                                  <Button color="primary" onClick={handleAdd}>
+                                  <Button
+                                    color="primary"
+                                    onClick={(e) => handleAdd(e)}
+                                  >
                                     Add new item to list
                                   </Button>
                                 </div>

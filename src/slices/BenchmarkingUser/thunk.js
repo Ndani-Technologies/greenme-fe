@@ -302,7 +302,12 @@ export const addCategory = async (data) => {
 };
 export const addQuestion = async (data, category) => {
   try {
-    const res = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
+    // const res = await axios.post(process.env.REACT_APP_QUESTION_URL, data);
+    const res = await axios.post(
+      `http://192.168.137.1:5001/api/v1/bench/questionnaire`,
+      data
+    );
+    console.log(res, "INSIDE THUNK EES");
     if (res !== undefined) {
       const updatedResp = {
         ...res,
@@ -312,6 +317,7 @@ export const addQuestion = async (data, category) => {
         status: res?.status ? "active" : "Inactive",
         visibility: res?.visibility ? "True" : "False",
       };
+      console.log(updatedResp, "updatedResp");
       return updatedResp;
     }
     return res;
@@ -320,32 +326,18 @@ export const addQuestion = async (data, category) => {
     return {};
   }
 };
-export const getAllAdminBenchmarks = async () => {
-  try {
-    let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
-    // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
 
-    let data;
-    data = resp.map((value) => {
-      return {
-        ...value,
-        name: value.user.firstName + value.user.lastName,
-        organization: value.user.organization,
-      };
-    });
-    console.log("admin benchmark get all", data);
-    return data;
-    // dispatch(benchmarkSuccess(data))
-  } catch (error) {
-    console.error(error);
-  }
-};
 export const updateQuestion = async (id, data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/questionnaire", data);
     // let resp = await axios.put(`{${process.env.REACT_APP_QUESTION_URL}/${id}}`, data);
+    // let resp = await axios.put(
+    //   `${process.env.REACT_APP_QUESTION_URL}/${id}`,
+
+    //   data
+    // );
     let resp = await axios.put(
-      `${process.env.REACT_APP_QUESTION_URL}/${id}`,
+      `${`http://192.168.137.1:5001/api/v1/bench/questionnaire`}/${id}`,
 
       data
     );
@@ -368,6 +360,28 @@ export const deleteQuestion = async (id) => {
     console.error(error);
   }
 };
+
+export const getAllAdminBenchmarks = async () => {
+  try {
+    let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
+    // let resp = await axios.get("http://localhost:5001/api/v1/benchmarking");
+
+    let data;
+    data = resp.map((value) => {
+      return {
+        ...value,
+        name: value.user.firstName + value.user.lastName,
+        organization: value.user.organization,
+      };
+    });
+    console.log("admin benchmark get all", data);
+    return data;
+    // dispatch(benchmarkSuccess(data))
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const deleteBenchmark = async (id) => {
   try {
     // let resp = await axios.delete(
