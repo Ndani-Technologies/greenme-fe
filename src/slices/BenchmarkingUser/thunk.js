@@ -52,8 +52,8 @@ export const updateUserResp = async (id, user_resp, navigate) => {
   console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
 
   // let resp = await axios.patch(
-  //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
-  //   { user_resp }
+  //   `http://192.168.137.1:5001/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+  //   user_resp
   // );
   let resp = await axios.patch(
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
