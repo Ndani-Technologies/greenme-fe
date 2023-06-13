@@ -12,7 +12,7 @@ export const getAllRecommendedRelation = async () => {
   let data = resp.map((value) => {
     answers = "";
     value.qid?.answerOptions.forEach((element) => {
-      answers += element.answerOption + ",";
+      answers += element.answerOption.answerOption + ",";
     });
     return {
       ...value,

@@ -570,7 +570,6 @@ const BenchmarkingDashboard = () => {
     },
   };
 
-
   const handleChangeCountry = (selectedOption) => {
     if (!selectedOption || !selectedOption.value) {
       setValError("Please select a country");
@@ -783,7 +782,9 @@ const BenchmarkingDashboard = () => {
                 ) : (
                   <Loader error={error} />
                 )}
-                <Button onClick={() => deleteMultiple()}>Delete All</Button>
+                <Button onClick={() => deleteMultiple()} disabled>
+                  Delete All
+                </Button>
               </div>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>
