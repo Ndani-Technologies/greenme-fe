@@ -3,7 +3,7 @@ import { apiError, userDetailFailure, userDetailSuccess } from "./reducer";
 
 export const getAllUsers = async () => {
   try {
-    const resp = await axios.get(`http://192.168.137.1:5000/api/v1/auth/user`);
+    const resp = await axios.get(`${REACT_APP_USER_URL}/user`);
     console.log(resp, "RES");
     return resp;
   } catch (error) {
