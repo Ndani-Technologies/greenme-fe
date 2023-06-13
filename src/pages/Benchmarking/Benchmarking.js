@@ -131,8 +131,8 @@ const Benchmarking = () => {
   const [user_resp, setUser_resp] = useState([]);
   const [activeIndexes, setActiveIndexes] = useState({});
   const [selectedAnswerIds, setSelectedAnswerIds] = useState([]);
-  const [includeExplanation, setIncludeExplanation] = useState("");
-  const [includeInputField, setIncludeInputField] = useState("");
+  const [includeExplanation, setIncludeExplanation] = useState("")
+    const [includeInputField, setIncludeInputField] = useState("")
 
   const handleButtonClick = (
     questionIndex,
@@ -164,11 +164,7 @@ const Benchmarking = () => {
             updatedUserResp.selectedOption.filter((id) => id !== aid);
         } else {
           // Add the answer ID if it doesn't exist in the array
-          updatedUserResp.selectedOption.push({
-            answerOption: aid,
-            includeExplanation,
-            includeInputField,
-          });
+          updatedUserResp.selectedOption.push({answerOption: aid, includeExplanation, includeInputField});
         }
 
         newUserResp[userRespIndex] = updatedUserResp;
@@ -178,9 +174,7 @@ const Benchmarking = () => {
         // arr.push(aid);
         newUserResp.push({
           questionId: qid,
-          selectedOption: [
-            { answerOption: aid, includeExplanation, includeInputField },
-          ],
+          selectedOption: [{answerOption: aid, includeExplanation, includeInputField}],
         });
       }
 
@@ -190,7 +184,7 @@ const Benchmarking = () => {
     console.log("user_resp", user_resp);
     // Your other logic here
   };
-  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [selectedAnswer, setSelectedAnswer] = useState(null)
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
@@ -341,6 +335,7 @@ const Benchmarking = () => {
                   })}
               </div>
             ) : (
+              
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
@@ -358,97 +353,99 @@ const Benchmarking = () => {
 
                     return (
                       <>
-                        <div key={btnIndex}>
-                          {isSelected ? (
-                            <>
-                              {btn.includeExplanation && (
-                                <div className="">
-                                  <CKEditor
-                                    editor={ClassicEditor}
-                                    onReady={(editor) => {}}
-                                    onChange={(e, editor) => {
-                                      const value = editor.getData();
-                                      setIncludeExplanation(value);
-                                    }}
-                                    onBlur={(e, editor) => {
-                                      const value = editor.getData();
-                                      setIncludeExplanation(value);
-                                    }}
-                                    validate={{
-                                      required: { value: true },
-                                    }}
-                                    class="form-control"
-                                    placeholder="Description"
-                                    id="floatingTextarea"
-                                    value=""
-                                    style={{
-                                      height: "120px",
-                                      overflow: "hidden",
-                                      backgroundColor: "#dfdfdf",
-                                    }}
-                                  />
-                                </div>
-                              )}
-                              {btn.includeInputField && (
-                                <div>
-                                  <Input
-                                    type="text"
-                                    className="form-control"
-                                    id="input-field"
-                                    placeholder=""
-                                    value={includeInputField}
-                                    onChange={(e) => {
-                                      setIncludeInputField(e.target.value);
-                                    }}
-                                    onBlur={(e) => {
-                                      setIncludeInputField(e.target.value);
-                                    }}
-                                  />
-                                </div>
-                              )}
-                            </>
-                          ) : null}
-                          <div className="buttons-container">
-                            <button
-                              onClick={() => {
-                                setSelectedAnswer(btn);
-                                setSelectedAnswerIds(
-                                  (prevSelectedAnswerIds) => {
-                                    const questionId = item._id;
-                                    const selectedIds =
-                                      prevSelectedAnswerIds[questionId] || [];
+                      <div  key={btnIndex}>
+                        {isSelected ?
+                          <>
+                          {btn.includeExplanation && 
+                          
+                            <div className="">
+                              <CKEditor
+                                editor={ClassicEditor}
+                                onReady={(editor) => {
+                                }}
+                                onChange={(e, editor) => {
+                                  const value = editor.getData();
+                                  setIncludeExplanation(value);
+                                }}
+                                onBlur={(e, editor) => {
+                                  const value = editor.getData();
+                                  setIncludeExplanation(value)
+                                }}
+                                validate={{
+                                  required: { value: true },
+                                }}
+                                class="form-control"
+                                placeholder="Description"
+                                id="floatingTextarea"
+                                value=''
+                                style={{
+                                  height: "120px",
+                                  overflow: "hidden",
+                                  backgroundColor: "#dfdfdf",
+                                }}
+                              />
+                            </div>
+                          }
+                          {btn.includeInputField && 
+                            <div>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                id="input-field"
+                                placeholder=""
+                                value={includeInputField}
+                                onChange={(e) => {
+                                  setIncludeInputField(e.target.value)
+                                }}
+                                onBlur={(e) => {
+                                  setIncludeInputField(e.target.value)
+                                 }}
 
-                                    if (isSelected) {
-                                      return {
-                                        ...prevSelectedAnswerIds,
-                                        [questionId]: selectedIds.filter(
-                                          (id) => id !== btn._id
-                                        ),
-                                      };
-                                    } else {
-                                      return {
-                                        ...prevSelectedAnswerIds,
-                                        [questionId]: [...selectedIds, btn._id],
-                                      };
-                                    }
-                                  }
-                                );
+                              />
+                            </div>
+                          }
+                          </>
+                          : null
+                        }
+                      <div className="buttons-container">
+                        <button
+                          onClick={() => {
+                            setSelectedAnswer(btn)
+                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                              const questionId = item._id;
+                              const selectedIds =
+                                prevSelectedAnswerIds[questionId] || [];
 
-                                handleButtonClick(
-                                  (currentPage - 1) * numPages + index,
-                                  btnIndex,
-                                  btn.answerOption,
-                                  item?._id,
-                                  btn.answerOption._id
-                                );
-                              }}
-                              className={buttonClass}
-                            >
-                              {btn.answerOption.answerOption}
-                            </button>
-                          </div>
+                              if (isSelected) {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: selectedIds.filter(
+                                    (id) => id !== btn._id
+                                  ),
+                                };
+                              } else {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: [...selectedIds, btn._id],
+                                };
+                              }
+                            });
+
+                            handleButtonClick(
+                              (currentPage - 1) * numPages + index,
+                              btnIndex,
+                              btn.answerOption,
+                              item?._id,
+                              btn.answerOption._id
+                            );
+                          }}
+                          className={buttonClass}
+                        >
+                          {btn.answerOption.answerOption}
+                        </button>
                         </div>
-                      </>
+                      </div >
+                        </>
                     );
                   })}
               </div>
