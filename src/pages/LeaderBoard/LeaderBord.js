@@ -3,15 +3,7 @@ import ActionMain from "../Recomended-Action-Main/ActionMain";
 import LeaderBoardCards from "./LeaderBoardCards";
 import { Col, Label, Row } from "reactstrap";
 import Select from "react-select";
-import {
-  Box,
-  Chip,
-  MenuItem,
-  OutlinedInput,
-  Slider,
-  useTheme,
-} from "@mui/material";
-import Nouislider from "nouislider-react";
+import { Box, Slider } from "@mui/material";
 import { getAllUsers } from "../../slices/thunks";
 const LeaderBord = () => {
   const [selectCountry, setselectCountry] = useState(null);

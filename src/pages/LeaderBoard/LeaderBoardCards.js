@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { team } from "./cardData";
-import { Col, Container, Row } from "reactstrap";
+import React, { useState, useEffect } from "react";
+import { Col, Row } from "reactstrap";
 import { getSingleAction } from "../../slices/thunks";
 
 const LeaderBoardCards = ({ allUsers }) => {
   console.log(allUsers, "USWERS");
 
-  const [singleAction, setSingleAction] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [extractedDate, setExtractedDate] = useState();
   useEffect(() => {

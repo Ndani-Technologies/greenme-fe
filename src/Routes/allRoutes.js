@@ -30,7 +30,6 @@ import ActionUserSummary from "../pages/Action-User-Summary/ActionUserSummary";
 import ActionAdminSummary from "../pages/Action-Admin-Summary/ActionAdminSummary";
 import ActionComparison from "../pages/ActionComparison/ActionComparison";
 import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDashboard";
-import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
