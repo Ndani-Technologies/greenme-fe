@@ -139,7 +139,7 @@ const RelationModal = ({
         .then((resp) => {
           let answers = "";
           resp?.qid?.answerOptions.forEach((element) => {
-            answers += element.answerOption + ",";
+            answers += element.answerOption.answerOption + ",";
           });
           let data = {
             ...resp,
@@ -394,7 +394,7 @@ const RelationModal = ({
                                     }
                               }
                             >
-                              {option.answerOption}
+                              {option.answerOption.answerOption}
                             </li>
                           )
                         )}
@@ -406,7 +406,7 @@ const RelationModal = ({
                 {questionList[isQuestionClicked].answerOptions.some((a) => {
                   return (
                     a._id === selectedAnswerOptions[index]?.aid &&
-                    a.answerOption === "Percentage"
+                    a.answerOption.answerOption === "Percentage"
                   );
                 }) && (
                   <>
