@@ -30,12 +30,14 @@ import {
   TaskListGlobalFilter,
   DateRangeGlobalFilter,
   AllQaFilters,
+  FilterLeaderBoard,
 } from "../../Components/Common/GlobalSearchFilter";
 
 // Define a default UI for filtering
 function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
+  selectedData,
   setGlobalFilter,
   isBenchmarkingQASearch,
   isCustomerFilter,
@@ -55,6 +57,7 @@ function GlobalFilter({
   isFilterAction,
   isFilterBenchmarkAction,
   isSearchInput,
+  isFilterLeaderBoard,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -106,6 +109,9 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {isFilterLeaderBoard && (
+              <FilterLeaderBoard selectedData={selectedData} />
+            )}
             {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
@@ -130,6 +136,7 @@ const TableContainer = ({
   setInfo,
   isBenchmarkingQASearch,
   isFilterA,
+  selectedData,
   isFilterAction,
   isFilterBenchmarkAction,
   isAllQaFilters,
@@ -150,6 +157,7 @@ const TableContainer = ({
   isNFTRankingFilter,
   isSearchInput,
   isTaskListFilter,
+  isFilterLeaderBoard,
   isAddOptions,
   isAddUserList,
   handleOrderClicks,
@@ -160,7 +168,6 @@ const TableContainer = ({
   tableClass,
   theadClass,
   trClass,
-
   thClass,
   divClass,
   SearchPlaceholder,
@@ -248,6 +255,7 @@ const TableContainer = ({
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}
+            selectedData={selectedData}
             isOrderFilter={isOrderFilter}
             isContactsFilter={isContactsFilter}
             isCompaniesFilter={isCompaniesFilter}
@@ -259,6 +267,7 @@ const TableContainer = ({
             isSearchInput={isSearchInput}
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
+            isFilterLeaderBoard={isFilterLeaderBoard}
           />
         )}
         {isAddOptions && (

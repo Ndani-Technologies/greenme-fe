@@ -70,7 +70,7 @@ const Benchmarking = () => {
   //HANDLING STYLE CHANGE ON SCREEN SIZE CHANGE
 
   const [isBelow1440, setIsBelow1440] = useState(false);
-
+  const [user_resp, setUser_resp] = useState([]);
   useEffect(() => {
     const handleResize = () => {
       setIsBelow1440(window.innerWidth < 1440);
@@ -89,6 +89,52 @@ const Benchmarking = () => {
   }, []);
 
   console.log(benchmark, category, "bench");
+  let arr = [];
+  const matchingQuestionnaires = benchmark?.questionnaire?.filter(
+    (questionnaire) => {
+      return user_resp.some(
+        (response) => response.questionId === questionnaire._id
+      );
+    }
+  );
+  arr.push(matchingQuestionnaires);
+
+  console.log(matchingQuestionnaires, "MACCTGING");
+
+  //matching_answer_options
+  const matching_answer_options = [];
+
+  for (const resp of user_resp) {
+    const questionId = resp.questionId;
+    const selectedOption = resp.selectedOption[0];
+
+    const questionnaire = matchingQuestionnaires.find(
+      (q) => q._id === questionId
+    );
+
+    //   if (questionnaire) {
+    //     const answerOption = questionnaire.answerOptions.find(
+    //       (option) => option._id === selectedOption
+    //     );
+
+    //     if (answerOption) {
+    //       matching_answer_options.push(questionnaire.answerOptions);
+    //     }
+    //   }
+    if (questionnaire) {
+      const answerOption = questionnaire.answerOptions.find(
+        (option) => option._id === selectedOption
+      );
+
+      if (answerOption) {
+        const index = questionnaire.answerOptions.indexOf(answerOption);
+        matching_answer_options[index] = questionnaire.answerOptions;
+      }
+    }
+  }
+
+  console.log(matching_answer_options, "matching_answer_options");
+
   const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
 
   const getProgressPercentage = async () => {
@@ -125,7 +171,6 @@ const Benchmarking = () => {
 
   const [selectedItemIds, setSelectedItemIds] = useState([]);
 
-  const [user_resp, setUser_resp] = useState([]);
   const [activeIndexes, setActiveIndexes] = useState({});
   const [selectedAnswerIds, setSelectedAnswerIds] = useState([]);
 
@@ -181,6 +226,166 @@ const Benchmarking = () => {
     // Your other logic here
   };
 
+  // const renderedQuestions =
+  //   questions?.length >= 0 &&
+  //   questions
+  //     .slice((currentPage - 1) * numPages, currentPage * numPages)
+  //     .map((item, index) => {
+  //       const activeButtonIndex = activeIndexes[index];
+
+  //       // Find the user response for the current question
+  //       const userResponse = benchmark?.user_resp?.find(
+  //         (resp) => resp?.questionId === item?._id
+  //       );
+
+  //       // Get the index of the selected option
+  //       const selectedOptionIndex = item.answerOptions.findIndex(
+  //         (option) =>
+  //           option?._id === userResponse?.selectedOption.map((val) => val)
+  //       );
+
+  //       const selectedOption = item?.answerOptions?.find(
+  //         (option) => option?._id === userResponse?.selectedOption[0]
+  //       );
+
+  //       return (
+  //         <div className={rowClassName} key={index}>
+  //           <h5>Question {index + 1}</h5>
+  //           <p className="w-75 fs-5">{item.title}</p>
+  //           <p
+  //             dangerouslySetInnerHTML={{
+  //               __html: item.description,
+  //             }}
+  //           ></p>
+
+  //           {benchmark.user_resp?.length > 0 ? (
+  //             <div className="d-flex mt-4">
+  //               {item.answerOptions &&
+  //                 item.answerOptions.map((btn, btnIndex) => {
+  //                   // Check if the answer is already selected for the current question
+  //                   const isSelected =
+  //                     selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+  //                   let buttonClass = "button";
+
+  //                   if (
+  //                     selectedAnswerIds[item._id] &&
+  //                     selectedAnswerIds[item._id].includes(btn._id)
+  //                   ) {
+  //                     buttonClass += " active";
+  //                   }
+
+  //                   if (
+  //                     selectedOption?._id !== undefined
+  //                       ? selectedOption?._id === btn._id
+  //                       : activeButtonIndex === btnIndex
+  //                   ) {
+  //                     buttonClass += " active";
+  //                   }
+
+  //                   return (
+  //                     <div className="buttons-container" key={btnIndex}>
+  //                       <button
+  //                         onClick={() => {
+  //                           setSelectedAnswerIds((prevSelectedAnswerIds) => {
+  //                             const questionId = item._id;
+  //                             const selectedIds =
+  //                               prevSelectedAnswerIds[questionId] || [];
+
+  //                             if (isSelected) {
+  //                               return {
+  //                                 ...prevSelectedAnswerIds,
+  //                                 [questionId]: selectedIds.filter(
+  //                                   (id) => id !== btn._id
+  //                                 ),
+  //                               };
+  //                             } else {
+  //                               return {
+  //                                 ...prevSelectedAnswerIds,
+  //                                 [questionId]: [...selectedIds, btn._id],
+  //                               };
+  //                             }
+  //                           });
+  //                           console.log(selectedAnswerIds, "SLECTED IDS")
+
+  //                           handleButtonClick(
+  //                             (currentPage - 1) * numPages + index,
+  //                             btnIndex,
+  //                             btn.answerOption,
+  //                             item?._id,
+  //                             btn._id
+  //                             // selectedAnswerIds[btn._id] || [] // Pass the selected answer IDs for the current question
+  //                           );
+  //                         }}
+  //                         className={buttonClass}
+  //                       >
+  //                         {btn.answerOption.answerOption}
+  //                       </button>
+  //                     </div>
+  //                   );
+  //                 })}
+  //             </div>
+  //           ) : (
+  //             <div className="d-flex mt-4">
+  //               {item.answerOptions &&
+  //                 item.answerOptions.map((btn, btnIndex) => {
+  //                   // Check if the answer is already selected for the current question
+  //                   const isSelected =
+  //                     selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+  //                   let buttonClass = "button";
+  //                   if (
+  //                     selectedAnswerIds[item._id] &&
+  //                     selectedAnswerIds[item._id].includes(btn._id)
+  //                   ) {
+  //                     buttonClass += " active";
+  //                   }
+
+  //                   return (
+  //                     <div className="buttons-container" key={btnIndex}>
+  //                       <button
+  //                         onClick={() => {
+  //                           setSelectedAnswerIds((prevSelectedAnswerIds) => {
+  //                             const questionId = item._id;
+  //                             const selectedIds =
+  //                               prevSelectedAnswerIds[questionId] || [];
+
+  //                             if (isSelected) {
+  //                               return {
+  //                                 ...prevSelectedAnswerIds,
+  //                                 [questionId]: selectedIds.filter(
+  //                                   (id) => id !== btn._id
+  //                                 ),
+  //                               };
+  //                             } else {
+  //                               return {
+  //                                 ...prevSelectedAnswerIds,
+  //                                 [questionId]: [...selectedIds, btn._id],
+  //                               };
+  //                             }
+  //                           });
+  //                           console.log(selectedAnswerIds, "SLECTED IDS")
+
+  //                           handleButtonClick(
+  //                             (currentPage - 1) * numPages + index,
+  //                             btnIndex,
+  //                             btn.answerOption,
+  //                             item?._id,
+  //                             btn._id
+  //                           );
+  //                         }}
+  //                         className={buttonClass}
+  //                       >
+  //                         {btn.answerOption.answerOption}
+  //                       </button>
+  //                     </div>
+  //                   );
+  //                 })}
+  //             </div>
+  //           )}
+  //         </div>
+  //       );
+  //     });
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
@@ -203,6 +408,48 @@ const Benchmarking = () => {
           (option) => option?._id === userResponse?.selectedOption[0]
         );
 
+        // Check if includeExplanation is true for the matched option
+        const includeExplanation =
+          selectedOption?.includeExplanation &&
+          userResponse?.selectedOption.includes(selectedOption?._id);
+
+        // Create the explanation textarea if includeExplanation is true
+        const explanationTextarea = includeExplanation ? (
+          <textarea
+            value={selectedExplanation}
+            onChange={(e) => setSelectedExplanation(e.target.value)}
+          ></textarea>
+        ) : null;
+
+        let isIncludeExplanation = false;
+        let isIncludeInputField = false;
+
+        // Iterate over each response in user_resp
+        for (const response of user_resp) {
+          const selectedOptions = response.selectedOption;
+
+          // Iterate over each selected option in the response
+          for (const selectedOptionId of selectedOptions) {
+            // Find the matching answer option based on ID
+            const matchingOption = matching_answer_options[1]?.find(
+              (option) => option._id === selectedOptionId
+            );
+
+            // Check if matching option exists and update the variables accordingly
+            if (matchingOption) {
+              if (matchingOption.answerOption.includeExplanation) {
+                isIncludeExplanation = true;
+              }
+              if (matchingOption.answerOption.includeInputField) {
+                isIncludeInputField = true;
+              }
+            }
+          }
+        }
+
+        // Print the results
+        console.log("isIncludeExplanation:", isIncludeExplanation);
+        console.log("isIncludeInputField:", isIncludeInputField);
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {index + 1}</h5>
@@ -238,16 +485,9 @@ const Benchmarking = () => {
                       buttonClass += " active";
                     }
 
-                    // let buttonClass = "button";
-                    // if (
-                    //   selectedAnswerIds[item._id] &&
-                    //   selectedAnswerIds[item._id].includes(btn._id)
-                    // ) {
-                    //   buttonClass += " active";
-                    // }
-
                     return (
                       <div className="buttons-container" key={btnIndex}>
+                        {includeExplanation && explanationTextarea}
                         <button
                           onClick={() => {
                             setSelectedAnswerIds((prevSelectedAnswerIds) => {
@@ -276,7 +516,6 @@ const Benchmarking = () => {
                               btn.answerOption,
                               item?._id,
                               btn._id
-                              // selectedAnswerIds[btn._id] || [] // Pass the selected answer IDs for the current question
                             );
                           }}
                           className={buttonClass}
@@ -305,6 +544,7 @@ const Benchmarking = () => {
 
                     return (
                       <div className="buttons-container" key={btnIndex}>
+                        {includeExplanation && explanationTextarea}
                         <button
                           onClick={() => {
                             setSelectedAnswerIds((prevSelectedAnswerIds) => {

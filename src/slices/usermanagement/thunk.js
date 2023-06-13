@@ -1,5 +1,16 @@
 import axios from "axios";
 import { apiError, userDetailFailure, userDetailSuccess } from "./reducer";
+
+export const getAllUsers = async () => {
+  try {
+    const resp = await axios.get(`http://192.168.137.1:5000/api/v1/auth/user`);
+    console.log(resp, "RES");
+    return resp;
+  } catch (error) {
+    console.log(error, "Unable to get Users");
+  }
+};
+
 export const getUserDetails = async () => {
   try {
     // const resp = await axios.get("http://localhost:5000/api/v1/user/");

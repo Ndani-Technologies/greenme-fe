@@ -267,6 +267,22 @@ export const createAdminActions = async (data) => {
   }
 };
 
+export const getSingleAction = async (id) => {
+  try {
+    const res = await axios.get(
+      `${process.env.REACT_APP_RA_URL}actionsteps/filter/ByUser/${id}`
+    );
+    if (res !== undefined) {
+      console.log(res, "INSIDE THUNL");
+      return res[0]?.updatedAt;
+    } else {
+      console.log("Still not loaded");
+    }
+  } catch (error) {
+    console.log(error, "Unable to get data");
+  }
+};
+
 export const updatedAdminActions = async (data, id) => {
   try {
     const res = await axios.patch(
