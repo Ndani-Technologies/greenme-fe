@@ -85,11 +85,12 @@ const MyCartDropdown = () => {
           tag="button"
           className="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
         >
-          <i className="bx bx-shopping-bag fs-22"></i>
-          <span className="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-info">
-            {cartItem}
-            <span className="visually-hidden">unread messages</span>
-          </span>
+          <Link
+            to={process.env.PUBLIC_URL + "/pages-faqs"}
+            className="dropdown-item"
+          >
+            <i className="mdi mdi-lifebuoy text-muted fs-22 align-middle me-1"></i>
+          </Link>
         </DropdownToggle>
         <DropdownMenu
           className="dropdown-menu-xl dropdown-menu-end p-0"

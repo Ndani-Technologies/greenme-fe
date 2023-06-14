@@ -14,6 +14,10 @@ import { Table, Row, Col, Button, Input, CardBody } from "reactstrap";
 import { DefaultColumnFilter } from "./filters";
 import {
   ProductsGlobalFilter,
+  FilterA,
+  FilterAction,
+  FilterBenchmarkAction,
+  FilterCollaboration,
   CustomersGlobalFilter,
   OrderGlobalFilter,
   ContactsGlobalFilter,
@@ -24,6 +28,8 @@ import {
   TicketsListGlobalFilter,
   NFTRankingGlobalFilter,
   TaskListGlobalFilter,
+  DateRangeGlobalFilter,
+  AllQaFilters,
 } from "../../Components/Common/GlobalSearchFilter";
 
 // Define a default UI for filtering
@@ -31,6 +37,7 @@ function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
+  isBenchmarkingQASearch,
   isCustomerFilter,
   isOrderFilter,
   isContactsFilter,
@@ -39,10 +46,15 @@ function GlobalFilter({
   isInvoiceListFilter,
   isTicketsListFilter,
   isNFTRankingFilter,
+  isAllQaFilters,
   isTaskListFilter,
   isProductsFilter,
   isLeadsFilter,
   SearchPlaceholder,
+  isFilterA,
+  isFilterAction,
+  isFilterBenchmarkAction,
+  isSearchInput,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -54,31 +66,47 @@ function GlobalFilter({
       <CardBody className="border border-dashed border-end-0 border-start-0">
         <form>
           <Row className="g-3">
-            <Col>
-              <div
-                className={
-                  isProductsFilter ||
-                  isContactsFilter ||
-                  isCompaniesFilter ||
-                  isNFTRankingFilter
-                    ? "search-box me-2 mb-2 d-inline-block"
-                    : "search-box me-2 mb-2 d-inline-block col-12"
-                }
-              >
-                <input
-                  onChange={(e) => {
-                    setValue(e.target.value);
-                    onChange(e.target.value);
-                  }}
-                  id="search-bar-0"
-                  type="text"
-                  className="form-control search /"
-                  placeholder={SearchPlaceholder}
-                  value={value || ""}
+            <Col className="d-flex align-items-center justify-content-between w-100">
+              {true && (
+                <div
+                  className={
+                    isProductsFilter ||
+                    isContactsFilter ||
+                    isCompaniesFilter ||
+                    isNFTRankingFilter ||
+                    isBenchmarkingQASearch ||
+                    isSearchInput
+                      ? "search-box me-2 mb-0 d-inline-block"
+                      : "search-box me-2 mb-0 d-inline-block col-3 d-none"
+                  }
+                >
+                  <input
+                    onChange={(e) => {
+                      setValue(e.target.value);
+                      onChange(e.target.value);
+                    }}
+                    id="search-bar-0"
+                    type="text"
+                    className="form-control search /"
+                    placeholder={SearchPlaceholder}
+                    value={value || ""}
+                  />
+                  <i className="bx bx-search-alt search-icon"></i>
+                </div>
+              )}
+              {isAllQaFilters && <AllQaFilters />}
+              {isFilterA && <FilterA />}
+              {isFilterBenchmarkAction && (
+                <FilterBenchmarkAction
+                  globalFilter={globalFilter}
+                  useAsyncDebounce={useAsyncDebounce}
+                  setGlobalFilter={setGlobalFilter}
                 />
-                <i className="bx bx-search-alt search-icon"></i>
-              </div>
+              )}
+              {/* <FilterA /> */}
             </Col>
+            {isFilterAction && <FilterAction />}
+            {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
@@ -99,6 +127,14 @@ function GlobalFilter({
 
 const TableContainer = ({
   columns,
+  setInfo,
+  isBenchmarkingQASearch,
+  isFilterA,
+  isFilterAction,
+  isFilterBenchmarkAction,
+  isAllQaFilters,
+  isHorzontal,
+  isFooter,
   data,
   isGlobalSearch,
   isGlobalFilter,
@@ -112,6 +148,7 @@ const TableContainer = ({
   isInvoiceListFilter,
   isTicketsListFilter,
   isNFTRankingFilter,
+  isSearchInput,
   isTaskListFilter,
   isAddOptions,
   isAddUserList,
@@ -123,6 +160,7 @@ const TableContainer = ({
   tableClass,
   theadClass,
   trClass,
+
   thClass,
   divClass,
   SearchPlaceholder,
@@ -202,6 +240,11 @@ const TableContainer = ({
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
+            isBenchmarkingQASearch={isBenchmarkingQASearch}
+            isFilterA={isFilterA}
+            isFilterAction={isFilterAction}
+            isFilterBenchmarkAction={isFilterBenchmarkAction}
+            isAllQaFilters={isAllQaFilters}
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}
@@ -213,6 +256,7 @@ const TableContainer = ({
             isInvoiceListFilter={isInvoiceListFilter}
             isTicketsListFilter={isTicketsListFilter}
             isNFTRankingFilter={isNFTRankingFilter}
+            isSearchInput={isSearchInput}
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
           />
@@ -267,85 +311,141 @@ const TableContainer = ({
       <div className={divClass}>
         <Table hover {...getTableProps()} className={tableClass}>
           <thead className={theadClass}>
-            {headerGroups.map((headerGroup) => (
-              <tr
-                className={trClass}
-                key={headerGroup.id}
-                {...headerGroup.getHeaderGroupProps()}
-              >
-                {headerGroup.headers.map((column) => (
-                  <th
-                    key={column.id}
-                    className={thClass}
-                    {...column.getSortByToggleProps()}
+            {isHorzontal
+              ? null
+              : headerGroups.map((headerGroup) => (
+                  <tr
+                    className={trClass}
+                    key={headerGroup.id}
+                    {...headerGroup.getHeaderGroupProps()}
                   >
-                    {column.render("Header")}
-                    {generateSortingIndicator(column)}
-                    {/* <Filter column={column} /> */}
-                  </th>
+                    {headerGroup.headers.map((column) => (
+                      <th
+                        key={column.id}
+                        className={thClass}
+                        {...column.getSortByToggleProps()}
+                      >
+                        {column.render("Header")}
+                        {/* <i class="bi bi-sort-alpha-up-alt"></i> */}
+                        {generateSortingIndicator(column)}
+                      </th>
+                    ))}
+                  </tr>
                 ))}
-              </tr>
-            ))}
           </thead>
 
           <tbody {...getTableBodyProps()}>
-            {page.map((row) => {
-              prepareRow(row);
-              return (
-                <Fragment key={row.getRowProps().key}>
-                  <tr>
-                    {row.cells.map((cell) => {
-                      return (
-                        <td key={cell.id} {...cell.getCellProps()}>
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                </Fragment>
-              );
-            })}
+            {isHorzontal &&
+              headerGroups.map((headerGroup) => (
+                <th
+                  className={trClass}
+                  key={headerGroup.id}
+                  {...headerGroup.getHeaderGroupProps()}
+                >
+                  {headerGroup.headers.map((column) => (
+                    <tr
+                      key={column.id}
+                      className={thClass}
+                      {...column.getSortByToggleProps()}
+                    >
+                      {column.render("Header")}
+                      {generateSortingIndicator(column)}
+                    </tr>
+                  ))}
+                </th>
+              ))}
+
+            {isHorzontal
+              ? page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <Fragment key={row.getRowProps().key}>
+                      <th>
+                        {row.cells.map((cell) => {
+                          return (
+                            <tr
+                              key={cell.id}
+                              {...cell.getCellProps()}
+                              onClick={() => {
+                                setInfo(cell?.row?.original);
+                              }}
+                            >
+                              {cell.render("Cell")}
+                            </tr>
+                          );
+                        })}
+                      </th>
+                    </Fragment>
+                  );
+                })
+              : page.map((row) => {
+                  prepareRow(row);
+                  return (
+                    <Fragment key={row.getRowProps().key}>
+                      <tr>
+                        {row.cells.map((cell) => {
+                          return (
+                            <td
+                              key={cell.id}
+                              {...cell.getCellProps()}
+                              onClick={() => {
+                                setInfo(cell?.row?.original);
+                              }}
+                            >
+                              {cell.render("Cell")}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    </Fragment>
+                  );
+                })}
           </tbody>
         </Table>
       </div>
+      {isFooter ? (
+        <Row className="justify-content-md-end justify-content-center align-items-center p-2">
+          <Col className="col-md-auto">
+            <div className="d-flex gap-1">
+              <Button
+                color="primary"
+                onClick={previousPage}
+                disabled={!canPreviousPage}
+              >
+                {"<"}
+              </Button>
+            </div>
+          </Col>
+          <Col className="col-md-auto d-none d-md-block">
+            Page{" "}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>
+          </Col>
+          <Col className="col-md-auto">
+            <Input
+              type="number"
+              min={1}
+              style={{ width: 70 }}
+              max={pageOptions.length}
+              defaultValue={pageIndex + 1}
+              onChange={onChangeInInput}
+            />
+          </Col>
 
-      <Row className="justify-content-md-end justify-content-center align-items-center p-2">
-        <Col className="col-md-auto">
-          <div className="d-flex gap-1">
-            <Button
-              color="primary"
-              onClick={previousPage}
-              disabled={!canPreviousPage}
-            >
-              {"<"}
-            </Button>
-          </div>
-        </Col>
-        <Col className="col-md-auto d-none d-md-block">
-          Page{" "}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>
-        </Col>
-        <Col className="col-md-auto">
-          <Input
-            type="number"
-            min={1}
-            style={{ width: 70 }}
-            max={pageOptions.length}
-            defaultValue={pageIndex + 1}
-            onChange={onChangeInInput}
-          />
-        </Col>
-
-        <Col className="col-md-auto">
-          <div className="d-flex gap-1">
-            <Button color="primary" onClick={nextPage} disabled={!canNextPage}>
-              {">"}
-            </Button>
-          </div>
-        </Col>
-      </Row>
+          <Col className="col-md-auto">
+            <div className="d-flex gap-1">
+              <Button
+                color="primary"
+                onClick={nextPage}
+                disabled={!canNextPage}
+              >
+                {">"}
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      ) : null}
     </Fragment>
   );
 };

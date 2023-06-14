@@ -1,0 +1,72 @@
+.Links {
+  display: flex;
+  justify-content: space-between;
+  width: 450px;
+  transition: 0.4s;
+  a {
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: black;
+  }
+}
+.hover {
+  &:hover {
+    color: #64c371;
+  }
+}
+.fs-7 {
+  margin-top: 15px;
+}
+.Feeedback {
+  width: 100%;
+  border: 1px solid #bcbcbc;
+  border-radius: 5px;
+  padding: 25px;
+  padding-bottom: 54px;
+  h4 {
+    margin-bottom: 17px;
+  }
+  Button {
+    background: #e7ebf4;
+    color: #6691e7;
+    border: none;
+    float: right;
+    margin-top: 10px;
+  }
+  textarea {
+    resize: vertical;
+  }
+}
+.Stars {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h4 {
+    color: #223558;
+  }
+}
+.Touch {
+  text-align: center;
+  Button {
+    background: #64c371;
+    border: none;
+  }
+  p {
+    color: #223558;
+  }
+}
+.d-flex.justify-content-center.gap-2 {
+  Button {
+    background: $primary;
+    border: none;
+  }
+}
+.accordion-body {
+  display: flex;
+  .Discription {
+    width: 420px;
+    border-radius: 5px;
+    padding: 6px;
+    background-color: $success;
+  }
+}

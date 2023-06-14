@@ -178,7 +178,7 @@ const VerticalLayout = (props) => {
               <li className="nav-item">
                 <Link
                   onClick={item.click}
-                  className="nav-link menu-link"
+                  className="nav-link menu-link "
                   to={item.link ? item.link : "/#"}
                   data-bs-toggle="collapse"
                 >
@@ -324,8 +324,12 @@ const VerticalLayout = (props) => {
             ) : (
               <li className="nav-item">
                 <Link
-                  className="nav-link menu-link"
+                  className={`nav-link menu-link ${
+                    item.disable ? "disabled" : ""
+                  }`}
                   to={item.link ? item.link : "/#"}
+                  disbaled={item.disbale}
+                  style={{ color: item.disable ? "#ced4da" : "grey" }}
                 >
                   <i className={item.icon}></i>{" "}
                   <span>{props.t(item.label)}</span>

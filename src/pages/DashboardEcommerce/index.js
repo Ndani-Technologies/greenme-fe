@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Col, Container, Row } from "reactstrap";
 
 const DashboardEcommerce = () => {
-  document.title = "Dashboard | Velzon - React Admin & Dashboard Template";
+  document.title = "Dashboard |GreenMe";
 
   const [rightColumn, setRightColumn] = useState(true);
   const toggleRightColumn = () => {

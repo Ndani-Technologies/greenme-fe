@@ -1,4 +1,4 @@
-module.exports = {
+const ob = {
   google: {
     API_KEY: "",
     CLIENT_ID: "",
@@ -8,6 +8,9 @@ module.exports = {
     APP_ID: "",
   },
   api: {
-    API_URL: "https://api-node.themesbrand.website",
+    // USER_URL: process.env.USER_URL || "",
+    // BENCHMARKING_URL: process.env.BENCHMARK_BASE_URL || ""
   },
 };
+
+export default ob;

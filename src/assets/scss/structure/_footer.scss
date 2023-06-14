@@ -3,6 +3,7 @@
 //
 
 .footer {
+  display: none;
   bottom: 0;
   padding: 20px calc(#{$grid-gutter-width} * 0.5);
   position: absolute;

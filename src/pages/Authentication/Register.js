@@ -82,7 +82,7 @@ const Register = () => {
     }, 3000);
   }, [dispatch, success, error, history]);
 
-  document.title = "Basic SignUp | Velzon - React Admin & Dashboard Template";
+  document.title = "Basic SignUp | GreenMe";
 
   return (
     <React.Fragment>

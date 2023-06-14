@@ -2,11 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dropdown, DropdownMenu, DropdownToggle, Form } from "reactstrap";
 
-//import images
-import logoSm from "../assets/images/logo-sm.png";
-import logoDark from "../assets/images/logo-dark.png";
-import logoLight from "../assets/images/logo-light.png";
-
 //import Components
 import SearchOption from "../Components/Common/SearchOption";
 import LanguageDropdown from "../Components/Common/LanguageDropdown";
@@ -84,25 +79,20 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             <div className="d-flex">
               <div className="navbar-brand-box horizontal-logo">
                 <Link to="/" className="logo logo-dark">
-                  <span className="logo-sm">
-                    <img src={logoSm} alt="" height="22" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={logoDark} alt="" height="17" />
+                  <span style={{ color: "#bec887", fontSize: "30px" }}>
+                    Green Me
                   </span>
                 </Link>
 
                 <Link to="/" className="logo logo-light">
-                  <span className="logo-sm">
-                    <img src={logoSm} alt="" height="22" />
-                  </span>
-                  <span className="logo-lg">
-                    <img src={logoLight} alt="" height="17" />
+                  <span style={{ color: "#fff", fontSize: "30px" }}>
+                    Green Me
                   </span>
                 </Link>
               </div>
 
               <button
+                data-id="menuButton"
                 onClick={toogleMenuBtn}
                 type="button"
                 className="btn btn-sm px-3 fs-16 header-item vertical-menu-btn topnav-hamburger"
