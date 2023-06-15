@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import {
   Card,
   CardBody,
@@ -18,6 +20,7 @@ import {
   Row,
   TabContent,
   TabPane,
+  Input,
 } from "reactstrap";
 import classnames from "classnames";
 import Layouts from "../../Layouts";
@@ -45,6 +48,209 @@ const Benchmarking = () => {
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
+
+    // const bench =  {
+    //   "_id": "648a39348b0522dbfbf6066b",
+    //   "title": "benc-ck",
+    //   "country": "Uganda",
+    //   "user": {
+    //     "_id": "6468d0ebe01631c2604a2376",
+    //     "email": "info@ndani.co.ke",
+    //     "organization": "Fleet Forum",
+    //     "firstName": "Ndani",
+    //     "lastName": "Tester 1",
+    //     "scope": [],
+    //     "otherCountries": [
+    //       "Tanzania, United Republic of",
+    //       "Uganda"
+    //     ],
+    //     "areaOfExpertise": [],
+    //     "profilePic": "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+    //     "uid": 1380,
+    //     "role": {
+    //       "_id": "6467ade8a992a3cf078ac815",
+    //       "title": "user",
+    //       "permissions": [
+    //         {
+    //           "_id": "6467adbfa992a3cf078ac810",
+    //           "title": "get user",
+    //           "route": "can get users",
+    //           "createdAt": "2023-05-19T17:11:27.244Z",
+    //           "updatedAt": "2023-05-19T17:11:27.244Z",
+    //           "__v": 0
+    //         }
+    //       ],
+    //       "createdAt": "2023-05-19T17:12:08.959Z",
+    //       "updatedAt": "2023-05-19T17:12:08.959Z",
+    //       "__v": 0
+    //     },
+    //     "timezone": "GMT",
+    //     "state": "active",
+    //     "createdAt": "2023-05-20T13:53:47.519Z",
+    //     "updatedAt": "2023-06-14T12:37:30.294Z",
+    //     "__v": 26,
+    //     "country": "Kenya",
+    //     "collaborationPoints": 0,
+    //     "discussionPoints": 0,
+    //     "actionPoints": 100,
+    //     "backgroundPic": "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+    //     "leaderboardPosition": 2,
+    //     "totalPoint": 100
+    //   },
+    //   "status": "Active",
+    //   "questionnaire": [
+    //     {
+    //       "whoHasAnswer": {
+    //       "userId": [],
+    //       "totalUsers": 0
+    //       },
+    //       "_id": "648a38ea8b0522dbfbf6059a",
+    //       "languageSelector": "English",
+    //       "status": true,
+    //       "visibility": true,
+    //       "title": "q1-ck",
+    //       "description": "<p>fjalkd</p>",
+    //       "category": {
+    //       "_id": "6487599b76c8f75525e4b3b0",
+    //       "language": "English",
+    //       "titleEng": "Fuel",
+    //       "__v": 0
+    //       },
+    //       "answerOptions": [
+    //       {
+    //       "answerOption": {
+    //       "_id": "6487563b76c8f75525e4b37d",
+    //       "language": "English",
+    //       "answerOption": "yes",
+    //       "includeExplanation": true,
+    //       "includeInputField": false,
+    //       "__v": 0,
+    //       "answerAttempt": 34
+    //       },
+    //       "includeExplanation": true,
+    //       "includeInputField": false,
+    //       "_id": "648a38ea8b0522dbfbf6059b"
+    //       },
+    //       {
+    //       "answerOption": {
+    //       "_id": "6487595b76c8f75525e4b3a5",
+    //       "language": "English",
+    //       "answerOption": "No",
+    //       "includeExplanation": false,
+    //       "includeInputField": true,
+    //       "__v": 0,
+    //       "answerAttempt": 34
+    //       },
+    //       "includeExplanation": false,
+    //       "includeInputField": true,
+    //       "_id": "648a38ea8b0522dbfbf6059c"
+    //       }
+    //       ],
+    //       "__v": 0
+    //       },
+    //       {
+    //         "whoHasAnswer": {
+    //         "userId": [],
+    //         "totalUsers": 0
+    //         },
+    //         "_id": "648a39258b0522dbfbf605a7",
+    //         "languageSelector": "English",
+    //         "status": true,
+    //         "visibility": true,
+    //         "title": "q2-ck",
+    //         "description": "<p>fdsajlklkdjsadjlkfa</p>",
+    //         "category": {
+    //         "_id": "6487599b76c8f75525e4b3b0",
+    //         "language": "English",
+    //         "titleEng": "Fuel",
+    //         "__v": 0
+    //         },
+    //         "answerOptions": [
+    //         {
+    //         "answerOption": {
+    //         "_id": "6487563b76c8f75525e4b37d",
+    //         "language": "English",
+    //         "answerOption": "yes",
+    //         "includeExplanation": true,
+    //         "includeInputField": false,
+    //         "__v": 0,
+    //         "answerAttempt": 34
+    //         },
+    //         "includeExplanation": true,
+    //         "includeInputField": false,
+    //         "_id": "648a39258b0522dbfbf605a8"
+    //         },
+    //         {
+    //         "answerOption": {
+    //         "_id": "6487595b76c8f75525e4b3a5",
+    //         "language": "English",
+    //         "answerOption": "No",
+    //         "includeExplanation": false,
+    //         "includeInputField": true,
+    //         "__v": 0,
+    //         "answerAttempt": 34
+    //         },
+    //         "includeExplanation": false,
+    //         "includeInputField": true,
+    //         "_id": "648a39258b0522dbfbf605a9"
+    //         }
+    //         ],
+    //         "__v": 0
+    //         }
+    //   ],
+    //   "completionLevel": 3.7735849056603774,
+    //   "start_date": "2023-06-14T22:03:32.809Z",
+    //   "user_resp": [
+    //     {
+    //       "questionId": "648a38ea8b0522dbfbf6059a",
+    //       "selectedOption": [
+    //         {
+    //           "answerOption": "6487563b76c8f75525e4b37d",
+    //           "includeExplanation": "true",
+    //           "includeInputField": "false",
+    //           "includeExplanationValue": "<p>hi</p>",
+    //           "includeInputFieldValue": "",
+    //           "_id": "648a5bcb21cfc6c4ec4a88ac"
+    //         },
+    //         {
+    //           "answerOption": "6487595b76c8f75525e4b3a5",
+    //           "includeExplanation": "false",
+    //           "includeInputField": "true",
+    //           "includeExplanationValue": "",
+    //           "includeInputFieldValue": "hi 2",
+    //           "_id": "648a5bcb21cfc6c4ec4a88ad"
+    //         }
+    //       ],
+    //       "_id": "648a5bcb21cfc6c4ec4a88ab"
+    //     },
+    //     {
+    //       "questionId": "648a39258b0522dbfbf605a7",
+    //       "selectedOption": [
+    //         {
+    //           "answerOption": "6487563b76c8f75525e4b37d",
+    //           "includeExplanation": "true",
+    //           "includeInputField": "false",
+    //           "includeExplanationValue": "<p>hello&nbsp;</p>",
+    //           "includeInputFieldValue": "",
+    //           "_id": "648a5bcb21cfc6c4ec4a88af"
+    //         },
+    //         {
+    //           "answerOption": "6487595b76c8f75525e4b3a5",
+    //           "includeExplanation": "false",
+    //           "includeInputField": "true",
+    //           "includeExplanationValue": "",
+    //           "includeInputFieldValue": "hello2",
+    //           "_id": "648a5bcb21cfc6c4ec4a88b0"
+    //         }
+    //       ],
+    //       "_id": "648a5bcb21cfc6c4ec4a88ae"
+    //     }
+    //   ],
+    //   "__v": 0,
+    //   "end_date": null
+    // }
+    // setBenchmark(bench);
+
     const arr = [];
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
@@ -52,7 +258,7 @@ const Benchmarking = () => {
     const uniqueArr = Array.from(
       new Set(arr.map((item) => item?.titleEng))
     ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
-    // console.log("benchmark single", bench, benchmark)
+    if (uniqueArr.length > 0) setjustifyPillsTab(uniqueArr[0]._id);
     setCategory(uniqueArr);
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
       if (value.category?._id === arr[0]._id) return value;
@@ -65,6 +271,33 @@ const Benchmarking = () => {
 
     // setBenchmark(benchmarkByCategory);
   }, []);
+  // useEffect(() => {
+  //   const userResponse = benchmark?.user_resp?.find(
+  //     (resp) => resp?.questionId === item?._id
+  //   );
+
+  //   const selectedOption = userResponse?.selectedOption.filter(
+  //     // (option) => option?._id === userResponse?.selectedOption[0]
+  //     (selct) =>
+  //       item?.answerOptions?.find((option) => {
+
+  //         return selct.answerOption === option.answerOption._id;
+  //       })
+  //   );
+  //   const updatedFields = {};
+  //   benchmark.questionnaire.forEach((item)=>{
+
+  //     item.answerOptions.forEach((btn) => {
+  //       const inputField = selectedOption.find((a) => a.answerOption === btn.answerOption._id)?.includeInputFieldValue;
+  //       updatedFields[btn.answerOption._id] = inputField;
+  //     });
+  //   })
+
+  //   setIncludeInputField((prevState) => ({
+  //     ...prevState,
+  //     [item._id]: updatedFields,
+  //   }));
+  // }, [benchmark]);
 
   //HANDLING STYLE CHANGE ON SCREEN SIZE CHANGE
 
@@ -87,7 +320,6 @@ const Benchmarking = () => {
     };
   }, []);
 
-  console.log(benchmark, "bench");
   const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
 
   const getProgressPercentage = async () => {
@@ -127,13 +359,75 @@ const Benchmarking = () => {
   const [user_resp, setUser_resp] = useState([]);
   const [activeIndexes, setActiveIndexes] = useState({});
   const [selectedAnswerIds, setSelectedAnswerIds] = useState([]);
+  const [includeExplanation, setIncludeExplanation] = useState("");
+  const [includeInputField, setIncludeInputField] = useState("");
 
+  // const handleButtonClick = (
+  //   questionIndex,
+  //   buttonIndex,
+  //   answerOption,
+  //   qid,
+  //   aid
+  // ) => {
+  //   setActiveIndexes((prevState) => ({
+  //     ...prevState,
+  //     [questionIndex]: buttonIndex,
+  //   }));
+
+  //   setUser_resp((prevUserResp) => {
+  //     const newUserResp = [...prevUserResp];
+  //     const userRespIndex = newUserResp.findIndex(
+  //       (resp) => resp.questionId === qid
+  //     );
+
+  //     if (userRespIndex !== -1) {
+  //       const updatedUserResp = {
+  //         ...newUserResp[userRespIndex],
+  //         selectedOption: [...newUserResp[userRespIndex].selectedOption],
+  //       };
+
+  //       if (updatedUserResp.selectedOption.includes(aid)) {
+  //         // Remove the answer ID if it already exists in the array
+  //         updatedUserResp.selectedOption =
+  //           updatedUserResp.selectedOption.filter((id) => id !== aid);
+  //       } else {
+  //         // Add the answer ID if it doesn't exist in the array
+  //         updatedUserResp.selectedOption.push({
+  //           answerOption: aid,
+  //           includeExplanation,
+  //           includeInputField,
+  //         });
+  //       }
+
+  //       newUserResp[userRespIndex] = updatedUserResp;
+  //     } else {
+  //       // Add new user response to the array
+  //       // let arr = [];
+  //       // arr.push(aid);
+  //       newUserResp.push({
+  //         questionId: qid,
+  //         selectedOption: [
+  //           { answerOption: aid, includeExplanation, includeInputField },
+  //         ],
+  //       });
+  //     }
+
+  //     return newUserResp;
+  //   });
+
+  //   console.log("user_resp", user_resp);
+  //   // Your other logic here
+  // };
+
+  //trail 2 today
   const handleButtonClick = (
     questionIndex,
     buttonIndex,
     answerOption,
     qid,
-    aid
+    aid,
+    isIncludeExplanation,
+    isInlcudeInput
   ) => {
     setActiveIndexes((prevState) => ({
       ...prevState,
@@ -152,34 +446,58 @@ const Benchmarking = () => {
           selectedOption: [...newUserResp[userRespIndex].selectedOption],
         };
 
-        if (updatedUserResp.selectedOption.includes(aid)) {
-          // Remove the answer ID if it already exists in the array
-          updatedUserResp.selectedOption =
-            updatedUserResp.selectedOption.filter((id) => id !== aid);
+        const optionIndex = updatedUserResp.selectedOption.findIndex(
+          (option) => option.answerOption === aid
+        );
+
+        if (optionIndex !== -1) {
+          // Update the existing option
+          updatedUserResp.selectedOption[optionIndex] = {
+            answerOption: aid,
+            includeExplanationValue:
+              (isIncludeExplanation && includeExplanation[qid]) || "",
+            includeInputFieldValue:
+              (isInlcudeInput && includeInputField[qid]) || "",
+            includeExplanation: isIncludeExplanation,
+            includeInputField: isInlcudeInput,
+          };
         } else {
-          // Add the answer ID if it doesn't exist in the array
-          updatedUserResp.selectedOption.push(aid);
+          // Add a new option
+          updatedUserResp.selectedOption.push({
+            answerOption: aid,
+            includeExplanationValue:
+              (isIncludeExplanation && includeExplanation[qid]) || "",
+            includeInputFieldValue:
+              (isInlcudeInput && includeInputField[qid]) || "",
+            includeExplanation: isIncludeExplanation,
+            includeInputField: isInlcudeInput,
+          });
         }
 
         newUserResp[userRespIndex] = updatedUserResp;
       } else {
         // Add new user response to the array
-        // let arr = [];
-        // arr.push(aid);
         newUserResp.push({
           questionId: qid,
-          selectedOption: [aid],
-          comment: "",
+          selectedOption: [
+            {
+              answerOption: aid,
+              includeExplanationValue:
+                (isIncludeExplanation && includeExplanation[qid]) || "",
+              includeExplanation: isIncludeExplanation,
+              includeInputField: isInlcudeInput,
+              includeInputFieldValue:
+                (isInlcudeInput && includeInputField[qid]) || "",
+            },
+          ],
         });
       }
 
       return newUserResp;
     });
-
-    console.log("user_resp", user_resp);
-    // Your other logic here
   };
 
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
@@ -198,38 +516,55 @@ const Benchmarking = () => {
             option?._id === userResponse?.selectedOption.map((val) => val)
         );
 
-        const selectedOption = item?.answerOptions?.find(
-          (option) => option?._id === userResponse?.selectedOption[0]
+        const selectedOption = userResponse?.selectedOption.filter(
+          // (option) => option?._id === userResponse?.selectedOption[0]
+          (selct) =>
+            item?.answerOptions?.find((option) => {
+              return selct.answerOption === option.answerOption._id;
+            })
         );
 
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {index + 1}</h5>
             <p className="w-75 fs-5">{item.title}</p>
-            <p>{item.description}</p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: item.description,
+              }}
+            ></p>
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     // Check if the answer is already selected for the current question
                     const isSelected =
-                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+                      selectedAnswerIds[item._id]?.includes(
+                        btn.answerOption._id
+                      ) || false;
 
                     let buttonClass = "button";
 
                     if (
                       selectedAnswerIds[item._id] &&
-                      selectedAnswerIds[item._id].includes(btn._id)
+                      selectedAnswerIds[item._id].includes(btn.answerOption._id)
                     ) {
                       buttonClass += " active";
                     }
-
-                    if (
-                      selectedOption?._id !== undefined
-                        ? selectedOption?._id === btn._id
-                        : activeButtonIndex === btnIndex
-                    ) {
+                    const check = selectedOption?.some(
+                      (a) => a.answerOption !== undefined
+                    )
+                      ? selectedOption?.some(
+                          (a) => a.answerOption === btn.answerOption._id
+                        )
+                      : activeButtonIndex === btnIndex;
+                    if (check) {
                       buttonClass += " active";
+                      // const inputFIeld  = selectedOption.find((a)=>a.answerOption === btn.answerOption._id)?.includeInputFieldValue
+                      // setIncludeInputField((prevState) => ({
+                      //   ...prevState,
+                      //   [item._id]: inputFIeld
+                      // }));
                     }
 
                     // let buttonClass = "button";
@@ -241,48 +576,258 @@ const Benchmarking = () => {
                     // }
 
                     return (
-                      <div className="buttons-container" key={btnIndex}>
-                        <button
-                          onClick={() => {
-                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
-                              const questionId = item._id;
-                              const selectedIds =
-                                prevSelectedAnswerIds[questionId] || [];
+                      <div>
+                        {isSelected || check ? (
+                          <>
+                            {btn.includeExplanation && (
+                              <div className="">
+                                <CKEditor
+                                  editor={ClassicEditor}
+                                  onReady={(editor) => {
+                                    editor.setData(
+                                      selectedOption.find(
+                                        (a) =>
+                                          a.answerOption ===
+                                          btn.answerOption._id
+                                      ).includeExplanationValue
+                                    );
+                                  }}
+                                  onChange={(e, editor) => {
+                                    const value = editor.getData();
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                  }}
+                                  onBlur={(e, editor) => {
+                                    const value = editor.getData();
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
+                                  }}
+                                  class="form-control"
+                                  placeholder="Description"
+                                  id="floatingTextarea"
+                                  value=""
+                                  style={{
+                                    height: "120px",
+                                    overflow: "hidden",
+                                    backgroundColor: "#dfdfdf",
+                                  }}
+                                />
+                              </div>
+                            )}
+                            {btn.includeInputField && (
+                              <div>
+                                <Input
+                                  type="text"
+                                  className="form-control"
+                                  id="input-field"
+                                  placeholder=""
+                                  value={
+                                    includeInputField[item._id] ||
+                                    selectedOption.find(
+                                      (a) =>
+                                        a.answerOption === btn.answerOption._id
+                                    ).includeInputFieldValue !== undefined
+                                      ? selectedOption.find(
+                                          (a) =>
+                                            a.answerOption ===
+                                            btn.answerOption._id
+                                        ).includeInputFieldValue
+                                      : ""
+                                  }
+                                  // value={includeInputField[item._id] ||  ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                  }}
+                                  onBlur={(e) => {
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
+                        ) : null}
+                        <div className="buttons-container" key={btnIndex}>
+                          <button
+                            onClick={() => {
+                              setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                                const questionId = item._id;
+                                const selectedIds =
+                                  prevSelectedAnswerIds[questionId] || [];
 
-                              if (isSelected) {
-                                return {
-                                  ...prevSelectedAnswerIds,
-                                  [questionId]: selectedIds.filter(
-                                    (id) => id !== btn._id
-                                  ),
-                                };
-                              } else {
-                                return {
-                                  ...prevSelectedAnswerIds,
-                                  [questionId]: [...selectedIds, btn._id],
-                                };
-                              }
-                            });
+                                if (isSelected) {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: selectedIds.filter(
+                                      (id) => id !== btn._id
+                                    ),
+                                  };
+                                } else {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: [...selectedIds, btn._id],
+                                  };
+                                }
+                              });
 
-                            handleButtonClick(
-                              (currentPage - 1) * numPages + index,
-                              btnIndex,
-                              btn.answerOption,
-                              item?._id,
-                              btn._id
-                              // selectedAnswerIds[btn._id] || [] // Pass the selected answer IDs for the current question
-                            );
-                          }}
-                          className={buttonClass}
-                        >
-                          {btn.answerOption}
-                        </button>
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn._id
+                                // selectedAnswerIds[btn._id] || [] // Pass the selected answer IDs for the current question
+                              );
+                            }}
+                            className={buttonClass}
+                          >
+                            {btn.answerOption.answerOption}
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
               </div>
             ) : (
               <div className="d-flex mt-4">
+                {/* {item.answerOptions &&
+                  item.answerOptions.map((btn, btnIndex) => {
+                    // Check if the answer is already selected for the current question
+                    const isSelected =
+                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+                    let buttonClass = "button";
+                    if (
+                      selectedAnswerIds[item._id] &&
+                      selectedAnswerIds[item._id].includes(btn._id)
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    return (
+                      <>
+                        <div key={btnIndex}>
+                          {isSelected ? (
+                            <>
+                              {btn.includeExplanation && (
+                                <div className="">
+                                  <CKEditor
+                                    editor={ClassicEditor}
+                                    onReady={(editor) => {}}
+                                    onChange={(e, editor) => {
+                                      const value = editor.getData();
+                                      setIncludeExplanation(value);
+                                    }}
+                                    onBlur={(e, editor) => {
+                                      const value = editor.getData();
+                                      setIncludeExplanation(value);
+                                    }}
+                                    validate={{
+                                      required: { value: true },
+                                    }}
+                                    class="form-control"
+                                    placeholder="Description"
+                                    id="floatingTextarea"
+                                    value=""
+                                    style={{
+                                      height: "120px",
+                                      overflow: "hidden",
+                                      backgroundColor: "#dfdfdf",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                              {btn.includeInputField && (
+                                <div>
+                                  <Input
+                                    type="text"
+                                    className="form-control"
+                                    id="input-field"
+                                    placeholder=""
+                                    value={includeInputField}
+                                    onChange={(e) => {
+                                      setIncludeInputField(e.target.value);
+                                    }}
+                                    onBlur={(e) => {
+                                      setIncludeInputField(e.target.value);
+                                    }}
+                                  />
+                                </div>
+                              )}
+                            </>
+                          ) : null}
+                          <div className="buttons-container">
+                            <button
+                              onClick={() => {
+                                setSelectedAnswer(btn);
+                                setSelectedAnswerIds(
+                                  (prevSelectedAnswerIds) => {
+                                    const questionId = item._id;
+                                    const selectedIds =
+                                      prevSelectedAnswerIds[questionId] || [];
+
+                                    if (isSelected) {
+                                      return {
+                                        ...prevSelectedAnswerIds,
+                                        [questionId]: selectedIds.filter(
+                                          (id) => id !== btn._id
+                                        ),
+                                      };
+                                    } else {
+                                      return {
+                                        ...prevSelectedAnswerIds,
+                                        [questionId]: [...selectedIds, btn._id],
+                                      };
+                                    }
+                                  }
+                                );
+
+                                handleButtonClick(
+                                  (currentPage - 1) * numPages + index,
+                                  btnIndex,
+                                  btn.answerOption,
+                                  item?._id,
+                                  btn.answerOption._id
+                                );
+                              }}
+                              className={buttonClass}
+                            >
+                              {btn.answerOption.answerOption}
+                            </button>
+                          </div>
+                        </div>
+                      </>
+                    );
+                  })} */}
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     // Check if the answer is already selected for the current question
@@ -298,41 +843,138 @@ const Benchmarking = () => {
                     }
 
                     return (
-                      <div className="buttons-container" key={btnIndex}>
-                        <button
-                          onClick={() => {
-                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
-                              const questionId = item._id;
-                              const selectedIds =
-                                prevSelectedAnswerIds[questionId] || [];
+                      <div key={btnIndex}>
+                        {isSelected ? (
+                          <>
+                            {btn.includeExplanation && (
+                              <div className="">
+                                <CKEditor
+                                  editor={ClassicEditor}
+                                  onReady={(editor) => {}}
+                                  onChange={(e, editor) => {
+                                    const value = editor.getData();
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                  }}
+                                  onBlur={(e, editor) => {
+                                    const value = editor.getData();
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
+                                  }}
+                                  validate={{
+                                    required: { value: true },
+                                  }}
+                                  class="form-control"
+                                  placeholder="Description"
+                                  id="floatingTextarea"
+                                  value=""
+                                  style={{
+                                    height: "120px",
+                                    overflow: "hidden",
+                                    backgroundColor: "#dfdfdf",
+                                  }}
+                                />
+                              </div>
+                            )}
+                            {btn.includeInputField && (
+                              <div>
+                                <Input
+                                  type="text"
+                                  className="form-control"
+                                  id="input-field"
+                                  placeholder=""
+                                  value={includeInputField[item._id] || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                  }}
+                                  onBlur={(e) => {
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
+                        ) : null}
+                        <div className="buttons-container">
+                          <button
+                            onClick={() => {
+                              setSelectedAnswer(btn);
+                              setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                                const questionId = item._id;
+                                const selectedIds =
+                                  prevSelectedAnswerIds[questionId] || [];
 
-                              if (isSelected) {
-                                return {
-                                  ...prevSelectedAnswerIds,
-                                  [questionId]: selectedIds.filter(
-                                    (id) => id !== btn._id
-                                  ),
-                                };
-                              } else {
-                                return {
-                                  ...prevSelectedAnswerIds,
-                                  [questionId]: [...selectedIds, btn._id],
-                                };
-                              }
-                            });
+                                if (isSelected) {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: selectedIds.filter(
+                                      (id) => id !== btn._id
+                                    ),
+                                  };
+                                } else {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: [...selectedIds, btn._id],
+                                  };
+                                }
+                              });
 
-                            handleButtonClick(
-                              (currentPage - 1) * numPages + index,
-                              btnIndex,
-                              btn.answerOption,
-                              item?._id,
-                              btn._id
-                            );
-                          }}
-                          className={buttonClass}
-                        >
-                          {btn.answerOption}
-                        </button>
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn.answerOption._id,
+                                btn.includeExplanation,
+                                btn.includeInputField
+                              );
+                            }}
+                            onBlur={() => {
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn.answerOption._id,
+                                btn.includeExplanation,
+                                btn.includeInputField
+                              );
+                            }}
+                            className={buttonClass}
+                          >
+                            {btn.answerOption.answerOption}
+                          </button>
+                        </div>
                       </div>
                     );
                   })}
@@ -344,15 +986,21 @@ const Benchmarking = () => {
 
   const obj = JSON.parse(sessionStorage.getItem("authUser"));
   const userId = obj._id;
-  const requestBody = {
-    userId: userId,
-    user_resp: user_resp,
-  };
 
   const handleSubmit = () => {
-    toast.success("benchmark is successfully submitted");
-
-    updateUserResp(benchmark?._id, requestBody, navigate);
+    const requestBody = {
+      userId: userId,
+      user_resp: user_resp,
+    };
+    const toastt_id = toast.loading("Please wait...");
+    updateUserResp(benchmark?._id, requestBody, navigate).then((resp) => {
+      toast.update(toastt_id, {
+        render: "benchmark is successfully submitted",
+        type: "success",
+        isLoading: false,
+      });
+      // toast.success("benchmark is successfully submitted");
+    });
   };
 
   const [benchmarkCreation, setbenchmarkCreation] = useState(false);
@@ -365,6 +1013,9 @@ const Benchmarking = () => {
 
   const handleSubmitModal = () => {
     tog_center();
+  };
+  const cancelCreation = () => {
+    setbenchmarkCreation(!benchmarkCreation);
   };
 
   return (
@@ -414,37 +1065,76 @@ const Benchmarking = () => {
                     {renderedQuestions}
                   </div>
                   <div>
-                    <div className="d-flex align-items-center border-top border-dark">
-                      <div className="w-50">
-                        <Card className=" border-none mt-3">
-                          {progressPercentage && (
-                            <CardBody className="p-0">
-                              <div className="d-flex align-items-center mb-2 mt-4">
-                                <div className="flex-grow-1 d-flex justify-content-between w-100">
-                                  <h5 className="card-title mb-0">
-                                    <span>{progressPercentage}</span> Benchmark
-                                    progress
-                                  </h5>
-                                  <h5>{100 - progressPercentage} to go!</h5>
+                    <div className="">
+                      <div className="d-flex justify-content-between border-top border-dark">
+                        <Button
+                          onClick={() => {
+                            let currentIndex = category.findIndex(
+                              (value) => value._id === justifyPillsTab
+                            );
+                            let previousIndex = currentIndex - 1;
+
+                            if (previousIndex < 0) {
+                              previousIndex = category.length - 1; // Go to the last index
+                            }
+
+                            setjustifyPillsTab(category[previousIndex]._id);
+                            justifyPillsToggle(category[previousIndex]._id);
+                          }}
+                        >
+                          Back
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            const currentIndex = category.findIndex(
+                              (value) => value._id === justifyPillsTab
+                            );
+                            let nextIndex = currentIndex + 1;
+
+                            if (nextIndex >= category.length) {
+                              nextIndex = 0; // Go back to the first index
+                            }
+
+                            setjustifyPillsTab(category[nextIndex]._id);
+                            justifyPillsToggle(category[nextIndex]._id);
+                          }}
+                        >
+                          Next
+                        </Button>
+                      </div>
+                      <div className="d-flex align-items-center ">
+                        <div className="w-50">
+                          <Card className=" border-none mt-3">
+                            {progressPercentage && (
+                              <CardBody className="p-0">
+                                <div className="d-flex align-items-center mb-2 mt-4">
+                                  <div className="flex-grow-1 d-flex justify-content-between w-100">
+                                    <h5 className="card-title mb-0">
+                                      <span>{progressPercentage}</span>{" "}
+                                      Benchmark progress
+                                    </h5>
+                                    <h5>{100 - progressPercentage} to go!</h5>
+                                  </div>
                                 </div>
-                              </div>
-                              <div className="progress animated-progress custom-progress progress-label mt-3">
-                                <div
-                                  className="progress-bar bg- "
-                                  role="progressbar"
-                                  style={{
-                                    width: progressPercentage.toString() + "%",
-                                  }}
-                                  aria-valuenow={progressPercentage}
-                                  aria-valuemin="0"
-                                  aria-valuemax="100"
-                                >
-                                  {/* <div className="label">40%</div> */}
+                                <div className="progress animated-progress custom-progress progress-label mt-3">
+                                  <div
+                                    className="progress-bar bg- "
+                                    role="progressbar"
+                                    style={{
+                                      width:
+                                        progressPercentage.toString() + "%",
+                                    }}
+                                    aria-valuenow={progressPercentage}
+                                    aria-valuemin="0"
+                                    aria-valuemax="100"
+                                  >
+                                    {/* <div className="label">40%</div> */}
+                                  </div>
                                 </div>
-                              </div>
-                            </CardBody>
-                          )}
-                        </Card>
+                              </CardBody>
+                            )}
+                          </Card>
+                        </div>
                       </div>
                       <Col>
                         <div className="d-flex flex-column align-items-end">
@@ -568,7 +1258,7 @@ const Benchmarking = () => {
                         </ModalFooter>
                       </Modal> */}
 
-                      {/* <Modal
+                      <Modal
                         isOpen={benchmarkCreation}
                         toggle={cancelCreation}
                         centered
@@ -605,7 +1295,7 @@ const Benchmarking = () => {
                             Cancel
                           </Button>
                         </ModalFooter>
-                      </Modal> */}
+                      </Modal>
                     </div>
                   </div>
                 </TabPane>
