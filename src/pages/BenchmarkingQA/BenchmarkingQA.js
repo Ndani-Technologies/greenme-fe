@@ -175,7 +175,6 @@ const BenchmarkingQA = () => {
         status: "active" ? true : false,
         visibility: "True" ? true : false,
       };
-      console.log(mappedData, "MAPPED");
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
           .then((resp) => {
@@ -537,7 +536,6 @@ const BenchmarkingQA = () => {
 
   // SideBar Contact Deatail
   const [info, setInfo] = useState([]);
-  console.log(info, "INFO");
 
   // Export Modal
   const [modal_grid, setmodal_grid] = useState(false);
@@ -1075,111 +1073,6 @@ const BenchmarkingQA = () => {
                               >
                                 {isDataUpdated
                                   ? allAnswers &&
-                                    // allAnswers.map((value, index) => {
-                                    //   const isSelected =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //       {
-                                    //         return option.answerOption._id === value._id
-                                    //       }
-                                    //     );
-                                    //   const isSelectedIE =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //         option.answerOption._id === value._id &&
-                                    //         option.includeExplanation
-                                    //     );
-
-                                    //   const isSelectedIF =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //         option.answerOption._id === value._id &&
-                                    //         option.includeInputField
-                                    //     );
-
-                                    //   return (
-                                    //     <Draggable key={value._id} draggableId={value._id.toString()} index={index}>
-                                    //       {(provided) => (
-                                    //         <div
-                                    //           className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                    //           {...provided.draggableProps}
-                                    //           {...provided.dragHandleProps}
-                                    //           ref={provided.innerRef}
-                                    //         >
-                                    //           <div
-                                    //             className="d-flex align-items-center justify-content-between w-100 p-0"
-                                    //             style={{
-                                    //               color: isSelected ? "black" : "#cccccc",
-                                    //             }}
-                                    //             key={index}
-                                    //           >
-                                    //             <div>
-                                    //                 <Checkbox
-                                    //                   name="answerOptions"
-                                    //                   onBlur={() => {
-                                    //                     validation.setFieldValue(
-                                    //                       "answerOptions",
-                                    //                       selectedAnswerOptions
-                                    //                     );
-                                    //                   }}
-                                    //                   value={index}
-                                    //                   checked={isSelected}
-                                    //                   onChange={(e) => {
-                                    //                     e.preventDefault();
-                                    //                     const { checked } =
-                                    //                       e.target;
-
-                                    //                   }}
-                                    //                   icon={<CropSquareIcon />}
-                                    //                   checkedIcon={
-                                    //                     <SquareRoundedIcon />
-                                    //                   }
-                                    //                 />
-                                    //                 {value.answerOption}
-                                    //               </div>
-                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
-                                    //               <Label
-                                    //                 htmlFor={`form-grid-showcode-${index}`}
-                                    //                 className="form-label text-muted"
-                                    //               >
-                                    //                 Include Explanation
-                                    //               </Label>
-                                    //               <Checkbox
-                                    //                 id={`form-grid-showcode-${index}`}
-                                    //                 name="includeExplanation"
-                                    //                 checked={isSelectedIE}
-                                    //                 onChange={(e) => {
-                                    //                   e.preventDefault();
-                                    //                   const { checked } = e.target;
-                                    //                 }}
-
-                                    //                 icon={<CropSquareIcon />}
-                                    //                 checkedIcon={<SquareRoundedIcon />}
-                                    //               />
-                                    //             </div>
-
-                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
-                                    //               <Label
-                                    //                 htmlFor={`form-grid-showcode-${index}`}
-                                    //                 className="form-label text-muted"
-                                    //               >
-                                    //                 Include Input Field
-                                    //               </Label>
-                                    //               <Checkbox
-                                    //                 id={`form-grid-showcode-${index}`}
-                                    //                 name="includeInputField"
-                                    //                 checked={isSelectedIF}
-                                    //                 icon={<CropSquareIcon />}
-                                    //                 checkedIcon={<SquareRoundedIcon />}
-                                    //               />
-                                    //             </div>
-                                    //           </div>
-                                    //         </div>
-                                    //       )}
-                                    //     </Draggable>
-                                    //   );
-                                    // })
-
                                     allAnswers.map((value, index) => {
                                       // Check if the current answer option is selected
                                       const isSelected =
@@ -1278,31 +1171,6 @@ const BenchmarkingQA = () => {
                                                               )
                                                           );
                                                         }
-                                                        const ans =
-                                                          allAnswers.answerOptions.filter(
-                                                            (value) => {
-                                                              return selectedAnswerOptions.filter(
-                                                                (val) =>
-                                                                  val.answerOption ===
-                                                                  value._id
-                                                              );
-                                                            }
-                                                          );
-                                                        setInfo((prev) => {
-                                                          prev.map((value) => {
-                                                            return {
-                                                              ...value,
-                                                              answerOptions:
-                                                                ans,
-                                                            };
-                                                          });
-                                                        });
-                                                        console.log(
-                                                          "selectedAns",
-                                                          selectedAnswerOptions,
-                                                          ans,
-                                                          info
-                                                        );
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           selectedAnswerOptions
