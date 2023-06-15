@@ -52,6 +52,8 @@ const Navdata = () => {
   const [isProfile, setIsProfile] = useState(false);
   const [isLanding, setIsLanding] = useState(false);
 
+  const [isLeaderBoard, setIsLeaderBoard] = useState(false);
+
   // Charts
   const [isApex, setIsApex] = useState(false);
 
@@ -249,12 +251,39 @@ const Navdata = () => {
       link: "/",
       disable: true,
     },
+    // {
+    //   id: 7,
+    //   icon: "ri-rocket-line",
+    //   label: "Leaderboard",
+    //   link: "/leaderboard",
+    //   disable: false,
+    // },
     {
-      id: 7,
-      icon: "ri-rocket-line",
-      label: "Leaderboard",
-      link: "/",
-      disable: true,
+      id: "Leaderboard",
+      icon: "ri-pencil-ruler-2-line",
+      label: "Leader Board",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsLeaderBoard(!isLeaderBoard);
+        setIscurrentState("LeaderBoard");
+        updateIconSidebar(e);
+      },
+      stateVariables: isLeaderBoard,
+      subItems: [
+        {
+          id: 1,
+          label: "User Leaderboard",
+          link: "/leaderboard",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "Dashboard",
+          link: "/leaderboardtable",
+          parentId: "Recommended Actions",
+        },
+      ],
     },
     {
       id: 8,
@@ -357,11 +386,31 @@ const Navdata = () => {
       disable: true,
     },
     {
-      id: 7,
-      icon: "ri-rocket-line",
-      label: "Leaderboard",
-      link: "/",
-      disable: true,
+      id: "Leaderboard",
+      icon: "ri-pencil-ruler-2-line",
+      label: "Leader Board",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsLeaderBoard(!isLeaderBoard);
+        setIscurrentState("LeaderBoard");
+        updateIconSidebar(e);
+      },
+      stateVariables: isLeaderBoard,
+      subItems: [
+        {
+          id: 1,
+          label: "User Leaderboard",
+          link: "/leaderboard",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "Dashboard",
+          link: "/leaderboardtable",
+          parentId: "Recommended Actions",
+        },
+      ],
     },
     {
       id: 8,

@@ -21,6 +21,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { updateAdminStep, updateSaveActionStep } from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
+import { updateRecommendedActionStep } from "../../slices/RecommendedAction/thunk";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -71,7 +72,7 @@ const ActionUserDetail = () => {
 
       try {
         for (const stepObject of steps) {
-          await updateAdminStep(stepObject._id, stepObject);
+          await updateRecommendedActionStep(stepObject._id, stepObject);
         }
 
         // Show a final toast message after all updates are completed
@@ -142,9 +143,9 @@ const ActionUserDetail = () => {
         <div className="page-content overflow-auto ">
           <ActionMain
             Title={"Recommended Actions - Details"}
-            Text={
-              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-            }
+            // Text={
+            //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+            // }
           />
           <div className="card-wrapper">
             <div className="card">

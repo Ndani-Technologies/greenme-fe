@@ -1120,7 +1120,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOptions"
                                                       onBlur={() => {
@@ -1184,7 +1184,10 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
@@ -1349,7 +1352,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOptions"
                                                       onBlur={() => {
@@ -1408,7 +1411,10 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"

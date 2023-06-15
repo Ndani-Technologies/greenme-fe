@@ -25,6 +25,7 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
   getAllAdminBenchmarks,
+  deleteBenchmark,
 } from "../../slices/thunks";
 import avatar from "../../assets/images/avatar-6.jpg";
 import { isEmpty } from "lodash";
@@ -293,6 +294,26 @@ const BenchmarkAdmin = () => {
     // checkall.checked = false;
   };
 
+  //HANDLE DELETE
+  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
+  const [deleteId, setDeleteId] = useState();
+  const cancelDelete = () => {
+    setDeleteConfirmation(false);
+    setDeleteId(null);
+  };
+  const confirmDelete = () => {
+    deleteBenchmark(deleteId)
+      .then(() => {
+        setBenchmark((prev) => prev.filter((value) => value._id !== deleteId));
+        toast.success("Benchmark is deleted");
+        setDeleteConfirmation(false);
+      })
+      .catch(() => {
+        toast.error("Error in Benchmark deletion.");
+        setDeleteConfirmation(false);
+      });
+  };
+
   const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
     console.log("id", id);
@@ -462,8 +483,9 @@ const BenchmarkAdmin = () => {
                       className="dropdown-item remove-item-btn"
                       href="#"
                       onClick={() => {
-                        const contactData = cellProps.row.original;
-                        onClickDelete(contactData);
+                        setDeleteConfirmation(true);
+                        setDeleteId(cellProps.row.original._id);
+                        // onClickDelete(contactData);
                       }}
                     >
                       Delete
@@ -893,87 +915,20 @@ const BenchmarkAdmin = () => {
                 </CardBody>
               </Card>
             </Col>
-
-            {/* <Col xxl={3}>
-              <Card id="contact-view-detail">
-                <CardBody className="text-center">
-                  <div className="position-relative d-inline-block">
-                    <img
-                      src={avatar}
-                      alt=""
-                      className="avatar-lg rounded-circle img-thumbnail"
-                    />
-                    <span className="contact-active position-absolute rounded-circle bg-success">
-                      <span className="visually-hidden"></span>
-                    </span>
-                  </div>
-                  <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
-                  <p className="text-muted">
-                    {info.company || "FleetMGT Co. Z"}
-                  </p>
-                </CardBody>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-4">
-                    <div
-                      className="progress-bar bg- "
-                      role="progressbar"
-                      style={{ width: "50%" }}
-                      aria-valuenow="30"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    >
-                      <div className="label">50%</div>
-                    </div>
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-">Benchmark Completion</h5>
-                    </div>
-                  </div>
-                </CardBody>
-                <CardBody className="d-flex gap-2 ">
-                  <span className="mt-2">Chat</span>
-                  <span className="avatar-xs">
-                    <Link
-                      to="#"
-                      className="avatar-title bg-soft-warning text-warning fs-15 rounded"
-                    >
-                      <i className="ri-question-answer-line"></i>
-                    </Link>
-                  </span>
-                </CardBody>
-                <CardBody>
-                  <div className="table-responsive table-card">
-                    <Table className="table table-borderless mb-0">
-                      <tbody>
-                        <tr>
-                          <td className="fw-medium">Orgnaisation</td>
-                          <td>FleetMGT Co. A</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Benchmark title</td>
-                          <td>Country Fleet Manager</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Country</td>
-                          <td>Kenya</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Leaderboard</td>
-                          <td>{info.lead_score || "154 points"}</td>
-                        </tr>
-                        <tr>
-                          <td className="fw-medium">Last Seen</td>
-                          <td>
-                            15 Dec, 2021<span> 08:58AM</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </CardBody>
-              </Card>
-            </Col> */}
+            <Modal isOpen={deleteConfirmation} toggle={cancelDelete}>
+              <ModalHeader toggle={cancelDelete}>Confirm Deletion</ModalHeader>
+              <ModalBody>
+                Are you sure you want to delete this Benhmark?
+              </ModalBody>
+              <ModalFooter>
+                <Button color="danger" onClick={confirmDelete}>
+                  Delete
+                </Button>
+                <Button color="secondary" onClick={cancelDelete}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
           </Row>
         </Col>
       </div>
