@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -49,338 +49,6 @@ const Benchmarking = () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
 
-    //   const bench = {
-    //     "_id": "6489aadf8b0522dbfbf59a01",
-    //     "title": "new-testing15",
-    //     "country": "Uganda",
-    //     "user": {
-    //         "_id": "6468d0ebe01631c2604a2376",
-    //         "email": "info@ndani.co.ke",
-    //         "organization": "Fleet Forum",
-    //         "firstName": "Ndani",
-    //         "lastName": "Tester 1",
-    //         "scope": [],
-    //         "otherCountries": [
-    //             "Tanzania, United Republic of",
-    //             "Uganda"
-    //         ],
-    //         "areaOfExpertise": [],
-    //         "profilePic": "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
-    //         "uid": 1380,
-    //         "role": {
-    //             "_id": "6467ade8a992a3cf078ac815",
-    //             "title": "user",
-    //             "permissions": [
-    //                 {
-    //                     "_id": "6467adbfa992a3cf078ac810",
-    //                     "title": "get user",
-    //                     "route": "can get users",
-    //                     "createdAt": "2023-05-19T17:11:27.244Z",
-    //                     "updatedAt": "2023-05-19T17:11:27.244Z",
-    //                     "__v": 0
-    //                 }
-    //             ],
-    //             "createdAt": "2023-05-19T17:12:08.959Z",
-    //             "updatedAt": "2023-05-19T17:12:08.959Z",
-    //             "__v": 0
-    //         },
-    //         "timezone": "GMT",
-    //         "state": "active",
-    //         "createdAt": "2023-05-20T13:53:47.519Z",
-    //         "updatedAt": "2023-06-14T11:09:12.499Z",
-    //         "__v": 26,
-    //         "country": "Kenya",
-    //         "collaborationPoints": 0,
-    //         "discussionPoints": 0,
-    //         "actionPoints": 100,
-    //         "backgroundPic": "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
-    //         "leaderboardPosition": 2,
-    //         "totalPoint": 100
-    //     },
-    //     "status": "Active",
-    //     "questionnaire": [
-    //         {
-    //             "whoHasAnswer": {
-    //                 "userId": [],
-    //                 "totalUsers": 0
-    //             },
-    //             "_id": "64879027e86132c98f7921a0",
-    //             "languageSelector": "English",
-    //             "status": true,
-    //             "visibility": true,
-    //             "title": "Does your organisation have an implementation plan to translate global environmental commitments into concrete action?",
-    //             "description": "<p>Environmental commitment depicts the methods, tasks, principles, and standards implemented by a business to minimize its negative impacts on the natural environment (Colwell and Joshi, 2013)</p>",
-    //             "category": {
-    //                 "_id": "64878ebde86132c98f79213c",
-    //                 "language": "English",
-    //                 "titleEng": "Environmental commitments",
-    //                 "__v": 0
-    //             },
-    //             "answerOptions": [
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487563b76c8f75525e4b37d",
-    //                         "language": "English",
-    //                         "answerOption": "yes",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 32
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879027e86132c98f7921a1"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487595b76c8f75525e4b3a5",
-    //                         "language": "English",
-    //                         "answerOption": "No",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 32
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879027e86132c98f7921a2"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487596476c8f75525e4b3a7",
-    //                         "language": "English",
-    //                         "answerOption": "I Don't Know",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 49
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879027e86132c98f7921a3"
-    //                 }
-    //             ],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "whoHasAnswer": {
-    //                 "userId": [],
-    //                 "totalUsers": 0
-    //             },
-    //             "_id": "64879065e86132c98f7921bc",
-    //             "languageSelector": "English",
-    //             "status": true,
-    //             "visibility": true,
-    //             "title": "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) contain references to a green strategy or environmental sustainability?",
-    //             "description": "<p>For example, how to reduce emissions or waste?</p>",
-    //             "category": {
-    //                 "_id": "64878ebde86132c98f79213c",
-    //                 "language": "English",
-    //                 "titleEng": "Environmental commitments",
-    //                 "__v": 0
-    //             },
-    //             "answerOptions": [
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487563b76c8f75525e4b37d",
-    //                         "language": "English",
-    //                         "answerOption": "yes",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 32
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879065e86132c98f7921bd"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487595b76c8f75525e4b3a5",
-    //                         "language": "English",
-    //                         "answerOption": "No",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 32
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879065e86132c98f7921be"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487596476c8f75525e4b3a7",
-    //                         "language": "English",
-    //                         "answerOption": "I Don't Know",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 49
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879065e86132c98f7921bf"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "64878b31e86132c98f7920a3",
-    //                         "language": "English",
-    //                         "answerOption": "We don’t have a policy",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 5
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879065e86132c98f7921c0"
-    //                 }
-    //             ],
-    //             "__v": 0
-    //         },
-    //         {
-    //             "whoHasAnswer": {
-    //                 "userId": [],
-    //                 "totalUsers": 0
-    //             },
-    //             "_id": "64879138e86132c98f7922c6",
-    //             "languageSelector": "English",
-    //             "status": true,
-    //             "visibility": true,
-    //             "title": "Does your fleet management reference documents (policy/ manual/ procedure/ handbook) include guidance to use the best option vehicle with the lowest environmental impact?",
-    //             "description": "<p>For example, how to reduce emissions or waste?</p>",
-    //             "category": {
-    //                 "_id": "64878ebde86132c98f79213c",
-    //                 "language": "English",
-    //                 "titleEng": "Environmental commitments",
-    //                 "__v": 0
-    //             },
-    //             "answerOptions": [
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487563b76c8f75525e4b37d",
-    //                         "language": "English",
-    //                         "answerOption": "yes",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 32
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879138e86132c98f7922c7"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487596476c8f75525e4b3a7",
-    //                         "language": "English",
-    //                         "answerOption": "I Don't Know",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 49
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879138e86132c98f7922c8"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "6487595b76c8f75525e4b3a5",
-    //                         "language": "English",
-    //                         "answerOption": "No",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 32
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879138e86132c98f7922c9"
-    //                 },
-    //                 {
-    //                     "answerOption": {
-    //                         "_id": "64878b31e86132c98f7920a3",
-    //                         "language": "English",
-    //                         "answerOption": "We don’t have a policy",
-    //                         "includeExplanation": false,
-    //                         "includeInputField": false,
-    //                         "__v": 0,
-    //                         "answerAttempt": 5
-    //                     },
-    //                     "includeExplanation": false,
-    //                     "includeInputField": false,
-    //                     "_id": "64879138e86132c98f7922ca"
-    //                 }
-    //             ],
-    //             "__v": 0
-    //         }
-
-    //     ],
-    //     "completionLevel": 5.882352941176471,
-    //     "start_date": "2023-06-14T11:56:15.903Z",
-    //     "user_resp": [
-    //         // {
-    //         //     "questionId": "64879027e86132c98f7921a0",
-    //         //     "selectedOption": [
-    //         //         {
-    //         //             "answerOption": "6487596476c8f75525e4b3a7",
-    //         //             "includeExplanation": "",
-    //         //             "includeInputField": "",
-    //         //             "_id": "6489aaf68b0522dbfbf59d85"
-    //         //         }
-    //         //     ],
-    //         //     "_id": "6489aaf68b0522dbfbf59d84"
-    //         // },
-    //         {
-    //             "questionId": "64879065e86132c98f7921bc",
-    //             "selectedOption": [
-    //                 {
-    //                     "answerOption": "64878b31e86132c98f7920a3",
-    //                     "includeExplanation": "",
-    //                     "includeInputField": "",
-    //                     "_id": "6489aaf68b0522dbfbf59d87"
-    //                 },
-    //                 {
-    //                     "answerOption": "6487596476c8f75525e4b3a7",
-    //                     "includeExplanation": "",
-    //                     "includeInputField": "",
-    //                     "_id": "6489aaf68b0522dbfbf59d88"
-    //                 }
-    //             ],
-    //             "_id": "6489aaf68b0522dbfbf59d86"
-    //         },
-    //         // {
-    //         //     "questionId": "64879138e86132c98f7922c6",
-    //         //     "selectedOption": [
-    //         //         {
-    //         //             "answerOption": "64878b31e86132c98f7920a3",
-    //         //             "includeExplanation": "",
-    //         //             "includeInputField": "",
-    //         //             "_id": "6489aaf68b0522dbfbf59d8a"
-    //         //         },
-    //         //         {
-    //         //             "answerOption": "6487595b76c8f75525e4b3a5",
-    //         //             "includeExplanation": "",
-    //         //             "includeInputField": "",
-    //         //             "_id": "6489aaf68b0522dbfbf59d8b"
-    //         //         },
-    //         //         {
-    //         //             "answerOption": "6487596476c8f75525e4b3a7",
-    //         //             "includeExplanation": "",
-    //         //             "includeInputField": "",
-    //         //             "_id": "6489aaf68b0522dbfbf59d8c"
-    //         //         }
-    //         //     ],
-    //         //     "_id": "6489aaf68b0522dbfbf59d89"
-    //         // }
-    //     ],
-    //     "__v": 0,
-    //     "end_date": null
-    // };
-    //   setBenchmark(bench);
-
     const arr = [];
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
@@ -388,7 +56,6 @@ const Benchmarking = () => {
     const uniqueArr = Array.from(
       new Set(arr.map((item) => item?.titleEng))
     ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
-    // console.log("benchmark single", bench, benchmark)
     if (uniqueArr.length > 0) setjustifyPillsTab(uniqueArr[0]._id);
     setCategory(uniqueArr);
     const benchmarkByCategory = bench?.questionnaire.filter((value, index) => {
@@ -402,6 +69,33 @@ const Benchmarking = () => {
 
     // setBenchmark(benchmarkByCategory);
   }, []);
+  // useEffect(() => {
+  //   const userResponse = benchmark?.user_resp?.find(
+  //     (resp) => resp?.questionId === item?._id
+  //   );
+
+  //   const selectedOption = userResponse?.selectedOption.filter(
+  //     // (option) => option?._id === userResponse?.selectedOption[0]
+  //     (selct) =>
+  //       item?.answerOptions?.find((option) => {
+
+  //         return selct.answerOption === option.answerOption._id;
+  //       })
+  //   );
+  //   const updatedFields = {};
+  //   benchmark.questionnaire.forEach((item)=>{
+
+  //     item.answerOptions.forEach((btn) => {
+  //       const inputField = selectedOption.find((a) => a.answerOption === btn.answerOption._id)?.includeInputFieldValue;
+  //       updatedFields[btn.answerOption._id] = inputField;
+  //     });
+  //   })
+
+  //   setIncludeInputField((prevState) => ({
+  //     ...prevState,
+  //     [item._id]: updatedFields,
+  //   }));
+  // }, [benchmark]);
 
   //HANDLING STYLE CHANGE ON SCREEN SIZE CHANGE
 
@@ -424,7 +118,6 @@ const Benchmarking = () => {
     };
   }, []);
 
-  console.log(benchmark, category, "bench");
   const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
 
   const getProgressPercentage = async () => {
@@ -467,12 +160,72 @@ const Benchmarking = () => {
   const [includeExplanation, setIncludeExplanation] = useState("");
   const [includeInputField, setIncludeInputField] = useState("");
 
+  // const handleButtonClick = (
+  //   questionIndex,
+  //   buttonIndex,
+  //   answerOption,
+  //   qid,
+  //   aid
+  // ) => {
+  //   setActiveIndexes((prevState) => ({
+  //     ...prevState,
+  //     [questionIndex]: buttonIndex,
+  //   }));
+
+  //   setUser_resp((prevUserResp) => {
+  //     const newUserResp = [...prevUserResp];
+  //     const userRespIndex = newUserResp.findIndex(
+  //       (resp) => resp.questionId === qid
+  //     );
+
+  //     if (userRespIndex !== -1) {
+  //       const updatedUserResp = {
+  //         ...newUserResp[userRespIndex],
+  //         selectedOption: [...newUserResp[userRespIndex].selectedOption],
+  //       };
+
+  //       if (updatedUserResp.selectedOption.includes(aid)) {
+  //         // Remove the answer ID if it already exists in the array
+  //         updatedUserResp.selectedOption =
+  //           updatedUserResp.selectedOption.filter((id) => id !== aid);
+  //       } else {
+  //         // Add the answer ID if it doesn't exist in the array
+  //         updatedUserResp.selectedOption.push({
+  //           answerOption: aid,
+  //           includeExplanation,
+  //           includeInputField,
+  //         });
+  //       }
+
+  //       newUserResp[userRespIndex] = updatedUserResp;
+  //     } else {
+  //       // Add new user response to the array
+  //       // let arr = [];
+  //       // arr.push(aid);
+  //       newUserResp.push({
+  //         questionId: qid,
+  //         selectedOption: [
+  //           { answerOption: aid, includeExplanation, includeInputField },
+  //         ],
+  //       });
+  //     }
+
+  //     return newUserResp;
+  //   });
+
+  //   console.log("user_resp", user_resp);
+  //   // Your other logic here
+  // };
+
+  //trail 2 today
   const handleButtonClick = (
     questionIndex,
     buttonIndex,
     answerOption,
     qid,
-    aid
+    aid,
+    isIncludeExplanation,
+    isInlcudeInput
   ) => {
     setActiveIndexes((prevState) => ({
       ...prevState,
@@ -491,38 +244,57 @@ const Benchmarking = () => {
           selectedOption: [...newUserResp[userRespIndex].selectedOption],
         };
 
-        if (updatedUserResp.selectedOption.includes(aid)) {
-          // Remove the answer ID if it already exists in the array
-          updatedUserResp.selectedOption =
-            updatedUserResp.selectedOption.filter((id) => id !== aid);
+        const optionIndex = updatedUserResp.selectedOption.findIndex(
+          (option) => option.answerOption === aid
+        );
+
+        if (optionIndex !== -1) {
+          // Update the existing option
+          updatedUserResp.selectedOption[optionIndex] = {
+            answerOption: aid,
+            includeExplanationValue:
+              (isIncludeExplanation && includeExplanation[qid]) || "",
+            includeInputFieldValue:
+              (isInlcudeInput && includeInputField[qid]) || "",
+            includeExplanation: isIncludeExplanation,
+            includeInputField: isInlcudeInput,
+          };
         } else {
-          // Add the answer ID if it doesn't exist in the array
+          // Add a new option
           updatedUserResp.selectedOption.push({
             answerOption: aid,
-            includeExplanation,
-            includeInputField,
+            includeExplanationValue:
+              (isIncludeExplanation && includeExplanation[qid]) || "",
+            includeInputFieldValue:
+              (isInlcudeInput && includeInputField[qid]) || "",
+            includeExplanation: isIncludeExplanation,
+            includeInputField: isInlcudeInput,
           });
         }
 
         newUserResp[userRespIndex] = updatedUserResp;
       } else {
         // Add new user response to the array
-        // let arr = [];
-        // arr.push(aid);
         newUserResp.push({
           questionId: qid,
           selectedOption: [
-            { answerOption: aid, includeExplanation, includeInputField },
+            {
+              answerOption: aid,
+              includeExplanationValue:
+                (isIncludeExplanation && includeExplanation[qid]) || "",
+              includeExplanation: isIncludeExplanation,
+              includeInputField: isInlcudeInput,
+              includeInputFieldValue:
+                (isInlcudeInput && includeInputField[qid]) || "",
+            },
           ],
         });
       }
 
       return newUserResp;
     });
-
-    console.log("user_resp", user_resp);
-    // Your other logic here
   };
+
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const renderedQuestions =
     questions?.length >= 0 &&
@@ -535,7 +307,6 @@ const Benchmarking = () => {
         const userResponse = benchmark?.user_resp?.find(
           (resp) => resp?.questionId === item?._id
         );
-        console.log(userResponse, "UR");
 
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
@@ -547,13 +318,6 @@ const Benchmarking = () => {
           // (option) => option?._id === userResponse?.selectedOption[0]
           (selct) =>
             item?.answerOptions?.find((option) => {
-              console.log(
-                "check",
-                option.answerOption.answerOption,
-                selct.answerOption,
-                option.answerOption._id,
-                selct.answerOption === option.answerOption._id
-              );
               return selct.answerOption === option.answerOption._id;
             })
         );
@@ -567,56 +331,11 @@ const Benchmarking = () => {
                 __html: item.description,
               }}
             ></p>
-            {/* {selectedAnswer ?
-            <>
-             <div className="">
-                  <CKEditor
-                    editor={ClassicEditor}
-                    onReady={(editor) => {
-                    }}
-                    onChange={(e, editor) => {
-                      const value = editor.getData();
-                    }}
-                    onBlur={(e, editor) => {
-                      const value = editor.getData();
-                    }}
-                    validate={{
-                      required: { value: true },
-                    }}
-                    class="form-control"
-                    placeholder="Description"
-                    id="floatingTextarea"
-                    value=''
-                    style={{
-                      height: "120px",
-                      overflow: "hidden",
-                      backgroundColor: "#dfdfdf",
-                    }}
-                  />
-                </div>
-                <div>
-                  <Input
-                    type="text"
-                    className="form-control"
-                    id="input-field"
-                    placeholder=""
-                    value=''
-                    onChange={(e) => {
-                     
-                    }}
-                    onBlur={(e)=>{}}
-                     
-                  />
-                </div>
-            </>
-            : null  
-          } */}
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     // Check if the answer is already selected for the current question
-                    console.log("selected", selectedOption);
                     const isSelected =
                       selectedAnswerIds[item._id]?.includes(
                         btn.answerOption._id
@@ -639,6 +358,11 @@ const Benchmarking = () => {
                       : activeButtonIndex === btnIndex;
                     if (check) {
                       buttonClass += " active";
+                      // const inputFIeld  = selectedOption.find((a)=>a.answerOption === btn.answerOption._id)?.includeInputFieldValue
+                      // setIncludeInputField((prevState) => ({
+                      //   ...prevState,
+                      //   [item._id]: inputFIeld
+                      // }));
                     }
 
                     // let buttonClass = "button";
@@ -651,23 +375,43 @@ const Benchmarking = () => {
 
                     return (
                       <div>
-                        {isSelected ? (
+                        {isSelected || check ? (
                           <>
                             {btn.includeExplanation && (
                               <div className="">
                                 <CKEditor
                                   editor={ClassicEditor}
-                                  onReady={(editor) => {}}
+                                  onReady={(editor) => {
+                                    editor.setData(
+                                      selectedOption.find(
+                                        (a) =>
+                                          a.answerOption ===
+                                          btn.answerOption._id
+                                      ).includeExplanationValue
+                                    );
+                                  }}
                                   onChange={(e, editor) => {
                                     const value = editor.getData();
-                                    setIncludeExplanation(value);
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
                                   }}
                                   onBlur={(e, editor) => {
                                     const value = editor.getData();
-                                    setIncludeExplanation(value);
-                                  }}
-                                  validate={{
-                                    required: { value: true },
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
                                   }}
                                   class="form-control"
                                   placeholder="Description"
@@ -688,12 +432,42 @@ const Benchmarking = () => {
                                   className="form-control"
                                   id="input-field"
                                   placeholder=""
-                                  value={includeInputField}
+                                  value={
+                                    includeInputField[item._id] ||
+                                    selectedOption.find(
+                                      (a) =>
+                                        a.answerOption === btn.answerOption._id
+                                    ).includeInputFieldValue !== undefined
+                                      ? selectedOption.find(
+                                          (a) =>
+                                            a.answerOption ===
+                                            btn.answerOption._id
+                                        ).includeInputFieldValue
+                                      : ""
+                                  }
+                                  // value={includeInputField[item._id] ||  ""}
                                   onChange={(e) => {
-                                    setIncludeInputField(e.target.value);
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
                                   }}
                                   onBlur={(e) => {
-                                    setIncludeInputField(e.target.value);
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
                                   }}
                                 />
                               </div>
@@ -743,7 +517,7 @@ const Benchmarking = () => {
               </div>
             ) : (
               <div className="d-flex mt-4">
-                {item.answerOptions &&
+                {/* {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     // Check if the answer is already selected for the current question
                     const isSelected =
@@ -851,6 +625,156 @@ const Benchmarking = () => {
                         </div>
                       </>
                     );
+                  })} */}
+                {item.answerOptions &&
+                  item.answerOptions.map((btn, btnIndex) => {
+                    // Check if the answer is already selected for the current question
+                    const isSelected =
+                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+                    let buttonClass = "button";
+                    if (
+                      selectedAnswerIds[item._id] &&
+                      selectedAnswerIds[item._id].includes(btn._id)
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    return (
+                      <div key={btnIndex}>
+                        {isSelected ? (
+                          <>
+                            {btn.includeExplanation && (
+                              <div className="">
+                                <CKEditor
+                                  editor={ClassicEditor}
+                                  onReady={(editor) => {}}
+                                  onChange={(e, editor) => {
+                                    const value = editor.getData();
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                  }}
+                                  onBlur={(e, editor) => {
+                                    const value = editor.getData();
+                                    setIncludeExplanation((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
+                                  }}
+                                  validate={{
+                                    required: { value: true },
+                                  }}
+                                  class="form-control"
+                                  placeholder="Description"
+                                  id="floatingTextarea"
+                                  value=""
+                                  style={{
+                                    height: "120px",
+                                    overflow: "hidden",
+                                    backgroundColor: "#dfdfdf",
+                                  }}
+                                />
+                              </div>
+                            )}
+                            {btn.includeInputField && (
+                              <div>
+                                <Input
+                                  type="text"
+                                  className="form-control"
+                                  id="input-field"
+                                  placeholder=""
+                                  value={includeInputField[item._id] || ""}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                  }}
+                                  onBlur={(e) => {
+                                    const value = e.target.value;
+                                    setIncludeInputField((prevState) => ({
+                                      ...prevState,
+                                      [item._id]: value,
+                                    }));
+                                    handleButtonClick(
+                                      (currentPage - 1) * numPages + index,
+                                      btnIndex,
+                                      btn.answerOption,
+                                      item?._id,
+                                      btn.answerOption._id,
+                                      btn.includeExplanation,
+                                      btn.includeInputField
+                                    );
+                                  }}
+                                />
+                              </div>
+                            )}
+                          </>
+                        ) : null}
+                        <div className="buttons-container">
+                          <button
+                            onClick={() => {
+                              setSelectedAnswer(btn);
+                              setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                                const questionId = item._id;
+                                const selectedIds =
+                                  prevSelectedAnswerIds[questionId] || [];
+
+                                if (isSelected) {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: selectedIds.filter(
+                                      (id) => id !== btn._id
+                                    ),
+                                  };
+                                } else {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: [...selectedIds, btn._id],
+                                  };
+                                }
+                              });
+
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn.answerOption._id,
+                                btn.includeExplanation,
+                                btn.includeInputField
+                              );
+                            }}
+                            onBlur={() => {
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn.answerOption._id,
+                                btn.includeExplanation,
+                                btn.includeInputField
+                              );
+                            }}
+                            className={buttonClass}
+                          >
+                            {btn.answerOption.answerOption}
+                          </button>
+                        </div>
+                      </div>
+                    );
                   })}
               </div>
             )}
@@ -860,15 +784,21 @@ const Benchmarking = () => {
 
   const obj = JSON.parse(sessionStorage.getItem("authUser"));
   const userId = obj._id;
-  const requestBody = {
-    userId: userId,
-    user_resp: user_resp,
-  };
 
   const handleSubmit = () => {
-    toast.success("benchmark is successfully submitted");
-
-    updateUserResp(benchmark?._id, requestBody, navigate);
+    const requestBody = {
+      userId: userId,
+      user_resp: user_resp,
+    };
+    const toastt_id = toast.loading("Please wait...");
+    updateUserResp(benchmark?._id, requestBody, navigate).then((resp) => {
+      toast.update(toastt_id, {
+        render: "benchmark is successfully submitted",
+        type: "success",
+        isLoading: false,
+      });
+      // toast.success("benchmark is successfully submitted");
+    });
   };
 
   const [benchmarkCreation, setbenchmarkCreation] = useState(false);
