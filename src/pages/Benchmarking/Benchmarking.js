@@ -54,6 +54,323 @@ const Benchmarking = () => {
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
+    // const bench = {
+    //   _id: "648c7bac6ec005afdd628b43",
+    //   title: "tes011",
+    //   country: "Uganda",
+    //   user: {
+    //     _id: "6468d0ebe01631c2604a2376",
+    //     email: "info@ndani.co.ke",
+    //     organization: "Fleet Forum",
+    //     firstName: "Ndani",
+    //     lastName: "Tester 1",
+    //     scope: [],
+    //     otherCountries: ["Tanzania, United Republic of", "Uganda"],
+    //     areaOfExpertise: [],
+    //     profilePic:
+    //       "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+    //     uid: 1380,
+    //     role: {
+    //       _id: "6467ade8a992a3cf078ac815",
+    //       title: "user",
+    //       permissions: [
+    //         {
+    //           _id: "6467adbfa992a3cf078ac810",
+    //           title: "get user",
+    //           route: "can get users",
+    //           createdAt: "2023-05-19T17:11:27.244Z",
+    //           updatedAt: "2023-05-19T17:11:27.244Z",
+    //           __v: 0,
+    //         },
+    //       ],
+    //       createdAt: "2023-05-19T17:12:08.959Z",
+    //       updatedAt: "2023-05-19T17:12:08.959Z",
+    //       __v: 0,
+    //     },
+    //     timezone: "GMT",
+    //     state: "active",
+    //     createdAt: "2023-05-20T13:53:47.519Z",
+    //     updatedAt: "2023-06-16T14:07:24.973Z",
+    //     __v: 26,
+    //     country: "Kenya",
+    //     collaborationPoints: 0,
+    //     discussionPoints: 0,
+    //     actionPoints: 100,
+    //     backgroundPic:
+    //       "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+    //     leaderboardPosition: 1,
+    //     totalPoint: 100,
+    //     totalPoints: 0,
+    //   },
+    //   status: "Inactive",
+    //   questionnaire: [
+    //     {
+    //       whoHasAnswer: {
+    //         userId: [],
+    //         totalUsers: 0,
+    //       },
+    //       _id: "648c7b726ec005afdd628981",
+    //       languageSelector: "English",
+    //       status: true,
+    //       visibility: true,
+    //       title: "q1",
+    //       description: "<p>desc q1</p>",
+    //       category: {
+    //         _id: "6487599b76c8f75525e4b3b0",
+    //         language: "English",
+    //         titleEng: "Fuel",
+    //         __v: 0,
+    //       },
+    //       answerOptions: [
+    //         {
+    //           answerOption: {
+    //             _id: "6487563b76c8f75525e4b37d",
+    //             language: "English",
+    //             answerOption: "Yes",
+    //             includeExplanation: true,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 43,
+    //           },
+    //           includeExplanation: true,
+    //           includeInputField: false,
+    //           _id: "648c7b726ec005afdd628982",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "6487595b76c8f75525e4b3a5",
+    //             language: "English",
+    //             answerOption: "No",
+    //             includeExplanation: true,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 43,
+    //           },
+    //           includeExplanation: true,
+    //           includeInputField: false,
+    //           _id: "648c7b726ec005afdd628983",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "6487596476c8f75525e4b3a7",
+    //             language: "English",
+    //             answerOption: "I don't know",
+    //             includeExplanation: false,
+    //             includeInputField: true,
+    //             __v: 0,
+    //             answerAttempt: 57,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: true,
+    //           _id: "648c7b726ec005afdd628984",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "6487596a76c8f75525e4b3a9",
+    //             language: "English",
+    //             answerOption: "Other",
+    //             includeExplanation: false,
+    //             includeInputField: true,
+    //             __v: 0,
+    //             answerAttempt: 14,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: true,
+    //           _id: "648c7b726ec005afdd628985",
+    //         },
+    //       ],
+    //       __v: 0,
+    //     },
+    //     {
+    //       whoHasAnswer: {
+    //         userId: [],
+    //         totalUsers: 0,
+    //       },
+    //       _id: "648c7b986ec005afdd628996",
+    //       languageSelector: "English",
+    //       status: true,
+    //       visibility: true,
+    //       title: "q2",
+    //       description: "<p>desc of q2</p>",
+    //       category: {
+    //         _id: "6487599b76c8f75525e4b3b0",
+    //         language: "English",
+    //         titleEng: "Fuel",
+    //         __v: 0,
+    //       },
+    //       answerOptions: [
+    //         {
+    //           answerOption: {
+    //             _id: "6487597b76c8f75525e4b3ab",
+    //             language: "English",
+    //             answerOption: "Enter your data",
+    //             includeExplanation: true,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 9,
+    //           },
+    //           includeExplanation: true,
+    //           includeInputField: false,
+    //           _id: "648c7b986ec005afdd628997",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "6487598b76c8f75525e4b3ad",
+    //             language: "English",
+    //             answerOption: "Percentage",
+    //             includeExplanation: true,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 5,
+    //           },
+    //           includeExplanation: true,
+    //           includeInputField: false,
+    //           _id: "648c7b986ec005afdd628998",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "64878b31e86132c98f7920a3",
+    //             language: "English",
+    //             answerOption: "We don’t have a policy",
+    //             includeExplanation: false,
+    //             includeInputField: true,
+    //             __v: 0,
+    //             answerAttempt: 6,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: true,
+    //           _id: "648c7b986ec005afdd628999",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "64878b3ce86132c98f7920a5",
+    //             language: "English",
+    //             answerOption: "Owned",
+    //             includeExplanation: false,
+    //             includeInputField: true,
+    //             __v: 0,
+    //             answerAttempt: 2,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: true,
+    //           _id: "648c7b986ec005afdd62899a",
+    //         },
+    //       ],
+    //       __v: 0,
+    //     },
+    //     {
+    //       whoHasAnswer: {
+    //         userId: [],
+    //         totalUsers: 0,
+    //       },
+    //       _id: "648c7c776ec005afdd6292ac",
+    //       languageSelector: "English",
+    //       status: true,
+    //       visibility: true,
+    //       title: "q3",
+    //       description: "<p>chc</p>",
+    //       category: {
+    //         _id: "6487599b76c8f75525e4b3b0",
+    //         language: "English",
+    //         titleEng: "Fuel",
+    //         __v: 0,
+    //       },
+    //       answerOptions: [
+    //         {
+    //           answerOption: {
+    //             _id: "64878b3ce86132c98f7920a5",
+    //             language: "English",
+    //             answerOption: "Owned",
+    //             includeExplanation: false,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 3,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: false,
+    //           _id: "648c7c776ec005afdd6292ad",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "64878b45e86132c98f7920a7",
+    //             language: "English",
+    //             answerOption: "Rented / Leased",
+    //             includeExplanation: false,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 2,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: false,
+    //           _id: "648c7c776ec005afdd6292ae",
+    //         },
+    //         {
+    //           answerOption: {
+    //             _id: "64878b4ce86132c98f7920a9",
+    //             language: "English",
+    //             answerOption: "Purchased locally",
+    //             includeExplanation: false,
+    //             includeInputField: false,
+    //             __v: 0,
+    //             answerAttempt: 2,
+    //           },
+    //           includeExplanation: false,
+    //           includeInputField: false,
+    //           _id: "648c7c776ec005afdd6292af",
+    //         },
+    //       ],
+    //       __v: 0,
+    //     },
+    //   ],
+    //   completionLevel: 0,
+    //   start_date: "2023-06-16T15:11:40.813Z",
+    //   user_resp: [
+    //     {
+    //         "questionId": "648c7b726ec005afdd628981",
+    //         "selectedOption": [
+    //             {
+    //                 "answerOption": "6487563b76c8f75525e4b37d",
+    //                 "includeExplanation": "true",
+    //                 "includeInputField": "false",
+    //                 "includeExplanationValue": "<p>hi</p>",
+    //                 "includeInputFieldValue": "",
+    //                 "_id": "648c85376ec005afdd62d06c"
+    //             }
+    //         ],
+    //         "_id": "648c85376ec005afdd62d06b"
+    //     },
+    //     {
+    //         "questionId": "648c7b986ec005afdd628996",
+    //         "selectedOption": [
+    //             {
+    //                 "answerOption": "64878b31e86132c98f7920a3",
+    //                 "includeExplanation": "false",
+    //                 "includeInputField": "true",
+    //                 "includeExplanationValue": "",
+    //                 "includeInputFieldValue": "hello",
+    //                 "_id": "648c85376ec005afdd62d06e"
+    //             }
+    //         ],
+    //         "_id": "648c85376ec005afdd62d06d"
+    //     },
+    //     {
+    //         "questionId": "648c7c776ec005afdd6292ac",
+    //         "selectedOption": [
+    //             {
+    //                 "answerOption": "64878b45e86132c98f7920a7",
+    //                 "includeExplanation": "false",
+    //                 "includeInputField": "false",
+    //                 "includeExplanationValue": "",
+    //                 "includeInputFieldValue": "",
+    //                 "_id": "648c85376ec005afdd62d070"
+    //             }
+    //         ],
+    //         "_id": "648c85376ec005afdd62d06f"
+    //     }
+    // ],
+    //   __v: 0,
+    // };
+    // setBenchmark(bench);
 
     const arr = [];
     bench.questionnaire.forEach((element) => {
@@ -79,34 +396,6 @@ const Benchmarking = () => {
 
     // setBenchmark(benchmarkByCategory);
   }, []);
-  console.log(location?.state?.isDataUpdated, "isDataUpdated");
-  // useEffect(() => {
-  //   const userResponse = benchmark?.user_resp?.find(
-  //     (resp) => resp?.questionId === item?._id
-  //   );
-
-  //   const selectedOption = userResponse?.selectedOption.filter(
-  //     // (option) => option?._id === userResponse?.selectedOption[0]
-  //     (selct) =>
-  //       item?.answerOptions?.find((option) => {
-
-  //         return selct.answerOption === option.answerOption._id;
-  //       })
-  //   );
-  //   const updatedFields = {};
-  //   benchmark.questionnaire.forEach((item)=>{
-
-  //     item.answerOptions.forEach((btn) => {
-  //       const inputField = selectedOption.find((a) => a.answerOption === btn.answerOption._id)?.includeInputFieldValue;
-  //       updatedFields[btn.answerOption._id] = inputField;
-  //     });
-  //   })
-
-  //   setIncludeInputField((prevState) => ({
-  //     ...prevState,
-  //     [item._id]: updatedFields,
-  //   }));
-  // }, [benchmark]);
 
   //HANDLING STYLE CHANGE ON SCREEN SIZE CHANGE
 
@@ -180,17 +469,11 @@ const Benchmarking = () => {
       ...prevState,
       [questionIndex]: buttonIndex,
     }));
-    console.log(
-      "check",
-      questionIndex,
-      `${qid} ${buttonIndex} ${aid}`,
-      explanationValue,
-      inputFieldValue
-    );
+
     setUser_resp((prevUserResp) => {
       const newUserResp = [...prevUserResp];
       const userRespIndex = newUserResp.findIndex(
-        (resp) => resp.questionId === qid
+        (resp) => resp?.questionId === qid
       );
 
       if (userRespIndex !== -1) {
@@ -239,9 +522,6 @@ const Benchmarking = () => {
               includeExplanation: isIncludeExplanation,
               includeInputField: isInlcudeInput,
             });
-            // updateUserResp.selectedOption[optionIndex].includeExplanationValue = explanationValue || "check"
-            // updateUserResp.selectedOption[optionIndex].includeInputFieldValue= inputFieldValue || ""
-            // console.log("empty index", emptyOptionIndex, updateUserResp)
           }
         }
 
@@ -274,23 +554,18 @@ const Benchmarking = () => {
       .map((item, index) => {
         const activeButtonIndex = activeIndexes[index];
 
-        // Find the user response for the current question
         const userResponse = benchmark?.user_resp?.find(
           (resp) => resp?.questionId === item?._id
         );
 
-        // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
           (option) =>
             option?._id === userResponse?.selectedOption.map((val) => val)
         );
-
-        const selectedOption = userResponse?.selectedOption.filter(
-          // (option) => option?._id === userResponse?.selectedOption[0]
-          (selct) =>
-            item?.answerOptions?.find((option) => {
-              return selct.answerOption === option.answerOption._id;
-            })
+        const selectedOption = userResponse?.selectedOption.filter((selct) =>
+          item?.answerOptions?.find((option) => {
+            return selct.answerOption === option.answerOption._id;
+          })
         );
 
         return (
@@ -302,13 +577,14 @@ const Benchmarking = () => {
                 __html: item.description,
               }}
             ></p>
-            {benchmark.user_resp?.length > 0 ? (
+            {location?.state?.isDataUpdated ||
+            benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     const isSelected =
                       selectedAnswerIds[item._id]?.includes(
-                        btn.answerOption._id
+                        (btn) => btn === btn.answerOption._id
                       ) || false;
 
                     let buttonClass = "button";
@@ -320,100 +596,83 @@ const Benchmarking = () => {
                       buttonClass += " active";
                     }
 
-                    const check = selectedOption?.some(
-                      (a) => a.answerOption !== undefined
-                    )
-                      ? selectedOption?.some(
-                          (a) => a.answerOption === btn.answerOption._id
-                        )
-                      : activeButtonIndex === btnIndex;
+                    const check = selectedOption?.some((a) => {
+                      return a.answerOption !== undefined;
+                    });
+                    const check2 = selectedOption?.some((a) => {
+                      return a.answerOption === btn.answerOption._id;
+                    });
 
-                    if (check) {
+                    const btn_user_resp = selectedOption?.find((a) => {
+                      return a.answerOption === btn.answerOption._id;
+                    });
+                    if (check ? check2 : false) {
                       buttonClass += " active";
                     }
-                    const explanationValue = includeExplanation[item._id] || ""; // Get the value for the explanation input field
                     const inputFieldValue =
                       includeInputField[`${item._id}_${btn._id}`] || "";
+                    const selectedAnswer = selectedOption?.some(
+                      (option) => option.answerOption === btn.answerOption._id
+                    );
+                    const includeExplanationValue =
+                      selectedAnswer?.includeExplanationValue || "";
                     return (
-                      <div>
+                      <div key={btnIndex}>
                         {isSelected || check ? (
                           <>
-                            {btn.includeExplanation && (
-                              <div className="">
-                                <CKEditor
-                                  editor={ClassicEditor}
-                                  onReady={(editor) => {
-                                    const includeExplanationValue =
-                                      selectedOption.find(
-                                        (a) =>
-                                          a.answerOption ===
-                                          btn.answerOption._id
-                                      )?.includeExplanationValue;
-                                    editor.setData(
-                                      includeExplanationValue || ""
-                                    );
-                                  }}
-                                  // onChange={(e, editor) => {
-                                  //   const value = editor.getData();
-                                  //   setIncludeExplanation((prevState) => ({
-                                  //     ...prevState,
-                                  //     [item._id]: value,
-                                  //   }));
-                                  // }}
-                                  // onBlur={(e, editor) => {
-                                  //   const value = editor.getData();
-                                  //   setIncludeExplanation((prevState) => ({
-                                  //     ...prevState,
-                                  //     [item._id]: value,
-                                  //   }));
-                                  //   handleButtonClick(
-                                  //     (currentPage - 1) * numPages + index,
-                                  //     btnIndex,
-                                  //     btn.answerOption,
-                                  //     item?._id,
-                                  //     btn.answerOption._id,
-                                  //     btn.includeExplanation,
-                                  //     btn.includeInputField
-                                  //   );
-                                  // }}
-                                  onChange={(e, editor) => {
-                                    const value = editor.getData();
-                                    setIncludeExplanation((prevState) => ({
-                                      ...prevState,
-                                      [item._id]: value,
-                                    }));
-                                  }}
-                                  onBlur={(e, editor) => {
-                                    const value = editor.getData();
-                                    setIncludeExplanation((prevState) => ({
-                                      ...prevState,
-                                      [item._id]: value,
-                                    }));
-                                    handleButtonClick(
-                                      (currentPage - 1) * numPages + index,
-                                      btnIndex,
-                                      btn.answerOption,
-                                      item?._id,
-                                      btn._id,
-                                      btn.includeExplanation,
-                                      btn.includeInputField,
-                                      explanationValue // Pass the explanation value to handleButtonClick
-                                    );
-                                  }}
-                                  class="form-control"
-                                  placeholder="Description"
-                                  id="floatingTextarea"
-                                  value=""
-                                  style={{
-                                    height: "120px",
-                                    overflow: "hidden",
-                                    backgroundColor: "#dfdfdf",
-                                  }}
-                                />
-                              </div>
-                            )}
-                            {console.log("selectedOpt", selectedOption)}
-                            {btn.includeInputField && (
+                            {btn_user_resp?.includeExplanation !== undefined &&
+                              btn_user_resp.includeExplanation !== "false" && (
+                                <div className="">
+                                  <CKEditor
+                                    editor={ClassicEditor}
+                                    onReady={(editor) => {
+                                      editor.setData(
+                                        btn_user_resp.includeExplanationValue
+                                      );
+                                    }}
+                                    onChange={(e, editor) => {
+                                      const value = editor.getData();
+                                      setIncludeExplanation((prevState) => ({
+                                        ...prevState,
+                                        [item._id]: value,
+                                      }));
+                                    }}
+                                    onBlur={(e, editor) => {
+                                      const value = editor.getData();
+                                      setIncludeExplanation((prevState) => ({
+                                        ...prevState,
+                                        [item._id]: value,
+                                      }));
+                                      handleButtonClick(
+                                        (currentPage - 1) * numPages + index,
+                                        btnIndex,
+                                        btn.answerOption,
+                                        item?._id,
+                                        btn.answerOption._id,
+                                        btn.includeExplanation,
+                                        btn.includeInputField,
+                                        includeExplanation,
+                                        includeExplanationValue
+                                      );
+                                    }}
+                                    class="form-control"
+                                    placeholder="Description"
+                                    id="floatingTextarea"
+                                    value=""
+                                    style={{
+                                      height: "120px",
+                                      overflow: "hidden",
+                                      backgroundColor: "#dfdfdf",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                          </>
+                        ) : null}
+                        {isSelected || check ? (
+                          <>
+                            {btn_user_resp?.includeInputField !== undefined &&
+                            btn_user_resp.includeInputField !== "false" ? (
                               <div>
                                 <Input
                                   type="text"
@@ -421,53 +680,50 @@ const Benchmarking = () => {
                                   id="input-field"
                                   placeholder=""
                                   value={
-                                    inputFieldValue
-                                    // ||
-                                    // selectedOption.find(
-                                    //   (a) =>
-                                    //     a.answerOption === btn.answerOption._id
-                                    // )?.includeInputFieldValue ||
-                                    // ""
+                                    includeInputField[
+                                      `${item._id}_${btn.answerOption._id}`
+                                    ] ||
+                                    selectedOption.find(
+                                      (a) =>
+                                        a.answerOption === btn.answerOption._id
+                                    )?.includeInputFieldValue ||
+                                    "chekc"
                                   }
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     setIncludeInputField((prevState) => ({
                                       ...prevState,
-                                      [`${item._id}_${btn._id}`]: value,
+                                      [`${item._id}_${btn.answerOption._id}`]:
+                                        value,
                                     }));
                                   }}
                                   onBlur={(e) => {
                                     const value = e.target.value;
                                     setIncludeInputField((prevState) => ({
                                       ...prevState,
-                                      [`${item._id}_${btn._id}`]: value,
+                                      [`${item._id}_${btn.answerOption._id}`]:
+                                        value,
                                     }));
-                                    console.log(
-                                      "input chekc",
-                                      item._id,
-                                      btn._id,
-                                      btnIndex
-                                    );
                                     handleButtonClick(
                                       (currentPage - 1) * numPages + index,
                                       btnIndex,
                                       btn.answerOption,
                                       item?._id,
-                                      btn._id,
+                                      btn.answerOption._id,
                                       btn.includeExplanation,
                                       btn.includeInputField,
-                                      inputFieldValue
+                                      includeExplanation,
+                                      includeExplanationValue
                                     );
                                   }}
                                 />
                               </div>
-                            )}
+                            ) : null}
                           </>
                         ) : null}
-                        <div className="buttons-container" key={btnIndex}>
+                        <div className="buttons-container">
                           <button
                             onClick={() => {
-                              setSelectedAnswer(btn);
                               setSelectedAnswerIds((prevSelectedAnswerIds) => {
                                 const questionId = item._id;
                                 const selectedIds =
@@ -477,13 +733,16 @@ const Benchmarking = () => {
                                   return {
                                     ...prevSelectedAnswerIds,
                                     [questionId]: selectedIds.filter(
-                                      (id) => id !== btn._id
+                                      (id) => id !== btn.answerOption._id
                                     ),
                                   };
                                 } else {
                                   return {
                                     ...prevSelectedAnswerIds,
-                                    [questionId]: [...selectedIds, btn._id],
+                                    [questionId]: [
+                                      ...selectedIds,
+                                      btn.answerOption._id,
+                                    ],
                                   };
                                 }
                               });
@@ -493,20 +752,7 @@ const Benchmarking = () => {
                                 btnIndex,
                                 btn.answerOption,
                                 item?._id,
-                                btn.answerOption._id,
-                                btn.includeExplanation,
-                                btn.includeInputField
-                              );
-                            }}
-                            onBlur={() => {
-                              handleButtonClick(
-                                (currentPage - 1) * numPages + index,
-                                btnIndex,
-                                btn.answerOption,
-                                item?._id,
-                                btn.answerOption._id,
-                                btn.includeExplanation,
-                                btn.includeInputField
+                                btn.answerOption._id
                               );
                             }}
                             className={buttonClass}
@@ -566,10 +812,11 @@ const Benchmarking = () => {
                                       btnIndex,
                                       btn.answerOption,
                                       item?._id,
-                                      btn._id,
+                                      btn.answerOption._id,
                                       btn.includeExplanation,
                                       btn.includeInputField,
-                                      explanationValue // Pass the explanation value to handleButtonClick
+                                      explanationValue,
+                                      inputFieldValue // Pass the explanation value to handleButtonClick
                                     );
                                   }}
                                   validate={{
@@ -608,20 +855,16 @@ const Benchmarking = () => {
                                       ...prevState,
                                       [`${item._id}_${btn._id}`]: value,
                                     }));
-                                    console.log(
-                                      "input chekc",
-                                      item._id,
-                                      btn._id,
-                                      btnIndex
-                                    );
+
                                     handleButtonClick(
                                       (currentPage - 1) * numPages + index,
                                       btnIndex,
                                       btn.answerOption,
                                       item?._id,
-                                      btn._id,
+                                      btn.answerOption._id,
                                       btn.includeExplanation,
                                       btn.includeInputField,
+                                      explanationValue,
                                       inputFieldValue
                                     );
                                   }}
@@ -879,12 +1122,32 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              console.log(benchmark.user_resp, user_resp);
-                              updateUserRespSave(benchmark?._id, requestBody);
+                              if (location?.state?.isDataUpdated) {
+                                // Update benchmark.user_resp based on the condition
+                                const updatedUserResp = benchmark.user_resp
+                                  ? [...benchmark.user_resp, ...user_resp]
+                                  : user_resp;
+
+                                // Create a new requestBody with the updated user_resp
+                                const updatedRequestBody = {
+                                  ...requestBody,
+                                  user_resp: updatedUserResp,
+                                };
+
+                                // Call the updateUserRespSave function with the updated values
+                                updateUserRespSave(
+                                  benchmark?._id,
+                                  updatedRequestBody
+                                );
+                              } else {
+                                // Call the updateUserRespSave function with the original values
+                                updateUserRespSave(benchmark?._id, requestBody);
+                              }
                             }}
                           >
                             SAVE
                           </button>
+
                           <button
                             type="button"
                             onClick={handleSubmitModal}
@@ -915,11 +1178,6 @@ const Benchmarking = () => {
                           <p>
                             You have answered{" "}
                             <span style={{ fontSize: "24px" }}>
-                              {console.log(user_resp, "INSIDE modal")}
-                              {console.log(
-                                benchmark.user_resp,
-                                "INSIDE modal benchmark.user_resp"
-                              )}
                               {location?.state?.isDataUpdated
                                 ? benchmark.user_resp?.length +
                                   user_resp?.length
