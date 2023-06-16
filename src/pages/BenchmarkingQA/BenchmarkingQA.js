@@ -93,26 +93,29 @@ const BenchmarkingQA = () => {
       .then((resp) => setAllCategories(resp))
       .catch((err) => toast.error("category all error"));
   };
+  const [info, setInfo] = useState([]);
 
   useEffect(() => {
     allQA();
     if (isDataUpdated) {
       setSelectedAnswerOptions[info.answerOptions];
+      validation.setFieldValue("title", info.title);
+      validation.setFieldValue("category", info.category);
     }
   }, []);
-  useEffect(() => {
-    dispatch(onGetContacts(crmcontacts));
-  }, [dispatch, crmcontacts]);
-  useEffect(() => {
-    setContact(qa);
-  }, [crmcontacts]);
+  // useEffect(() => {
+  //   dispatch(onGetContacts(crmcontacts));
+  // }, [dispatch, crmcontacts]);
+  // useEffect(() => {
+  //   setContact(qa);
+  // }, [crmcontacts]);
 
-  useEffect(() => {
-    if (!isEmpty(crmcontacts)) {
-      setContact(crmcontacts);
-      setIsEdit(false);
-    }
-  }, [crmcontacts]);
+  // useEffect(() => {
+  //   if (!isEmpty(crmcontacts)) {
+  //     setContact(crmcontacts);
+  //     setIsEdit(false);
+  //   }
+  // }, [crmcontacts]);
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -151,11 +154,11 @@ const BenchmarkingQA = () => {
     enableReinitialize: true,
 
     initialValues: {
-      title: "",
+      title: isDataUpdated ? info.title : "",
       status: true,
       visibility: true,
-      description: "",
-      category: "",
+      description: isDataUpdated ? info.description : "",
+      category: isDataUpdated ? info.category : "",
       answerOptions: [],
     },
     validationSchema: Yup.object({
@@ -535,7 +538,6 @@ const BenchmarkingQA = () => {
   );
 
   // SideBar Contact Deatail
-  const [info, setInfo] = useState([]);
 
   // Export Modal
   const [modal_grid, setmodal_grid] = useState(false);
@@ -1042,9 +1044,15 @@ const BenchmarkingQA = () => {
                               : false
                           }
                         >
-                          <option hidden selected>
-                            Select Category
-                          </option>
+                          {isDataUpdated ? (
+                            <option hidden selected>
+                              {info.category}
+                            </option>
+                          ) : (
+                            <option hidden selected>
+                              Select Category
+                            </option>
+                          )}
                           {allCategories &&
                             allCategories.map((value, index) => {
                               return (
@@ -1120,7 +1128,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOptions"
                                                       onBlur={() => {
@@ -1184,7 +1192,10 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
@@ -1349,7 +1360,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOptions"
                                                       onBlur={() => {
@@ -1408,7 +1419,10 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"

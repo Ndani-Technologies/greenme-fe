@@ -333,7 +333,16 @@ const BenchmarkingDashboard = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
+  const [isDataUpdated, setIsDataUpdated] = useState(false);
 
+  const handleTitleClick = (e, cellProps) => {
+    e.preventDefault();
+    const contactData = cellProps.row.original;
+    setInfo(contactData);
+    navigate(`/benchmarking/${cellProps.row.original._id}`, {
+      state: { isDataUpdated: true },
+    });
+  };
   // Column
   const columns = useMemo(
     () => [
@@ -369,12 +378,7 @@ const BenchmarkingDashboard = () => {
               <div className="flex-shrink-0"></div>
               <div
                 className="flex-grow-1 ms-2 name"
-                onClick={(event) => {
-                  event.preventDefault();
-                  const contactData = cellProps.row.original;
-                  setInfo(contactData);
-                  navigate(`/benchmarking/${cellProps.row.original._id}`);
-                }}
+                onClick={(e) => handleTitleClick(e, cellProps)}
               >
                 {cellProps.row.original.title}
               </div>

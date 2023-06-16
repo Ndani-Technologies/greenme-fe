@@ -29,9 +29,9 @@ const ActionAdminSummary = () => {
       <div className="page-content overflow-auto ">
         <ActionMain
           Title={"Recommended Actions - Summary"}
-          Text={
-            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-          }
+          // Text={
+          //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+          // }
         />
         <div
           className="d-flex justify-content-between align-items-center bg-white p-3 pt-4 pb-4 rounded"
