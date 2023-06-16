@@ -99,6 +99,8 @@ const BenchmarkingQA = () => {
     allQA();
     if (isDataUpdated) {
       setSelectedAnswerOptions[info.answerOptions];
+      validation.setFieldValue("title", info.title);
+      validation.setFieldValue("category", info.category);
     }
   }, []);
   // useEffect(() => {

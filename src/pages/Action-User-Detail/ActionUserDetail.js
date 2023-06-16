@@ -148,6 +148,7 @@ const ActionUserDetail = () => {
             // }
             ra_title={data.title}
 
+
           />
           <div className="card-wrapper">
             <div className="card">

@@ -54,6 +54,7 @@ const Benchmarking = () => {
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
+    
 
     const arr = [];
     bench.questionnaire.forEach((element) => {
@@ -79,34 +80,6 @@ const Benchmarking = () => {
 
     // setBenchmark(benchmarkByCategory);
   }, []);
-  console.log(location?.state?.isDataUpdated, "isDataUpdated");
-  // useEffect(() => {
-  //   const userResponse = benchmark?.user_resp?.find(
-  //     (resp) => resp?.questionId === item?._id
-  //   );
-
-  //   const selectedOption = userResponse?.selectedOption.filter(
-  //     // (option) => option?._id === userResponse?.selectedOption[0]
-  //     (selct) =>
-  //       item?.answerOptions?.find((option) => {
-
-  //         return selct.answerOption === option.answerOption._id;
-  //       })
-  //   );
-  //   const updatedFields = {};
-  //   benchmark.questionnaire.forEach((item)=>{
-
-  //     item.answerOptions.forEach((btn) => {
-  //       const inputField = selectedOption.find((a) => a.answerOption === btn.answerOption._id)?.includeInputFieldValue;
-  //       updatedFields[btn.answerOption._id] = inputField;
-  //     });
-  //   })
-
-  //   setIncludeInputField((prevState) => ({
-  //     ...prevState,
-  //     [item._id]: updatedFields,
-  //   }));
-  // }, [benchmark]);
 
   //HANDLING STYLE CHANGE ON SCREEN SIZE CHANGE
 
@@ -180,17 +153,11 @@ const Benchmarking = () => {
       ...prevState,
       [questionIndex]: buttonIndex,
     }));
-    console.log(
-      "check",
-      questionIndex,
-      `${qid} ${buttonIndex} ${aid}`,
-      explanationValue,
-      inputFieldValue
-    );
+
     setUser_resp((prevUserResp) => {
       const newUserResp = [...prevUserResp];
       const userRespIndex = newUserResp.findIndex(
-        (resp) => resp.questionId === qid
+        (resp) => resp?.questionId === qid
       );
 
       if (userRespIndex !== -1) {
@@ -239,9 +206,6 @@ const Benchmarking = () => {
               includeExplanation: isIncludeExplanation,
               includeInputField: isInlcudeInput,
             });
-            // updateUserResp.selectedOption[optionIndex].includeExplanationValue = explanationValue || "check"
-            // updateUserResp.selectedOption[optionIndex].includeInputFieldValue= inputFieldValue || ""
-            // console.log("empty index", emptyOptionIndex, updateUserResp)
           }
         }
 
@@ -274,23 +238,18 @@ const Benchmarking = () => {
       .map((item, index) => {
         const activeButtonIndex = activeIndexes[index];
 
-        // Find the user response for the current question
         const userResponse = benchmark?.user_resp?.find(
           (resp) => resp?.questionId === item?._id
         );
 
-        // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
           (option) =>
             option?._id === userResponse?.selectedOption.map((val) => val)
         );
-
-        const selectedOption = userResponse?.selectedOption.filter(
-          // (option) => option?._id === userResponse?.selectedOption[0]
-          (selct) =>
-            item?.answerOptions?.find((option) => {
-              return selct.answerOption === option.answerOption._id;
-            })
+        const selectedOption = userResponse?.selectedOption.filter((selct) =>
+          item?.answerOptions?.find((option) => {
+            return selct.answerOption === option.answerOption._id;
+          })
         );
 
         return (
@@ -302,13 +261,14 @@ const Benchmarking = () => {
                 __html: item.description,
               }}
             ></p>
-            {benchmark.user_resp?.length > 0 ? (
+            {location?.state?.isDataUpdated ||
+            benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     const isSelected =
                       selectedAnswerIds[item._id]?.includes(
-                        btn.answerOption._id
+                        (btn) => btn === btn.answerOption._id
                       ) || false;
 
                     let buttonClass = "button";
@@ -320,100 +280,83 @@ const Benchmarking = () => {
                       buttonClass += " active";
                     }
 
-                    const check = selectedOption?.some(
-                      (a) => a.answerOption !== undefined
-                    )
-                      ? selectedOption?.some(
-                          (a) => a.answerOption === btn.answerOption._id
-                        )
-                      : activeButtonIndex === btnIndex;
+                    const check = selectedOption?.some((a) => {
+                      return a.answerOption !== undefined;
+                    });
+                    const check2 = selectedOption?.some((a) => {
+                      return a.answerOption === btn.answerOption._id;
+                    });
 
-                    if (check) {
+                    const btn_user_resp = selectedOption?.find((a) => {
+                      return a.answerOption === btn.answerOption._id;
+                    });
+                    if (check ? check2 : false) {
                       buttonClass += " active";
                     }
-                    const explanationValue = includeExplanation[item._id] || ""; // Get the value for the explanation input field
                     const inputFieldValue =
                       includeInputField[`${item._id}_${btn._id}`] || "";
+                    const selectedAnswer = selectedOption?.some(
+                      (option) => option.answerOption === btn.answerOption._id
+                    );
+                    const includeExplanationValue =
+                      selectedAnswer?.includeExplanationValue || "";
                     return (
-                      <div>
+                      <div key={btnIndex}>
                         {isSelected || check ? (
                           <>
-                            {btn.includeExplanation && (
-                              <div className="">
-                                <CKEditor
-                                  editor={ClassicEditor}
-                                  onReady={(editor) => {
-                                    const includeExplanationValue =
-                                      selectedOption.find(
-                                        (a) =>
-                                          a.answerOption ===
-                                          btn.answerOption._id
-                                      )?.includeExplanationValue;
-                                    editor.setData(
-                                      includeExplanationValue || ""
-                                    );
-                                  }}
-                                  // onChange={(e, editor) => {
-                                  //   const value = editor.getData();
-                                  //   setIncludeExplanation((prevState) => ({
-                                  //     ...prevState,
-                                  //     [item._id]: value,
-                                  //   }));
-                                  // }}
-                                  // onBlur={(e, editor) => {
-                                  //   const value = editor.getData();
-                                  //   setIncludeExplanation((prevState) => ({
-                                  //     ...prevState,
-                                  //     [item._id]: value,
-                                  //   }));
-                                  //   handleButtonClick(
-                                  //     (currentPage - 1) * numPages + index,
-                                  //     btnIndex,
-                                  //     btn.answerOption,
-                                  //     item?._id,
-                                  //     btn.answerOption._id,
-                                  //     btn.includeExplanation,
-                                  //     btn.includeInputField
-                                  //   );
-                                  // }}
-                                  onChange={(e, editor) => {
-                                    const value = editor.getData();
-                                    setIncludeExplanation((prevState) => ({
-                                      ...prevState,
-                                      [item._id]: value,
-                                    }));
-                                  }}
-                                  onBlur={(e, editor) => {
-                                    const value = editor.getData();
-                                    setIncludeExplanation((prevState) => ({
-                                      ...prevState,
-                                      [item._id]: value,
-                                    }));
-                                    handleButtonClick(
-                                      (currentPage - 1) * numPages + index,
-                                      btnIndex,
-                                      btn.answerOption,
-                                      item?._id,
-                                      btn._id,
-                                      btn.includeExplanation,
-                                      btn.includeInputField,
-                                      explanationValue // Pass the explanation value to handleButtonClick
-                                    );
-                                  }}
-                                  class="form-control"
-                                  placeholder="Description"
-                                  id="floatingTextarea"
-                                  value=""
-                                  style={{
-                                    height: "120px",
-                                    overflow: "hidden",
-                                    backgroundColor: "#dfdfdf",
-                                  }}
-                                />
-                              </div>
-                            )}
-                            {console.log("selectedOpt", selectedOption)}
-                            {btn.includeInputField && (
+                            {btn_user_resp?.includeExplanation !== undefined &&
+                              btn_user_resp.includeExplanation !== "false" && (
+                                <div className="">
+                                  <CKEditor
+                                    editor={ClassicEditor}
+                                    onReady={(editor) => {
+                                      editor.setData(
+                                        btn_user_resp.includeExplanationValue
+                                      );
+                                    }}
+                                    onChange={(e, editor) => {
+                                      const value = editor.getData();
+                                      setIncludeExplanation((prevState) => ({
+                                        ...prevState,
+                                        [item._id]: value,
+                                      }));
+                                    }}
+                                    onBlur={(e, editor) => {
+                                      const value = editor.getData();
+                                      setIncludeExplanation((prevState) => ({
+                                        ...prevState,
+                                        [item._id]: value,
+                                      }));
+                                      handleButtonClick(
+                                        (currentPage - 1) * numPages + index,
+                                        btnIndex,
+                                        btn.answerOption,
+                                        item?._id,
+                                        btn.answerOption._id,
+                                        btn.includeExplanation,
+                                        btn.includeInputField,
+                                        includeExplanation,
+                                        includeExplanationValue
+                                      );
+                                    }}
+                                    class="form-control"
+                                    placeholder="Description"
+                                    id="floatingTextarea"
+                                    value=""
+                                    style={{
+                                      height: "120px",
+                                      overflow: "hidden",
+                                      backgroundColor: "#dfdfdf",
+                                    }}
+                                  />
+                                </div>
+                              )}
+                          </>
+                        ) : null}
+                        {isSelected || check ? (
+                          <>
+                            {btn_user_resp?.includeInputField !== undefined &&
+                            btn_user_resp.includeInputField !== "false" ? (
                               <div>
                                 <Input
                                   type="text"
@@ -421,53 +364,50 @@ const Benchmarking = () => {
                                   id="input-field"
                                   placeholder=""
                                   value={
-                                    inputFieldValue
-                                    // ||
-                                    // selectedOption.find(
-                                    //   (a) =>
-                                    //     a.answerOption === btn.answerOption._id
-                                    // )?.includeInputFieldValue ||
-                                    // ""
+                                    includeInputField[
+                                      `${item._id}_${btn.answerOption._id}`
+                                    ] ||
+                                    selectedOption.find(
+                                      (a) =>
+                                        a.answerOption === btn.answerOption._id
+                                    )?.includeInputFieldValue ||
+                                    "chekc"
                                   }
                                   onChange={(e) => {
                                     const value = e.target.value;
                                     setIncludeInputField((prevState) => ({
                                       ...prevState,
-                                      [`${item._id}_${btn._id}`]: value,
+                                      [`${item._id}_${btn.answerOption._id}`]:
+                                        value,
                                     }));
                                   }}
                                   onBlur={(e) => {
                                     const value = e.target.value;
                                     setIncludeInputField((prevState) => ({
                                       ...prevState,
-                                      [`${item._id}_${btn._id}`]: value,
+                                      [`${item._id}_${btn.answerOption._id}`]:
+                                        value,
                                     }));
-                                    console.log(
-                                      "input chekc",
-                                      item._id,
-                                      btn._id,
-                                      btnIndex
-                                    );
                                     handleButtonClick(
                                       (currentPage - 1) * numPages + index,
                                       btnIndex,
                                       btn.answerOption,
                                       item?._id,
-                                      btn._id,
+                                      btn.answerOption._id,
                                       btn.includeExplanation,
                                       btn.includeInputField,
-                                      inputFieldValue
+                                      includeExplanation,
+                                      includeExplanationValue
                                     );
                                   }}
                                 />
                               </div>
-                            )}
+                            ) : null}
                           </>
                         ) : null}
-                        <div className="buttons-container" key={btnIndex}>
+                        <div className="buttons-container">
                           <button
                             onClick={() => {
-                              setSelectedAnswer(btn);
                               setSelectedAnswerIds((prevSelectedAnswerIds) => {
                                 const questionId = item._id;
                                 const selectedIds =
@@ -477,13 +417,16 @@ const Benchmarking = () => {
                                   return {
                                     ...prevSelectedAnswerIds,
                                     [questionId]: selectedIds.filter(
-                                      (id) => id !== btn._id
+                                      (id) => id !== btn.answerOption._id
                                     ),
                                   };
                                 } else {
                                   return {
                                     ...prevSelectedAnswerIds,
-                                    [questionId]: [...selectedIds, btn._id],
+                                    [questionId]: [
+                                      ...selectedIds,
+                                      btn.answerOption._id,
+                                    ],
                                   };
                                 }
                               });
@@ -493,20 +436,7 @@ const Benchmarking = () => {
                                 btnIndex,
                                 btn.answerOption,
                                 item?._id,
-                                btn.answerOption._id,
-                                btn.includeExplanation,
-                                btn.includeInputField
-                              );
-                            }}
-                            onBlur={() => {
-                              handleButtonClick(
-                                (currentPage - 1) * numPages + index,
-                                btnIndex,
-                                btn.answerOption,
-                                item?._id,
-                                btn.answerOption._id,
-                                btn.includeExplanation,
-                                btn.includeInputField
+                                btn.answerOption._id
                               );
                             }}
                             className={buttonClass}
@@ -566,10 +496,11 @@ const Benchmarking = () => {
                                       btnIndex,
                                       btn.answerOption,
                                       item?._id,
-                                      btn._id,
+                                      btn.answerOption._id,
                                       btn.includeExplanation,
                                       btn.includeInputField,
-                                      explanationValue // Pass the explanation value to handleButtonClick
+                                      explanationValue,
+                                      inputFieldValue // Pass the explanation value to handleButtonClick
                                     );
                                   }}
                                   validate={{
@@ -608,20 +539,16 @@ const Benchmarking = () => {
                                       ...prevState,
                                       [`${item._id}_${btn._id}`]: value,
                                     }));
-                                    console.log(
-                                      "input chekc",
-                                      item._id,
-                                      btn._id,
-                                      btnIndex
-                                    );
+
                                     handleButtonClick(
                                       (currentPage - 1) * numPages + index,
                                       btnIndex,
                                       btn.answerOption,
                                       item?._id,
-                                      btn._id,
+                                      btn.answerOption._id,
                                       btn.includeExplanation,
                                       btn.includeInputField,
+                                      explanationValue,
                                       inputFieldValue
                                     );
                                   }}
@@ -733,7 +660,7 @@ const Benchmarking = () => {
       {/* <Layouts> */}
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
-          <h1 style={{ color: "white" }}>Benchmarking</h1>
+          <h1>Benchmarking</h1>
           <p>
             This is a page where users can take self-assessment questionnaires
             and view their results. It will feature the ability for users to
@@ -879,12 +806,32 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              console.log(benchmark.user_resp, user_resp);
-                              updateUserRespSave(benchmark?._id, requestBody);
+                              if (location?.state?.isDataUpdated) {
+                                // Update benchmark.user_resp based on the condition
+                                const updatedUserResp = benchmark.user_resp
+                                  ? [...benchmark.user_resp, ...user_resp]
+                                  : user_resp;
+
+                                // Create a new requestBody with the updated user_resp
+                                const updatedRequestBody = {
+                                  ...requestBody,
+                                  user_resp: updatedUserResp,
+                                };
+
+                                // Call the updateUserRespSave function with the updated values
+                                updateUserRespSave(
+                                  benchmark?._id,
+                                  updatedRequestBody
+                                );
+                              } else {
+                                // Call the updateUserRespSave function with the original values
+                                updateUserRespSave(benchmark?._id, requestBody);
+                              }
                             }}
                           >
                             SAVE
                           </button>
+
                           <button
                             type="button"
                             onClick={handleSubmitModal}
@@ -915,11 +862,6 @@ const Benchmarking = () => {
                           <p>
                             You have answered{" "}
                             <span style={{ fontSize: "24px" }}>
-                              {console.log(user_resp, "INSIDE modal")}
-                              {console.log(
-                                benchmark.user_resp,
-                                "INSIDE modal benchmark.user_resp"
-                              )}
                               {location?.state?.isDataUpdated
                                 ? benchmark.user_resp?.length +
                                   user_resp?.length
