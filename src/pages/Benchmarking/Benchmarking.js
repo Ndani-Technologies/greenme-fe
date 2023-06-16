@@ -733,7 +733,7 @@ const Benchmarking = () => {
       {/* <Layouts> */}
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
-          <h1>Benchmarking</h1>
+          <h1 style={{ color: "white" }}>Benchmarking</h1>
           <p>
             This is a page where users can take self-assessment questionnaires
             and view their results. It will feature the ability for users to
