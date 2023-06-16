@@ -952,11 +952,7 @@ const BenchmarkingQA = () => {
                             }}
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={
-                              isDataUpdated
-                                ? info.title
-                                : validation.values.title || ""
-                            }
+                            value={validation.values.title || ""}
                             invalid={
                               validation.touched.title &&
                               validation.errors.title
