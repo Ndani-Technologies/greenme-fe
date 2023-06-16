@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
 import { Box, Slider } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ProductsGlobalFilter = () => {
   return (
@@ -404,6 +405,75 @@ const CustomersGlobalFilter = () => {
         </Row>
       </Col>
     </React.Fragment>
+  );
+};
+
+const FilterLeaderBoard = ({ item, selectedData }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex gap-3">
+        <Col
+          className="d-flex align-items-center border border-dark p-1 rounded"
+          style={{ height: "37px" }}
+        >
+          <i className="bx bx-search-alt search-icon"></i>
+          <input
+            className="border-0"
+            placeholder="Search by name"
+            type="text"
+          />
+        </Col>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Orgnaisation
+            </option>
+          </select>
+        </div>
+      </div>
+      <Col lg={6} className="d-flex align-items-center gap-3">
+        <Col lg={2} className="border border-gray rounded p-1">
+          <label className="m-0">Points</label>
+          <input className="w-100 p-0 border-bottom border-0" type="text" />
+        </Col>
+        <Col>
+          <select disable className="form-select">
+            <option hidden selected>
+              Points Type
+            </option>
+            <option>Total Points</option>
+            <option>Action points</option>
+            <option>Collaboration points</option>
+            <option>Discussion points</option>
+          </select>
+        </Col>
+        <Col>
+          <select disable className="form-select">
+            <option hidden selected>
+              Realtionship
+            </option>
+            <option>Greater Than (>)</option>
+            <option>Equal to (=)</option>
+            <option>Not Equal to (!)</option>
+            <option>Greater than or Equal to (>=)</option>
+          </select>
+        </Col>
+      </Col>
+      <div>
+        <Button
+          // href="/leaderboardtablecard"
+          onClick={() => {
+            navigate("/leaderboardtablecard", {
+              state: { data: selectedData },
+            });
+          }}
+          disabled={selectedData?.length >= 2 ? false : true}
+        >
+          Compare
+        </Button>
+      </div>
+    </div>
   );
 };
 
@@ -888,4 +958,5 @@ export {
   FilterAction,
   AllQaFilters,
   FilterBenchmarkAction,
+  FilterLeaderBoard,
 };

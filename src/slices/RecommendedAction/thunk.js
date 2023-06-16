@@ -5,6 +5,24 @@ export const getAllRecommendedAction = async () => {
   console.log("get action steps", resp);
   return resp;
 };
+
+export const updateRecommendedActionStep = async (id, data) => {
+  try {
+    // const res = await axios.patch(
+    //   `http://localhost:5002/api/v1/ra/steps/${id}`,
+    //   data
+    // );
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
+      data
+    );
+    console.log(res, "INSIDE RA THUNK");
+    return res;
+  } catch (error) {
+    console.log("Unable to Add", error);
+  }
+};
+
 export const getAllRecommendedRelation = async () => {
   let resp = await axios.get(`${process.env.REACT_APP_RA_URL}relationships`);
   console.log("get action relation", resp);
@@ -12,7 +30,7 @@ export const getAllRecommendedRelation = async () => {
   let data = resp.map((value) => {
     answers = "";
     value.qid?.answerOptions.forEach((element) => {
-      answers += element.answerOption + ",";
+      answers += element.answerOption.answerOption + ",";
     });
     return {
       ...value,

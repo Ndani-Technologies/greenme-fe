@@ -119,9 +119,9 @@ const ActionUserDetail = () => {
         <div className="page-content overflow-auto ">
           <ActionMain
             Title={"Recommended Actions - Details"}
-            Text={
-              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-            }
+            // Text={
+            //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+            // }
             ra_title={data.title}
           />
           <div className="card-wrapper">
@@ -178,7 +178,10 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Start Date</span>
                   <div>
-                    <span className="span">{data.startdate}</span>g
+                    <span className="span">
+                      {new Date(data.startdate).toLocaleDateString("en-US")}
+                    </span>
+                    g
                   </div>
                 </div>
                 <div
@@ -187,7 +190,9 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Completed Date</span>
                   <div>
-                    <span className="span">{data.enddate}</span>
+                    <span className="span">
+                      {new Date(data.enddate).toLocaleDateString("en-US")}
+                    </span>
                   </div>
                 </div>
               </div>

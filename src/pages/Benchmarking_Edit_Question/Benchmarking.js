@@ -137,19 +137,30 @@ const Benchmarking = () => {
         const userResponse = benchmark?.user_resp?.find(
           (resp) => resp?.questionId === item?._id
         );
-        console.log("userResponse", userResponse);
+        console.log(userResponse, "UR");
+        console.log(benchmark?.user_resp, "benchmark?.user_resp?");
+        console.log(benchmark, "benchmark");
+
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
           (option) =>
             option?._id === userResponse?.selectedOption.map((val) => val)
         );
-        const resp = userResponse?.selectedOption[0];
-        console.log(resp, "RESP");
-        const selectedOption = item?.answerOptions?.find(
-          (option) => option?._id === userResponse?.selectedOption[0]
-        );
 
-        console.log(selectedOption, "OPTION");
+        const selectedOption = userResponse?.selectedOption.filter(
+          // (option) => option?._id === userResponse?.selectedOption[0]
+          (selct) =>
+            item?.answerOptions?.find((option) => {
+              console.log(
+                "check",
+                option.answerOption.answerOption,
+                selct.answerOption,
+                option.answerOption._id,
+                selct.answerOption === option.answerOption._id
+              );
+              return selct.answerOption === option.answerOption._id;
+            })
+        );
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {index + 1}</h5>
@@ -160,23 +171,27 @@ const Benchmarking = () => {
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     // Check if the answer is already selected for the current question
+                    console.log("selected", selectedOption);
                     const isSelected =
-                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+                      selectedAnswerIds[item._id]?.includes(
+                        btn.answerOption._id
+                      ) || false;
 
                     let buttonClass = "button";
-
                     if (
                       selectedAnswerIds[item._id] &&
-                      selectedAnswerIds[item._id].includes(btn._id)
+                      selectedAnswerIds[item._id].includes(btn.answerOption._id)
                     ) {
                       buttonClass += " active";
                     }
-
-                    if (
-                      selectedOption?._id !== undefined
-                        ? selectedOption?._id === btn._id
-                        : activeButtonIndex === btnIndex
-                    ) {
+                    const check = selectedOption?.some(
+                      (a) => a.answerOption !== undefined
+                    )
+                      ? selectedOption?.some(
+                          (a) => a.answerOption === btn.answerOption._id
+                        )
+                      : activeButtonIndex === btnIndex;
+                    if (check) {
                       buttonClass += " active";
                     }
 
@@ -215,7 +230,7 @@ const Benchmarking = () => {
                           }}
                           className={buttonClass}
                         >
-                          {btn.answerOption}
+                          {btn.answerOption.answerOption}
                         </button>
                       </div>
                     );
@@ -348,7 +363,7 @@ const Benchmarking = () => {
                                   Benchmark progress
                                 </h5>
                                 <h5>
-                                  {Math.floor(100 - benchmark.completionLevel)}{" "}
+                                  {Math.ceil(100 - benchmark.completionLevel)}{" "}
                                   to go
                                 </h5>
                               </div>

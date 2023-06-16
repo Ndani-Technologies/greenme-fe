@@ -168,7 +168,7 @@ const AdminRelation = () => {
   useEffect(() => {
     fetchAPIs();
   }, []);
-
+  console.log("ra", recommendedRelation);
   const [modal, setModal] = useState(false);
 
   const toggle = useCallback(() => {
