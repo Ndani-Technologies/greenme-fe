@@ -83,7 +83,9 @@ const Profile = () => {
 
   const [countryOptions, setCountryOptions] = useState([]);
   const [scopeOptions, setScopeOptions] = useState([]);
+
   const [bgPic, setBgPic] = useState("");
+
 
   const scopesOptions = [
     { key: "Global Level", value: "Global Level" },
@@ -106,8 +108,10 @@ const Profile = () => {
       };
     });
     setCountryOptions(options);
+
     setSelectedScope(userObj.scope);
     setBgPic(userObj.backgroundPic);
+
 
     const scopeValuess = scopesOptions.map((scope) => {
       return {
@@ -168,7 +172,9 @@ const Profile = () => {
     onSubmit: (values, { resetForm }) => {
       const mappedData = {
         ...values,
+
         scope: selectedScope && selectedScope,
+
         country: selectedCountry.value && selectedCountry.value,
         otherCountries: selectedCountries && selectedCountries,
         banner: coverPhoto && coverPhoto,
@@ -235,11 +241,13 @@ const Profile = () => {
   };
 
   const handleChange2 = (selectedOption) => {
+
     if (selectedOption) {
       setSelectedScope([selectedOption.value]);
     } else {
       setSelectedScope(userObj.scope);
     }
+
   };
 
   const handleChange = (selectedOptions) => {
@@ -271,6 +279,7 @@ const Profile = () => {
                       type="file"
                       className="profile-foreground-img-file-input"
                       onChange={handleCoverPhotoChange}
+                      disabled
                     />
                     <Label
                       htmlFor="profile-foreground-img-file-input"
@@ -516,10 +525,12 @@ const Profile = () => {
                                 htmlFor="firstnameInput"
                                 className="form-label"
                               >
+
                                 Full Name:
                               </Label>
                               {validation.values.firstName +
                                 validation.values.lastName}
+
                               {/* <Input
                                 type="text"
                                 className="form-control"
@@ -581,6 +592,7 @@ const Profile = () => {
                               </Label>
                               <Select
                                 value={
+
                                   selectedScope[0] && selectedScope[0].value
                                 }
                                 onChange={handleChange2}
@@ -588,6 +600,7 @@ const Profile = () => {
                                   value: userObj.scope[0],
                                   label: userObj.scope[0],
                                 }}
+
                                 options={scopeOptions}
                                 input={
                                   <OutlinedInput
