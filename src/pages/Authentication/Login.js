@@ -139,7 +139,7 @@ const Login = (props) => {
     <React.Fragment>
       <ParticlesAuth>
         <div className="auth-page-content">
-          <Container>
+          <Container className="mt-5">
             <Row>
               <Col lg={12} className="mb-2">
                 <div className="text-center text-white-50 ">
@@ -147,14 +147,14 @@ const Login = (props) => {
                     <img
                       src={loginLogo}
                       alt="Login Logo Greenme"
-                      width="330px"
+                      width="130px"
                     />
                   </div>
                 </div>
               </Col>
             </Row>
 
-            <Row className="justify-content-center">
+            <Row className="justify-content-center mt-4">
               <Col md={8} lg={6} xl={5}>
                 <Card>
                   <CardBody className="p-4">
