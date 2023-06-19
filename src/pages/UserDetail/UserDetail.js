@@ -46,19 +46,10 @@ const Profile = () => {
     setRightColumn(!rightColumn);
   };
   const [activeTab, setActiveTab] = useState("1");
-  // const [userData, setUserData] = useState({firstName, lastName, email, organization, role, scope, country, otherCountries})
-
-  // const userObj = JSON.parse(sessionStorage.getItem("authUser"));
-  // console.log(userObj, "IN BENCH")
-  // const userDutyStationCountry = {
-  //   value: userObj.country,
-  //   label: userObj.country,
-  // };
 
   const getProgressPercentage = async () => {
     getUserProgress(userObj._id)
       .then((res) => {
-        console.log(res.JSON(), "PROGRESS");
         setProgressPercentage(res);
       })
       .catch((err) => console.log("error in percentage benchmarking"));
@@ -85,25 +76,25 @@ const Profile = () => {
     };
   }, []);
 
-  console.log(userObj, "IN BENCH");
-
   const userDutyStationCountry = {
     value: userObj.country,
     label: userObj.country,
   };
 
   const [countryOptions, setCountryOptions] = useState([]);
+  const [scopeOptions, setScopeOptions] = useState([]);
 
-  const SingleOptions = [
-    { value: "Choices 1", label: "Choices 1" },
-    { value: "Choices 2", label: "Choices 2" },
-    { value: "Choices 3", label: "Choices 3" },
-    { value: "Choices 4", label: "Choices 4" },
+  const scopesOptions = [
+    { key: "Global Level", value: "Global Level" },
+    { key: "Country Level", value: "Country Level" },
+    { key: "Regional Level", value: "Regional Level" },
   ];
+
   const [userPercentage, setUserPercentage] = useState(0);
   useEffect(() => {
     getProgressPercentage();
-    setSelectedCountry([userDutyStationCountry]);
+    setSelectedCountry(userDutyStationCountry);
+    setSelectedCountries(userObj.otherCountries);
     const options = Countries.map((country) => {
       return {
         value: country.value,
@@ -111,6 +102,15 @@ const Profile = () => {
       };
     });
     setCountryOptions(options);
+
+    const scopeValuess = scopesOptions.map((scope) => {
+      return {
+        value: scope.value,
+        label: scope.value,
+      };
+    });
+
+    setScopeOptions(scopeValuess);
     if (userPercentage < 1) {
       if (userObj.firstName) {
         setUserPercentage((prev) => prev + 12.5);
@@ -162,11 +162,10 @@ const Profile = () => {
     onSubmit: (values, { resetForm }) => {
       const mappedData = {
         ...values,
-        country: selectedCountry && selectedCountry,
+        country: selectedCountry.value && selectedCountry.value,
         otherCountries: selectedCountries && selectedCountries,
         banner: coverPhoto && coverPhoto,
       };
-      console.log(mappedData, "MAPPED DAATA");
       updateUser(userObj._id, mappedData)
         .then((res) => toast.success("Updated Successfully"))
         .catch((err) => {
@@ -201,24 +200,29 @@ const Profile = () => {
     setCoverPhoto(URL.createObjectURL(file));
   };
 
-  const [selectedCountry, setSelectedCountry] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedScope, setSelectedScope] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
 
   const handleChange1 = (selectedOption) => {
     if (selectedOption) {
-      setSelectedCountry(selectedOption.value);
+      setSelectedCountry(selectedOption);
     } else {
-      setSelectedCountry([userDutyStationCountry]);
+      setSelectedCountry(userDutyStationCountry);
     }
   };
 
-  const handleChange = (selectedOptions) => {
-    console.log(selectedOptions, "SELECTED");
-
-    setSelectedCountries(selectedOptions.map((option) => option.value));
+  const handleChange2 = (selectedOption) => {
+    setSelectedScope(selectedOption ? [selectedOption.value] : []);
   };
 
-  console.log(selectedCountries, "SELECTED COUNTRIES");
+  const handleChange = (selectedOptions) => {
+    if (selectedOptions) {
+      setSelectedCountries(selectedOptions.map((option) => option.value));
+    } else {
+      setSelectedCountries(userObj.otherCountries);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -237,6 +241,7 @@ const Profile = () => {
                       type="file"
                       className="profile-foreground-img-file-input"
                       onChange={handleCoverPhotoChange}
+                      disabled
                     />
                     <Label
                       htmlFor="profile-foreground-img-file-input"
@@ -276,13 +281,14 @@ const Profile = () => {
                           id="profile-img-file-input"
                           type="file"
                           className="profile-img-file-input"
+                          disabled
                         />
                         <Label
                           htmlFor="profile-img-file-input"
                           className="profile-photo-edit avatar-xs"
                         >
-                          <span className="avatar-title rounded-circle bg-light text-body">
-                            <i className="ri-camera-fill"></i>
+                          <span className="avatar-title rounded-circle bg-light text-body ">
+                            <i className="ri-camera-fill "></i>
                           </span>
                         </Label>
                       </div>
@@ -328,125 +334,9 @@ const Profile = () => {
                   </div>
                 </CardBody>
               </Card>
-              {/* <Card>
-                <CardBody>
-                  <div className="progress animated-progress custom-progress progress-label mt-4">
-                    {progressPercentage?.percentage >= 0 && (
-                      <div
-                        className="progress-bar bg- "
-                        role="progressbar"
-                        style={{
-                          width: progressPercentage.percentage + "%",
-                        }}
-                        aria-valuenow={progressPercentage.percentage}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <div className="label">
-                          {progressPercentage.percentage}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="d-flex align-items-center mb-4 mt-3">
-                    <div className="flex-grow-1">
-                      <h5 className="card-title mb-0">Benchmark progress</h5>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card> */}
-              {/* <Card>
-                <CardBody>
-                  <div>
-                    <div className="progress animated-progress custom-progress progress-label mt-4">
-                      <div
-                        className="progress-bar bg- "
-                        role="progressbar"
-                        style={{ width: "0%" }}
-                        aria-valuenow="30"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      >
-                        <div className="label">0%</div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center mb-4 mt-3">
-                      <div className="flex-grow-1">
-                        <h5 className="card-title mb-0">
-                          Recommended actions progress
-                        </h5>
-                      </div>
-                    </div>
-                  </div>
-                </CardBody>
-              </Card> */}
             </Col>
             <Col xxl={9}>
               <div className="mt-xxl-n5 card">
-                {/* <div className="d-flex">
-                  <div className="d-flex justify-content-between w-25 border-end custom-padding">
-                    <div>
-                      <div>
-                        <span className="fs-7">BENCHMARKING</span>
-                        <div>
-                          <span className="fs-3">5/10</span>
-                        </div>
-                      </div>
-                      <i
-                        class="ri-arrow-up-circle-line"
-                        style={{ color: "#11D1BD" }}
-                      ></i>
-                    </div>
-                    <div className="d-flex justify-content-between w-25 border-end p-15  custom-padding">
-                      <div>
-                        <span className="fs-7">RECOMMENDED ACTIONS</span>
-                        <div>
-                          <span className="fs-3">39/48</span>
-                        </div>
-                      </div>
-                      <i
-                        class="ri-arrow-up-circle-line"
-                        style={{ color: "#11D1BD" }}
-                      ></i>
-                    </div>
-                    <div className="d-flex justify-content-between w-25 border-end custom-padding ">
-                      <div>
-                        <span className="fs-7">DISCUSSIONS</span>
-                        <div>
-                          <span className="fs-3">4 Active</span>
-                        </div>
-                      </div>
-                      <i
-                        class="ri-arrow-down-circle-line"
-                        style={{ color: "#FF7F47" }}
-                      ></i>
-                    </div>
-                    <div className="d-flex justify-content-between w-25 border-end custom-padding ">
-                      <div>
-                        <span className="fs-7">COLLABORATIONS</span>
-                        <div>
-                          <span className="fs-3">5 Active</span>
-                        </div>
-                      </div>
-                      <i
-                        class="ri-arrow-up-circle-line"
-                        style={{ color: "#11D1BD" }}
-                      ></i>
-                    </div>
-                    <div className="d-flex justify-content-between w-25 custom-padding custom-padding ">
-                      <div>
-                        <span className="fs-7">LEADERBOARD</span>
-                        <div>
-                          <span className="fs-3">200 points</span>
-                        </div>
-                      </div>
-                      <i
-                        class="ri-arrow-down-circle-line"
-                        style={{ color: "#FF7F47" }}
-                      ></i>
-                    </div>
-                  </div>
-                </div> */}
                 <div className="d-flex">
                   <div className="d-flex justify-content-between w-25 border-end custom-padding">
                     <div>
@@ -606,17 +496,18 @@ const Profile = () => {
                                 htmlFor="firstnameInput"
                                 className="form-label"
                               >
-                                First Name
+                                First Name:
                               </Label>
-                              <Input
+                              {validation.values.firstName}
+                              {/* <Input
                                 type="text"
                                 className="form-control"
                                 id="firstnameInput"
                                 placeholder="Enter your firstname"
                                 defaultValue="Dave"
-                                value={validation.values.firstName}
+                                value=
                                 disabled
-                              />
+                              /> */}
                             </div>
                           </Col>
                           <Col lg={6}>
@@ -625,17 +516,18 @@ const Profile = () => {
                                 htmlFor="lastnameInput"
                                 className="form-label"
                               >
-                                Last Name
+                                Last Name:
                               </Label>
-                              <Input
+                              {validation.values.lastName}
+                              {/* <Input
                                 type="text"
                                 className="form-control"
-                                value={validation.values.lastName}
+                                value=
                                 id="lastnameInput"
                                 placeholder="Enter your lastname"
                                 defaultValue="Adame"
                                 disabled
-                              />
+                              /> */}
                             </div>
                           </Col>
                           <Col lg={6}>
@@ -644,17 +536,18 @@ const Profile = () => {
                                 htmlFor="emailInput"
                                 className="form-label"
                               >
-                                Email Address
+                                Email Address:
                               </Label>
-                              <Input
+                              {validation.values.email}
+                              {/* <Input
                                 type="email"
-                                value={validation.values.email}
+                                value=
                                 className="form-control"
                                 id="emailInput"
                                 placeholder="Enter your email"
                                 defaultValue="daveadame@velzon.com"
                                 disabled
-                              />
+                              /> */}
                             </div>
                           </Col>
 
@@ -664,16 +557,17 @@ const Profile = () => {
                                 htmlFor="Orgnaization"
                                 className="form-label"
                               >
-                                Orgnaization
+                                Orgnaization:
                               </Label>
-                              <Input
-                                value={validation.values.organization}
+                              {validation.values.organization}
+                              {/* <Input
+                                value=
                                 type="Orgnaization"
                                 className="form-control"
                                 id="Orgnaization"
                                 placeholder="FleetMGT Co. X"
                                 disabled
-                              />
+                              /> */}
                             </div>
                           </Col>
                           <Col lg={6}>
@@ -682,17 +576,18 @@ const Profile = () => {
                                 htmlFor="skillsInput"
                                 className="form-label"
                               >
-                                Role
+                                Role:
                               </Label>
-                              <Input
+                              {validation.values.role.title}
+                              {/* <Input
                                 type="text"
                                 className="form-control"
                                 id="countryInput"
                                 placeholder="Logistics Coordinator"
                                 defaultValue=""
-                                value={validation.values.role.title}
+                                value=
                                 disabled
-                              />
+                              /> */}
                             </div>
                           </Col>
                           <Col lg={6}>
@@ -703,7 +598,40 @@ const Profile = () => {
                               >
                                 Scope
                               </Label>
-                              <select disabled className="form-select mb-3">
+                              <Select
+                                value={
+                                  selectedScope[0]
+                                    ? selectedScope[0].value
+                                    : "ho"
+                                }
+                                onChange={handleChange2}
+                                // defaultValue={{
+                                //   value: userObj.scope[0],
+                                //   label: userObj.scope[0],
+                                // }}
+                                options={scopeOptions}
+                                input={
+                                  <OutlinedInput
+                                    id="select-multiple-chip"
+                                    label="Chip"
+                                  />
+                                }
+                                renderValue={(selected) => (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: 0.5,
+                                    }}
+                                  >
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} />
+                                    ))}
+                                  </Box>
+                                )}
+                                MenuProps={MenuProps}
+                              />
+                              {/* <select className="form-select mb-3">
                                 <option hidden selected>
                                   {validation.values.scope[0]}
                                 </option>
@@ -713,7 +641,7 @@ const Profile = () => {
                                       {value}
                                     </option>
                                   ))}
-                              </select>
+                              </select> */}
                             </div>
                           </Col>
                           <Col lg={6}>
@@ -726,7 +654,7 @@ const Profile = () => {
                               </Label>
                               <Select
                                 isClearable={true}
-                                value={selectedCountry.value}
+                                value={selectedCountry}
                                 onChange={handleChange1}
                                 defaultValue={{
                                   value: userObj.country,

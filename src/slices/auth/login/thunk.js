@@ -104,11 +104,6 @@ export const updateUser = async (userId, user) => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
     obj.otherCountries = user.otherCountries;
     obj.country = user.country;
-    console.log(obj, "OBJ IN THUNK");
-    console.log(user, "user IN THUNK");
-    // let c = user?.country[0]?.value.toString();
-    // user.country = c;
-    // obj.country = c;
     let resp = await axios.patch(
       process.env.REACT_APP_USER_URL + `user/${userId}`,
       user
