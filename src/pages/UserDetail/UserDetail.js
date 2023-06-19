@@ -205,6 +205,14 @@ const Profile = () => {
   const handleCoverPhotoChange = (event) => {
     setBgUpdate(true);
     const file = event.target.files[0];
+    const fileSizeLimit = 100 * 1024; // 100 KB
+
+    if (file && file.size > fileSizeLimit) {
+      // File size exceeds the limit
+      toast.error("Cannot upload a file greater than 100 KB");
+      setCoverPhoto(bgPic);
+      return;
+    }
     const reader = new FileReader();
 
     reader.onload = (e) => {
