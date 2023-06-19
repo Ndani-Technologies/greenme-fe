@@ -104,6 +104,8 @@ export const updateUser = async (userId, user) => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
     obj.otherCountries = user.otherCountries;
     obj.country = user.country;
+    obj.scope = user.scope;
+    obj.backgroundPic = user.banner;
     let resp = await axios.patch(
       process.env.REACT_APP_USER_URL + `user/${userId}`,
       user
