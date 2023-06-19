@@ -84,6 +84,9 @@ const Profile = () => {
   const [countryOptions, setCountryOptions] = useState([]);
   const [scopeOptions, setScopeOptions] = useState([]);
 
+  const [bgPic, setBgPic] = useState("");
+
+
   const scopesOptions = [
     { key: "Global Level", value: "Global Level" },
     { key: "Country Level", value: "Country Level" },
@@ -91,6 +94,9 @@ const Profile = () => {
   ];
 
   const [userPercentage, setUserPercentage] = useState(0);
+  const [selectedScope, setSelectedScope] = useState([]);
+  const [bgUpdate, setBgUpdate] = useState(false);
+
   useEffect(() => {
     getProgressPercentage();
     setSelectedCountry(userDutyStationCountry);
@@ -102,6 +108,10 @@ const Profile = () => {
       };
     });
     setCountryOptions(options);
+
+    setSelectedScope(userObj.scope);
+    setBgPic(userObj.backgroundPic);
+
 
     const scopeValuess = scopesOptions.map((scope) => {
       return {
@@ -162,6 +172,9 @@ const Profile = () => {
     onSubmit: (values, { resetForm }) => {
       const mappedData = {
         ...values,
+
+        scope: selectedScope && selectedScope,
+
         country: selectedCountry.value && selectedCountry.value,
         otherCountries: selectedCountries && selectedCountries,
         banner: coverPhoto && coverPhoto,
@@ -196,12 +209,27 @@ const Profile = () => {
   }
 
   const handleCoverPhotoChange = (event) => {
+    setBgUpdate(true);
     const file = event.target.files[0];
-    setCoverPhoto(URL.createObjectURL(file));
+    const fileSizeLimit = 100 * 1024; // 100 KB
+
+    if (file && file.size > fileSizeLimit) {
+      // File size exceeds the limit
+      toast.error("Cannot upload a file greater than 100 KB");
+      setCoverPhoto(bgPic);
+      return;
+    }
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const dataURL = e.target.result;
+      setCoverPhoto(dataURL);
+    };
+
+    reader.readAsDataURL(file);
   };
 
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedScope, setSelectedScope] = useState([]);
   const [selectedCountries, setSelectedCountries] = useState([]);
 
   const handleChange1 = (selectedOption) => {
@@ -213,7 +241,13 @@ const Profile = () => {
   };
 
   const handleChange2 = (selectedOption) => {
-    setSelectedScope(selectedOption ? [selectedOption.value] : []);
+
+    if (selectedOption) {
+      setSelectedScope([selectedOption.value]);
+    } else {
+      setSelectedScope(userObj.scope);
+    }
+
   };
 
   const handleChange = (selectedOptions) => {
@@ -231,7 +265,11 @@ const Profile = () => {
           <div className="position-relative mx-n4 mt-n4">
             <div className="profile-wid-bg profile-setting-img">
               {coverPhoto && (
-                <img src={coverPhoto} className="profile-wid-img" alt="" />
+                <img
+                  src={bgUpdate ? coverPhoto : bgPic}
+                  className="profile-wid-img"
+                  alt=""
+                />
               )}
               <div className="overlay-content">
                 <div className="text-end p-3">
@@ -308,15 +346,6 @@ const Profile = () => {
                   <div className="d-flex align-items-center mb-5">
                     <div className="flex-grow-1">
                       <h5 className="card-title mb-0">Profile Completion</h5>
-                    </div>
-                    <div className="flex-shrink-0">
-                      <Link
-                        to="#"
-                        className="badge bg-light text-primary fs-12"
-                      >
-                        <i className="ri-edit-box-line align-bottom me-1"></i>{" "}
-                        Edit
-                      </Link>
                     </div>
                   </div>
                   <div className="progress animated-progress custom-progress progress-label">
@@ -496,9 +525,12 @@ const Profile = () => {
                                 htmlFor="firstnameInput"
                                 className="form-label"
                               >
-                                First Name:
+
+                                Full Name:
                               </Label>
-                              {validation.values.firstName}
+                              {validation.values.firstName +
+                                validation.values.lastName}
+
                               {/* <Input
                                 type="text"
                                 className="form-control"
@@ -506,26 +538,6 @@ const Profile = () => {
                                 placeholder="Enter your firstname"
                                 defaultValue="Dave"
                                 value=
-                                disabled
-                              /> */}
-                            </div>
-                          </Col>
-                          <Col lg={6}>
-                            <div className="mb-3">
-                              <Label
-                                htmlFor="lastnameInput"
-                                className="form-label"
-                              >
-                                Last Name:
-                              </Label>
-                              {validation.values.lastName}
-                              {/* <Input
-                                type="text"
-                                className="form-control"
-                                value=
-                                id="lastnameInput"
-                                placeholder="Enter your lastname"
-                                defaultValue="Adame"
                                 disabled
                               /> */}
                             </div>
@@ -576,39 +588,19 @@ const Profile = () => {
                                 htmlFor="skillsInput"
                                 className="form-label"
                               >
-                                Role:
-                              </Label>
-                              {validation.values.role.title}
-                              {/* <Input
-                                type="text"
-                                className="form-control"
-                                id="countryInput"
-                                placeholder="Logistics Coordinator"
-                                defaultValue=""
-                                value=
-                                disabled
-                              /> */}
-                            </div>
-                          </Col>
-                          <Col lg={6}>
-                            <div className="mb-3">
-                              <Label
-                                htmlFor="skillsInput"
-                                className="form-label"
-                              >
                                 Scope
                               </Label>
                               <Select
                                 value={
-                                  selectedScope[0]
-                                    ? selectedScope[0].value
-                                    : "ho"
+
+                                  selectedScope[0] && selectedScope[0].value
                                 }
                                 onChange={handleChange2}
-                                // defaultValue={{
-                                //   value: userObj.scope[0],
-                                //   label: userObj.scope[0],
-                                // }}
+                                defaultValue={{
+                                  value: userObj.scope[0],
+                                  label: userObj.scope[0],
+                                }}
+
                                 options={scopeOptions}
                                 input={
                                   <OutlinedInput
@@ -728,130 +720,6 @@ const Profile = () => {
                                 )}
                                 MenuProps={MenuProps}
                               />
-                              {/* <Select
-                                                            value={selectedCountries}
-                                                            onChange={() => {
-                                                                handleChange();
-                                                            }}
-                                                            options={countryOptions}
-                                                        /> */}
-                              {/* <Select
-                                value={selectedCountries}
-                                isMulti={true}
-                                onChange={handleChange}
-                                options={countryOptions}
-                                sx={{ width: "100%" }}
-                                placeholder=""
-                                style={{ Padding: "1px" }}
-                                labelId="demo-multiple-chip-label"
-                                id="demo-multiple-chip"
-                                input={
-                                  <OutlinedInput
-                                    id="select-multiple-chip"
-                                    label="Chip"
-                                  />
-                                }
-                                renderValue={(selected) => (
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      flexWrap: "wrap",
-                                      gap: 0.5,
-                                    }}
-                                  >
-                                    {selected.map((value) => (
-                                      <Chip key={value} label={value} />
-                                    ))}
-                                  </Box>
-                                )}
-                                MenuProps={MenuProps}
-                              /> */}
-                              {/* <Select
-                                    value={selectedMulti}
-                                    isMulti={true}
-                                    onChange={() => {
-                                      handleMulti();
-                                      handleChange();
-                                    }}
-                                    options={countryName}
-                                    sx={{ width: "100%" }}
-                                    placeholder=""
-                                    style={{ Padding: "1px" }}
-                                    labelId="demo-multiple-chip-label"
-                                    id="demo-multiple-chip"
-                                    input={
-                                      <OutlinedInput
-                                        id="select-multiple-chip"
-                                        label="Chip"
-                                      />
-                                    }
-                                    renderValue={(selected) => (
-                                      <Box
-                                        sx={{
-                                          display: "flex",
-                                          flexWrap: "wrap",
-                                          gap: 0.5,
-                                        }}
-                                      >
-                                        {selected.map((value) => (
-                                          <Chip key={value} label={value} />
-                                        ))}
-                                      </Box>
-                                    )}
-                                    MenuProps={MenuProps}
-                                  /> */}
-                              {/* <Col lg={12}>
-                                <Select
-                                  sx={{ width: "100%" }}
-                                  placeholder=""
-                                  style={{ Padding: "1px" }}
-                                  labelId="demo-multiple-chip-label"
-                                  id="demo-multiple-chip"
-                                  multiple
-                                  value={countryName}
-                                  onChange={handleChange}
-                                  onBlur={() => {
-                                    validation.setFieldValue(
-                                      "otherCountries",
-                                      countryName.map((i) => countryName[i])
-                                    );
-                                  }}
-                                  input={
-                                    <OutlinedInput
-                                      id="select-multiple-chip"
-                                      label="Chip"
-                                    />
-                                  }
-                                  renderValue={(selected) => (
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        flexWrap: "wrap",
-                                        gap: 0.5,
-                                      }}
-                                    >
-                                      {selected.map((value) => (
-                                        <Chip key={value} label={value} />
-                                      ))}
-                                    </Box>
-                                  )}
-                                  MenuProps={MenuProps}
-                                >
-                                  {Countries.map((value, index) => (
-                                    <MenuItem
-                                      key={index}
-                                      value={value.name}
-                                      style={getStyles(
-                                        value.name,
-                                        countryName,
-                                        theme
-                                      )}
-                                    >
-                                      {value.name}
-                                    </MenuItem>
-                                  ))}
-                                </Select>
-                              </Col> */}
                             </div>
                           </Col>
                           <Col lg={12}>
