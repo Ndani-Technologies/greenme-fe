@@ -37,7 +37,7 @@ import {
   registerUserReal,
 } from "../../slices/thunks";
 
-import logoLight from "../../assets/images/logo-light.png";
+import loginLogo from "../../assets/images/login-logo.png";
 //Import config
 import { facebook, google } from "../../config";
 import { color } from "echarts";
@@ -141,10 +141,14 @@ const Login = (props) => {
         <div className="auth-page-content">
           <Container>
             <Row>
-              <Col lg={12}>
-                <div className="text-center mt-sm-5 mb-4 text-white-50">
+              <Col lg={12} className="mb-2">
+                <div className="text-center text-white-50 ">
                   <div>
-                    <h1 style={{ color: "#fff" }}>GreenMe</h1>
+                    <img
+                      src={loginLogo}
+                      alt="Login Logo Greenme"
+                      width="330px"
+                    />
                   </div>
                 </div>
               </Col>
@@ -152,13 +156,11 @@ const Login = (props) => {
 
             <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
-                <Card className="mt-4">
+                <Card>
                   <CardBody className="p-4">
                     <div className="text-center mt-2">
-                      <h5 className="text-primary">Welcome Back !</h5>
-                      <p className="text-muted">
-                        Sign in to continue to GreenMe.
-                      </p>
+                      <p className="text-muted">Welcome to Fleet Forum's</p>
+                      <h5 className="text-primary">GreenMe Platform.</h5>
                     </div>
                     {error && error ? (
                       <Alert color="danger"> {error} </Alert>
