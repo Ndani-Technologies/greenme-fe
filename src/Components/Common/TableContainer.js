@@ -98,7 +98,13 @@ function GlobalFilter({
                 </div>
               )}
               {isAllQaFilters && <AllQaFilters />}
-              {isFilterA && <FilterA />}
+              {isFilterA && (
+                <FilterA
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
               {isFilterBenchmarkAction && (
                 <FilterBenchmarkAction
                   globalFilter={globalFilter}
