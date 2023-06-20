@@ -66,7 +66,9 @@ export const updateUserResp = async (id, user_resp, navigate) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (resp) {
     toast.success("User response submitted successfully!");
-    navigate("/benchmarking");
+    if (navigate) {
+      navigate("/benchmarking");
+    }
   }
   return resp;
 };

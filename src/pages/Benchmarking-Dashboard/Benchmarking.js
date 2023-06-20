@@ -32,6 +32,7 @@ import {
   startBenchmark,
   addBenchmark,
   deleteBenchmark,
+  updateUserResp,
 } from "../../slices/thunks";
 import { Box, Chip, OutlinedInput } from "@mui/material";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
@@ -249,29 +250,9 @@ const BenchmarkingDashboard = () => {
   });
 
   // Update Data
-  const handleContactClick = useCallback(
-    (arg) => {
-      const contact = arg;
-
-      setContact({
-        contactId: contact.contactId,
-        // img: contact.img,
-        name: contact.name,
-        company: contact.company,
-        email: contact.email,
-        designation: contact.designation,
-        phone: contact.phone,
-        lead_score: contact.lead_score,
-        last_contacted: contact.date,
-        // time: contact.time,
-        tags: contact.tags,
-      });
-
-      setIsEdit(true);
-      toggle();
-    },
-    [toggle]
-  );
+  const handleContactClick = (data) => {
+    console.log(data, "DATA");
+  };
   const handleValidDate = (date) => {
     const date1 = moment(new Date(date)).format("YYYY MM DD");
     return date == "" ? date : date1;
@@ -343,6 +324,7 @@ const BenchmarkingDashboard = () => {
       state: { isDataUpdated: true },
     });
   };
+
   // Column
   const columns = useMemo(
     () => [
@@ -378,6 +360,7 @@ const BenchmarkingDashboard = () => {
               <div className="flex-shrink-0"></div>
               <div
                 className="flex-grow-1 ms-2 name"
+                style={{ cursor: "pointer" }}
                 onClick={(e) => handleTitleClick(e, cellProps)}
               >
                 {cellProps.row.original.title}
@@ -399,10 +382,26 @@ const BenchmarkingDashboard = () => {
         Header: "Completion Level",
         accessor: "completion_level",
         filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div
+                className="flex-grow-1 ms-2 name"
+                style={{ cursor: "pointer" }}
+                onClick={(e) => handleTitleClick(e, cellProps)}
+              >
+                {Math.ceil(cellProps.row.original.completionLevel)}%
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Start Date",
         accessor: "start_date",
+        filterable: true,
+
         Cell: (contact) => (
           <>
             {handleValidDate(contact.row.original.start_date)}
@@ -477,7 +476,7 @@ const BenchmarkingDashboard = () => {
                       href="#"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
+                        handleCompleteClick(contactData);
                       }}
                     >
                       Complete
@@ -536,11 +535,37 @@ const BenchmarkingDashboard = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
-      country: Yup.mixed().required("Country is required"),
+      // country: Yup.mixed().required("Country is required"),
     }),
     onSubmit: async (values) => {
-      console.log(values, "VALS");
-      if (values.country === null) {
+      console.log(values, valError, "VALS");
+
+      // if (values.country === null) {
+      //   setValError("Please select a country");
+      // }
+      if (countryOptions.length < 1) {
+        toast.info(
+          <div style={{ display: "block" }}>
+            <p>
+              `Please visit your profile page by clicking on the button below
+              and fill in your duty station country and countries of operation
+              before you start a benchmark.`
+            </p>
+            <Button
+              color="danger"
+              onClick={() => {
+                navigate("/profile");
+              }}
+            >
+              Profile page
+            </Button>
+          </div>,
+          {
+            position: "top-center",
+            autoClose: false,
+          }
+        );
+      } else if (values.country === null) {
         setValError("Please select a country");
       } else {
         await addBenchmark(values)
@@ -584,17 +609,51 @@ const BenchmarkingDashboard = () => {
     }
   };
 
+  //HANDLE SUBMISSION  MODAL
+
+  const [modal_center, setmodal_center] = useState(false);
+
+  const tog_center = () => {
+    setmodal_center(!modal_center);
+  };
+
+  const handleCompleteClick = (data) => {
+    setInfo(data);
+    tog_center();
+  };
+
+  const obj = JSON.parse(sessionStorage.getItem("authUser"));
+  const userId = obj._id;
+
+  const handleSubmit = () => {
+    const requestBody = {
+      userId: userId,
+      user_resp: info.user_resp,
+    };
+    const toastt_id = toast.loading("Please wait...");
+    updateUserResp(info?._id, requestBody).then((resp) => {
+      toast.update(toastt_id, {
+        render: "benchmark is successfully submitted",
+        type: "success",
+        isLoading: false,
+      });
+      // toast.success("benchmark is successfully submitted");
+    });
+  };
+
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
           <h1>Benchmarking</h1>
           <p style={{ color: "#BEC887" }}>
-            This is a page where users can take self-assessment questionnaires
-            and view their results. It will feature the ability for users to
-            save progress and return to the assessment later as well as an
-            option to skip or go back to previous questions. Also the option for
-            the user to view their score and their benchmark results
+            In this section you will find a self-assessment questionnaire and,
+            once completed, you can view your results against your peers. You
+            have the option to complete the assessment at once or save your
+            progress and return later. We do encourage you to complete the
+            assessment but if you don’t have the answer to questions, you can
+            skip them. Once you are done with the assessment, press submit and
+            you will receive a benchmark report.
           </p>
         </div>
         <Col xxl={12}>
@@ -710,41 +769,7 @@ const BenchmarkingDashboard = () => {
                           {valError}
                         </div>
                       </div>
-                      {/* <div className="mb-3">
-                              <Label
-                                htmlFor="countryInput"
-                                className="form-label"
-                              >
-                                Choose a Country
-                              </Label>
-                              <Select
-                                isClearable={true}
-                                value={selectedCountry.value}
-                                onChange={handleChange1}
-                                defaultValue="Choose a country"
-                                options={countryOptions}
-                                input={
-                                  <OutlinedInput
-                                    id="select-multiple-chip"
-                                    label="Chip"
-                                  />
-                                }
-                                renderValue={(selected) => (
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      flexWrap: "wrap",
-                                      gap: 0.5,
-                                    }}
-                                  >
-                                    {selected.map((value) => (
-                                      <Chip key={value} label={value} />
-                                    ))}
-                                  </Box>
-                                )}
-                                MenuProps={MenuProps}
-                              />
-                            </div>  */}
+
                       <div className="col-lg-12">
                         <div className="hstack gap-2 justify-content-start">
                           <Button type="submit" color="primary">
@@ -790,6 +815,45 @@ const BenchmarkingDashboard = () => {
                   Delete All
                 </Button>
               </div>
+              <Modal
+                isOpen={modal_center}
+                toggle={() => {
+                  tog_center();
+                }}
+                centered
+              >
+                <ModalHeader
+                  className="d-flex justify-content-start"
+                  style={{ border: "none" }}
+                >
+                  Are you sure you want to submit your benchmark
+                </ModalHeader>
+                <ModalBody
+                  className="d-flex justify-content-center"
+                  style={{ fontSize: "20px" }}
+                >
+                  <p>
+                    You have answered{" "}
+                    <span style={{ fontSize: "24px" }}>
+                      {info.user_resp?.length}
+                    </span>{" "}
+                    questions out of{" "}
+                    <span style={{ fontSize: "24px" }}>
+                      {info?.questionnaire?.length}
+                    </span>{" "}
+                    questions, and you will not be able to edit your response
+                    after submitting
+                  </p>
+                </ModalBody>
+                <ModalFooter className="d-flex justify-content-center">
+                  <Button color="primary" onClick={handleSubmit}>
+                    Confirm
+                  </Button>
+                  <Button color="secondary" onClick={() => tog_center()}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Modal>
               <ToastContainer closeButton={false} limit={1} />
             </CardBody>
           </Card>
