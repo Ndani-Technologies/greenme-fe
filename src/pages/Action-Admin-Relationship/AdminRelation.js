@@ -348,6 +348,7 @@ const AdminRelation = () => {
                     onClick={() => {
                       const contactData = cellProps.row.original;
                       setInfo(contactData);
+                      setmodal_grid(true);
                     }}
                   >
                     Edit
