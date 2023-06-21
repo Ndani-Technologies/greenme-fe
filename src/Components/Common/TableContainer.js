@@ -31,6 +31,7 @@ import {
   DateRangeGlobalFilter,
   AllQaFilters,
   FilterLeaderBoard,
+  AdminRAFilters,
 } from "../../Components/Common/GlobalSearchFilter";
 
 // Define a default UI for filtering
@@ -58,6 +59,7 @@ function GlobalFilter({
   isFilterBenchmarkAction,
   isSearchInput,
   isFilterLeaderBoard,
+  isFilterAdminRA,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -115,6 +117,13 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {isFilterAdminRA && (
+              <AdminRAFilters
+                useAsyncDebounce={useAsyncDebounce}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+              />
+            )}
             {isFilterLeaderBoard && (
               <FilterLeaderBoard selectedData={selectedData} />
             )}
@@ -140,6 +149,7 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   setInfo,
+  isFilterAdminRA,
   isBenchmarkingQASearch,
   isFilterA,
   selectedData,
@@ -251,6 +261,7 @@ const TableContainer = ({
         )}
         {isGlobalFilter && (
           <GlobalFilter
+            isFilterAdminRA={isFilterAdminRA}
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             isBenchmarkingQASearch={isBenchmarkingQASearch}

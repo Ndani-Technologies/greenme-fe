@@ -816,7 +816,12 @@ const ActionUserDashboard = () => {
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
-        <ActionMain Title={"Recommended Actions Details page"} />
+        <ActionMain
+          Title={"Recommended Actions"}
+          Text={
+            "In this section, you will be presented with actions that you are recommended to implement based on your assessment. You can view the action and look at the steps that each action takes to implement. Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
+          }
+        />
         <Col xxl={12} className="mt-5">
           <Card id="contactList">
             <CardBody className="pt-0">
