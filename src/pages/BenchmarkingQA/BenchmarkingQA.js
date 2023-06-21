@@ -46,6 +46,7 @@ import {
   addQuestion,
   updateQuestion,
   deleteQuestion,
+  getAllAdminBenchmarks,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -103,19 +104,6 @@ const BenchmarkingQA = () => {
       validation.setFieldValue("category", info.category);
     }
   }, []);
-  // useEffect(() => {
-  //   dispatch(onGetContacts(crmcontacts));
-  // }, [dispatch, crmcontacts]);
-  // useEffect(() => {
-  //   setContact(qa);
-  // }, [crmcontacts]);
-
-  // useEffect(() => {
-  //   if (!isEmpty(crmcontacts)) {
-  //     setContact(crmcontacts);
-  //     setIsEdit(false);
-  //   }
-  // }, [crmcontacts]);
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -163,7 +151,7 @@ const BenchmarkingQA = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
-      // description: Yup.string().required("Please Enter description"),
+      description: Yup.string().required("Please Enter description"),
       category: Yup.string().required("Please select category"),
     }),
 
@@ -175,9 +163,9 @@ const BenchmarkingQA = () => {
       const mappedData = {
         ...values,
         category: cd?._id,
-        status: "active" ? true : false,
         visibility: "True" ? true : false,
       };
+      console.log(mappedData, "MD");
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
           .then((resp) => {
@@ -239,67 +227,6 @@ const BenchmarkingQA = () => {
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
   const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
   const deletedArr = [];
-  // const deleteMultiple = () => {
-  //   // const checkall = document.getElementById("checkBoxAll");
-  //   // console.log(selectedCheckBoxDelete, "SELECTED")
-  //   // selectedCheckBoxDelete.forEach((element) => {
-  //   //   console.log(element, "VAL")
-  //   //   dispatch(onDeleteContact(element.value));
-  //   //   // setTimeout(() => {
-  //   //   //   toast.clearWaitingQueue();
-  //   //   // }, 3000);
-  //   // });
-  //   // setIsMultiDeleteButton(false);
-  //   console.log("tobedeleted", toBeDeleted);
-  //   toBeDeleted.forEach((value) => {
-  //     setQA((prev) => prev.filter((element) => element._id !== value));
-  //   });
-  //   // checkall.checked = false;
-  // };
-
-  // Checked All
-
-  // const checkedAll = useCallback(() => {
-  //   const checkall = document.getElementById("checkBoxAll");
-  //   const ele = document.querySelectorAll(".contactCheckBox");
-
-  //   if (checkall.checked) {
-  //     ele.forEach((ele) => {
-  //       ele.checked = true;
-  //       setAllChecked(true)
-  //     });
-  //   } else {
-  //     ele.forEach((ele) => {
-  //       ele.checked = false;
-  //       setAllChecked(false)
-  //     });
-  //   }
-  //   deleteCheckbox();
-  // }, []);
-
-  // const checkedAll = useCallback(() => {
-  //   const checkall = document.getElementById("checkBoxAll");
-  //   const ele = document.querySelectorAll(".contactCheckBox");
-
-  //   if (checkall.checked) {
-  //     ele.forEach((ele) => {
-  //             ele.checked = true;
-  //             setAllChecked(true)
-  //     });
-  //     const allIds = Array.from(ele).map((el) => el.value._id);
-  //     setToBeDeleted(allIds);
-  //     setAllChecked(true);
-  //   } else {
-  //     ele.forEach((ele) => {
-  //             ele.checked = false;
-  //             setAllChecked(false)
-  //           });
-  //     setToBeDeleted([]);
-  //     setAllChecked(false);
-  //   }
-
-  //   deleteCheckbox();
-  // }, []);
 
   const checkedAll = useCallback(() => {
     const checkall = document.getElementById("checkBoxAll");
@@ -407,6 +334,7 @@ const BenchmarkingQA = () => {
                 className="flex-grow-1 ms-2 name"
                 onClick={() => {
                   const contactData = cellProps.row.original;
+                  console.log(contactData, "CD");
                   setInfo(contactData);
                   setSelectedAnswerOptions(
                     contactData.answerOptions.map((value) => {
@@ -435,13 +363,9 @@ const BenchmarkingQA = () => {
         filterable: false,
       },
       {
-        Header: "Who has answered",
+        Header: "# of users answered",
         accessor: "answered",
       },
-      // {
-      //   Header: "Status",
-      //   accessor: "status",
-      // },
       {
         Header: "Status",
         accessor: "status",
@@ -999,26 +923,34 @@ const BenchmarkingQA = () => {
                               div.innerHTML = value;
                               const pValue = div.querySelector("p")?.innerHTML;
                               validation.setFieldValue("description", value);
+                              validation.handleBlur;
                             }}
                             value={
                               isDataUpdated
                                 ? info?.description
                                 : validation.values.description
                             }
-                            // value={validation.values.description || ""}
                             style={{
                               height: "120px",
                               overflow: "hidden",
                               backgroundColor: "#dfdfdf",
                             }}
+                            invalid={
+                              validation.touched.description &&
+                              validation.errors.description
+                                ? true
+                                : false
+                            }
                           />
+                          {validation.touched.description &&
+                          validation.errors.description ? (
+                            <>
+                              <p style={{ color: "red" }}>
+                                {validation.errors.description}
+                              </p>
+                            </>
+                          ) : null}
                         </div>
-                        {validation.touched.description &&
-                        validation.errors.description ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.description}
-                          </FormFeedback>
-                        ) : null}
                       </Col>
                       <Col xxl={12} className="p-0">
                         <Input

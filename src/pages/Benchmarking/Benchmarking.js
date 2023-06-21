@@ -52,9 +52,262 @@ const Benchmarking = () => {
   const [includeInputField, setIncludeInputField] = useState("");
   const [category, setCategory] = useState([]);
   const callApi = async () => {
-    const bench = await getSingleBenchmark(params.id);
+    // const bench = await getSingleBenchmark(params.id);
+    const bench = {
+      _id: "6492f0273af245bea45169cc",
+      title: "testing new category",
+      country: "Angola",
+      user: {
+        _id: "6468d0ebe01631c2604a2376",
+        email: "info@ndani.co.ke",
+        organization: "Fleet Forum",
+        firstName: "Ndani",
+        lastName: "Tester 1",
+        scope: ["Regional Level"],
+        otherCountries: ["Tanzania, United Republic of", "Uganda", "Angola"],
+        areaOfExpertise: [],
+        profilePic:
+          "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+        uid: 1380,
+        role: {
+          _id: "6467ade8a992a3cf078ac815",
+          title: "user",
+          permissions: [
+            {
+              _id: "6467adbfa992a3cf078ac810",
+              title: "get user",
+              route: "can get users",
+              createdAt: "2023-05-19T17:11:27.244Z",
+              updatedAt: "2023-05-19T17:11:27.244Z",
+              __v: 0,
+            },
+          ],
+          createdAt: "2023-05-19T17:12:08.959Z",
+          updatedAt: "2023-05-19T17:12:08.959Z",
+          __v: 0,
+        },
+        timezone: "GMT",
+        state: "active",
+        createdAt: "2023-05-20T13:53:47.519Z",
+        updatedAt: "2023-06-21T12:37:30.817Z",
+        __v: 30,
+        country: "Kenya",
+        collaborationPoints: 0,
+        discussionPoints: 0,
+        actionPoints: 100,
+        backgroundPic:
+          "https://knowledge.fleetforum.org/public/avatars/128x128_default-avatar.png",
+        leaderboardPosition: 1,
+        totalPoint: 100,
+        totalPoints: 0,
+        benchmarkComplete: 7,
+        benchmarksAssigned: 10,
+        recomendedActionAssigned: 0,
+        recomendedActionComplete: 0,
+      },
+      status: "Active",
+      questionnaire: [
+        {
+          whoHasAnswer: {
+            userId: [],
+            totalUsers: 0,
+          },
+          _id: "6492efb83af245bea4515e4f",
+          languageSelector: "English",
+          status: true,
+          visibility: true,
+          title: "testing-with-newcategory-1",
+          description: "<p>testing</p>",
+          category: {
+            _id: "6492ef873af245bea4515cbb",
+            language: "English",
+            titleEng: "testing",
+            __v: 0,
+          },
+          answerOptions: [
+            {
+              answerOption: {
+                _id: "6487563b76c8f75525e4b37d",
+                language: "English",
+                answerOption: "Yes",
+                includeExplanation: true,
+                includeInputField: false,
+                __v: 0,
+                answerAttempt: 75,
+              },
+              includeExplanation: true,
+              includeInputField: true,
+              _id: "6492efb83af245bea4515e50",
+            },
+          ],
+          __v: 0,
+        },
+        {
+          whoHasAnswer: {
+            userId: [],
+            totalUsers: 0,
+          },
+          _id: "6492efd33af245bea4515fea",
+          languageSelector: "English",
+          status: true,
+          visibility: true,
+          title: "testing-with-newcategory-2",
+          description: "<p>testing</p>",
+          category: {
+            _id: "6492ef873af245bea4515cbb",
+            language: "English",
+            titleEng: "testing",
+            __v: 0,
+          },
+          answerOptions: [
+            {
+              answerOption: {
+                _id: "6487563b76c8f75525e4b37d",
+                language: "English",
+                answerOption: "Yes",
+                includeExplanation: true,
+                includeInputField: false,
+                __v: 0,
+                answerAttempt: 75,
+              },
+              includeExplanation: false,
+              includeInputField: false,
+              _id: "6492efd33af245bea4515feb",
+            },
+          ],
+          __v: 0,
+        },
+        {
+          whoHasAnswer: {
+            userId: [],
+            totalUsers: 0,
+          },
+          _id: "6492efff3af245bea4516185",
+          languageSelector: "English",
+          status: true,
+          visibility: true,
+          title: "testing-with-newcategory-3",
+          description: "<p>testing</p>",
+          category: {
+            _id: "6492ef873af245bea4515cbb",
+            language: "English",
+            titleEng: "testing",
+            __v: 0,
+          },
+          answerOptions: [
+            {
+              answerOption: {
+                _id: "6487563b76c8f75525e4b37d",
+                language: "English",
+                answerOption: "Yes",
+                includeExplanation: true,
+                includeInputField: false,
+                __v: 0,
+                answerAttempt: 75,
+              },
+              includeExplanation: true,
+              includeInputField: false,
+              _id: "6492efff3af245bea4516186",
+            },
+            {
+              answerOption: {
+                _id: "6487595b76c8f75525e4b3a5",
+                language: "English",
+                answerOption: "No",
+                includeExplanation: false,
+                includeInputField: true,
+                __v: 0,
+                answerAttempt: 57,
+              },
+              includeExplanation: false,
+              includeInputField: true,
+              _id: "6492efff3af245bea4516187",
+            },
+            {
+              answerOption: {
+                _id: "6487596476c8f75525e4b3a7",
+                language: "English",
+                answerOption: "I don't know",
+                includeExplanation: true,
+                includeInputField: true,
+                __v: 0,
+                answerAttempt: 69,
+              },
+              includeExplanation: true,
+              includeInputField: true,
+              _id: "6492efff3af245bea4516188",
+            },
+            {
+              answerOption: {
+                _id: "6487596a76c8f75525e4b3a9",
+                language: "English",
+                answerOption: "Other",
+                includeExplanation: false,
+                includeInputField: false,
+                __v: 0,
+                answerAttempt: 18,
+              },
+              includeExplanation: false,
+              includeInputField: false,
+              _id: "6492efff3af245bea4516189",
+            },
+          ],
+          __v: 0,
+        },
+      ],
+      completionLevel: 5.633802816901408,
+      start_date: "2023-06-21T12:42:15.504Z",
+      user_resp: [
+        {
+          questionId: "6492efb83af245bea4515e4f",
+          selectedOption: [
+            {
+              answerOption: "6487563b76c8f75525e4b37d",
+              includeExplanation: "false",
+              includeInputField: "true",
+              includeExplanationValue: "",
+              includeInputFieldValue: "check",
+              _id: "6492f0f23af245bea45173a5",
+            },
+          ],
+          _id: "6492f0f23af245bea45173a4",
+        },
+        {
+          questionId: "6492efd33af245bea4515fea",
+          selectedOption: [
+            {
+              answerOption: "6487563b76c8f75525e4b37d",
+              includeExplanation: "false",
+              includeInputField: "false",
+              includeExplanationValue: "",
+              includeInputFieldValue: "",
+              _id: "6492f0f23af245bea45173a7",
+            },
+          ],
+          _id: "6492f0f23af245bea45173a6",
+        },
+        {
+          questionId: "6492efff3af245bea4516185",
+          selectedOption: [
+            {
+              answerOption: "6487595b76c8f75525e4b3a5",
+              includeExplanation: "false",
+              includeInputField: "true",
+              includeExplanationValue: "",
+              includeInputFieldValue: "Hi",
+              _id: "6492f0f23af245bea45173a9",
+            },
+          ],
+          _id: "6492f0f23af245bea45173a8",
+        },
+      ],
+      __v: 0,
+      end_date: null,
+    };
     setBenchmark(bench);
-
+    if (bench.user_resp.length > 0) {
+      setUser_resp([...user_resp, bench.user_resp]);
+    }
     const arr = [];
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
@@ -152,81 +405,90 @@ const Benchmarking = () => {
       ...prevState,
       [questionIndex]: buttonIndex,
     }));
-
-    setUser_resp((prevUserResp) => {
-      const newUserResp = [...prevUserResp];
-      const userRespIndex = newUserResp.findIndex(
-        (resp) => resp?.questionId === qid
-      );
-
-      if (userRespIndex !== -1) {
-        const updatedUserResp = {
-          ...newUserResp[userRespIndex],
-          selectedOption: [...newUserResp[userRespIndex].selectedOption],
-        };
-
-        const optionIndex = updatedUserResp.selectedOption.findIndex(
-          (option) => option.answerOption === aid
+    if (
+      !user_resp.some(
+        (value) =>
+          value.questionId === qid &&
+          value.selectedOption.some((answer) => answer.answerOption === aid)
+      )
+    ) {
+      setUser_resp((prevUserResp) => {
+        const newUserResp = [...prevUserResp];
+        const userRespIndex = newUserResp.findIndex(
+          (resp) => resp?.questionId === qid
         );
 
-        if (optionIndex !== -1) {
-          // Update the existing option
-          const selectedOption = updatedUserResp.selectedOption[optionIndex];
-          updatedUserResp.selectedOption[optionIndex] = {
-            ...selectedOption,
-            includeExplanationValue:
-              explanationValue || selectedOption.includeExplanationValue,
-            includeInputFieldValue:
-              inputFieldValue || selectedOption.includeInputFieldValue,
+        if (userRespIndex !== -1) {
+          const updatedUserResp = {
+            ...newUserResp[userRespIndex],
+            selectedOption: [...newUserResp[userRespIndex].selectedOption],
           };
-        } else {
-          // Find the option with empty values and update it
-          // const emptyQuestionIndex = updateUserResp.findIndex((option)=>option.qid === qid)
 
-          const emptyOptionIndex = updatedUserResp.selectedOption.findIndex(
-            (option) =>
-              (option.includeExplanationValue === "" &&
-                option.includeInputFieldValue === "" &&
-                option.includeInputField) ||
-              option.includeExplanation
+          const optionIndex = updatedUserResp.selectedOption.findIndex(
+            (option) => option.answerOption === aid
           );
-          if (emptyOptionIndex !== -1) {
-            updatedUserResp.selectedOption[emptyOptionIndex] = {
-              ...updatedUserResp.selectedOption[emptyOptionIndex],
-              answerOption: aid,
-              includeExplanationValue: explanationValue || "",
-              includeInputFieldValue: inputFieldValue || "",
+
+          if (optionIndex !== -1) {
+            // Update the existing option
+            const selectedOption = updatedUserResp.selectedOption[optionIndex];
+            updatedUserResp.selectedOption[optionIndex] = {
+              ...selectedOption,
+              includeExplanationValue:
+                explanationValue || selectedOption.includeExplanationValue,
+              includeInputFieldValue:
+                inputFieldValue || selectedOption.includeInputFieldValue,
             };
           } else {
-            updatedUserResp.selectedOption.push({
-              answerOption: aid,
-              includeExplanationValue: explanationValue || "",
-              includeInputFieldValue: inputFieldValue || "",
-              includeExplanation: isIncludeExplanation,
-              includeInputField: isInlcudeInput,
-            });
+            // Find the option with empty values and update it
+            // const emptyQuestionIndex = updateUserResp.findIndex((option)=>option.qid === qid)
+
+            const emptyOptionIndex = updatedUserResp.selectedOption.findIndex(
+              (option) =>
+                (option.includeExplanationValue === "" &&
+                  option.includeInputFieldValue === "" &&
+                  option.includeInputField) ||
+                option.includeExplanation
+            );
+            if (emptyOptionIndex !== -1) {
+              updatedUserResp.selectedOption[emptyOptionIndex] = {
+                ...updatedUserResp.selectedOption[emptyOptionIndex],
+                answerOption: aid,
+                includeExplanationValue: explanationValue || "",
+                includeInputFieldValue: inputFieldValue || "",
+              };
+            } else {
+              updatedUserResp.selectedOption.push({
+                answerOption: aid,
+                includeExplanationValue: explanationValue || "",
+                includeInputFieldValue: inputFieldValue || "",
+                includeExplanation: isIncludeExplanation,
+                includeInputField: isInlcudeInput,
+              });
+            }
           }
+
+          newUserResp[userRespIndex] = updatedUserResp;
+        } else {
+          // Add new user response to the array
+          newUserResp.push({
+            questionId: qid,
+            selectedOption: [
+              {
+                answerOption: aid,
+                includeExplanationValue: explanationValue || "",
+                includeInputFieldValue: inputFieldValue || "",
+                includeExplanation: isIncludeExplanation,
+                includeInputField: isInlcudeInput,
+              },
+            ],
+          });
         }
 
-        newUserResp[userRespIndex] = updatedUserResp;
-      } else {
-        // Add new user response to the array
-        newUserResp.push({
-          questionId: qid,
-          selectedOption: [
-            {
-              answerOption: aid,
-              includeExplanationValue: explanationValue || "",
-              includeInputFieldValue: inputFieldValue || "",
-              includeExplanation: isIncludeExplanation,
-              includeInputField: isInlcudeInput,
-            },
-          ],
-        });
-      }
-
-      return newUserResp;
-    });
+        return newUserResp;
+      });
+    } else {
+      setUser_resp((prev) => prev.filter((value) => value.questionId !== qid));
+    }
   };
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -303,59 +565,68 @@ const Benchmarking = () => {
                       <div key={btnIndex}>
                         {isSelected || check ? (
                           <>
-                            {btn_user_resp?.includeExplanation !== undefined &&
-                              btn_user_resp.includeExplanation !== "false" && (
-                                <div className="">
-                                  <CKEditor
-                                    editor={ClassicEditor}
-                                    onReady={(editor) => {
-                                      editor.setData(
-                                        btn_user_resp.includeExplanationValue
-                                      );
-                                    }}
-                                    onChange={(e, editor) => {
-                                      const value = editor.getData();
-                                      setIncludeExplanation((prevState) => ({
-                                        ...prevState,
-                                        [item._id]: value,
-                                      }));
-                                    }}
-                                    onBlur={(e, editor) => {
-                                      const value = editor.getData();
-                                      setIncludeExplanation((prevState) => ({
-                                        ...prevState,
-                                        [item._id]: value,
-                                      }));
-                                      handleButtonClick(
-                                        (currentPage - 1) * numPages + index,
-                                        btnIndex,
-                                        btn.answerOption,
-                                        item?._id,
-                                        btn.answerOption._id,
-                                        btn.includeExplanation,
-                                        btn.includeInputField,
-                                        includeExplanation,
-                                        includeExplanationValue
-                                      );
-                                    }}
-                                    class="form-control"
-                                    placeholder="Description"
-                                    id="floatingTextarea"
-                                    value=""
-                                    style={{
-                                      height: "120px",
-                                      overflow: "hidden",
-                                      backgroundColor: "#dfdfdf",
-                                    }}
-                                  />
-                                </div>
-                              )}
+                            {(btn_user_resp?.includeExplanation !== undefined &&
+                              btn_user_resp.includeExplanation !== "false") ||
+                              (btn.includeExplanation &&
+                                selectedAnswerIds[item._id]?.some(
+                                  (value) => value === btn.answerOption._id
+                                ) && (
+                                  <div className="">
+                                    <CKEditor
+                                      editor={ClassicEditor}
+                                      onReady={(editor) => {
+                                        editor.setData(
+                                          // btn_user_resp?.includeExplanationValue
+                                          ""
+                                        );
+                                      }}
+                                      onChange={(e, editor) => {
+                                        const value = editor.getData();
+                                        setIncludeExplanation((prevState) => ({
+                                          ...prevState,
+                                          [item._id]: value,
+                                        }));
+                                      }}
+                                      onBlur={(e, editor) => {
+                                        const value = editor.getData();
+                                        setIncludeExplanation((prevState) => ({
+                                          ...prevState,
+                                          [item._id]: value,
+                                        }));
+                                        handleButtonClick(
+                                          (currentPage - 1) * numPages + index,
+                                          btnIndex,
+                                          btn.answerOption,
+                                          item?._id,
+                                          btn.answerOption._id,
+                                          btn.includeExplanation,
+                                          btn.includeInputField,
+                                          includeExplanation,
+                                          includeExplanationValue
+                                        );
+                                      }}
+                                      class="form-control"
+                                      placeholder="Description"
+                                      id="floatingTextarea"
+                                      value=""
+                                      style={{
+                                        height: "120px",
+                                        overflow: "hidden",
+                                        backgroundColor: "#dfdfdf",
+                                      }}
+                                    />
+                                  </div>
+                                ))}
                           </>
                         ) : null}
                         {isSelected || check ? (
                           <>
-                            {btn_user_resp?.includeInputField !== undefined &&
-                            btn_user_resp.includeInputField !== "false" ? (
+                            {(btn_user_resp?.includeInputField !== undefined &&
+                              btn_user_resp.includeInputField !== "false") ||
+                            (btn.includeInputField &&
+                              selectedAnswerIds[item._id]?.some(
+                                (value) => value === btn.answerOption._id
+                              )) ? (
                               <div>
                                 <Input
                                   type="text"
@@ -369,8 +640,7 @@ const Benchmarking = () => {
                                     selectedOption.find(
                                       (a) =>
                                         a.answerOption === btn.answerOption._id
-                                    )?.includeInputFieldValue ||
-                                    "chekc"
+                                    )?.includeInputFieldValue
                                   }
                                   onChange={(e) => {
                                     const value = e.target.value;
@@ -407,28 +677,48 @@ const Benchmarking = () => {
                         <div className="buttons-container">
                           <button
                             onClick={() => {
-                              setSelectedAnswerIds((prevSelectedAnswerIds) => {
-                                const questionId = item._id;
-                                const selectedIds =
-                                  prevSelectedAnswerIds[questionId] || [];
+                              console.log(
+                                "selected ids",
+                                selectedAnswerIds[item._id]?.some(
+                                  (value) => value === btn.answerOption._id
+                                )
+                              );
+                              if (
+                                !selectedAnswerIds[item._id]?.some(
+                                  (value) => value === btn.answerOption._id
+                                )
+                              ) {
+                                setSelectedAnswerIds(
+                                  (prevSelectedAnswerIds) => {
+                                    const questionId = item._id;
+                                    const selectedIds =
+                                      prevSelectedAnswerIds[questionId] || [];
 
-                                if (isSelected) {
-                                  return {
-                                    ...prevSelectedAnswerIds,
-                                    [questionId]: selectedIds.filter(
-                                      (id) => id !== btn.answerOption._id
-                                    ),
-                                  };
-                                } else {
-                                  return {
-                                    ...prevSelectedAnswerIds,
-                                    [questionId]: [
-                                      ...selectedIds,
-                                      btn.answerOption._id,
-                                    ],
-                                  };
-                                }
-                              });
+                                    if (isSelected) {
+                                      return {
+                                        ...prevSelectedAnswerIds,
+                                        [questionId]: selectedIds.filter(
+                                          (id) => id !== btn.answerOption._id
+                                        ),
+                                      };
+                                    } else {
+                                      return {
+                                        ...prevSelectedAnswerIds,
+                                        [questionId]: [
+                                          ...selectedIds,
+                                          btn.answerOption._id,
+                                        ],
+                                      };
+                                    }
+                                  }
+                                );
+                              } else {
+                                setSelectedAnswerIds((prev) =>
+                                  prev[item._id]?.filter(
+                                    (value) => value !== btn.answerOption._id
+                                  )
+                                );
+                              }
 
                               handleButtonClick(
                                 (currentPage - 1) * numPages + index,
@@ -651,7 +941,20 @@ const Benchmarking = () => {
 
   const requestBody = {
     userId: userId,
-    user_resp: user_resp,
+    user_resp: user_resp.flat().map((item) => {
+      if (item.selectedOption && item.selectedOption.length > 0) {
+        const selectedOption = item.selectedOption[0];
+        if (
+          selectedOption.includeExplanationValue &&
+          typeof selectedOption.includeExplanationValue === "object"
+        ) {
+          selectedOption.includeExplanationValue = Object.values(
+            selectedOption.includeExplanationValue
+          )[0];
+        }
+      }
+      return item;
+    }),
   };
 
   return (
@@ -804,27 +1107,32 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              if (location?.state?.isDataUpdated) {
-                                // Update benchmark.user_resp based on the condition
-                                const updatedUserResp = benchmark.user_resp
-                                  ? [...benchmark.user_resp, ...user_resp]
-                                  : user_resp;
+                              // if (location?.state?.isDataUpdated) {
+                              //   // Update benchmark.user_resp based on the condition
+                              //   const updatedUserResp = benchmark.user_resp
+                              //     ? [...benchmark.user_resp, ...user_resp]
+                              //     : user_resp;
 
-                                // Create a new requestBody with the updated user_resp
-                                const updatedRequestBody = {
-                                  ...requestBody,
-                                  user_resp: updatedUserResp,
-                                };
+                              //   // Create a new requestBody with the updated user_resp
+                              //   const updatedRequestBody = {
+                              //     ...requestBody,
+                              //     user_resp: updatedUserResp,
+                              //   };
 
-                                // Call the updateUserRespSave function with the updated values
-                                updateUserRespSave(
-                                  benchmark?._id,
-                                  updatedRequestBody
-                                );
-                              } else {
-                                // Call the updateUserRespSave function with the original values
-                                updateUserRespSave(benchmark?._id, requestBody);
-                              }
+                              //   // Call the updateUserRespSave function with the updated values
+                              //   updateUserRespSave(
+                              //     benchmark?._id,
+                              //     updatedRequestBody
+                              //   );
+                              // } else {
+                              //   // Call the updateUserRespSave function with the original values
+                              //   updateUserRespSave(benchmark?._id, requestBody);
+                              // }
+                              console.log(
+                                "user_res",
+                                user_resp.flat(),
+                                requestBody
+                              );
                             }}
                           >
                             SAVE

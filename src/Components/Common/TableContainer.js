@@ -97,7 +97,13 @@ function GlobalFilter({
                   <i className="bx bx-search-alt search-icon"></i>
                 </div>
               )}
-              {isAllQaFilters && <AllQaFilters />}
+              {isAllQaFilters && (
+                <AllQaFilters
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
               {isFilterA && (
                 <FilterA
                   useAsyncDebounce={useAsyncDebounce}

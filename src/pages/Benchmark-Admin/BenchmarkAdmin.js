@@ -390,7 +390,7 @@ const BenchmarkAdmin = () => {
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div className="flex-grow-1 ms-2 name">
-                {Math.floor(cellProps.row.original.completionLevel)}
+                {Math.floor(cellProps.row.original.completionLevel)}%
               </div>
             </div>
           </>
@@ -534,11 +534,13 @@ const BenchmarkAdmin = () => {
             Benchmarking <span className="fs-5">Admin</span>
           </h1>
           <p style={{ color: "#BEC887" }}>
-            This is a page where users can take self-assessment questionnaires
-            and view their results. It will feature the ability for users to
-            save progress and return to the assessment later as well as an
-            option to skip or go back to previous questions. Also the option for
-            the user to view their score and their benchmark results
+            In this section you will find a self-assessment questionnaire and,
+            once completed, you can view your results against your peers. You
+            have the option to complete the assessment at once or save your
+            progress and return later. We do encourage you to complete the
+            assessment but if you don’t have the answer to questions, you can
+            skip them. Once you are done with the assessment, press submit and
+            you will receive a benchmark report.
           </p>
         </div>
         <Col xxl={12}>
@@ -554,7 +556,8 @@ const BenchmarkAdmin = () => {
                         data={benchmark || []}
                         isGlobalFilter={true}
                         isAddUserList={false}
-                        isFilterBenchmarkAction={true}
+                        // isFilterBenchmarkAction={true}
+                        isFilterA={true}
                         setInfo={setInfo}
                         isFooter={true}
                         isSearchInput={false}
