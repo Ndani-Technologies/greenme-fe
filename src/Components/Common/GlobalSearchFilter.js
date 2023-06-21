@@ -91,14 +91,10 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-between w-100 p-0">
-      <div
-        style={{ width: "30%", marginLeft: "50px" }}
-        className={"search-box me-2 mb-0 d-inline-block"}
-      ></div>
+    <div className="d-flex align-items-center w-100 p-0">
       <div
         className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "30%", marginLeft: "50px" }}
+        style={{ width: "50%", marginLeft: "50px" }}
       >
         <span style={{ color: "black" }}>Filter by </span>
         <div>
