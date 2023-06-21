@@ -381,6 +381,134 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     </div>
   );
 };
+const AdminRAFilters = ({
+  globalFilter,
+  setGlobalFilter,
+  useAsyncDebounce,
+}) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [value, setValue] = React.useState(globalFilter);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  useEffect(() => {
+    const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+    const options = userObj.otherCountries.map((country) => {
+      return {
+        value: country,
+        label: country,
+      };
+    });
+    setCountryOptions(options);
+  }, []);
+
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValue(checkbox.value);
+      switchInput.value = checkbox.value;
+      switchLabel.innerText = switchLabel.getAttribute("data-active");
+    } else {
+      setValue("false");
+      switchInput.value = "false";
+      switchLabel.innerText = switchLabel.getAttribute("data-inActive");
+    }
+
+    onChange(checkbox.checked ? "true" : "false");
+  };
+
+  const handleChangeCountry = (selectedOption) => {
+    setSelectedCountry(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
+  const handleDateChange = (selectedDates) => {
+    console.log(selectedDates, "SEL DA");
+    const formattedDates = selectedDates.map((date) => {
+      const year = String(date.getFullYear());
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return [year, month, day].join(" && ").split(" && ");
+    });
+    console.log(formattedDates, "formatted Dates");
+    const year = formattedDates[0][0];
+    const month = formattedDates[0][1];
+    const day = formattedDates[0][2];
+
+    const concatenatedValue = year && month && day;
+
+    setSelectedDates(selectedDates);
+    setValue(concatenatedValue);
+    onChange(concatenatedValue);
+  };
+
+  return (
+    <div className="d-flex justify-content-between align-items-center w-100">
+      <div className={"search-box me-2 mb-0 d-inline-block"}>
+        <input
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          id="search-bar-0"
+          style={{ width: "300%" }}
+          type="text"
+          className="form-control search /"
+          placeholder="Search by Action"
+          value={value || ""}
+        />
+        <i className="bx bx-search-alt search-icon"></i>
+      </div>
+
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "30%", marginLeft: "50rem" }}
+      >
+        <div>
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              defaultValue="Status"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
+            />
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              defaultValue="Status"
+              data-inActive="false"
+              data-active="true"
+            >
+              Status
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 const CustomersGlobalFilter = () => {
   const [customerStatus, setcustomerStatus] = useState(null);
 
@@ -983,6 +1111,7 @@ const LeadsGlobalFilter = ({ onClickDelete }) => {
 };
 
 export {
+  AdminRAFilters,
   ProductsGlobalFilter,
   CustomersGlobalFilter,
   OrderGlobalFilter,
