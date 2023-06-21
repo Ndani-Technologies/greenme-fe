@@ -167,7 +167,7 @@ const ActionUserDetail = () => {
                   <span className="fs-7">Status</span>
                   <div>
                     <span className="span">
-                      {data.isCompleted ? "Completed" : "inCompleted"}
+                      {data.isCompleted ? "Completed" : "In Progress"}
                     </span>
                   </div>
                 </div>
@@ -175,7 +175,7 @@ const ActionUserDetail = () => {
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">Potential</span>
+                  <span className="fs-7">Reduction Potential</span>
                   <div>
                     <span className="span">{data.potentialId.title}</span>
                   </div>
