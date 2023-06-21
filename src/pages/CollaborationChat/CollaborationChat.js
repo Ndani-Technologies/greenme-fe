@@ -209,6 +209,7 @@ const CollaborationChat = () => {
   };
 
   document.title = "Chat";
+
   return (
     <React.Fragment>
       <div className="page-content">

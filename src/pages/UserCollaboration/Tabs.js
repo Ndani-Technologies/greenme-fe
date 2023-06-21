@@ -85,7 +85,7 @@ const Tabs = () => {
           <TabContent activeTab={justifyTab} className="text-muted">
             <TabPane tabId="1" id="base-justified-home">
               <Row>
-                <div className="d-flex gap-2">
+                <div className="d-flex  gap-2">
                   <div
                     className="d-flex align-items-center border border-dark p-1 w-25 rounded"
                     style={{ height: "37px" }}

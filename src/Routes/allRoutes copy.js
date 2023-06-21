@@ -34,11 +34,6 @@ import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
-import LeaderBord from "../pages/LeaderBoard/LeaderBord";
-import LeaderBoardTable from "../pages/LeaderBoardTable/LeaderBoardTable";
-import TableCard from "../pages/LeaderBoardTable/TableCard";
-import DiscussionDashboard from "../pages/Discussion-Dashboard/DiscussionDasboard";
-import DashboardCardDetails from "../pages/Discussion-Dashboard/DashboardCardDetails";
 import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
 import ActionUserDashboard from "../pages/Action-User-dashboard/ActionUserDashboard";
 import ActionAdminUserDetail from "../pages/Action-Admin-Dashboard/ActionAdminUserDetail";
@@ -90,14 +85,7 @@ const authProtectedRoutes = [
   { path: "/AdminRelationship", component: <AdminRelation /> },
   //User Collaboration
   { path: "/UserCollaboration", component: <UserCollaboration /> },
-  { path: "/collaborationchat", component: <CollaborationChat /> },
-  //LeaderBoard
-  { path: "/leaderboard", component: <LeaderBord /> },
-  { path: "/leaderboardtable", component: <LeaderBoardTable /> },
-  { path: "/leaderboardtablecard", component: <TableCard /> },
-  //Discussion
-  { path: "/discussiondashboard", component: <DiscussionDashboard /> },
-  { path: "/dashboardcardetail", component: <DashboardCardDetails /> },
+  { path: "/collaborationChat", component: <CollaborationChat /> },
 ];
 
 const publicRoutes = [

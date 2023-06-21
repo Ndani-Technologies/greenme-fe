@@ -33,6 +33,7 @@ import {
   addBenchmark,
   deleteBenchmark,
 } from "../../slices/thunks";
+import { Box, Chip, OutlinedInput } from "@mui/material";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { TooltipModalExample } from "../BaseUi/UiModals/UiModalCode";
 import { isEmpty } from "lodash";
@@ -69,8 +70,19 @@ const BenchmarkingDashboard = () => {
         console.log("error get all benchamrks", err);
       });
   };
+
+  const [countryOptions, setCountryOptions] = useState([]);
+
   useEffect(() => {
     getBenchmarks();
+    const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+    const options = userObj.otherCountries.map((country) => {
+      return {
+        value: country,
+        label: country,
+      };
+    });
+    setCountryOptions(options);
   }, []);
 
   useEffect(() => {
@@ -351,6 +363,24 @@ const BenchmarkingDashboard = () => {
         Header: "Title of Benchmark",
         accessor: "title",
         filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div
+                className="flex-grow-1 ms-2 name"
+                onClick={(event) => {
+                  event.preventDefault();
+                  const contactData = cellProps.row.original;
+                  setInfo(contactData);
+                  navigate(`/benchmarking/${cellProps.row.original._id}`);
+                }}
+              >
+                {cellProps.row.original.title}
+              </div>
+            </div>
+          </>
+        ),
       },
       {
         Header: "Country",
@@ -377,7 +407,7 @@ const BenchmarkingDashboard = () => {
         ),
       },
       {
-        Header: "End Date",
+        Header: "Completion Date",
         accessor: "end_data",
         Cell: (contact) => (
           <>
@@ -493,35 +523,62 @@ const BenchmarkingDashboard = () => {
     setmodal_grid(!modal_grid);
   }
 
+  const [valError, setValError] = useState("");
   const validation2 = useFormik({
     enableReinitialize: true,
     initialValues: {
       title: "",
-      country: "uk",
+      country: null,
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
-      country: Yup.string().required("Country is required"),
+      country: Yup.mixed().required("Country is required"),
     }),
     onSubmit: async (values) => {
-      await addBenchmark(values)
-        .then((resp) => {
-          if (resp) {
-            toast.success("Successfully added");
-            setBenchmarks([...benchmarks, resp]);
-            validation2.resetForm();
-            setmodal_grid(false);
-            navigate(`/benchmarking/${resp._id}`);
-          } else {
-            toast.error("Name already exists");
-          }
-        })
-        .catch((err) => {
-          toast.error(err);
-          console.log(err, "this is error");
-        });
+      console.log(values, "VALS");
+      if (values.country === null) {
+        setValError("Please select a country");
+      } else {
+        await addBenchmark(values)
+          .then((resp) => {
+            if (resp) {
+              toast.success("Successfully added");
+              setBenchmarks([...benchmarks, resp]);
+              validation2.resetForm();
+              setmodal_grid(false);
+              navigate(`/benchmarking/${resp._id}`);
+            } else {
+              toast.error("Name already exists");
+            }
+          })
+          .catch((err) => {
+            toast.error(err);
+            console.log(err, "this is error");
+          });
+      }
     },
   });
+
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  const handleChangeCountry = (selectedOption) => {
+    if (!selectedOption || !selectedOption.value) {
+      setValError("Please select a country");
+      validation2.setFieldValue("country", "");
+    } else {
+      setValError("");
+      validation2.setFieldValue("country", selectedOption);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -611,6 +668,79 @@ const BenchmarkingDashboard = () => {
                         </div>
                       </Col>
 
+                      <div className="mb-3">
+                        <Label htmlFor="countryInput" className="form-label">
+                          Choose a Country
+                        </Label>
+                        <Select
+                          isClearable={true}
+                          name="country"
+                          value={validation2.values.country}
+                          onChange={handleChangeCountry}
+                          onBlur={() =>
+                            handleChangeCountry(validation2.values.country)
+                          }
+                          options={countryOptions}
+                          input={
+                            <OutlinedInput
+                              id="select-multiple-chip"
+                              label="Chip"
+                            />
+                          }
+                          renderValue={(selected) => (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 0.5,
+                              }}
+                            >
+                              {selected.map((value) => (
+                                <Chip key={value} label={value} />
+                              ))}
+                            </Box>
+                          )}
+                          MenuProps={MenuProps}
+                        />
+                        <div style={{ color: "red", marginTop: ".5rem" }}>
+                          {valError}
+                        </div>
+                      </div>
+                      {/* <div className="mb-3">
+                              <Label
+                                htmlFor="countryInput"
+                                className="form-label"
+                              >
+                                Choose a Country
+                              </Label>
+                              <Select
+                                isClearable={true}
+                                value={selectedCountry.value}
+                                onChange={handleChange1}
+                                defaultValue="Choose a country"
+                                options={countryOptions}
+                                input={
+                                  <OutlinedInput
+                                    id="select-multiple-chip"
+                                    label="Chip"
+                                  />
+                                }
+                                renderValue={(selected) => (
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      flexWrap: "wrap",
+                                      gap: 0.5,
+                                    }}
+                                  >
+                                    {selected.map((value) => (
+                                      <Chip key={value} label={value} />
+                                    ))}
+                                  </Box>
+                                )}
+                                MenuProps={MenuProps}
+                              />
+                            </div>  */}
                       <div className="col-lg-12">
                         <div className="hstack gap-2 justify-content-start">
                           <Button type="submit" color="primary">
@@ -631,7 +761,6 @@ const BenchmarkingDashboard = () => {
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
-                {console.log("benchmar", benchmarks)}
                 {!!benchmarks.length >= 0 ? (
                   <TableContainer
                     columns={columns}

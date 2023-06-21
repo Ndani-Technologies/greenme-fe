@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useProfile } from "../../Components/Hooks/UserHooks";
 import {
   Card,
   CardBody,
@@ -35,7 +36,6 @@ const Benchmarking = () => {
     bench.questionnaire.forEach((element) => {
       arr.push(element.category);
     });
-    debugger;
     const uniqueArr = Array.from(
       new Set(arr.map((item) => item?.titleEng))
     ).map((titleEng) => arr.find((item) => item?.titleEng === titleEng));
@@ -51,6 +51,10 @@ const Benchmarking = () => {
     callApi();
     // setBenchmark(benchmarkByCategory);
   }, []);
+
+  const { userProfile } = useProfile();
+
+  console.log(userProfile, "USER PROFILE");
 
   const [justifyPillsTab, setjustifyPillsTab] = useState(
     category.length > 0 ? category[0]._id : null
@@ -100,70 +104,28 @@ const Benchmarking = () => {
     // Your other logic here
   };
 
-  // const renderedQuestions = benchmark?.questionnaire
-  // .slice((currentPage - 1) * numPages, currentPage * numPages)
-  // .map((item, index) => {
-  //   const activeButtonIndex = activeIndexes[index];
+  const [isBelow1440, setIsBelow1440] = useState(false);
 
-  //   // Find the user response for the current question
-  //   const userResponse = benchmark.user_resp.find(
-  //     (resp) => resp.questionId === item._id
-  //   );
+  useEffect(() => {
+    const handleResize = () => {
+      setIsBelow1440(window.innerWidth < 1440);
+    };
 
-  //   // Get the index of the selected option
-  //   const selectedOptionIndex = item.answerOptions.findIndex(
-  //     (option) => option._id === userResponse?.selectedOption
-  //   );
+    // Add event listener to detect window resize
+    window.addEventListener("resize", handleResize);
 
-  //   return (
-  //     <div className="row w-50" key={index}>
-  //       <h5>Question {item.index}</h5>
-  //       <p className="w-75 fs-5">{item.title}</p>
-  //       <p>{item.description}</p>
-  //       {item.answerOptions &&
-  //         item.answerOptions.map((btn, btnIndex) => (
-  //           <>
-  //             {btn.includeExplanation && activeButtonIndex === btnIndex && (
-  //               <textarea
-  //                 type="text"
-  //                 className="w-75 p-2"
-  //                 rows={3}
-  //                 key={btnIndex}
-  //                 placeholder="Comments"
-  //                 onChange={handleExplanationChange}
-  //               />
-  //             )}
-  //           </>
-  //         ))}
-  //       <div className="d-flex mt-4">
-  //         {item.answerOptions &&
-  //           item.answerOptions.map((btn, btnIndex) => (
-  //             <div className="buttons-container" key={btnIndex}>
-  //               <button
-  //                 className={`button ${
-  //                   selectedOptionIndex === btnIndex ? "active" : ""
-  //                 }`}
-  //                 onClick={() =>
-  //                   handleButtonClick(
-  //                     (currentPage - 1) * numPages + index,
-  //                     btnIndex,
-  //                     btn.answerOption,
-  //                     item._id,
-  //                     btn._id
-  //                   )
-  //                 }
-  //               >
-  //                 {btn.answerOption}
-  //               </button>
-  //             </div>
-  //           ))}
-  //       </div>
-  //     </div>
-  //   );
-  // });
+    // Initial check on component mount
+    handleResize();
 
-  /* working code */
-  // const renderedQuestions = benchmark.questionnaire?.length>=0 &&  benchmark?.questionnaire
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
+
+  const [selectedAnswerIds, setSelectedAnswerIds] = useState([]);
+
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
@@ -172,75 +134,86 @@ const Benchmarking = () => {
         const activeButtonIndex = activeIndexes[index];
 
         // Find the user response for the current question
-        const userResponse = benchmark.user_resp.find(
-          (resp) => resp.questionId === item._id
+        const userResponse = benchmark?.user_resp?.find(
+          (resp) => resp?.questionId === item?._id
         );
-
+        console.log("userResponse", userResponse);
         // Get the index of the selected option
         const selectedOptionIndex = item.answerOptions.findIndex(
-          (option) => option._id === userResponse?.selectedOption
+          (option) =>
+            option?._id === userResponse?.selectedOption.map((val) => val)
+        );
+        const resp = userResponse?.selectedOption[0];
+        console.log(resp, "RESP");
+        const selectedOption = item?.answerOptions?.find(
+          (option) => option?._id === userResponse?.selectedOption[0]
         );
 
+        console.log(selectedOption, "OPTION");
         return (
-          <div className="row w-50 " disabled key={index}>
-            <h5>Question {item.index}</h5>
+          <div className={rowClassName} key={index}>
+            <h5>Question {index + 1}</h5>
             <p className="w-75 fs-5">{item.title}</p>
             <p>{item.description}</p>
-            {benchmark.user_resp?.length > 0
-              ? item.answerOptions &&
-                item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {btn.includeExplanation &&
-                      activeButtonIndex === btnIndex && (
-                        <textarea
-                          type="text"
-                          className="w-75 p-2"
-                          rows={3}
-                          key={btnIndex}
-                          placeholder="Comments"
-                          onChange={handleExplanationChange}
-                        />
-                      )}
-                  </>
-                ))
-              : item.answerOptions.map((btn, btnIndex) => (
-                  <>
-                    {/* {btn.includeExplanation && activeButtonIndex === btnIndex && ( */}
-
-                    {btn.includeExplanation && (
-                      <textarea
-                        type="text"
-                        className="w-75 p-2"
-                        rows={3}
-                        placeholder="Comments"
-                        onChange={handleExplanationChange}
-                      />
-                    )}
-                  </>
-                ))}
-
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
-                    const isSelected = selectedOptionIndex === btnIndex;
-                    const isUserResponse =
-                      userResponse?.selectedOption === btn._id;
-                    const buttonClass = isSelected ? "button active" : "button";
+                    // Check if the answer is already selected for the current question
+                    const isSelected =
+                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+                    let buttonClass = "button";
+
+                    if (
+                      selectedAnswerIds[item._id] &&
+                      selectedAnswerIds[item._id].includes(btn._id)
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    if (
+                      selectedOption?._id !== undefined
+                        ? selectedOption?._id === btn._id
+                        : activeButtonIndex === btnIndex
+                    ) {
+                      buttonClass += " active";
+                    }
 
                     return (
                       <div className="buttons-container" key={btnIndex}>
                         <button
-                          className={buttonClass}
-                          onClick={() =>
+                          onClick={() => {
+                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                              const questionId = item._id;
+                              const selectedIds =
+                                prevSelectedAnswerIds[questionId] || [];
+
+                              if (isSelected) {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: selectedIds.filter(
+                                    (id) => id !== btn._id
+                                  ),
+                                };
+                              } else {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: [...selectedIds, btn._id],
+                                };
+                              }
+                            });
+
                             handleButtonClick(
                               (currentPage - 1) * numPages + index,
                               btnIndex,
                               btn.answerOption,
-                              item._id,
+                              item?._id,
                               btn._id
-                            )
-                          }
+                              // selectedAnswerIds[btn._id] || [] // Pass the selected answer IDs for the current question
+                            );
+                          }}
+                          className={buttonClass}
                         >
                           {btn.answerOption}
                         </button>
@@ -251,26 +224,58 @@ const Benchmarking = () => {
             ) : (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => (
-                    <div className="buttons-container" key={btnIndex}>
-                      <button
-                        className={`button ${
-                          activeButtonIndex === btnIndex ? "active" : ""
-                        }`}
-                        onClick={() =>
-                          handleButtonClick(
-                            (currentPage - 1) * numPages + index,
-                            btnIndex,
-                            btn.answerOption,
-                            item._id,
-                            btn._id
-                          )
-                        }
-                      >
-                        {btn.answerOption}
-                      </button>
-                    </div>
-                  ))}
+                  item.answerOptions.map((btn, btnIndex) => {
+                    // Check if the answer is already selected for the current question
+                    const isSelected =
+                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+                    let buttonClass = "button";
+                    if (
+                      selectedAnswerIds[item._id] &&
+                      selectedAnswerIds[item._id].includes(btn._id)
+                    ) {
+                      buttonClass += " active";
+                    }
+
+                    return (
+                      <div className="buttons-container" key={btnIndex}>
+                        <button
+                          onClick={() => {
+                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                              const questionId = item._id;
+                              const selectedIds =
+                                prevSelectedAnswerIds[questionId] || [];
+
+                              if (isSelected) {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: selectedIds.filter(
+                                    (id) => id !== btn._id
+                                  ),
+                                };
+                              } else {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: [...selectedIds, btn._id],
+                                };
+                              }
+                            });
+
+                            handleButtonClick(
+                              (currentPage - 1) * numPages + index,
+                              btnIndex,
+                              btn.answerOption,
+                              item?._id,
+                              btn._id
+                            );
+                          }}
+                          className={buttonClass}
+                        >
+                          {btn.answerOption}
+                        </button>
+                      </div>
+                    );
+                  })}
               </div>
             )}
           </div>
@@ -324,14 +329,9 @@ const Benchmarking = () => {
               <TabContent
                 activeTab={justifyPillsTab}
                 className="text-muted p-4 pt-0 "
-                disabled
               >
-                <TabPane
-                  tabId={justifyPillsTab}
-                  id="pill-justified-home-1"
-                  style={{ pointerEvents: "none" }}
-                >
-                  <div className="row d-flex gap-5 justify-content-between w-100 mt-4 pt-4 pb-4 border-top border-dark">
+                <TabPane tabId={justifyPillsTab} id="pill-justified-home-1">
+                  <div className="row d-flex gap-5 justify-content-between w-100 mt-4 pt-4 pb-4 border-top border-dark disabled">
                     {renderedQuestions}
                   </div>
                   <div>
@@ -342,9 +342,15 @@ const Benchmarking = () => {
                             <div className="d-flex align-items-center mb-2 mt-4">
                               <div className="flex-grow-1 d-flex justify-content-between w-100">
                                 <h5 className="card-title mb-0">
-                                  <span>60% </span> Benchmark progress
+                                  <span>
+                                    {Math.floor(benchmark.completionLevel)}{" "}
+                                  </span>{" "}
+                                  Benchmark progress
                                 </h5>
-                                <h5>40% to go!</h5>
+                                <h5>
+                                  {Math.floor(100 - benchmark.completionLevel)}{" "}
+                                  to go
+                                </h5>
                               </div>
                             </div>
                             <div className="progress animated-progress custom-progress progress-label mt-3">
@@ -368,12 +374,17 @@ const Benchmarking = () => {
                             Do you consent to other users contacting you based
                             on the topics where you have answered yes?
                           </p>
-                          <div class="form-check form-switch mb-2">
+                          <div class="form-check form-switch mb-2 disabled">
                             <input
                               class="form-check-input "
                               type="checkbox"
                               id="form-grid-showcode"
                               defaultChecked
+                              disabled={
+                                userProfile.role.title === "admin"
+                                  ? true
+                                  : false
+                              }
                             />
                             <label
                               class="form-check-label ml-auto"
@@ -386,7 +397,7 @@ const Benchmarking = () => {
                         <div className="hstack gap-2 justify-content-end">
                           <button
                             type="button"
-                            className="btn btn-primary"
+                            className="btn btn-primary disabled"
                             onClick={() => {
                               navigate("/benchmarking");
                             }}
@@ -395,8 +406,11 @@ const Benchmarking = () => {
                           </button>
                           <button
                             type="button"
-                            onClick={handleSubmit}
                             className="btn btn-secondary"
+                            onClick={() => {
+                              console.log("this is working");
+                              navigate("/benchmarking");
+                            }}
                           >
                             SUBMIT
                           </button>
