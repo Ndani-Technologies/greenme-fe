@@ -167,7 +167,7 @@ const ActionUserDetail = () => {
                   <span className="fs-7">Status</span>
                   <div>
                     <span className="span">
-                      {data.isCompleted ? "Completed" : "Inprogress"}
+                      {data.isCompleted ? "Completed" : "In Progress"}
                     </span>
                   </div>
                 </div>
