@@ -149,7 +149,11 @@ const RelationModal = ({
   };
 
   const handleRecommendedAction = (id, index) => {
-    setSelectedRecommendAction([...selectedRecommendAction, id]);
+    if (!selectedRecommendAction.some((a) => a === id)) {
+      setSelectedRecommendAction([...selectedRecommendAction, id]);
+    } else {
+      setSelectedRecommendAction((prev) => prev.filter((a) => a !== id));
+    }
   };
 
   const handleSubmit = () => {
@@ -173,7 +177,8 @@ const RelationModal = ({
       });
       console.log("mapped", mappedData);
       if (info !== null) {
-        updatedRecommendActionRelation(info._id, mappedData)
+        const toastId = toast.loading("Updating Recommend Relation");
+        updatedRecommendActionRelation(info._id, mappedData, toastId)
           .then((resp) => {
             console.log("resp", resp);
             let answers = "";
@@ -191,10 +196,11 @@ const RelationModal = ({
                 : "Automatic",
               number_of_assignment: resp?.number_of_assignment,
             };
-
             setRecommendedRelation([...recommendedRelation, data]);
+
             // const currentRecommendedRelation = recommendedRelation.find((rr)=>rr._id === info._id)
-            toast.success("Relation Succesfully Update.");
+          })
+          .then(() => {
             setmodal_grid(false);
           })
           .catch((err) => {

@@ -714,7 +714,7 @@ const ActionUserDashboard = () => {
         accessor: "stat",
       },
       {
-        Header: "Potential",
+        Header: "Reduction Potential",
         accessor: "potential",
         filterable: false,
       },
