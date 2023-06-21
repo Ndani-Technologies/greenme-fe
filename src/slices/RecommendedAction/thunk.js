@@ -70,12 +70,7 @@ export const updatedRecommendActionRelation = async (id, data, toastId) => {
     return resp;
   }
 };
-export const updatedRecommendActionRelation = (id, data) => {
-  return axios.patch(
-    `${process.env.REACT_APP_RA_URL}relationships/${id}`,
-    data
-  );
-};
+
 export const deleteRecommendActionRelation = (id) => {
   return axios.delete(`${process.env.REACT_APP_RA_URL}relationships/${id}`);
 };
