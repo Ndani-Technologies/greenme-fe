@@ -6,7 +6,7 @@ const ActionMain = ({ Title, Text, ra_title }) => {
       <div className="d-flex  justify-content-between align-items-center">
         <div>
           <h1>{Title}</h1>
-          <p>{Text}</p>
+          <p className="text-success">{Text}</p>
           {ra_title && (
             <div style={{ color: "white", fontSize: "20px" }}> {ra_title}</div>
           )}

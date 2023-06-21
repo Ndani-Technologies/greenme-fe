@@ -309,15 +309,26 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     setValue(concatenatedValue);
     onChange(concatenatedValue);
   };
+  const handleSelectedCard = (item) => {
+    setCard(item);
+    setModal(true);
+  };
+  const [values, setValues] = React.useState([8, 37]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  function valuetext(values) {
+    return `${values}°C`;
+  }
 
   return (
-    <div className="d-flex justify-content-between align-items-center w-100">
-      <div
-        className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "25%", marginLeft: "50px" }}
-      >
-        <span style={{ color: "black" }}>Filter by </span>
+    <div className="d-flex justify-content-around align-items-center w-100">
+      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
         <div>
+          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
+        </div>
+        <div className="w-75">
           <Select
             isClearable={true}
             name="country"
@@ -337,10 +348,7 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
         </div>
       </div>
 
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "30%" }}
-      >
+      <div className=" d-flex align-items-center gap-3 flex-shrink-0">
         <div>
           <div className="form-check form-switch form-switch-right form-switch-md">
             <input
@@ -363,6 +371,17 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
             </label>
           </div>
         </div>
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={values}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
       </div>
 
       <div className="col-xxl-3 col-sm-4">

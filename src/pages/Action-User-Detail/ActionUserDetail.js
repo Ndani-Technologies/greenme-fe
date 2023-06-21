@@ -143,9 +143,6 @@ const ActionUserDetail = () => {
         <div className="page-content overflow-auto ">
           <ActionMain
             Title={"Recommended Actions - Details"}
-            // Text={
-            //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-            // }
             ra_title={data.title}
           />
           <div className="card-wrapper">
@@ -216,21 +213,20 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Completion Date</span>
                   <div>
-                    <span className="span">
-                      {" "}
-                      {new Date(data.enddate).toLocaleDateString("en-US")}
-                    </span>
+                    {isNaN(new Date(data.enddate)) ? (
+                      <span className="span">In Progress</span>
+                    ) : (
+                      <span className="span">
+                        {new Date(data.enddate).toLocaleDateString("en-US")}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <Col className="card-wrapper mb-5" lg={12}>
+          <Col className="card-wrapper mb-5">
             <h4>Description</h4>
-            {/* <Input
-                  type="text"
-                  placeholder="Some description should go  here"
-                /> */}
             <p dangerouslySetInnerHTML={{ __html: data.description }}></p>
 
             {/* <p>
@@ -273,6 +269,7 @@ const ActionUserDetail = () => {
                       >
                         <div className="accordion-body d-flex justify-content-between">
                           <div
+                            className="w-75"
                             dangerouslySetInnerHTML={{
                               __html: step.description,
                             }}
@@ -286,11 +283,10 @@ const ActionUserDetail = () => {
                           <div
                             className="Discription"
                             style={{
-                              width: "250px",
+                              width: "180px",
                               height: "80px",
                               padding: "5px",
                               borderRadius: "10px",
-
                               border: "1px solid grey",
                               backgroundColor: "#bec887",
                             }}
