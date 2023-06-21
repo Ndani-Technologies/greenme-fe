@@ -224,11 +224,13 @@ const Login = (props) => {
                                                 </div> */}
                         <div>
                           <p>
-                            It is a long established fact that a reader will be
-                            distracted by the readable content of a page when
-                            looking at its layout. It is a long established fact
-                            that a reader will be distracted by the readable
-                            content of a page when looking at its layout.
+                            Reducing emissions from fleet operations is a
+                            priority task for every fleet manager. Fleet Forum’s
+                            GreenMe platform allows for assessment of the
+                            current environmental state of the vehicle fleet,
+                            provides actions that reduce emissions and
+                            encourages fleet managers to collaborate with the
+                            aim to make the fleet environmentally sustainable.
                           </p>
                         </div>
                         <div className="mt-4 d-flex justify-content-between">
