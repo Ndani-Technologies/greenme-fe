@@ -168,7 +168,6 @@ const FilterBenchmarkAction = ({
   );
 };
 const FilterLeaderBoard = ({ item, selectedData }) => {
-  const { isCompareBtnDisable } = useLeaderBoardContext();
   const navigate = useNavigate();
   return (
     <div className="d-flex align-items-center justify-content-between">

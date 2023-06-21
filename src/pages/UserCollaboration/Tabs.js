@@ -182,7 +182,7 @@ const Tabs = () => {
               {modal && (
                 <CategoryModal modal={modal} setModal={setModal} card={card} />
               )}
-              <Pagination>
+              <Pagination className="float-end">
                 <PaginationItem disabled={currentPage === 1}>
                   <PaginationLink
                     previous

@@ -359,8 +359,8 @@ const Navdata = () => {
       id: 6,
       icon: "ri-apps-2-line",
       label: "Discussions",
-      link: "/",
-      disable: true,
+      link: "/discussiondashboard",
+      disable: false,
     },
     {
       id: "Leaderboard",

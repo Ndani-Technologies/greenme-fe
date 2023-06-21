@@ -22,6 +22,8 @@ import APIKeyReducer from "./apiKey/reducer";
 import BenchmarkReducer from "./BenchmarkingUser/reducer";
 import ChatReducer from "./chat/reducer";
 
+import FileManager from "./fileManager/reducer";
+
 const rootReducer = combineReducers({
   Benchmark: BenchmarkReducer,
   Layout: LayoutReducer,
@@ -33,6 +35,7 @@ const rootReducer = combineReducers({
   Crm: CrmReducer,
   APIKey: APIKeyReducer,
   UserDetail: userDetailReducer,
+  FileManager: FileManager,
 });
 
 export default rootReducer;

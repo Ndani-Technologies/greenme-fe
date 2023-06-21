@@ -39,6 +39,8 @@ import LeaderBord from "../pages/LeaderBoard/LeaderBord";
 import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
 import LeaderBoardTable from "../pages/LeaderBoardTable/LeaderBoardTable";
 import TableCard from "../pages/LeaderBoardTable/TableCard";
+import DiscussionDashboard from "../pages/Discussion-Dashboard/DiscussionDasboard";
+import DashboardCardDetails from "../pages/Discussion-Dashboard/DashboardCardDetails";
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/index", component: <DashboardEcommerce /> },
@@ -91,6 +93,9 @@ const authProtectedRoutes = [
   { path: "/leaderboard", component: <LeaderBord /> },
   { path: "/leaderboardtable", component: <LeaderBoardTable /> },
   { path: "/leaderboardtablecard", component: <TableCard /> },
+  //Discussion
+  { path: "/discussiondashboard", component: <DiscussionDashboard /> },
+  { path: "/dashboardcardetail", component: <DashboardCardDetails /> },
 ];
 
 const publicRoutes = [
