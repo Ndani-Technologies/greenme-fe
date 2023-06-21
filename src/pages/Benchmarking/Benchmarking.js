@@ -446,7 +446,6 @@ const Benchmarking = () => {
                       </div>
                     );
                   })}
-                ;
               </div>
             ) : (
               <div className="d-flex mt-4">
@@ -903,45 +902,6 @@ const Benchmarking = () => {
                           </Button>
                         </ModalFooter>
                       </Modal>
-
-                      {/* <Modal
-                        isOpen={benchmarkCreation}
-                        toggle={cancelCreation}
-                        centered
-                        style={{ height: "300px" }}
-                      >
-                        <ModalHeader
-                          toggle={cancelCreation}
-                          className="d-flex justify-content-center"
-                        >
-                          Are you sure you want to submit your benchmark
-                        </ModalHeader>
-                        <ModalBody
-                          className="d-flex justify-content-center"
-                          style={{ fontSize: "20px" }}
-                        >
-                          <p>
-                            You have answered{" "}
-                            <span style={{ fontSize: "24px" }}>
-                              {user_resp?.length}
-                            </span>{" "}
-                            questions out of{" "}
-                            <span style={{ fontSize: "24px" }}>
-                              {benchmark?.questionnaire?.length}
-                            </span>{" "}
-                            questions, and you will not be able to edit your
-                            response after submitting
-                          </p>
-                        </ModalBody>
-                        <ModalFooter className="d-flex justify-content-center">
-                          <Button color="primary" onClick={handleSubmit}>
-                            Confirm
-                          </Button>
-                          <Button color="secondary" onClick={cancelCreation}>
-                            Cancel
-                          </Button>
-                        </ModalFooter>
-                      </Modal> */}
                     </div>
                   </div>
                 </TabPane>

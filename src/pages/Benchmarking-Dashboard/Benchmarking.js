@@ -640,7 +640,7 @@ const BenchmarkingDashboard = () => {
       // toast.success("benchmark is successfully submitted");
     });
   };
-
+  document.title = "Benchmarking Dashboard| GreenMe";
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
@@ -805,7 +805,7 @@ const BenchmarkingDashboard = () => {
                     theadClass="table-light"
                     handleContactClick={handleContactClicks}
                     isSearchInput={true}
-                    SearchPlaceholder="Search for contact..."
+                    SearchPlaceholder="Search for title..."
                     setInfo={setInfo}
                   />
                 ) : (
