@@ -54,7 +54,6 @@ const Benchmarking = () => {
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
-    
 
     const arr = [];
     bench.questionnaire.forEach((element) => {
@@ -234,7 +233,7 @@ const Benchmarking = () => {
   const renderedQuestions =
     questions?.length >= 0 &&
     questions
-      .slice((currentPage - 1) * numPages, currentPage * numPages)
+      // .slice((currentPage - 1) * numPages, currentPage * numPages)
       .map((item, index) => {
         const activeButtonIndex = activeIndexes[index];
 
@@ -742,41 +741,40 @@ const Benchmarking = () => {
                       <div className="d-flex align-items-center ">
                         <div className="w-50">
                           <Card className=" border-none mt-3">
-                            {progressPercentage && (
-                              <CardBody className="p-0">
-                                <div className="d-flex align-items-center mb-2 mt-4">
-                                  <div className="flex-grow-1 d-flex justify-content-between w-100">
-                                    <h5 className="card-title mb-0">
-                                      <span>
-                                        {Math.floor(benchmark.completionLevel)}{" "}
-                                      </span>{" "}
-                                      Benchmark progress
-                                    </h5>
-                                    <h5>
-                                      {Math.ceil(
-                                        100 - benchmark.completionLevel
-                                      )}{" "}
-                                      to go
-                                    </h5>
-                                  </div>
+                            <CardBody className="p-0">
+                              <div className="d-flex align-items-center mb-2 mt-4">
+                                <div className="flex-grow-1 d-flex justify-content-between w-100">
+                                  <h5 className="card-title mb-0">
+                                    <span>
+                                      {Math.floor(benchmark.completionLevel)}%{" "}
+                                    </span>{" "}
+                                    done
+                                  </h5>
+                                  <h5>
+                                    {Math.ceil(100 - benchmark.completionLevel)}
+                                    % to go
+                                  </h5>
                                 </div>
-                                <div className="progress animated-progress custom-progress progress-label mt-3">
-                                  <div
-                                    className="progress-bar bg- "
-                                    role="progressbar"
-                                    style={{
-                                      width:
-                                        progressPercentage.toString() + "%",
-                                    }}
-                                    aria-valuenow={progressPercentage}
-                                    aria-valuemin="0"
-                                    aria-valuemax="100"
-                                  >
-                                    {/* <div className="label">40%</div> */}
-                                  </div>
+                              </div>
+                              <div className="progress animated-progress custom-progress progress-label mt-3">
+                                <div
+                                  className="progress-bar bg- "
+                                  role="progressbar"
+                                  style={{
+                                    width:
+                                      Math.floor(benchmark.completionLevel) +
+                                      "%",
+                                  }}
+                                  aria-valuenow={Math.floor(
+                                    benchmark.completionLevel
+                                  )}
+                                  aria-valuemin="0"
+                                  aria-valuemax="100"
+                                >
+                                  {/* <div className="label">40%</div> */}
                                 </div>
-                              </CardBody>
-                            )}
+                              </div>
+                            </CardBody>
                           </Card>
                         </div>
                       </div>
@@ -853,27 +851,45 @@ const Benchmarking = () => {
                           className="d-flex justify-content-start"
                           style={{ border: "none" }}
                         >
-                          Are you sure you want to submit your benchmark
+                          Benchmark submission confirmation
                         </ModalHeader>
                         <ModalBody
                           className="d-flex justify-content-center"
                           style={{ fontSize: "20px" }}
                         >
-                          <p>
-                            You have answered{" "}
-                            <span style={{ fontSize: "24px" }}>
-                              {location?.state?.isDataUpdated
-                                ? benchmark.user_resp?.length +
-                                  user_resp?.length
-                                : user_resp?.length}
-                            </span>{" "}
-                            questions out of{" "}
-                            <span style={{ fontSize: "24px" }}>
-                              {benchmark?.questionnaire?.length}
-                            </span>{" "}
-                            questions, and you will not be able to edit your
-                            response after submitting
-                          </p>
+                          {benchmark.user_resp?.length + user_resp?.length ===
+                          benchmark?.questionnaire?.length ? (
+                            <>
+                              <p>
+                                You have completed your benchmark. Upon
+                                submission, you will be redirected to the
+                                recommended actions that have been assigned to
+                                you.
+                              </p>
+                              <p>Are you sure you want to proceed?</p>
+                            </>
+                          ) : (
+                            <>
+                              <p>
+                                You have answered{" "}
+                                <span style={{ fontSize: "24px" }}>
+                                  {location?.state?.isDataUpdated
+                                    ? benchmark.user_resp?.length +
+                                      user_resp?.length
+                                    : user_resp?.length}
+                                </span>{" "}
+                                questions out of{" "}
+                                <span style={{ fontSize: "24px" }}>
+                                  {benchmark?.questionnaire?.length}
+                                </span>{" "}
+                                questions, you will not be able to edit your
+                                response after submitting. Upon submission, you
+                                will be redirected to the recommended actions
+                                that have been assigned to you.
+                              </p>
+                              <p>Are you sure you want to proceed?</p>
+                            </>
+                          )}
                         </ModalBody>
                         <ModalFooter className="d-flex justify-content-center">
                           <Button color="primary" onClick={handleSubmit}>

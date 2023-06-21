@@ -179,6 +179,7 @@ const RelationModal = ({
       if (info !== null) {
         const toastId = toast.loading("Updating Recommend Relation");
         updatedRecommendActionRelation(info._id, mappedData, toastId)
+
           .then((resp) => {
             console.log("resp", resp);
             let answers = "";
