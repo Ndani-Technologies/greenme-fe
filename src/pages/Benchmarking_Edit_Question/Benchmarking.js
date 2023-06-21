@@ -161,11 +161,18 @@ const Benchmarking = () => {
               return selct.answerOption === option.answerOption._id;
             })
         );
+
+        const removeTags = (html) => {
+          const tempElement = document.createElement("div");
+          tempElement.innerHTML = html;
+          return tempElement.textContent || tempElement.innerText || "";
+        };
+
         return (
           <div className={rowClassName} key={index}>
             <h5>Question {index + 1}</h5>
             <p className="w-75 fs-5">{item.title}</p>
-            <p>{item.description}</p>
+            <p>{removeTags(item.description)}</p>
             {benchmark.user_resp?.length > 0 ? (
               <div className="d-flex mt-4">
                 {item.answerOptions &&
