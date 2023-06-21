@@ -7,7 +7,9 @@ const ActionMain = ({ Title, Text, ra_title }) => {
         <div>
           <h1>{Title}</h1>
           <p>{Text}</p>
-          {ra_title && <div style={{ color: "white" }}>Title : {ra_title}</div>}
+          {ra_title && (
+            <div style={{ color: "white", fontSize: "20px" }}> {ra_title}</div>
+          )}
         </div>
         <div className="d-flex gap-3">
           <i class="ri-star-line" style={{ color: "white" }}></i>

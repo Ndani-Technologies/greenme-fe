@@ -25,11 +25,10 @@ export const updateRecommendedActionStep = async (id, data) => {
 
 export const getAllRecommendedRelation = async () => {
   let resp = await axios.get(`${process.env.REACT_APP_RA_URL}relationships`);
-  console.log("get action relation", resp);
   let answers = "";
   let data = resp.map((value) => {
     answers = "";
-    value.qid?.answerOptions.forEach((element) => {
+    value?.qid?.answerOptions.forEach((element) => {
       answers += element.answerOption.answerOption + ",";
     });
     return {
@@ -44,12 +43,17 @@ export const getAllRecommendedRelation = async () => {
       number_of_assignment: value?.number_of_assignment || 0,
     };
   });
-  console.log("get action relation2", data);
 
   return data;
 };
 export const createRecommendActionRelation = (data) => {
   return axios.post(`${process.env.REACT_APP_RA_URL}relationships`, data);
+};
+export const updatedRecommendActionRelation = (id, data) => {
+  return axios.patch(
+    `${process.env.REACT_APP_RA_URL}relationships/${id}`,
+    data
+  );
 };
 export const deleteRecommendActionRelation = (id) => {
   return axios.delete(`${process.env.REACT_APP_RA_URL}relationships/${id}`);

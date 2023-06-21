@@ -133,7 +133,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Category</span>
                   <div>
-                    <span className="span">{data.categoryId.title}</span>
+                    <span className="span">{data.categoryId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -142,7 +142,9 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Status</span>
                   <div>
-                    <span className="span">{data.status}</span>
+                    <span className="span">
+                      {data.isCompleted ? "Completed" : "Incompleted"}
+                    </span>
                   </div>
                 </div>
                 <div
@@ -151,7 +153,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Potential</span>
                   <div>
-                    <span className="span">{data.potentialId.title}</span>
+                    <span className="span">{data.potentialId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -160,7 +162,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Cost</span>
                   <div>
-                    <span className="span">{data.costId.title}</span>
+                    <span className="span">{data.costId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -169,7 +171,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Time scale</span>
                   <div>
-                    <span className="span">{data.timescaleId.title}</span>
+                    <span className="span">{data.timescaleId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -181,14 +183,13 @@ const ActionUserDetail = () => {
                     <span className="span">
                       {new Date(data.startdate).toLocaleDateString("en-US")}
                     </span>
-                    g
                   </div>
                 </div>
                 <div
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">Completed Date</span>
+                  <span className="fs-7">Completion Date</span>
                   <div>
                     <span className="span">
                       {new Date(data.enddate).toLocaleDateString("en-US")}

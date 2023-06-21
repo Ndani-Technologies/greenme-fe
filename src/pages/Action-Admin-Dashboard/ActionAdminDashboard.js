@@ -502,7 +502,15 @@ const ActionAdminDashboard = () => {
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name ">
+              <div
+                className="flex-grow-1 ms-2 name cursor-pointer"
+                onClick={() => {
+                  const contactData = contact.row.original;
+                  navigate("/actionadminuserdetail", {
+                    state: { data: contactData },
+                  });
+                }}
+              >
                 {contact.row.original.title}
                 {/* <span>
                       <i class="ri-arrow-right-line"></i>

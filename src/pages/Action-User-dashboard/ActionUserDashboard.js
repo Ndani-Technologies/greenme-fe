@@ -689,7 +689,15 @@ const ActionUserDashboard = () => {
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
+              <div
+                className="flex-grow-1 ms-2 name"
+                onClick={() => {
+                  const contactData = contact.row.original;
+                  navigate("/actionuserdetail", {
+                    state: { data: contactData },
+                  });
+                }}
+              >
                 {contact.row.original.title}
               </div>
             </div>
@@ -747,14 +755,7 @@ const ActionUserDashboard = () => {
                     >
                       View
                     </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                      }}
-                    >
-                      Edit
-                    </DropdownItem>
+
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
                       href="#"
@@ -763,17 +764,7 @@ const ActionUserDashboard = () => {
                         onClickDelete(contactData);
                       }}
                     >
-                      Delete
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item edit-item-btn"
-                      href="#"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
-                      }}
-                    >
-                      Active
+                      Reset
                     </DropdownItem>
 
                     <DropdownItem
@@ -784,7 +775,7 @@ const ActionUserDashboard = () => {
                         handleContactClick(contactData);
                       }}
                     >
-                      Manage
+                      Unassign
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>

@@ -147,8 +147,6 @@ const ActionUserDetail = () => {
             //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
             // }
             ra_title={data.title}
-
-
           />
           <div className="card-wrapper">
             <div className="card">
@@ -216,7 +214,7 @@ const ActionUserDetail = () => {
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">Completed Date</span>
+                  <span className="fs-7">Completion Date</span>
                   <div>
                     <span className="span">
                       {" "}
