@@ -203,8 +203,9 @@ const Benchmarking = () => {
                     }
 
                     return (
-                      <div className="buttons-container" key={btnIndex}>
+                      <div className="buttons-container " key={btnIndex}>
                         <button
+                          style={{ cursor: "default" }}
                           onClick={() => {
                             setSelectedAnswerIds((prevSelectedAnswerIds) => {
                               const questionId = item._id;
@@ -236,6 +237,7 @@ const Benchmarking = () => {
                             );
                           }}
                           className={buttonClass}
+                          disabled
                         >
                           {btn.answerOption.answerOption}
                         </button>
@@ -262,6 +264,7 @@ const Benchmarking = () => {
                     return (
                       <div className="buttons-container" key={btnIndex}>
                         <button
+                          style={{ cursor: "default" }}
                           onClick={() => {
                             setSelectedAnswerIds((prevSelectedAnswerIds) => {
                               const questionId = item._id;
@@ -292,6 +295,7 @@ const Benchmarking = () => {
                             );
                           }}
                           className={buttonClass}
+                          disabled
                         >
                           {btn.answerOption}
                         </button>
@@ -365,12 +369,12 @@ const Benchmarking = () => {
                               <div className="flex-grow-1 d-flex justify-content-between w-100">
                                 <h5 className="card-title mb-0">
                                   <span>
-                                    {Math.floor(benchmark.completionLevel)}{" "}
+                                    {Math.floor(benchmark.completionLevel)}%{" "}
                                   </span>{" "}
                                   Benchmark progress
                                 </h5>
                                 <h5>
-                                  {Math.ceil(100 - benchmark.completionLevel)}{" "}
+                                  {Math.ceil(100 - benchmark.completionLevel)}%{" "}
                                   to go
                                 </h5>
                               </div>

@@ -710,7 +710,10 @@ const Benchmarking = () => {
             ></p>
             {location?.state?.isDataUpdated &&
             benchmark.user_resp?.length > 0 ? (
-              <div className="d-flex mt-4">
+              <div
+                className="d-flex mt-4"
+                style={{ display: "flex", flexWrap: "wrap" }}
+              >
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     const isSelected =
@@ -760,7 +763,10 @@ const Benchmarking = () => {
                         (value) => value === btn.answerOption._id
                       );
                     return (
-                      <div key={btnIndex}>
+                      <div
+                        key={btnIndex}
+                        className={btnIndex >= 5 ? "mt-2" : ""}
+                      >
                         {/* {check ? (
                           <> */}
                         {
@@ -915,7 +921,7 @@ const Benchmarking = () => {
                                 //   btn.answerOption,
                                 //   item?._id,
                                 //   btn.answerOption._id,
-                                //   btn.includeExplanation,
+                                //   btn.includeExplanation,s
                                 //   btn.includeInputField,
                                 //   includeExplanation,
                                 //   includeExplanationValue
@@ -1029,7 +1035,10 @@ const Benchmarking = () => {
                   })}
               </div>
             ) : (
-              <div className="d-flex mt-4">
+              <div
+                className="d-flex mt-4"
+                style={{ display: "flex", flexWrap: "wrap" }}
+              >
                 {item.answerOptions &&
                   item.answerOptions.map((btn, btnIndex) => {
                     const isSelected =
@@ -1047,7 +1056,10 @@ const Benchmarking = () => {
                     const inputFieldValue =
                       includeInputField[`${item._id}_${btn._id}`] || ""; // Get the value for the input field
                     return (
-                      <div key={btnIndex}>
+                      <div
+                        key={btnIndex}
+                        className={btnIndex >= 5 ? "mt-2" : ""}
+                      >
                         {isSelected ? (
                           <>
                             {btn.includeExplanation && (

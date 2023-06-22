@@ -561,9 +561,17 @@ const BenchmarkingQA = () => {
   ]);
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [inputField, setInputField] = useState("");
+  const [categoryEdit, setCategoryEdit] = useState(false);
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    setInputField("");
+    setCategoryEdit(false);
+  };
 
   const handleAdd = (e) => {
     e.preventDefault();
+
     const newCategoryName = inputField;
     if (newCategoryName) {
       const newCategory = {
@@ -581,10 +589,14 @@ const BenchmarkingQA = () => {
       setInputField("");
     }
   };
+
   const handleEdit = (categoryId) => {
+    setCategoryEdit(true);
     setEditingCategoryId(categoryId);
     const category = allCategories.find((c) => c._id === categoryId);
     setInputField(category.titleEng);
+    const inputFieldElement = document.getElementById("firstName1"); // Replace "inputField" with the actual ID of your input field
+    inputFieldElement.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleUpdate = (e) => {
@@ -984,7 +996,9 @@ const BenchmarkingQA = () => {
                           {allCategories &&
                             allCategories.map((value, index) => {
                               return (
-                                <option key={index}>{value.titleEng}</option>
+                                <option key={index}>
+                                  {categoryEdit ? "" : value?.titleEng}
+                                </option>
                               );
                             })}
                         </Input>
@@ -1903,40 +1917,50 @@ const BenchmarkingQA = () => {
                               {allCategories &&
                                 allCategories.map((category, index) => (
                                   <Draggable
-                                    key={category._id}
-                                    draggableId={category._id.toString()}
+                                    key={category?._id}
+                                    draggableId={category?._id.toString()}
                                     index={index}
                                   >
                                     {(provided) => (
                                       <div
-                                        key={category._id}
+                                        key={category?._id}
                                         className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         ref={provided.innerRef}
+                                        style={{ cursor: "default " }}
                                       >
                                         <div className="d-flex align-items-center gap-2">
                                           <i
                                             className="ri-drag-move-2-line fs-24"
-                                            style={{ color: "#4A7BA4" }}
+                                            style={{
+                                              color: "#4A7BA4",
+                                              cursor: "grab",
+                                            }}
                                           ></i>
                                           <h5 className="m-0">
-                                            {category.titleEng}
+                                            {category?.titleEng}
                                           </h5>
                                         </div>
                                         <div className="d-flex gap-2">
                                           <i
                                             className="ri-pencil-fill fs-18"
-                                            style={{ color: "gray" }}
+                                            style={{
+                                              color: "gray",
+                                              cursor: "pointer",
+                                            }}
                                             onClick={() =>
-                                              handleEdit(category._id)
+                                              handleEdit(category?._id)
                                             }
                                           ></i>
                                           <i
                                             className="ri-delete-bin-2-line fs-18"
-                                            style={{ color: "red" }}
+                                            style={{
+                                              color: "red",
+                                              cursor: "pointer",
+                                            }}
                                             onClick={() =>
-                                              handleDelete(category._id)
+                                              handleDelete(category?._id)
                                             }
                                           ></i>
                                         </div>
@@ -1976,12 +2000,12 @@ const BenchmarkingQA = () => {
                                   <Input
                                     type="text"
                                     className="form-control mt-2"
-                                    id="firstName"
+                                    id="firstName1"
                                     placeholder="Edit Category name"
                                     onChange={(e) =>
                                       setInputField(e.target.value)
                                     }
-                                    value={inputField}
+                                    value={inputField || ""}
                                   />
                                 </div>
                               </Col>
@@ -1993,12 +2017,21 @@ const BenchmarkingQA = () => {
                                   >
                                     Update Category
                                   </Button>
-                                  <Button
-                                    color="primary"
-                                    onClick={(e) => handleAdd(e)}
-                                  >
-                                    Add new item to list
-                                  </Button>
+                                  {categoryEdit ? (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleCancel(e)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleAdd(e)}
+                                    >
+                                      Add new item to list
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             </div>

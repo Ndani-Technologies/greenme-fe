@@ -26,6 +26,7 @@ import {
   deleteContact as onDeleteContact,
   getAllAdminBenchmarks,
   deleteBenchmark,
+  removeBenchmarkUserResp,
 } from "../../slices/thunks";
 import avatar from "../../assets/images/avatar-6.jpg";
 import { isEmpty } from "lodash";
@@ -322,6 +323,21 @@ const BenchmarkAdmin = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
+
+  //RESET HANDLE
+
+  const [modal_center, setmodal_center] = useState(false);
+
+  const tog_center = () => {
+    setmodal_center(!modal_center);
+  };
+
+  const handleResetClick = (data) => {
+    setInfo(data);
+    tog_center();
+    handleResetConfirm(data);
+  };
+
   const [toBeDeleted, setToBeDeleted] = useState([]);
   // Column
   const columns = useMemo(
@@ -372,31 +388,6 @@ const BenchmarkAdmin = () => {
         id: "#",
       },
       {
-        Header: "Full Name",
-        accessor: "name",
-        filterable: false,
-      },
-      {
-        Header: "Organization",
-        accessor: "organization",
-        filterable: false,
-      },
-      {
-        Header: "Completion Level",
-        accessor: "completionLevel",
-        filterable: false,
-        Cell: (cellProps) => (
-          <>
-            <div className="d-flex align-items-center">
-              <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
-                {Math.floor(cellProps.row.original.completionLevel)}%
-              </div>
-            </div>
-          </>
-        ),
-      },
-      {
         Header: "Benchmark Title",
         accessor: "title",
         filterable: false,
@@ -420,6 +411,37 @@ const BenchmarkAdmin = () => {
         ),
       },
       {
+        Header: "Full Name",
+        accessor: "name",
+        filterable: false,
+      },
+      {
+        Header: "Organization",
+        accessor: "organization",
+        filterable: false,
+      },
+      {
+        Header: "Country",
+        accessor: "country",
+        filterable: false,
+      },
+      {
+        Header: "Completion Level",
+        accessor: "completionLevel",
+        filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div className="flex-grow-1 ms-2 name">
+                {Math.floor(cellProps.row.original.completionLevel)}%
+              </div>
+            </div>
+          </>
+        ),
+      },
+
+      {
         Header: "Status",
         accessor: "status",
       },
@@ -438,8 +460,11 @@ const BenchmarkAdmin = () => {
         accessor: "end_date",
         Cell: (contact) => (
           <>
-            {handleValidDate(contact.row.original.end_date)},{" "}
-            <small className="text-muted"></small>
+            {contact.row.original.end_date !== null &&
+            contact.row.original.end_date !== undefined
+              ? handleValidDate(contact.row.original.end_date)
+              : "In Progress"}
+            , <small className="text-muted"></small>
           </>
         ),
       },
@@ -467,7 +492,7 @@ const BenchmarkAdmin = () => {
                         setInfo(contactData);
                       }}
                     >
-                      View
+                      View Summary
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
@@ -477,7 +502,17 @@ const BenchmarkAdmin = () => {
                         setInfo(contactData);
                       }}
                     >
-                      Edit
+                      View Benchmark
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        console.log(contactData, "CD");
+                        // handleResetClick(contactData);
+                      }}
+                    >
+                      Reset
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
@@ -524,6 +559,21 @@ const BenchmarkAdmin = () => {
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
+
+  //RESET CONFIRMATION
+
+  const handleResetConfirm = (data) => {
+    const updatedData = {
+      user_resp: [],
+    };
+    removeBenchmarkUserResp(data._id, updatedData)
+      .then((res) => {
+        console.log(res);
+        toast.success("Reset Successfully");
+      })
+      .catch((err) => console.log(err));
+  };
+
   document.title = "Profile | GreenMe";
   return (
     <React.Fragment>
@@ -555,21 +605,17 @@ const BenchmarkAdmin = () => {
                         columns={columns}
                         data={benchmark || []}
                         isGlobalFilter={true}
-                        isAddUserList={false}
-                        // isFilterBenchmarkAction={true}
-                        isFilterA={true}
+                        isFilterAdminBenchmark={true}
                         setInfo={setInfo}
                         isFooter={true}
-                        isSearchInput={false}
                         customPageSize={8}
                         className="custom-header-css"
                         divClass="table-responsive table-card mb-0"
                         tableClass="align-middle table-nowrap"
                         theadClass="table-light"
                         handleContactClick={handleContactClicks}
-                        // isBenchmarkingQASearch={true}
-                        SearchPlaceholder="Search"
-                        isContactsFilter={false}
+                        isSearchInput={true}
+                        SearchPlaceholder="Search for title..."
                       />
                     ) : (
                       <Loader error={error} />
@@ -928,6 +974,35 @@ const BenchmarkAdmin = () => {
                   Delete
                 </Button>
                 <Button color="secondary" onClick={cancelDelete}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Modal>
+
+            <Modal
+              isOpen={modal_center}
+              toggle={() => {
+                tog_center();
+              }}
+              centered
+            >
+              <ModalHeader
+                className="d-flex justify-content-start"
+                style={{ border: "none" }}
+              >
+                Reset Benchmark
+              </ModalHeader>
+              <ModalBody
+                className="d-flex justify-content-center"
+                style={{ fontSize: "20px" }}
+              >
+                <p>Are you sure you want to Reset this benchmark</p>
+              </ModalBody>
+              <ModalFooter className="d-flex justify-content-center">
+                <Button color="primary" onClick={handleResetConfirm}>
+                  Confirm
+                </Button>
+                <Button color="secondary" onClick={() => tog_center()}>
                   Cancel
                 </Button>
               </ModalFooter>

@@ -32,6 +32,7 @@ import {
   AllQaFilters,
   FilterLeaderBoard,
   AdminRAFilters,
+  FilterAdminBenchmark,
 } from "../../Components/Common/GlobalSearchFilter";
 
 // Define a default UI for filtering
@@ -60,6 +61,7 @@ function GlobalFilter({
   isSearchInput,
   isFilterLeaderBoard,
   isFilterAdminRA,
+  isFilterAdminBenchmark,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -113,6 +115,13 @@ function GlobalFilter({
                   setGlobalFilter={setGlobalFilter}
                 />
               )}
+              {isFilterAdminBenchmark && (
+                <FilterAdminBenchmark
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
               {isFilterBenchmarkAction && (
                 <FilterBenchmarkAction
                   globalFilter={globalFilter}
@@ -134,6 +143,7 @@ function GlobalFilter({
               <FilterLeaderBoard selectedData={selectedData} />
             )}
             {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
+
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
@@ -180,6 +190,7 @@ const TableContainer = ({
   isSearchInput,
   isTaskListFilter,
   isFilterLeaderBoard,
+  isFilterAdminBenchmark,
   isAddOptions,
   isAddUserList,
   handleOrderClicks,
@@ -291,6 +302,7 @@ const TableContainer = ({
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
             isFilterLeaderBoard={isFilterLeaderBoard}
+            isFilterAdminBenchmark={isFilterAdminBenchmark}
           />
         )}
         {isAddOptions && (

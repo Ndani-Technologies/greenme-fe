@@ -14,13 +14,13 @@ export const getAllBenchmarks = async () => {
     let data;
     data = resp.map((value) => {
       return {
+        ...value,
         title: value?.title,
-        status: value?.status,
+        status: value?.status === "Active" ? "Complete" : "Incomplete",
         completion_level: Math.floor(value?.completionLevel),
         country: value?.country,
         start_date: value?.start_date,
         end_data: value?.end_date,
-        ...value,
       };
     });
     console.log("benchmark get all", data);
@@ -121,6 +121,17 @@ export const addBenchmark = async (benchmark) => {
 
 //ADMIN BENCHMARK SUMMARY
 
+export const removeBenchmarkUserResp = async (id, data) => {
+  try {
+    let resp = await axios.patch(
+      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
+    );
+    console.log(resp);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAdminSummaryBenchmarking = async (id) => {
   // let resp = await axios.get(
   //   `${process.env.REACT_APP_BENCHMARK_URL}/summaryByAdmin/${id}`
@@ -142,7 +153,8 @@ export const getUserSummaryBenchmarking = async (id) => {
   //   `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`
   // );
   let resp = await axios.get(
-    `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`
+    `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`,
+    data
   );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
 
@@ -335,7 +347,7 @@ export const getAllAdminBenchmarks = async () => {
         ...value,
         name: value.user.firstName + value.user.lastName,
         organization: value.user.organization,
-        status: value?.status ? "Complete" : "Incomplete",
+        status: value?.status === "Active" ? "Complete" : "Incomplete",
       };
     });
     console.log("admin benchmark get all", data);
