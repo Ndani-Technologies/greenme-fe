@@ -599,6 +599,7 @@ const AdminRAFilters = ({
     </div>
   );
 };
+
 const CustomersGlobalFilter = () => {
   const [customerStatus, setcustomerStatus] = useState(null);
 
