@@ -37,7 +37,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import { useNavigate } from "react-router-dom";
-
+const arr = [];
 const ActionUserDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -442,7 +442,7 @@ const ActionUserDashboard = () => {
         <ActionMain
           Title={"Recommended Actions"}
           Text={
-            "In this section, you will be presented with actions that you are recommended to implement based on your assessment. You can view the action and look at the steps that each action takes to implement. Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
+            "Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
           }
         />
         <Col xxl={12} className="mt-5">
@@ -456,6 +456,7 @@ const ActionUserDashboard = () => {
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
+                    isFilterAdminRA={true}
                     isFooter={true}
                     setInfo={() => {}}
                     customPageSize={8}
