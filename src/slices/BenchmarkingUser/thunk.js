@@ -75,7 +75,7 @@ export const updateUserResp = async (id, user_resp, navigate) => {
 
 export const updateUserRespSave = async (id, user_resp) => {
   console.log(user_resp, "SAVE RESPONSE IN THUNK");
-  console.log("benchmark  user_resp_update req", user_resp);
+  // console.log("benchmark  user_resp_update req", user_resp);
 
   let resp = await axios.patch(
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
@@ -163,7 +163,7 @@ export const getAllQA = async () => {
         response: value.response !== undefined ? value.response : 0,
         answered: value.whoHasAnswer?.totalUsers,
         category: value?.category?.titleEng,
-        status: value?.status ? "active" : "In-active",
+        status: value?.status ? "Complete" : "Incomplete",
         visibility: value?.visibility ? "True" : "False",
       };
     });
@@ -311,9 +311,11 @@ export const addQuestion = async (data, category) => {
         response: 0,
         answered: res.whoHasAnswer?.totalUsers,
         category: category,
-        status: res?.status ? "active" : "Inactive",
+        status: res?.status ? "Complete" : "Incomplete",
         visibility: res?.visibility ? "True" : "False",
       };
+      console.log(updatedResp, "updatedResp");
+      console.log(res, "res");
       return updatedResp;
     }
     return res;
@@ -333,6 +335,7 @@ export const getAllAdminBenchmarks = async () => {
         ...value,
         name: value.user.firstName + value.user.lastName,
         organization: value.user.organization,
+        status: value?.status ? "Complete" : "Incomplete",
       };
     });
     console.log("admin benchmark get all", data);

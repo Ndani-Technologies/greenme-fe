@@ -15,6 +15,7 @@ import Flatpickr from "react-flatpickr";
 import Select from "react-select";
 import { Box, Slider, Chip, OutlinedInput } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { getAllCategories } from "../../slices/thunks";
 
 const ProductsGlobalFilter = () => {
   return (
@@ -33,47 +34,119 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const AllQaFilters = () => {
+const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  const [categories, setCategories] = useState([]);
+  const [value, setValue] = React.useState(globalFilter);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  useEffect(() => {
+    getAllCategories().then((res) => {
+      const categoryOptions = res.map((category) => {
+        return {
+          value: category.titleEng,
+          label: category.titleEng,
+        };
+      });
+      setCategories(categoryOptions);
+    });
+  }, []);
+
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValue(checkbox.value);
+      switchInput.value = checkbox.value;
+      switchLabel.innerText = switchLabel.getAttribute("data-complete");
+    } else {
+      setValue("Incomplete");
+      switchInput.value = "Incomplete";
+      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
+    }
+
+    onChange(checkbox.checked ? "Complete" : "Incomplete");
+  };
+
+  const handleChangeCategory = (selectedOption) => {
+    setSelectedCategory(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
   return (
     <div className="d-flex align-items-center justify-content-between w-100 p-0">
-      <div className={"search-box me-2 mb-0 d-inline-block"}></div>
-
-      <div className="col-xxl-3 col-sm-4">
-        <Flatpickr
-          placeholder="Select date range"
-          className="form-control bg-light border-light"
-          options={{
-            mode: "range",
-            dateFormat: "d M, Y",
-          }}
-        />
-      </div>
-      <div className="flex-shrink-0">
-        <div className="form-check form-switch form-switch-right form-switch-md">
-          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
-            Status:
-          </Label>
-          <Input
-            className="form-check-input code-switcher"
-            type="checkbox"
-            value="active"
-            defaultValue="Incomplete"
+      <div
+        style={{ width: "30%", marginLeft: "50px" }}
+        className={"search-box me-2 mb-0 d-inline-block"}
+      ></div>
+      <div
+        className="d-flex align-items-center gap-1 flex-shrink-0"
+        style={{ width: "30%", marginLeft: "50px" }}
+      >
+        <span style={{ color: "black" }}>Filter by </span>
+        <div>
+          <Select
+            isClearable={true}
+            name="country"
+            value={selectedCategory}
+            placeholder="Category"
+            onChange={handleChangeCategory}
+            onBlur={() => handleChangeCategory(selectedCategory)}
+            options={categories}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected &&
+                  selected.map((value) => <Chip key={value} label={value} />)}
+              </Box>
+            )}
+            MenuProps={MenuProps}
           />
         </div>
       </div>
+
       <div
-        className="d-flex align-items-center gap-4"
-        style={{ width: "220px" }}
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "25%" }}
       >
-        <span style={{ color: "black" }}>Filter by </span>
-        <div
-          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
-          type="text"
-          style={{ width: "140px" }}
-        >
-          {" "}
-          <span style={{ color: "black" }}>Country</span>
-          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
+        <div>
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              defaultValue="Complete"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
+            />
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              defaultValue="Complete"
+              data-incomplete="Incomplete"
+              data-complete="Complete"
+            >
+              Complete
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -273,14 +346,14 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     if (checkbox.checked) {
       setValue(checkbox.value);
       switchInput.value = checkbox.value;
-      switchLabel.innerText = switchLabel.getAttribute("data-active");
+      switchLabel.innerText = switchLabel.getAttribute("data-complete");
     } else {
-      setValue("InActive");
-      switchInput.value = "InActive";
-      switchLabel.innerText = switchLabel.getAttribute("data-inActive");
+      setValue("Incomplete");
+      switchInput.value = "Incomplete";
+      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
     }
 
-    onChange(checkbox.checked ? "Active" : "InActive");
+    onChange(checkbox.checked ? "Complete" : "Incomplete");
   };
 
   const handleChangeCountry = (selectedOption) => {
@@ -290,7 +363,6 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
   };
 
   const handleDateChange = (selectedDates) => {
-    console.log(selectedDates, "SEL DA");
     const formattedDates = selectedDates.map((date) => {
       const year = String(date.getFullYear());
       const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -298,7 +370,6 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
 
       return [year, month, day].join(" && ").split(" && ");
     });
-    console.log(formattedDates, "formatted Dates");
     const year = formattedDates[0][0];
     const month = formattedDates[0][1];
     const day = formattedDates[0][2];
@@ -309,15 +380,26 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     setValue(concatenatedValue);
     onChange(concatenatedValue);
   };
+  const handleSelectedCard = (item) => {
+    setCard(item);
+    setModal(true);
+  };
+  const [values, setValues] = React.useState([8, 37]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  function valuetext(values) {
+    return `${values}°C`;
+  }
 
   return (
-    <div className="d-flex justify-content-between align-items-center w-100">
-      <div
-        className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "25%", marginLeft: "50px" }}
-      >
-        <span style={{ color: "black" }}>Filter by </span>
+    <div className="d-flex justify-content-around align-items-center w-100">
+      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
         <div>
+          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
+        </div>
+        <div className="w-75">
           <Select
             isClearable={true}
             name="country"
@@ -337,17 +419,14 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
         </div>
       </div>
 
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "30%" }}
-      >
+      <div className=" d-flex align-items-center gap-3 flex-shrink-0">
         <div>
           <div className="form-check form-switch form-switch-right form-switch-md">
             <input
               className="form-check-input code-switcher"
               type="checkbox"
               value={value}
-              defaultValue="Active"
+              defaultValue="Complete"
               id="form-grid-showcode"
               onChange={handleCheckboxChange}
               defaultChecked
@@ -355,14 +434,25 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
             <label
               htmlFor="form-grid-showcode"
               className="form-check-label switch-label"
-              defaultValue="Active"
-              data-inActive="InActive"
-              data-active="Active"
+              defaultValue="Complete"
+              data-incomplete="Incomplete"
+              data-complete="Complete"
             >
-              Active
+              Complete
             </label>
           </div>
         </div>
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={values}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
       </div>
 
       <div className="col-xxl-3 col-sm-4">
@@ -509,6 +599,7 @@ const AdminRAFilters = ({
     </div>
   );
 };
+
 const CustomersGlobalFilter = () => {
   const [customerStatus, setcustomerStatus] = useState(null);
 
