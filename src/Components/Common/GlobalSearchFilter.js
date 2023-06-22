@@ -15,7 +15,7 @@ import Flatpickr from "react-flatpickr";
 import Select from "react-select";
 import { Box, Slider, Chip, OutlinedInput } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { getAllCategories } from "../../slices/thunks";
+import { getAllAdminBenchmarks, getAllCategories } from "../../slices/thunks";
 
 const ProductsGlobalFilter = () => {
   return (
@@ -91,14 +91,10 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-between w-100 p-0">
-      <div
-        style={{ width: "30%", marginLeft: "50px" }}
-        className={"search-box me-2 mb-0 d-inline-block"}
-      ></div>
+    <div className="d-flex align-items-center w-100 p-0">
       <div
         className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "30%", marginLeft: "50px" }}
+        style={{ width: "50%", marginLeft: "50px" }}
       >
         <span style={{ color: "black" }}>Filter by </span>
         <div>
@@ -380,21 +376,9 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     setValue(concatenatedValue);
     onChange(concatenatedValue);
   };
-  const handleSelectedCard = (item) => {
-    setCard(item);
-    setModal(true);
-  };
-  const [values, setValues] = React.useState([8, 37]);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  function valuetext(values) {
-    return `${values}°C`;
-  }
 
   return (
-    <div className="d-flex justify-content-around align-items-center w-100">
+    <div className="d-flex w-100">
       <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
         <div>
           <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
@@ -403,6 +387,7 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
           <Select
             isClearable={true}
             name="country"
+            placeholder="country"
             value={selectedCountry}
             onChange={handleChangeCountry}
             onBlur={() => handleChangeCountry(selectedCountry)}
@@ -419,7 +404,10 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
         </div>
       </div>
 
-      <div className=" d-flex align-items-center gap-3 flex-shrink-0">
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "35%" }}
+      >
         <div>
           <div className="form-check form-switch form-switch-right form-switch-md">
             <input
@@ -443,16 +431,164 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
           </div>
         </div>
       </div>
-      <div>
-        <Box sx={{ width: 120 }}>
-          <Slider
-            getAriaLabel={() => "Temperature range"}
-            value={values}
-            onChange={handleChange}
-            valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
+
+      <div className="col-xxl-3 col-sm-4">
+        <Flatpickr
+          placeholder="Select date range"
+          className="form-control bg-light border-light"
+          options={{
+            mode: "range",
+            dateFormat: "d M, Y",
+            minDate: new Date().fp_incr(-365),
+          }}
+          value={selectedDates}
+          onChange={handleDateChange}
+        />
+      </div>
+    </div>
+  );
+};
+
+const FilterAdminBenchmark = ({
+  globalFilter,
+  setGlobalFilter,
+  useAsyncDebounce,
+}) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [organizationOptions, setOrganizationOptions] = useState([]);
+  console.log(organizationOptions, "OOP");
+  const [value, setValue] = React.useState(globalFilter);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  useEffect(() => {
+    getAllAdminBenchmarks()
+      .then((res) => {
+        const options = res.map((bench) => {
+          return {
+            value: bench.organization,
+            label: bench.organization,
+          };
+        });
+        const uniqueArray = Array.from(
+          options
+            .reduce((map, obj) => map.set(obj.value, obj), new Map())
+            .values()
+        );
+        setOrganizationOptions(uniqueArray);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValue(checkbox.value);
+      switchInput.value = checkbox.value;
+      switchLabel.innerText = switchLabel.getAttribute("data-complete");
+    } else {
+      setValue("Incomplete");
+      switchInput.value = "Incomplete";
+      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
+    }
+
+    onChange(checkbox.checked ? "Complete" : "Incomplete");
+  };
+
+  const handleChangeOrganization = (selectedOption) => {
+    setSelectedOrganization(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
+  const handleDateChange = (selectedDates) => {
+    const formattedDates = selectedDates.map((date) => {
+      const year = String(date.getFullYear());
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return [year, month, day].join(" && ").split(" && ");
+    });
+    const year = formattedDates[0][0];
+    const month = formattedDates[0][1];
+    const day = formattedDates[0][2];
+
+    const concatenatedValue = year && month && day;
+
+    setSelectedDates(selectedDates);
+    setValue(concatenatedValue);
+    onChange(concatenatedValue);
+  };
+
+  return (
+    <div className="d-flex w-100" style={{ marginLeft: "10%" }}>
+      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
+        <div>
+          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
+        </div>
+        <div className="w-75">
+          <Select
+            isClearable={true}
+            name="country"
+            placeholder="Organization"
+            value={selectedOrganization}
+            onChange={handleChangeOrganization}
+            onBlur={() => handleChangeOrganization(selectedOrganization)}
+            options={organizationOptions}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected &&
+                  selected.map((value) => <Chip key={value} label={value} />)}
+              </Box>
+            )}
+            MenuProps={MenuProps}
           />
-        </Box>
+        </div>
+      </div>
+
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "15%", marginLeft: "20%" }}
+      >
+        <div>
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              defaultValue="Complete"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
+            />
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              defaultValue="Complete"
+              data-incomplete="Incomplete"
+              data-complete="Complete"
+            >
+              Complete
+            </label>
+          </div>
+        </div>
       </div>
 
       <div className="col-xxl-3 col-sm-4">
@@ -1219,4 +1355,5 @@ export {
   AllQaFilters,
   FilterBenchmarkAction,
   FilterLeaderBoard,
+  FilterAdminBenchmark,
 };
