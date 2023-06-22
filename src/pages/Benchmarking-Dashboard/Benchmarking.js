@@ -321,7 +321,7 @@ const BenchmarkingDashboard = () => {
     const contactData = cellProps.row.original;
     setInfo(contactData);
     navigate(`/benchmarking/${cellProps.row.original._id}`, {
-      state: { isDataUpdated: true },
+      state: { isDataUpdated: true, menuItem: "/benchmarking" },
     });
   };
 

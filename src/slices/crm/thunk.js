@@ -160,6 +160,7 @@ export const getAllAdminActionsByUser = async () => {
     const res = await axios.get(
       `${process.env.REACT_APP_RA_URL}actionsteps/filter/ByUser/${obj._id}`
     );
+    console.log("resp all action", res);
     let data;
     data = res.map((value) => {
       return {
