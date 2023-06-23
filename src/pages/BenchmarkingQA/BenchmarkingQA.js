@@ -154,7 +154,7 @@ const BenchmarkingQA = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
-      description: Yup.string().required("Please Enter description"),
+      // description: Yup.string().required("Please Enter description"),
       category: Yup.string().required("Please select category"),
     }),
 
@@ -938,9 +938,6 @@ const BenchmarkingQA = () => {
                             class="form-control"
                             placeholder="Description"
                             id="description"
-                            validate={{
-                              required: { value: true },
-                            }}
                             onBlur={(event, editor) => {
                               const value = editor.getData();
                               const div = document.createElement("div");
@@ -959,21 +956,7 @@ const BenchmarkingQA = () => {
                               overflow: "hidden",
                               backgroundColor: "#dfdfdf",
                             }}
-                            invalid={
-                              validation.touched.description &&
-                              validation.errors.description
-                                ? true
-                                : false
-                            }
                           />
-                          {validation.touched.description &&
-                          validation.errors.description ? (
-                            <>
-                              <p style={{ color: "red" }}>
-                                {validation.errors.description}
-                              </p>
-                            </>
-                          ) : null}
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">

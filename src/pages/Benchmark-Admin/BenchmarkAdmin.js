@@ -332,12 +332,10 @@ const BenchmarkAdmin = () => {
     setmodal_center(!modal_center);
   };
 
-  const [resetData, setResetData] = useState(null);
+  // const [resetData, setResetData] = useState(null);
   const handleResetClick = (data) => {
     setInfo(data);
-    setResetData(data);
     tog_center();
-    // handleResetConfirm(data);
   };
 
   const [toBeDeleted, setToBeDeleted] = useState([]);
@@ -564,15 +562,20 @@ const BenchmarkAdmin = () => {
 
   //RESET CONFIRMATION
 
-  const handleResetConfirm = () => {
+  const handleResetConfirm = (info) => {
+    console.log(info, "IN CONFIRM");
     const updatedData = {
       user_resp: [],
+      completionLevel: 0,
     };
-    console.log(resetData, resetData._id, "INSIDE CONFIRM");
-    removeBenchmarkUserResp(resetData && resetData._id, updatedData)
+
+    removeBenchmarkUserResp(info._id, updatedData)
+      .then(() => getAllAdminBenchmarks())
       .then((res) => {
+        console.log(res, "RES");
         if (res !== undefined) {
           toast.success("Reset Successfully");
+          setBenchmark(res);
         } else {
           toast.error("Unable to Reset Data");
         }
@@ -621,8 +624,6 @@ const BenchmarkAdmin = () => {
                         tableClass="align-middle table-nowrap"
                         theadClass="table-light"
                         handleContactClick={handleContactClicks}
-                        isSearchInput={true}
-                        SearchPlaceholder="Search for title..."
                       />
                     ) : (
                       <Loader error={error} />
@@ -1006,7 +1007,10 @@ const BenchmarkAdmin = () => {
                 <p>Are you sure you want to Reset this benchmark</p>
               </ModalBody>
               <ModalFooter className="d-flex justify-content-center">
-                <Button color="primary" onClick={handleResetConfirm}>
+                <Button
+                  color="primary"
+                  onClick={() => handleResetConfirm(info)}
+                >
                   Confirm
                 </Button>
                 <Button color="secondary" onClick={() => tog_center()}>

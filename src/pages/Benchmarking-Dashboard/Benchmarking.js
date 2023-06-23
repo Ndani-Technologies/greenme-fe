@@ -33,6 +33,7 @@ import {
   addBenchmark,
   deleteBenchmark,
   updateUserResp,
+  removeBenchmarkUserResp,
 } from "../../slices/thunks";
 import { Box, Chip, OutlinedInput } from "@mui/material";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
@@ -324,6 +325,22 @@ const BenchmarkingDashboard = () => {
       state: { isDataUpdated: true, menuItem: "/benchmarking" },
     });
   };
+  const handleResetClick = (data) => {
+    setInfo(data);
+    console.log(data, "IN CLICK");
+  };
+  const handleResetConfirm = (info) => {
+    console.log(info, "IN CONFIRM");
+    const resetData = {
+      user_resp: [],
+    };
+    removeBenchmarkUserResp(info._id, resetData)
+      .then((res) => {
+        console.log(res);
+        toast.success("Reset Successfully");
+      })
+      .catch((err) => console.log(err));
+  };
 
   // Column
   const columns = useMemo(
@@ -467,6 +484,7 @@ const BenchmarkingDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         handleContactClick(contactData);
+                        handleResetClick(contactData);
                       }}
                     >
                       Reset
@@ -847,6 +865,37 @@ const BenchmarkingDashboard = () => {
                 </ModalBody>
                 <ModalFooter className="d-flex justify-content-center">
                   <Button color="primary" onClick={handleSubmit}>
+                    Confirm
+                  </Button>
+                  <Button color="secondary" onClick={() => tog_center()}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Modal>
+
+              <Modal
+                isOpen={modal_center}
+                toggle={() => {
+                  tog_center();
+                }}
+                centered
+              >
+                <ModalHeader
+                  className="d-flex justify-content-start"
+                  style={{ border: "none" }}
+                >
+                  Are you sure you want to Reset your benchmark?
+                </ModalHeader>
+                <ModalBody
+                  className="d-flex justify-content-center"
+                  style={{ fontSize: "20px" }}
+                >
+                  <p>
+                    This will remove all the user responses from this benchmark.
+                  </p>
+                </ModalBody>
+                <ModalFooter className="d-flex justify-content-center">
+                  <Button color="primary" onClick={handleResetConfirm}>
                     Confirm
                   </Button>
                   <Button color="secondary" onClick={() => tog_center()}>

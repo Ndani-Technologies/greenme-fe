@@ -94,7 +94,11 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     <div className="d-flex align-items-center w-100 p-0">
       <div
         className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "50%", marginLeft: "50px" }}
+        style={{ width: "40%" }}
+      ></div>
+      <div
+        className="d-flex align-items-center gap-1 flex-shrink-0"
+        style={{ width: "33%" }}
       >
         <span style={{ color: "black" }}>Filter by </span>
         <div>
@@ -140,7 +144,7 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
               data-incomplete="Incomplete"
               data-complete="Complete"
             >
-              Complete
+              Status
             </label>
           </div>
         </div>
@@ -406,7 +410,7 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
 
       <div
         className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "35%" }}
+        style={{ width: "35%", marginLeft: "35px" }}
       >
         <div>
           <div className="form-check form-switch form-switch-right form-switch-md">
@@ -426,7 +430,7 @@ const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
               data-incomplete="Incomplete"
               data-complete="Complete"
             >
-              Complete
+              Status
             </label>
           </div>
         </div>
@@ -537,8 +541,26 @@ const FilterAdminBenchmark = ({
   };
 
   return (
-    <div className="d-flex w-100" style={{ marginLeft: "10%" }}>
-      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
+    <div className="d-flex w-100">
+      <div
+        className={"search-box me-2 mb-0 d-inline-block"}
+        style={{ width: "100%" }}
+      >
+        <input
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          id="search-bar-0"
+          style={{ width: "70%" }}
+          type="text"
+          className="form-control search /"
+          placeholder="Search by Title"
+          value={value || ""}
+        />
+        <i className="bx bx-search-alt search-icon"></i>
+      </div>
+      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-10">
         <div>
           <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
         </div>
@@ -565,7 +587,11 @@ const FilterAdminBenchmark = ({
 
       <div
         className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "15%", marginLeft: "20%" }}
+        style={{ width: "29%" }}
+      ></div>
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "11%" }}
       >
         <div>
           <div className="form-check form-switch form-switch-right form-switch-md">
@@ -585,13 +611,16 @@ const FilterAdminBenchmark = ({
               data-incomplete="Incomplete"
               data-complete="Complete"
             >
-              Complete
+              Status
             </label>
           </div>
         </div>
       </div>
 
-      <div className="col-xxl-3 col-sm-4">
+      <div
+        className="col-xxl-3 col-sm-4 w-15"
+        style={{ width: "20%", marginRight: "20px" }}
+      >
         <Flatpickr
           placeholder="Select date range"
           className="form-control bg-light border-light"
