@@ -25,8 +25,6 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
   getAllAdminBenchmarks,
-  deleteBenchmark,
-  removeBenchmarkUserResp,
 } from "../../slices/thunks";
 import avatar from "../../assets/images/avatar-6.jpg";
 import { isEmpty } from "lodash";
@@ -295,26 +293,6 @@ const BenchmarkAdmin = () => {
     // checkall.checked = false;
   };
 
-  //HANDLE DELETE
-  const [deleteConfirmation, setDeleteConfirmation] = useState(false);
-  const [deleteId, setDeleteId] = useState();
-  const cancelDelete = () => {
-    setDeleteConfirmation(false);
-    setDeleteId(null);
-  };
-  const confirmDelete = () => {
-    deleteBenchmark(deleteId)
-      .then(() => {
-        setBenchmark((prev) => prev.filter((value) => value._id !== deleteId));
-        toast.success("Benchmark is deleted");
-        setDeleteConfirmation(false);
-      })
-      .catch(() => {
-        toast.error("Error in Benchmark deletion.");
-        setDeleteConfirmation(false);
-      });
-  };
-
   const deleteCheckbox = (id) => {
     const ele = document.querySelectorAll(".contactCheckBox:checked");
     console.log("id", id);
@@ -323,21 +301,6 @@ const BenchmarkAdmin = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
-
-  //RESET HANDLE
-
-  const [modal_center, setmodal_center] = useState(false);
-
-  const tog_center = () => {
-    setmodal_center(!modal_center);
-  };
-
-  // const [resetData, setResetData] = useState(null);
-  const handleResetClick = (data) => {
-    setInfo(data);
-    tog_center();
-  };
-
   const [toBeDeleted, setToBeDeleted] = useState([]);
   // Column
   const columns = useMemo(
@@ -388,6 +351,31 @@ const BenchmarkAdmin = () => {
         id: "#",
       },
       {
+        Header: "Full Name",
+        accessor: "name",
+        filterable: false,
+      },
+      {
+        Header: "Organization",
+        accessor: "organization",
+        filterable: false,
+      },
+      {
+        Header: "Completion Level",
+        accessor: "completionLevel",
+        filterable: false,
+        Cell: (cellProps) => (
+          <>
+            <div className="d-flex align-items-center">
+              <div className="flex-shrink-0"></div>
+              <div className="flex-grow-1 ms-2 name">
+                {Math.floor(cellProps.row.original.completionLevel)}
+              </div>
+            </div>
+          </>
+        ),
+      },
+      {
         Header: "Benchmark Title",
         accessor: "title",
         filterable: false,
@@ -396,7 +384,7 @@ const BenchmarkAdmin = () => {
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div
-                className="flex-grow-1 ms-2 name cursor-pointer"
+                className="flex-grow-1 ms-2 name"
                 onClick={(event) => {
                   event.preventDefault();
                   const contactData = cellProps.row.original;
@@ -410,37 +398,6 @@ const BenchmarkAdmin = () => {
           </>
         ),
       },
-      {
-        Header: "Full Name",
-        accessor: "name",
-        filterable: false,
-      },
-      {
-        Header: "Organization",
-        accessor: "organization",
-        filterable: false,
-      },
-      {
-        Header: "Country",
-        accessor: "country",
-        filterable: false,
-      },
-      {
-        Header: "Completion Level",
-        accessor: "completionLevel",
-        filterable: false,
-        Cell: (cellProps) => (
-          <>
-            <div className="d-flex align-items-center">
-              <div className="flex-shrink-0"></div>
-              <div className="flex-grow-1 ms-2 name">
-                {Math.floor(cellProps.row.original.completionLevel)}%
-              </div>
-            </div>
-          </>
-        ),
-      },
-
       {
         Header: "Status",
         accessor: "status",
@@ -460,11 +417,8 @@ const BenchmarkAdmin = () => {
         accessor: "end_date",
         Cell: (contact) => (
           <>
-            {contact.row.original.end_date !== null &&
-            contact.row.original.end_date !== undefined
-              ? handleValidDate(contact.row.original.end_date)
-              : "In Progress"}
-            , <small className="text-muted"></small>
+            {handleValidDate(contact.row.original.end_date)},{" "}
+            <small className="text-muted"></small>
           </>
         ),
       },
@@ -492,7 +446,7 @@ const BenchmarkAdmin = () => {
                         setInfo(contactData);
                       }}
                     >
-                      View Summary
+                      View
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item"
@@ -502,25 +456,14 @@ const BenchmarkAdmin = () => {
                         setInfo(contactData);
                       }}
                     >
-                      View Benchmark
-                    </DropdownItem>
-                    <DropdownItem
-                      className="dropdown-item"
-                      onClick={() => {
-                        const contactData = cellProps.row.original;
-                        console.log(contactData, "CD");
-                        handleResetClick(contactData);
-                      }}
-                    >
-                      Reset
+                      Edit
                     </DropdownItem>
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
                       href="#"
                       onClick={() => {
-                        setDeleteConfirmation(true);
-                        setDeleteId(cellProps.row.original._id);
-                        // onClickDelete(contactData);
+                        const contactData = cellProps.row.original;
+                        onClickDelete(contactData);
                       }}
                     >
                       Delete
@@ -559,31 +502,6 @@ const BenchmarkAdmin = () => {
   function tog_grid() {
     setmodal_grid(!modal_grid);
   }
-
-  //RESET CONFIRMATION
-
-  const handleResetConfirm = (info) => {
-    console.log(info, "IN CONFIRM");
-    const updatedData = {
-      user_resp: [],
-      completionLevel: 0,
-    };
-
-    removeBenchmarkUserResp(info._id, updatedData)
-      .then(() => getAllAdminBenchmarks())
-      .then((res) => {
-        console.log(res, "RES");
-        if (res !== undefined) {
-          toast.success("Reset Successfully");
-          setBenchmark(res);
-        } else {
-          toast.error("Unable to Reset Data");
-        }
-      })
-      .catch((err) => console.log(err));
-    setmodal_center(false);
-  };
-
   document.title = "Profile | GreenMe";
   return (
     <React.Fragment>
@@ -594,13 +512,11 @@ const BenchmarkAdmin = () => {
             Benchmarking <span className="fs-5">Admin</span>
           </h1>
           <p style={{ color: "#BEC887" }}>
-            In this section you will find a self-assessment questionnaire and,
-            once completed, you can view your results against your peers. You
-            have the option to complete the assessment at once or save your
-            progress and return later. We do encourage you to complete the
-            assessment but if you don’t have the answer to questions, you can
-            skip them. Once you are done with the assessment, press submit and
-            you will receive a benchmark report.
+            This is a page where users can take self-assessment questionnaires
+            and view their results. It will feature the ability for users to
+            save progress and return to the assessment later as well as an
+            option to skip or go back to previous questions. Also the option for
+            the user to view their score and their benchmark results
           </p>
         </div>
         <Col xxl={12}>
@@ -615,15 +531,20 @@ const BenchmarkAdmin = () => {
                         columns={columns}
                         data={benchmark || []}
                         isGlobalFilter={true}
-                        isFilterAdminBenchmark={true}
+                        isAddUserList={false}
+                        isFilterBenchmarkAction={true}
                         setInfo={setInfo}
                         isFooter={true}
+                        isSearchInput={false}
                         customPageSize={8}
                         className="custom-header-css"
                         divClass="table-responsive table-card mb-0"
                         tableClass="align-middle table-nowrap"
                         theadClass="table-light"
                         handleContactClick={handleContactClicks}
+                        // isBenchmarkingQASearch={true}
+                        SearchPlaceholder="Search"
+                        isContactsFilter={false}
                       />
                     ) : (
                       <Loader error={error} />
@@ -972,52 +893,87 @@ const BenchmarkAdmin = () => {
                 </CardBody>
               </Card>
             </Col>
-            <Modal isOpen={deleteConfirmation} toggle={cancelDelete}>
-              <ModalHeader toggle={cancelDelete}>Confirm Deletion</ModalHeader>
-              <ModalBody>
-                Are you sure you want to delete this Benhmark?
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" onClick={confirmDelete}>
-                  Delete
-                </Button>
-                <Button color="secondary" onClick={cancelDelete}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
 
-            <Modal
-              isOpen={modal_center}
-              toggle={() => {
-                tog_center();
-              }}
-              centered
-            >
-              <ModalHeader
-                className="d-flex justify-content-start"
-                style={{ border: "none" }}
-              >
-                Reset Benchmark
-              </ModalHeader>
-              <ModalBody
-                className="d-flex justify-content-center"
-                style={{ fontSize: "20px" }}
-              >
-                <p>Are you sure you want to Reset this benchmark</p>
-              </ModalBody>
-              <ModalFooter className="d-flex justify-content-center">
-                <Button
-                  color="primary"
-                  onClick={() => handleResetConfirm(info)}
-                >
-                  Confirm
-                </Button>
-                <Button color="secondary" onClick={() => tog_center()}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Modal>
+            {/* <Col xxl={3}>
+              <Card id="contact-view-detail">
+                <CardBody className="text-center">
+                  <div className="position-relative d-inline-block">
+                    <img
+                      src={avatar}
+                      alt=""
+                      className="avatar-lg rounded-circle img-thumbnail"
+                    />
+                    <span className="contact-active position-absolute rounded-circle bg-success">
+                      <span className="visually-hidden"></span>
+                    </span>
+                  </div>
+                  <h5 className="mt-4 mb-1">{info.name || "Tonya Noble"}</h5>
+                  <p className="text-muted">
+                    {info.company || "FleetMGT Co. Z"}
+                  </p>
+                </CardBody>
+                <CardBody>
+                  <div className="progress animated-progress custom-progress progress-label mt-4">
+                    <div
+                      className="progress-bar bg- "
+                      role="progressbar"
+                      style={{ width: "50%" }}
+                      aria-valuenow="30"
+                      aria-valuemin="0"
+                      aria-valuemax="100"
+                    >
+                      <div className="label">50%</div>
+                    </div>
+                  </div>
+                  <div className="d-flex align-items-center mb-4 mt-3">
+                    <div className="flex-grow-1">
+                      <h5 className="card-title mb-">Benchmark Completion</h5>
+                    </div>
+                  </div>
+                </CardBody>
+                <CardBody className="d-flex gap-2 ">
+                  <span className="mt-2">Chat</span>
+                  <span className="avatar-xs">
+                    <Link
+                      to="#"
+                      className="avatar-title bg-soft-warning text-warning fs-15 rounded"
+                    >
+                      <i className="ri-question-answer-line"></i>
+                    </Link>
+                  </span>
+                </CardBody>
+                <CardBody>
+                  <div className="table-responsive table-card">
+                    <Table className="table table-borderless mb-0">
+                      <tbody>
+                        <tr>
+                          <td className="fw-medium">Orgnaisation</td>
+                          <td>FleetMGT Co. A</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Benchmark title</td>
+                          <td>Country Fleet Manager</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Country</td>
+                          <td>Kenya</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Leaderboard</td>
+                          <td>{info.lead_score || "154 points"}</td>
+                        </tr>
+                        <tr>
+                          <td className="fw-medium">Last Seen</td>
+                          <td>
+                            15 Dec, 2021<span> 08:58AM</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </div>
+                </CardBody>
+              </Card>
+            </Col> */}
           </Row>
         </Col>
       </div>

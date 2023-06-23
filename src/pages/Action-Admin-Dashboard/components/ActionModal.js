@@ -288,7 +288,7 @@ const ActionModal = ({
   };
 
   const handleAddActions = () => {
-    if (actionTitle !== "" && actionScore) {
+    if (actionTitle !== "" && actionDescription !== "" && actionScore) {
       const editor = editorRef.current.editor;
       const mappedData = {
         title: actionTitle,
@@ -324,7 +324,7 @@ const ActionModal = ({
       setActionDescription("");
       setActionScore("");
     } else {
-      toast.error("Title or Score can not be null.");
+      toast.error("Title, Description or Score can not be null.");
     }
   };
   const handleEdit = (data) => {
@@ -796,7 +796,16 @@ const ActionModal = ({
                                     backgroundColor: "#dfdfdf",
                                   }}
                                 />
-
+                                {/* <Input
+                                  type="text"
+                                  className="form-control"
+                                  id="firstName"
+                                  placeholder="Discription"
+                                  value={actionDescription}
+                                  onChange={(e) =>
+                                    setActionDescription(e.target.value)
+                                  }
+                                /> */}
                                 <div className=" d-flex gap-1 text-success">
                                   <div>
                                     <i class="ri-error-warning-line"></i>
@@ -1079,12 +1088,11 @@ const ActionModal = ({
               </Col>
               <Col lg={12} className="d-flex  gap-2 mt-2 ">
                 <Col lg={6} className="p-0 ">
-                  <p style={{ marginBottom: "0rem" }}>Category</p>
                   <Col
                     lg={6}
                     onClick={() => isOpen(!open)}
                     disable
-                    className="form-select cursor-pointer "
+                    className="form-select "
                   >
                     {categorySelectTitle?.title || "Select a Category"}
                   </Col>
@@ -1124,12 +1132,11 @@ const ActionModal = ({
                   </div>
                 </Col>
                 <Col lg={6} className="p-0 ">
-                  <p style={{ marginBottom: "0rem" }}>Cost</p>
                   <Col
                     lg={6}
                     onClick={() => setIsCost(!isCost)}
                     disable
-                    className="form-select cursor-pointer"
+                    className="form-select "
                   >
                     {costSelectTitle?.title || "Select a Cost"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
@@ -1172,12 +1179,11 @@ const ActionModal = ({
               </Col>
               <Col className="d-flex gap-2 mt-2">
                 <Col lg={6} className="p-0 ">
-                  <p style={{ marginBottom: "0rem" }}>Scale</p>
                   <Col
                     lg={6}
                     onClick={() => setIsScale(!isScale)}
                     disable
-                    className="form-select cursor-pointer"
+                    className="form-select "
                   >
                     {scaleSelectTitle?.title || "Select a Scale"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
@@ -1218,12 +1224,11 @@ const ActionModal = ({
                   </div>
                 </Col>
                 <Col lg={6} className="p-0 ">
-                  <p style={{ marginBottom: "0rem" }}>Potential</p>
                   <Col
                     lg={6}
                     onClick={() => setIsPotential(!isPotential)}
                     disable
-                    className="form-select cursor-pointer"
+                    className="form-select "
                   >
                     {potentialSelectTitle?.title || "Select a Potential"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>

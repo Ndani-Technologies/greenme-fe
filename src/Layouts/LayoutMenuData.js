@@ -52,8 +52,6 @@ const Navdata = () => {
   const [isProfile, setIsProfile] = useState(false);
   const [isLanding, setIsLanding] = useState(false);
 
-  const [isLeaderBoard, setIsLeaderBoard] = useState(false);
-
   // Charts
   const [isApex, setIsApex] = useState(false);
 
@@ -241,8 +239,8 @@ const Navdata = () => {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "/",
-      disable: true,
+      link: "/UserCollaboration",
+      disable: false,
     },
     {
       id: 6,
@@ -251,39 +249,12 @@ const Navdata = () => {
       link: "/",
       disable: true,
     },
-    // {
-    //   id: 7,
-    //   icon: "ri-rocket-line",
-    //   label: "Leaderboard",
-    //   link: "/leaderboard",
-    //   disable: false,
-    // },
     {
-      id: "Leaderboard",
-      icon: "ri-pencil-ruler-2-line",
-      label: "Leader Board",
-      link: "/#",
-      click: function (e) {
-        e.preventDefault();
-        setIsLeaderBoard(!isLeaderBoard);
-        setIscurrentState("LeaderBoard");
-        updateIconSidebar(e);
-      },
-      stateVariables: isLeaderBoard,
-      subItems: [
-        {
-          id: 1,
-          label: "User Leaderboard",
-          link: "/leaderboard",
-          parentId: "Recommended Actions",
-        },
-        {
-          id: 2,
-          label: "Dashboard",
-          link: "/leaderboardtable",
-          parentId: "Recommended Actions",
-        },
-      ],
+      id: 7,
+      icon: "ri-rocket-line",
+      label: "Leaderboard",
+      link: "/",
+      disable: true,
     },
     {
       id: 8,
@@ -362,21 +333,19 @@ const Navdata = () => {
         },
       ],
     },
-
-    {
-      id: 4,
-      icon: "ri-stack-line",
-      label: "Document sharing",
-      link: "/",
-      disable: true,
-    },
-
     {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
       link: "/UserCollaboration",
       disable: false,
+    },
+    {
+      id: 4,
+      icon: "ri-stack-line",
+      label: "Document sharing",
+      link: "/",
+      disable: true,
     },
     {
       id: 6,
@@ -386,31 +355,11 @@ const Navdata = () => {
       disable: true,
     },
     {
-      id: "Leaderboard",
-      icon: "ri-pencil-ruler-2-line",
-      label: "Leader Board",
-      link: "/#",
-      click: function (e) {
-        e.preventDefault();
-        setIsLeaderBoard(!isLeaderBoard);
-        setIscurrentState("LeaderBoard");
-        updateIconSidebar(e);
-      },
-      stateVariables: isLeaderBoard,
-      subItems: [
-        {
-          id: 1,
-          label: "User Leaderboard",
-          link: "/leaderboard",
-          parentId: "Recommended Actions",
-        },
-        {
-          id: 2,
-          label: "Dashboard",
-          link: "/leaderboardtable",
-          parentId: "Recommended Actions",
-        },
-      ],
+      id: 7,
+      icon: "ri-rocket-line",
+      label: "Leaderboard",
+      link: "/",
+      disable: true,
     },
     {
       id: 8,

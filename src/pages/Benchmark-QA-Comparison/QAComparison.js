@@ -25,14 +25,14 @@ const QAComparison = () => {
       <div className="page-content overflow-auto ">
         <div className="Main  mx-n4 mt-n4 w-100 Comparison">
           <h1>Benchmarking Q&A Comparison</h1>
-          {/* <p>
+          <p>
             Lorem ipsum dolor sit amet consectetur. Aliquam placerat enim
             tristique nulla egestas vulputate quis. Eget id erat eget dignissim
             nisl nam magna elementum turpis. Odio nisi ultrices malesuada non
             mauris id quisque. Tempus et in facilisis leo. Et faucibus tristique
             amet suscipit pellentesque nunc. Ut tortor massa quam cras neque id
             neque vitae. Vitae interdum molestie sit egestas senectus.
-          </p> */}
+          </p>
         </div>
         <Col className="table-responsive table-card mt-5 w-100 ">
           <table className="table align-middle table-nowrap table-striped-columns mb-0">

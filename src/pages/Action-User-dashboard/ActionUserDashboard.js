@@ -37,7 +37,386 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import { useNavigate } from "react-router-dom";
-const arr = [];
+const arr = [
+  {
+    visibilty: true,
+    steps: [],
+    _id: "6479c485b49314b09519f3e3",
+    title: "Action steps title",
+    description: "this is the description of actionstep",
+    isCompleted: false,
+    points: 25,
+    score: 10,
+    feedback: "This is feedback field",
+    assignedTo: [],
+    organization: "org-02",
+    country: "Pakistan",
+    categoryId: {
+      _id: "6479b8fa92f3fa9c5b1d6f93",
+      language: "English",
+      title: "Shift",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d492f3fa9c5b1d6f1c",
+      language: "English",
+      title: "Cheap",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479961692f3fa9c5b1d6f2c",
+      language: "English",
+      title: "Risk",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479baee92f3fa9c5b1d6fb7",
+      language: "English",
+      title: "Short term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986092f3fa9c5b1d6f4b",
+      language: "English",
+      title: "Low",
+      __v: 0,
+    },
+    startdate: "2023-06-02T10:29:25.914Z",
+    createdAt: "2023-06-02T10:29:25.940Z",
+    updatedAt: "2023-06-02T10:29:25.940Z",
+    __v: 0,
+  },
+  {
+    visibilty: true,
+    steps: [],
+    _id: "6479c4a1b49314b09519f3e5",
+    title: "Action steps title 2nd",
+    description: "this is the description of actionstep",
+    isCompleted: false,
+    points: 25,
+    score: 10,
+    feedback: "This is feedback field",
+    assignedTo: [],
+    organization: "org-02",
+    country: "Pakistan",
+    categoryId: {
+      _id: "6479b8fa92f3fa9c5b1d6f93",
+      language: "English",
+      title: "Shift",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d492f3fa9c5b1d6f1c",
+      language: "English",
+      title: "Cheap",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479961692f3fa9c5b1d6f2c",
+      language: "English",
+      title: "Risk",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479baee92f3fa9c5b1d6fb7",
+      language: "English",
+      title: "Short term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986092f3fa9c5b1d6f4b",
+      language: "English",
+      title: "Low",
+      __v: 0,
+    },
+    startdate: "2023-06-02T10:29:53.941Z",
+    createdAt: "2023-06-02T10:29:53.943Z",
+    updatedAt: "2023-06-02T10:29:53.943Z",
+    __v: 0,
+  },
+  {
+    visibilty: true,
+    steps: [],
+    _id: "6479c50bb49314b09519f3ee",
+    title: "Action steps title 3nd",
+    description: "this is the description of actionstep",
+    isCompleted: false,
+    points: 25,
+    score: 10,
+    feedback: "This is feedback field",
+    assignedTo: [],
+    organization: "org-02",
+    country: "Pakistan",
+    categoryId: {
+      _id: "6479b90092f3fa9c5b1d6f95",
+      language: "English",
+      title: "Improve",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d492f3fa9c5b1d6f1c",
+      language: "English",
+      title: "Cheap",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479961692f3fa9c5b1d6f2c",
+      language: "English",
+      title: "Risk",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479baee92f3fa9c5b1d6fb7",
+      language: "English",
+      title: "Short term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986092f3fa9c5b1d6f4b",
+      language: "English",
+      title: "Low",
+      __v: 0,
+    },
+    startdate: "2023-06-02T10:31:39.184Z",
+    createdAt: "2023-06-02T10:31:39.188Z",
+    updatedAt: "2023-06-02T10:31:39.188Z",
+    __v: 0,
+  },
+  {
+    _id: "647d062c5e7d88e006a33f43",
+    title: "RA-1",
+    description: "description of RA-1",
+    status: true,
+    visibilty: true,
+    steps: [],
+    isCompleted: false,
+    assignedTo: [],
+    categoryId: {
+      _id: "6479b8f492f3fa9c5b1d6f91",
+      language: "English",
+      title: "Avoid",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d092f3fa9c5b1d6f1a",
+      language: "English",
+      title: "Expensive",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479961692f3fa9c5b1d6f2c",
+      language: "English",
+      title: "Risk",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479baee92f3fa9c5b1d6fb7",
+      language: "English",
+      title: "Short term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986092f3fa9c5b1d6f4b",
+      language: "English",
+      title: "Low",
+      __v: 0,
+    },
+    startdate: "2023-06-04T21:46:20.763Z",
+    createdAt: "2023-06-04T21:46:20.774Z",
+    updatedAt: "2023-06-04T21:46:20.774Z",
+    __v: 0,
+  },
+  {
+    _id: "647d0a24ed4fb779d6e6657e",
+    title: "RA-2",
+    description: "RA-2",
+    status: true,
+    visibilty: true,
+    steps: [],
+    isCompleted: false,
+    assignedTo: [],
+    categoryId: {
+      _id: "6479b8f492f3fa9c5b1d6f91",
+      language: "English",
+      title: "Avoid",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d492f3fa9c5b1d6f1c",
+      language: "English",
+      title: "Cheap",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479961b92f3fa9c5b1d6f2e",
+      language: "English",
+      title: "Risk2",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479baee92f3fa9c5b1d6fb7",
+      language: "English",
+      title: "Short term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986692f3fa9c5b1d6f4d",
+      language: "English",
+      title: "Medium",
+      __v: 0,
+    },
+    startdate: "2023-06-04T22:03:16.948Z",
+    createdAt: "2023-06-04T22:03:16.967Z",
+    updatedAt: "2023-06-04T22:03:16.967Z",
+    __v: 0,
+  },
+  {
+    _id: "647d9d838d243725a446a76f",
+    title: "Optimize your fleet’s routing",
+    description:
+      "All journeys should include a route plan. \nA good route plan identifies hazards along a route and guides\ndrivers on how to negotiate each hazard. They also include \ninformation about safe stopping/rest areas, and details of \nemergency service support along the route, including \nemergency contact numbers (e.g. police, medical, WHO \ncontacts, etc.). To assist in route planning, the Organization \nneeds to identify preferred routes and alternative routes in \nthe event of an emergency. It is equally important to identify\nthose routes and areas that should be avoided. It is essential \nto brief drivers before each journey, whether new to the \nroute or not, so that any changes or new hazards are \nrecognized before they commence their journey. It is \nparticularly important for route planning to be carried out in \nhigher-risk countries and areas. (who handbook 2019)",
+    status: true,
+    visibilty: true,
+    steps: [],
+    isCompleted: false,
+    assignedTo: [],
+    categoryId: {
+      _id: "6479b8f492f3fa9c5b1d6f91",
+      language: "English",
+      title: "Avoid",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d492f3fa9c5b1d6f1c",
+      language: "English",
+      title: "Cheap",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479b95192f3fa9c5b1d6f9e",
+      language: "English",
+      title: "Low",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479bb1c92f3fa9c5b1d6fb9",
+      language: "English",
+      title: "Medium term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986692f3fa9c5b1d6f4d",
+      language: "English",
+      title: "Medium",
+      __v: 0,
+    },
+    startdate: "2023-06-05T08:32:03.722Z",
+    createdAt: "2023-06-05T08:32:03.723Z",
+    updatedAt: "2023-06-05T08:32:03.723Z",
+    __v: 0,
+  },
+  {
+    _id: "647dae0f8d243725a446a882",
+    title: "Yes",
+    description: "yes",
+    status: true,
+    visibilty: true,
+    steps: [
+      {
+        _id: "647d9b668d243725a446a756",
+        title:
+          "Identify the factors/constraints that impact your  daily operations",
+        description:
+          "Identify the factors/constraints that impact your  daily operations",
+        score: 10,
+        createdAt: "2023-06-05T08:23:02.223Z",
+        updatedAt: "2023-06-05T08:23:02.223Z",
+        __v: 0,
+      },
+      {
+        _id: "647d9b888d243725a446a758",
+        title: "Review current and past transport demand",
+        description: "Review current and past transport demand",
+        score: 10,
+        createdAt: "2023-06-05T08:23:36.614Z",
+        updatedAt: "2023-06-05T08:23:36.614Z",
+        __v: 0,
+      },
+      {
+        _id: "647d9bba8d243725a446a75a",
+        title: "Visualize and set routes",
+        description: "Visualize and set routes",
+        score: 10,
+        createdAt: "2023-06-05T08:24:26.394Z",
+        updatedAt: "2023-06-05T08:24:26.394Z",
+        __v: 0,
+      },
+      {
+        _id: "647d9bd88d243725a446a75c",
+        title: "Assign tasks/routes across your entire fleet",
+        description: "Assign tasks/routes across your entire fleet",
+        score: 30,
+        createdAt: "2023-06-05T08:24:56.923Z",
+        updatedAt: "2023-06-05T08:24:56.923Z",
+        __v: 0,
+      },
+      {
+        _id: "647d9bec8d243725a446a75e",
+        title: "Involve drivers/ passengers",
+        description: "Involve drivers/ passengers",
+        score: 30,
+        createdAt: "2023-06-05T08:25:16.336Z",
+        updatedAt: "2023-06-05T08:25:16.336Z",
+        __v: 0,
+      },
+      {
+        _id: "647d9bfb8d243725a446a760",
+        title: "Review",
+        description: "Review ",
+        score: 100,
+        createdAt: "2023-06-05T08:25:31.810Z",
+        updatedAt: "2023-06-05T11:43:00.485Z",
+        __v: 0,
+      },
+    ],
+    isCompleted: false,
+    assignedTo: [],
+    categoryId: {
+      _id: "6479b8fa92f3fa9c5b1d6f93",
+      language: "English",
+      title: "Shift",
+      __v: 0,
+    },
+    costId: {
+      _id: "647995d492f3fa9c5b1d6f1c",
+      language: "English",
+      title: "Cheap",
+      __v: 0,
+    },
+    potentialId: {
+      _id: "6479961b92f3fa9c5b1d6f2e",
+      language: "English",
+      title: "Risk2",
+      __v: 0,
+    },
+    timescaleId: {
+      _id: "6479bb1c92f3fa9c5b1d6fb9",
+      language: "English",
+      title: "Medium term",
+      __v: 0,
+    },
+    answerRelationshipId: {
+      _id: "6479986692f3fa9c5b1d6f4d",
+      language: "English",
+      title: "Medium",
+      __v: 0,
+    },
+    startdate: "2023-06-05T09:42:39.850Z",
+    createdAt: "2023-06-05T09:42:39.851Z",
+    updatedAt: "2023-06-05T11:43:44.357Z",
+    __v: 0,
+  },
+];
 const ActionUserDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -308,20 +687,9 @@ const ActionUserDashboard = () => {
         filterable: false,
         Cell: (contact) => (
           <>
-            <div
-              className="d-flex align-items-center"
-              style={{ cursor: "pointer" }}
-            >
+            <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
-              <div
-                className="flex-grow-1 ms-2 name"
-                onClick={() => {
-                  const contactData = contact.row.original;
-                  navigate("/actionuserdetail", {
-                    state: { data: contactData },
-                  });
-                }}
-              >
+              <div className="flex-grow-1 ms-2 name">
                 {contact.row.original.title}
               </div>
             </div>
@@ -338,7 +706,7 @@ const ActionUserDashboard = () => {
         accessor: "stat",
       },
       {
-        Header: "Reduction Potential",
+        Header: "Potential",
         accessor: "potential",
         filterable: false,
       },
@@ -379,7 +747,14 @@ const ActionUserDashboard = () => {
                     >
                       View
                     </DropdownItem>
-
+                    <DropdownItem
+                      className="dropdown-item"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                      }}
+                    >
+                      Edit
+                    </DropdownItem>
                     <DropdownItem
                       className="dropdown-item remove-item-btn"
                       href="#"
@@ -388,7 +763,17 @@ const ActionUserDashboard = () => {
                         onClickDelete(contactData);
                       }}
                     >
-                      Reset
+                      Delete
+                    </DropdownItem>
+                    <DropdownItem
+                      className="dropdown-item edit-item-btn"
+                      href="#"
+                      onClick={() => {
+                        const contactData = cellProps.row.original;
+                        handleContactClick(contactData);
+                      }}
+                    >
+                      Active
                     </DropdownItem>
 
                     <DropdownItem
@@ -399,7 +784,7 @@ const ActionUserDashboard = () => {
                         handleContactClick(contactData);
                       }}
                     >
-                      Unassign
+                      Manage
                     </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
@@ -435,14 +820,15 @@ const ActionUserDashboard = () => {
     const assigned = tags.map((item) => item.value);
     setAssignTag(assigned);
   }
-  document.title = "Recommended Actions - Assigned | GreenMe";
+
+  document.title = "Recomended Action Dashboard | GreenMe";
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
         <ActionMain
           Title={"Recommended Actions"}
           Text={
-            "Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
+            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
           }
         />
         <Col xxl={12} className="mt-5">
@@ -456,7 +842,6 @@ const ActionUserDashboard = () => {
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
-                    isFilterAdminRA={true}
                     isFooter={true}
                     setInfo={() => {}}
                     customPageSize={8}
