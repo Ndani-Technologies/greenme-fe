@@ -104,6 +104,9 @@ const BenchmarkingQA = () => {
       validation.setFieldValue("category", info.category);
     }
   }, []);
+  if (isDataUpdated) {
+    console.log(info.answerOptions, "INFO AO");
+  }
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -147,7 +150,7 @@ const BenchmarkingQA = () => {
       visibility: true,
       description: isDataUpdated ? info.description : "",
       category: isDataUpdated ? info.category : "",
-      answerOptions: [],
+      answerOptions: isDataUpdated ? info.answerOptions : "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -159,7 +162,7 @@ const BenchmarkingQA = () => {
       const cd = allCategories.find((value) => {
         if (value.titleEng.toString().includes(values.category)) return value;
       });
-
+      console.log(values, "INSIDE SUBMIT");
       const mappedData = {
         ...values,
         category: cd?._id,
@@ -331,7 +334,7 @@ const BenchmarkingQA = () => {
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div
-                className="flex-grow-1 ms-2 name"
+                className="flex-grow-1 ms-2 name cursor-pointer"
                 onClick={() => {
                   const contactData = cellProps.row.original;
                   console.log(contactData, "CD");
@@ -476,9 +479,12 @@ const BenchmarkingQA = () => {
   const [editingAnswerId, setEditingAnswerId] = useState(null);
   const [inputFields, setInputFields] = useState("");
   const handleEdits = (AnswerId) => {
+    setAnswerEdit(true);
     setEditingAnswerId(AnswerId);
     const Answer = allAnswers.find((c) => c._id === AnswerId);
     setInputFields(Answer.answerOption);
+    const inputFieldElement = document.getElementById("firstName"); // Replace "inputField" with the actual ID of your input field
+    inputFieldElement.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleUpdates = (e) => {
@@ -562,11 +568,13 @@ const BenchmarkingQA = () => {
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [inputField, setInputField] = useState("");
   const [categoryEdit, setCategoryEdit] = useState(false);
+  const [answerEdit, setAnswerEdit] = useState(false);
 
   const handleCancel = (e) => {
     e.preventDefault();
-    setInputField("");
+    setInputFields("");
     setCategoryEdit(false);
+    setAnswerEdit(false);
   };
 
   const handleAdd = (e) => {
@@ -741,7 +749,11 @@ const BenchmarkingQA = () => {
                     type="button"
                     onClick={() => {
                       validation.resetForm();
-                      setSelectedAnswerOptions([]);
+                      if (isDataUpdated) {
+                        setSelectedAnswerOptions(info.answerOptions);
+                      } else {
+                        setSelectedAnswerOptions([]);
+                      }
                       setIsDataUpdated(false);
                       setmodal_grid(false);
                     }}
@@ -1498,7 +1510,11 @@ const BenchmarkingQA = () => {
                             className="btn btn-danger p-4 pt-2 pb-2"
                             onClick={() => {
                               validation.resetForm();
-                              setSelectedAnswerOptions([]);
+                              if (isDataUpdated) {
+                                setSelectedAnswerOptions(info.answerOptions);
+                              } else {
+                                setSelectedAnswerOptions([]);
+                              }
                               setIsDataUpdated(false);
                               setmodal_grid(false);
                             }}
@@ -1676,11 +1692,15 @@ const BenchmarkingQA = () => {
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
                                           ref={provided.innerRef}
+                                          style={{ cursor: "default" }}
                                         >
                                           <div className="d-flex align-items-center gap-2">
                                             <i
                                               className="ri-drag-move-2-line fs-24"
-                                              style={{ color: "#4A7BA4" }}
+                                              style={{
+                                                color: "#4A7BA4",
+                                                cursor: "grab",
+                                              }}
                                             ></i>
                                             <h5 className="m-0">
                                               {Answer.answerOption}
@@ -1688,14 +1708,14 @@ const BenchmarkingQA = () => {
                                           </div>
                                           <div className="d-flex justify-content-end gap-2">
                                             <i
-                                              className="ri-pencil-fill fs-18"
+                                              className="ri-pencil-fill fs-18 cursor-pointer"
                                               style={{ color: "gray" }}
                                               onClick={() =>
                                                 handleEdits(Answer._id)
                                               }
                                             ></i>
                                             <i
-                                              className="ri-delete-bin-2-line fs-18"
+                                              className="ri-delete-bin-2-line fs-18 cursor-pointer"
                                               style={{ color: "red" }}
                                               onClick={() =>
                                                 handleDeletes(Answer._id)
@@ -1745,7 +1765,7 @@ const BenchmarkingQA = () => {
                                     onChange={(e) =>
                                       setInputFields(e.target.value)
                                     }
-                                    value={inputFields}
+                                    value={inputFields || ""}
                                   />
                                 </div>
                               </Col>
@@ -1755,12 +1775,21 @@ const BenchmarkingQA = () => {
                                     Save
                                   </Button>
 
-                                  <Button
-                                    color="primary"
-                                    onClick={(e) => handleAnswerAdd(e)}
-                                  >
-                                    Add new item to list
-                                  </Button>
+                                  {answerEdit ? (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleCancel(e)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleAdd(e)}
+                                    >
+                                      Add new item to list
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             </div>

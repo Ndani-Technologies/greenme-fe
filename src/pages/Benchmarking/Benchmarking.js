@@ -404,7 +404,7 @@ const Benchmarking = () => {
   const location = useLocation();
   useEffect(() => {
     callApi();
-    getProgressPercentage();
+    // getProgressPercentage();
     // if(location?.state?.isDataUpdated){
     //   setUser_resp([...user_resp , benchmark.user_resp])
     // }
@@ -435,15 +435,15 @@ const Benchmarking = () => {
 
   const rowClassName = isBelow1440 ? "row w-100" : "row w-50";
 
-  const getProgressPercentage = async () => {
-    const obj = JSON.parse(sessionStorage.getItem("authUser"));
+  // const getProgressPercentage = async () => {
+  //   const obj = JSON.parse(sessionStorage.getItem("authUser"));
 
-    const res = await getUserProgress(obj._id);
+  //   const res = await getUserProgress(obj._id);
 
-    const floorPercentage = Math.floor(res.percentage);
+  //   const floorPercentage = Math.floor(res.percentage);
 
-    setProgressPercentage(floorPercentage);
-  };
+  //   setProgressPercentage(floorPercentage);
+  // };
 
   const [justifyPillsTab, setjustifyPillsTab] = useState(
     category.length > 0 ? category[0]._id : null
@@ -559,6 +559,50 @@ const Benchmarking = () => {
   //     return newUserResp;
   //   });
   // };
+
+  const [progressPercentageValue, setProgressPercentageValue] = useState(0);
+  console.log(progressPercentageValue, "CHECKING progressPercentageValue");
+
+  const [answeredAids, setAnsweredAids] = useState([]);
+  console.log(answeredAids, "CHECKING answeredAids");
+
+  const handleResponseProgress = (qid, aid) => {
+    const questionIdentifier = `${aid}_${qid}`;
+
+    if (answeredAids.some((answeredAid) => answeredAid.endsWith(`_${qid}`))) {
+      // Aid with the same qid already exists in the array, skip adding it
+      console.log("Aid already exists for qid:", qid);
+      return;
+    }
+
+    if (answeredAids.includes(questionIdentifier)) {
+      // Aid exists in the array, remove it
+      setAnsweredAids(
+        answeredAids.filter((answeredAid) => answeredAid !== questionIdentifier)
+      );
+    } else {
+      // Aid doesn't exist in the array, add it
+      setAnsweredAids([...answeredAids, questionIdentifier]);
+    }
+  };
+
+  useEffect(() => {
+    let updatedCompletionLevel = benchmark.completionLevel || 0;
+
+    if (location?.state?.isDataUpdated) {
+      updatedCompletionLevel += 100 / benchmark?.questionnaire?.length;
+    } else {
+      updatedCompletionLevel =
+        (100 / benchmark?.questionnaire?.length) * answeredAids.length;
+    }
+
+    setProgressPercentageValue(updatedCompletionLevel);
+  }, [
+    benchmark?.questionnaire?.length,
+    answeredAids.length,
+    benchmark?.completionLevel,
+    location?.state?.isDataUpdated,
+  ]);
 
   const handleButtonClick = (
     questionIndex,
@@ -979,6 +1023,10 @@ const Benchmarking = () => {
                                 });
                               }
                               let boo = true;
+                              handleResponseProgress(
+                                item?._id,
+                                btn.answerOption._id
+                              );
                               if (
                                 !user_resp.some(
                                   (q) =>
@@ -998,6 +1046,7 @@ const Benchmarking = () => {
                                   btn.answerOption._id,
                                   btn.includeExplanation,
                                   btn.includeInputField,
+                                  isSelected,
                                   "",
                                   "",
                                   boo
@@ -1246,6 +1295,10 @@ const Benchmarking = () => {
                                   };
                                 }
                               });
+                              handleResponseProgress(
+                                item?._id,
+                                btn.answerOption._id
+                              );
                               if (
                                 !user_resp.some(
                                   (q) =>
@@ -1445,39 +1498,46 @@ const Benchmarking = () => {
                       </div>
                       <div className="d-flex align-items-center ">
                         <div className="w-50">
-                          <Card className=" border-none mt-3">
+                          <Card className="border-none mt-3">
                             <CardBody className="p-0">
                               <div className="d-flex align-items-center mb-2 mt-4">
                                 <div className="flex-grow-1 d-flex justify-content-between w-100">
                                   <h5 className="card-title mb-0">
                                     <span>
-                                      {Math.floor(benchmark.completionLevel)}%{" "}
+                                      {location?.state?.isDataUpdated
+                                        ? Math.floor(benchmark.completionLevel)
+                                        : Math.floor(progressPercentageValue)}
+                                      %
                                     </span>{" "}
                                     done
                                   </h5>
                                   <h5>
-                                    {Math.ceil(100 - benchmark.completionLevel)}
+                                    {location?.state?.isDataUpdated
+                                      ? Math.ceil(
+                                          100 - benchmark.completionLevel
+                                        )
+                                      : Math.ceil(
+                                          100 - progressPercentageValue
+                                        )}
                                     % to go
                                   </h5>
                                 </div>
                               </div>
                               <div className="progress animated-progress custom-progress progress-label mt-3">
                                 <div
-                                  className="progress-bar bg- "
+                                  className="progress-bar bg-"
                                   role="progressbar"
                                   style={{
-                                    width:
-                                      Math.floor(benchmark.completionLevel) +
-                                      "%",
+                                    width: `${Math.floor(
+                                      progressPercentageValue
+                                    )}%`,
                                   }}
                                   aria-valuenow={Math.floor(
-                                    benchmark.completionLevel
+                                    progressPercentageValue
                                   )}
                                   aria-valuemin="0"
                                   aria-valuemax="100"
-                                >
-                                  {/* <div className="label">40%</div> */}
-                                </div>
+                                ></div>
                               </div>
                             </CardBody>
                           </Card>

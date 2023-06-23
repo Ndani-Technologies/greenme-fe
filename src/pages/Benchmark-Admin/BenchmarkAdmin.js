@@ -332,10 +332,12 @@ const BenchmarkAdmin = () => {
     setmodal_center(!modal_center);
   };
 
+  const [resetData, setResetData] = useState(null);
   const handleResetClick = (data) => {
     setInfo(data);
+    setResetData(data);
     tog_center();
-    handleResetConfirm(data);
+    // handleResetConfirm(data);
   };
 
   const [toBeDeleted, setToBeDeleted] = useState([]);
@@ -396,7 +398,7 @@ const BenchmarkAdmin = () => {
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div
-                className="flex-grow-1 ms-2 name"
+                className="flex-grow-1 ms-2 name cursor-pointer"
                 onClick={(event) => {
                   event.preventDefault();
                   const contactData = cellProps.row.original;
@@ -509,7 +511,7 @@ const BenchmarkAdmin = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         console.log(contactData, "CD");
-                        // handleResetClick(contactData);
+                        handleResetClick(contactData);
                       }}
                     >
                       Reset
@@ -562,16 +564,21 @@ const BenchmarkAdmin = () => {
 
   //RESET CONFIRMATION
 
-  const handleResetConfirm = (data) => {
+  const handleResetConfirm = () => {
     const updatedData = {
       user_resp: [],
     };
-    removeBenchmarkUserResp(data._id, updatedData)
+    console.log(resetData, resetData._id, "INSIDE CONFIRM");
+    removeBenchmarkUserResp(resetData && resetData._id, updatedData)
       .then((res) => {
-        console.log(res);
-        toast.success("Reset Successfully");
+        if (res !== undefined) {
+          toast.success("Reset Successfully");
+        } else {
+          toast.error("Unable to Reset Data");
+        }
       })
       .catch((err) => console.log(err));
+    setmodal_center(false);
   };
 
   document.title = "Profile | GreenMe";

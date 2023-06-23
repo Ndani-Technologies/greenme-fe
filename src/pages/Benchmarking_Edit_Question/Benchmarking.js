@@ -205,7 +205,7 @@ const Benchmarking = () => {
                     return (
                       <div className="buttons-container " key={btnIndex}>
                         <button
-                          style={{ cursor: "default" }}
+                          style={{ cursor: "default", opacity: "0.5" }}
                           onClick={() => {
                             setSelectedAnswerIds((prevSelectedAnswerIds) => {
                               const questionId = item._id;
