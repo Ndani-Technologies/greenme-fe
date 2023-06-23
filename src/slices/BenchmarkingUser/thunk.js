@@ -123,8 +123,9 @@ export const addBenchmark = async (benchmark) => {
 
 export const removeBenchmarkUserResp = async (id, data) => {
   try {
-    let resp = await axios.patch(
-      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
+    let resp = await axios.put(
+      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`,
+      data
     );
     console.log(resp);
   } catch (error) {

@@ -1084,7 +1084,7 @@ const ActionModal = ({
                     lg={6}
                     onClick={() => isOpen(!open)}
                     disable
-                    className="form-select "
+                    className="form-select cursor-pointer "
                   >
                     {categorySelectTitle?.title || "Select a Category"}
                   </Col>
@@ -1129,7 +1129,7 @@ const ActionModal = ({
                     lg={6}
                     onClick={() => setIsCost(!isCost)}
                     disable
-                    className="form-select "
+                    className="form-select cursor-pointer"
                   >
                     {costSelectTitle?.title || "Select a Cost"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
@@ -1177,7 +1177,7 @@ const ActionModal = ({
                     lg={6}
                     onClick={() => setIsScale(!isScale)}
                     disable
-                    className="form-select "
+                    className="form-select cursor-pointer"
                   >
                     {scaleSelectTitle?.title || "Select a Scale"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
@@ -1223,7 +1223,7 @@ const ActionModal = ({
                     lg={6}
                     onClick={() => setIsPotential(!isPotential)}
                     disable
-                    className="form-select "
+                    className="form-select cursor-pointer"
                   >
                     {potentialSelectTitle?.title || "Select a Potential"}
                     <i class="fa fa-window-maximize" aria-hidden="true"></i>
