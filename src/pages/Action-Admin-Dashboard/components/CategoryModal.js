@@ -371,27 +371,26 @@ const CategoryModal = ({
                           {(provided) => (
                             <div
                               key={data_value._id}
-                              className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center "
+                              className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               ref={provided.innerRef}
-                              style={{ cursor: "default" }}
                             >
                               <div className="d-flex align-items-center gap-2">
                                 <i
                                   className="ri-drag-move-2-line fs-24"
-                                  style={{ color: "#4A7BA4", cursor: "grab" }}
+                                  style={{ color: "#4A7BA4" }}
                                 ></i>
                                 <h5 className="m-0">{data_value.title}</h5>
                               </div>
                               <div className="d-flex justify-content-end gap-2">
                                 <i
-                                  className="ri-pencil-fill fs-18 cursor-pointer"
+                                  className="ri-pencil-fill fs-18"
                                   style={{ color: "gray" }}
                                   onClick={() => handleEdit(data_value._id)}
                                 ></i>
                                 <i
-                                  className="ri-delete-bin-2-line fs-18 cursor-pointer"
+                                  className="ri-delete-bin-2-line fs-18"
                                   style={{ color: "red" }}
                                   onClick={() => handleDelete(data_value._id)}
                                 ></i>

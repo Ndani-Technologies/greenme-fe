@@ -21,7 +21,6 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { updateAdminStep, updateSaveActionStep } from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
-import { updateRecommendedActionStep } from "../../slices/RecommendedAction/thunk";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -72,7 +71,7 @@ const ActionUserDetail = () => {
 
       try {
         for (const stepObject of steps) {
-          await updateRecommendedActionStep(stepObject._id, stepObject);
+          await updateAdminStep(stepObject._id, stepObject);
         }
 
         // Show a final toast message after all updates are completed
@@ -129,7 +128,7 @@ const ActionUserDetail = () => {
     }
     setStepData(updatedStepData);
   };
-  console.log("data", data);
+
   const handleChange = (index) => {
     if (activeIndex === index) {
       setActiveIndex(null);
@@ -143,7 +142,9 @@ const ActionUserDetail = () => {
         <div className="page-content overflow-auto ">
           <ActionMain
             Title={"Recommended Actions - Details"}
-            ra_title={data.title}
+            Text={
+              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+            }
           />
           <div className="card-wrapper">
             <div className="card">
@@ -163,16 +164,14 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Status</span>
                   <div>
-                    <span className="span">
-                      {data.isCompleted ? "Completed" : "In Progress"}
-                    </span>
+                    <span className="span">{data.status}</span>
                   </div>
                 </div>
                 <div
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">Reduction Potential</span>
+                  <span className="fs-7">Potential</span>
                   <div>
                     <span className="span">{data.potentialId.title}</span>
                   </div>
@@ -201,32 +200,27 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Start Date</span>
                   <div>
-                    <span className="span">
-                      {" "}
-                      {new Date(data.startdate).toLocaleDateString("en-US")}
-                    </span>
+                    <span className="span">{data.startdate}</span>g
                   </div>
                 </div>
                 <div
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">Completion Date</span>
+                  <span className="fs-7">Completed Date</span>
                   <div>
-                    {isNaN(new Date(data.enddate)) ? (
-                      <span className="span">In Progress</span>
-                    ) : (
-                      <span className="span">
-                        {new Date(data.enddate).toLocaleDateString("en-US")}
-                      </span>
-                    )}
+                    <span className="span">{data.enddate}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <Col className="card-wrapper mb-5">
+          <Col className="card-wrapper mb-5" lg={12}>
             <h4>Description</h4>
+            {/* <Input
+                  type="text"
+                  placeholder="Some description should go  here"
+                /> */}
             <p dangerouslySetInnerHTML={{ __html: data.description }}></p>
 
             {/* <p>
@@ -269,7 +263,6 @@ const ActionUserDetail = () => {
                       >
                         <div className="accordion-body d-flex justify-content-between">
                           <div
-                            className="w-75"
                             dangerouslySetInnerHTML={{
                               __html: step.description,
                             }}
@@ -283,10 +276,11 @@ const ActionUserDetail = () => {
                           <div
                             className="Discription"
                             style={{
-                              width: "180px",
+                              width: "250px",
                               height: "80px",
                               padding: "5px",
                               borderRadius: "10px",
+
                               border: "1px solid grey",
                               backgroundColor: "#bec887",
                             }}

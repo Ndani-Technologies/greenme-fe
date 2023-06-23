@@ -37,7 +37,7 @@ import {
   registerUserReal,
 } from "../../slices/thunks";
 
-import loginLogo from "../../assets/images/login-logo.png";
+import logoLight from "../../assets/images/logo-light.png";
 //Import config
 import { facebook, google } from "../../config";
 import { color } from "echarts";
@@ -139,28 +139,26 @@ const Login = (props) => {
     <React.Fragment>
       <ParticlesAuth>
         <div className="auth-page-content">
-          <Container className="mt-5">
+          <Container>
             <Row>
-              <Col lg={12} className="mb-2">
-                <div className="text-center text-white-50 ">
+              <Col lg={12}>
+                <div className="text-center mt-sm-5 mb-4 text-white-50">
                   <div>
-                    <img
-                      src={loginLogo}
-                      alt="Login Logo Greenme"
-                      width="130px"
-                    />
+                    <h1 style={{ color: "#fff" }}>GreenMe</h1>
                   </div>
                 </div>
               </Col>
             </Row>
 
-            <Row className="justify-content-center mt-4">
+            <Row className="justify-content-center">
               <Col md={8} lg={6} xl={5}>
-                <Card>
+                <Card className="mt-4">
                   <CardBody className="p-4">
                     <div className="text-center mt-2">
-                      <p className="text-muted">Welcome to Fleet Forum's</p>
-                      <h5 className="text-primary">GreenMe Platform.</h5>
+                      <h5 className="text-primary">Welcome Back !</h5>
+                      <p className="text-muted">
+                        Sign in to continue to GreenMe.
+                      </p>
                     </div>
                     {error && error ? (
                       <Alert color="danger"> {error} </Alert>
@@ -224,13 +222,11 @@ const Login = (props) => {
                                                 </div> */}
                         <div>
                           <p>
-                            Reducing emissions from fleet operations is a
-                            priority task for every fleet manager. Fleet Forum’s
-                            GreenMe platform allows for assessment of the
-                            current environmental state of the vehicle fleet,
-                            provides actions that reduce emissions and
-                            encourages fleet managers to collaborate with the
-                            aim to make the fleet environmentally sustainable.
+                            It is a long established fact that a reader will be
+                            distracted by the readable content of a page when
+                            looking at its layout. It is a long established fact
+                            that a reader will be distracted by the readable
+                            content of a page when looking at its layout.
                           </p>
                         </div>
                         <div className="mt-4 d-flex justify-content-between">

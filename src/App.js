@@ -11,6 +11,7 @@ import Route from "./Routes";
 
 // Fake Backend
 import fakeBackend from "./helpers/AuthType/fakeBackend";
+import { SocketContextProvider } from "./context/socketContext";
 
 // Activating fake backend
 fakeBackend();
@@ -32,7 +33,9 @@ fakeBackend();
 function App() {
   return (
     <React.Fragment>
-      <Route />
+      <SocketContextProvider>
+        <Route />
+      </SocketContextProvider>
     </React.Fragment>
   );
 }

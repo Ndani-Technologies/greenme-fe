@@ -30,16 +30,13 @@ import ActionUserSummary from "../pages/Action-User-Summary/ActionUserSummary";
 import ActionAdminSummary from "../pages/Action-Admin-Summary/ActionAdminSummary";
 import ActionComparison from "../pages/ActionComparison/ActionComparison";
 import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDashboard";
+import { components } from "react-select";
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
 import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
 import ActionUserDashboard from "../pages/Action-User-dashboard/ActionUserDashboard";
 import ActionAdminUserDetail from "../pages/Action-Admin-Dashboard/ActionAdminUserDetail";
-import LeaderBord from "../pages/LeaderBoard/LeaderBord";
-import LeaderBoardTable from "../pages/LeaderBoardTable/LeaderBoardTable";
-import TableCard from "../pages/LeaderBoardTable/TableCard";
-
 const authProtectedRoutes = [
   { path: "/dashboard", component: <DashboardEcommerce /> },
   { path: "/index", component: <DashboardEcommerce /> },
@@ -65,9 +62,6 @@ const authProtectedRoutes = [
     path: `/adminbenchmarking/summary/:id`,
     component: <BenchmarkSummaryAdmin />,
   },
-  { path: "/leaderboard", component: <LeaderBord /> },
-  { path: "/leaderboardtable", component: <LeaderBoardTable /> },
-  { path: "/leaderboardtablecard", component: <TableCard /> },
   {
     path: `/adminbenchmarking/questions/summary/:id`,
     component: <BenchmarkSummaryAdmin />,

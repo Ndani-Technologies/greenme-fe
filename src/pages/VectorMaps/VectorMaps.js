@@ -4,7 +4,7 @@ import { Card, CardBody, CardHeader, Col, Container, Row } from "reactstrap";
 import Vector from "./MapVector";
 
 //Import Breadcrumb
-import BreadCrumb from "../../../Components/Common/BreadCrumb";
+// import BreadCrumb from "../../../Components/Common/BreadCrumb";
 
 const VectorMaps = () => {
   document.title = "Vector Maps | Velzon - React Admin & Dashboard Template";
@@ -12,7 +12,7 @@ const VectorMaps = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="Vector" pageTitle="Maps" />
+          {/* <BreadCrumb title="Vector" pageTitle="Maps" /> */}
           <Row>
             <Col lg={12}>
               <Card>

@@ -502,15 +502,7 @@ const ActionAdminDashboard = () => {
           <>
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
-              <div
-                className="flex-grow-1 ms-2 name cursor-pointer"
-                onClick={() => {
-                  const contactData = contact.row.original;
-                  navigate("/actionadminuserdetail", {
-                    state: { data: contactData },
-                  });
-                }}
-              >
+              <div className="flex-grow-1 ms-2 name ">
                 {contact.row.original.title}
                 {/* <span>
                       <i class="ri-arrow-right-line"></i>
@@ -531,7 +523,7 @@ const ActionAdminDashboard = () => {
         accessor: "stat",
       },
       {
-        Header: "Reduction Potential",
+        Header: "Potential",
         accessor: "potential",
         filterable: false,
       },
@@ -727,14 +719,14 @@ const ActionAdminDashboard = () => {
     setDeleteConfirmation2(false);
     setDeleteId(null);
   };
-  document.title = "Recommended Action | GreenMe";
+  document.title = "Benchmaking QA | GreenMe";
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
         <ActionMain
-          Title={"Recommended Actions"}
+          Title={"Recommended Actions - Admin Dashboard"}
           Text={
-            "In this section, you will be presented with actions that you are recommended to implement based on your assessment. You can view the action and look at the steps that each action takes to implement. Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
+            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
           }
         />
         <Col xxl={12}>
@@ -807,7 +799,7 @@ const ActionAdminDashboard = () => {
                 />
               )}
             </div>
-            {/* <div className="pt-5">
+            <div className="pt-5">
               <Button
                 className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
                 color="white"
@@ -818,7 +810,7 @@ const ActionAdminDashboard = () => {
                 Manage Answer Relationship
                 <i class="ri-add-fill"></i>
               </Button>
-            </div> */}
+            </div>
             <div className="pt-5">
               <Button
                 className="d-flex align-items-center justify-content-between p-2 bg-white shadow-lg mb-5 rounded float-end"
@@ -878,7 +870,6 @@ const ActionAdminDashboard = () => {
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
-                    isFilterAdminRA={true}
                     isFooter={true}
                     customPageSize={8}
                     className="custom-header-css"

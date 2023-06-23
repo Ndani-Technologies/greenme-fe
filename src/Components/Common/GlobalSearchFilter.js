@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Col,
   Row,
@@ -13,9 +13,7 @@ import {
 import { Link } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
-import { Box, Slider, Chip, OutlinedInput } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { getAllAdminBenchmarks, getAllCategories } from "../../slices/thunks";
+import { Box, Slider } from "@mui/material";
 
 const ProductsGlobalFilter = () => {
   return (
@@ -34,119 +32,47 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-
-  const [categories, setCategories] = useState([]);
-  const [value, setValue] = React.useState(globalFilter);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
-  useEffect(() => {
-    getAllCategories().then((res) => {
-      const categoryOptions = res.map((category) => {
-        return {
-          value: category.titleEng,
-          label: category.titleEng,
-        };
-      });
-      setCategories(categoryOptions);
-    });
-  }, []);
-
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  const handleCheckboxChange = (event) => {
-    const switchInput = document.getElementById("form-grid-showcode");
-    const switchLabel = document.querySelector(".switch-label");
-    const checkbox = event.target;
-
-    if (checkbox.checked) {
-      setValue(checkbox.value);
-      switchInput.value = checkbox.value;
-      switchLabel.innerText = switchLabel.getAttribute("data-complete");
-    } else {
-      setValue("Incomplete");
-      switchInput.value = "Incomplete";
-      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
-    }
-
-    onChange(checkbox.checked ? "Complete" : "Incomplete");
-  };
-
-  const handleChangeCategory = (selectedOption) => {
-    setSelectedCategory(selectedOption);
-    setValue(selectedOption ? selectedOption.value : globalFilter);
-    onChange(selectedOption ? selectedOption.value : undefined);
-  };
-
+const AllQaFilters = () => {
   return (
-    <div className="d-flex align-items-center w-100 p-0">
-      <div
-        className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "40%" }}
-      ></div>
-      <div
-        className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "33%" }}
-      >
-        <span style={{ color: "black" }}>Filter by </span>
-        <div>
-          <Select
-            isClearable={true}
-            name="country"
-            value={selectedCategory}
-            placeholder="Category"
-            onChange={handleChangeCategory}
-            onBlur={() => handleChangeCategory(selectedCategory)}
-            options={categories}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected &&
-                  selected.map((value) => <Chip key={value} label={value} />)}
-              </Box>
-            )}
-            MenuProps={MenuProps}
+    <div className="d-flex align-items-center justify-content-between w-100 p-0">
+      <div className={"search-box me-2 mb-0 d-inline-block"}></div>
+
+      <div className="col-xxl-3 col-sm-4">
+        <Flatpickr
+          placeholder="Select date range"
+          className="form-control bg-light border-light"
+          options={{
+            mode: "range",
+            dateFormat: "d M, Y",
+          }}
+        />
+      </div>
+      <div className="flex-shrink-0">
+        <div className="form-check form-switch form-switch-right form-switch-md">
+          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
+            Status:
+          </Label>
+          <Input
+            className="form-check-input code-switcher"
+            type="checkbox"
+            value="active"
+            defaultValue="Incomplete"
           />
         </div>
       </div>
-
       <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "25%" }}
+        className="d-flex align-items-center gap-4"
+        style={{ width: "220px" }}
       >
-        <div>
-          <div className="form-check form-switch form-switch-right form-switch-md">
-            <input
-              className="form-check-input code-switcher"
-              type="checkbox"
-              value={value}
-              defaultValue="Complete"
-              id="form-grid-showcode"
-              onChange={handleCheckboxChange}
-              defaultChecked
-            />
-            <label
-              htmlFor="form-grid-showcode"
-              className="form-check-label switch-label"
-              defaultValue="Complete"
-              data-incomplete="Incomplete"
-              data-complete="Complete"
-            >
-              Status
-            </label>
-          </div>
+        <span style={{ color: "black" }}>Filter by </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span style={{ color: "black" }}>Country</span>
+          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
         </div>
       </div>
     </div>
@@ -307,464 +233,113 @@ const FilterAction = () => {
   );
 };
 
-const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-  const [countryOptions, setCountryOptions] = useState([]);
-  const [value, setValue] = React.useState(globalFilter);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedDates, setSelectedDates] = useState([]);
+const FilterA = () => {
+  const cssCode = `
+  .switch-label:before {
+    content: attr(data-incomplete);
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0.375rem 0.75rem;
+  }
 
-  useEffect(() => {
-    const userObj = JSON.parse(sessionStorage.getItem("authUser"));
-    const options = userObj.otherCountries.map((country) => {
-      return {
-        value: country,
-        label: country,
-      };
-    });
-    setCountryOptions(options);
-  }, []);
+  .switch-label:after {
+    content: attr(data-complete);
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 0.375rem 0.75rem;
+  }
 
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
+  input[type="checkbox"].code-switcher:checked ~ .switch-label:before {
+    content: attr(data-complete);
+  }
 
-  const handleCheckboxChange = (event) => {
-    const switchInput = document.getElementById("form-grid-showcode");
-    const switchLabel = document.querySelector(".switch-label");
-    const checkbox = event.target;
-
-    if (checkbox.checked) {
-      setValue(checkbox.value);
-      switchInput.value = checkbox.value;
-      switchLabel.innerText = switchLabel.getAttribute("data-complete");
-    } else {
-      setValue("Incomplete");
-      switchInput.value = "Incomplete";
-      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
-    }
-
-    onChange(checkbox.checked ? "Complete" : "Incomplete");
-  };
-
-  const handleChangeCountry = (selectedOption) => {
-    setSelectedCountry(selectedOption);
-    setValue(selectedOption ? selectedOption.value : globalFilter);
-    onChange(selectedOption ? selectedOption.value : undefined);
-  };
-
-  const handleDateChange = (selectedDates) => {
-    const formattedDates = selectedDates.map((date) => {
-      const year = String(date.getFullYear());
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return [year, month, day].join(" && ").split(" && ");
-    });
-    const year = formattedDates[0][0];
-    const month = formattedDates[0][1];
-    const day = formattedDates[0][2];
-
-    const concatenatedValue = year && month && day;
-
-    setSelectedDates(selectedDates);
-    setValue(concatenatedValue);
-    onChange(concatenatedValue);
-  };
-
-  return (
-    <div className="d-flex w-100">
-      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
-        <div>
-          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
-        </div>
-        <div className="w-75">
-          <Select
-            isClearable={true}
-            name="country"
-            placeholder="country"
-            value={selectedCountry}
-            onChange={handleChangeCountry}
-            onBlur={() => handleChangeCountry(selectedCountry)}
-            options={countryOptions}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected &&
-                  selected.map((value) => <Chip key={value} label={value} />)}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          />
-        </div>
-      </div>
-
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "35%", marginLeft: "35px" }}
-      >
-        <div>
-          <div className="form-check form-switch form-switch-right form-switch-md">
-            <input
-              className="form-check-input code-switcher"
-              type="checkbox"
-              value={value}
-              defaultValue="Complete"
-              id="form-grid-showcode"
-              onChange={handleCheckboxChange}
-              defaultChecked
-            />
-            <label
-              htmlFor="form-grid-showcode"
-              className="form-check-label switch-label"
-              defaultValue="Complete"
-              data-incomplete="Incomplete"
-              data-complete="Complete"
-            >
-              Status
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div className="col-xxl-3 col-sm-4">
-        <Flatpickr
-          placeholder="Select date range"
-          className="form-control bg-light border-light"
-          options={{
-            mode: "range",
-            dateFormat: "d M, Y",
-            minDate: new Date().fp_incr(-365),
-          }}
-          value={selectedDates}
-          onChange={handleDateChange}
-        />
-      </div>
-    </div>
-  );
-};
-
-const FilterAdminBenchmark = ({
-  globalFilter,
-  setGlobalFilter,
-  useAsyncDebounce,
-}) => {
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-  const [organizationOptions, setOrganizationOptions] = useState([]);
-  console.log(organizationOptions, "OOP");
-  const [value, setValue] = React.useState(globalFilter);
-  const [selectedOrganization, setSelectedOrganization] = useState(null);
-  const [selectedDates, setSelectedDates] = useState([]);
-
-  useEffect(() => {
-    getAllAdminBenchmarks()
-      .then((res) => {
-        const options = res.map((bench) => {
-          return {
-            value: bench.organization,
-            label: bench.organization,
-          };
-        });
-        const uniqueArray = Array.from(
-          options
-            .reduce((map, obj) => map.set(obj.value, obj), new Map())
-            .values()
-        );
-        setOrganizationOptions(uniqueArray);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  const handleCheckboxChange = (event) => {
-    const switchInput = document.getElementById("form-grid-showcode");
-    const switchLabel = document.querySelector(".switch-label");
-    const checkbox = event.target;
-
-    if (checkbox.checked) {
-      setValue(checkbox.value);
-      switchInput.value = checkbox.value;
-      switchLabel.innerText = switchLabel.getAttribute("data-complete");
-    } else {
-      setValue("Incomplete");
-      switchInput.value = "Incomplete";
-      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
-    }
-
-    onChange(checkbox.checked ? "Complete" : "Incomplete");
-  };
-
-  const handleChangeOrganization = (selectedOption) => {
-    setSelectedOrganization(selectedOption);
-    setValue(selectedOption ? selectedOption.value : globalFilter);
-    onChange(selectedOption ? selectedOption.value : undefined);
-  };
-
-  const handleDateChange = (selectedDates) => {
-    const formattedDates = selectedDates.map((date) => {
-      const year = String(date.getFullYear());
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return [year, month, day].join(" && ").split(" && ");
-    });
-    const year = formattedDates[0][0];
-    const month = formattedDates[0][1];
-    const day = formattedDates[0][2];
-
-    const concatenatedValue = year && month && day;
-
-    setSelectedDates(selectedDates);
-    setValue(concatenatedValue);
-    onChange(concatenatedValue);
-  };
-
-  return (
-    <div className="d-flex w-100">
-      <div
-        className={"search-box me-2 mb-0 d-inline-block"}
-        style={{ width: "100%" }}
-      >
-        <input
-          onChange={(e) => {
-            setValue(e.target.value);
-            onChange(e.target.value);
-          }}
-          id="search-bar-0"
-          style={{ width: "70%" }}
-          type="text"
-          className="form-control search /"
-          placeholder="Search by Title"
-          value={value || ""}
-        />
-        <i className="bx bx-search-alt search-icon"></i>
-      </div>
-      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-10">
-        <div>
-          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
-        </div>
-        <div className="w-75">
-          <Select
-            isClearable={true}
-            name="country"
-            placeholder="Organization"
-            value={selectedOrganization}
-            onChange={handleChangeOrganization}
-            onBlur={() => handleChangeOrganization(selectedOrganization)}
-            options={organizationOptions}
-            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected &&
-                  selected.map((value) => <Chip key={value} label={value} />)}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          />
-        </div>
-      </div>
-
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "29%" }}
-      ></div>
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "11%" }}
-      >
-        <div>
-          <div className="form-check form-switch form-switch-right form-switch-md">
-            <input
-              className="form-check-input code-switcher"
-              type="checkbox"
-              value={value}
-              defaultValue="Complete"
-              id="form-grid-showcode"
-              onChange={handleCheckboxChange}
-              defaultChecked
-            />
-            <label
-              htmlFor="form-grid-showcode"
-              className="form-check-label switch-label"
-              defaultValue="Complete"
-              data-incomplete="Incomplete"
-              data-complete="Complete"
-            >
-              Status
-            </label>
-          </div>
-        </div>
-      </div>
-
-      <div
-        className="col-xxl-3 col-sm-4 w-15"
-        style={{ width: "20%", marginRight: "20px" }}
-      >
-        <Flatpickr
-          placeholder="Select date range"
-          className="form-control bg-light border-light"
-          options={{
-            mode: "range",
-            dateFormat: "d M, Y",
-            minDate: new Date().fp_incr(-365),
-          }}
-          value={selectedDates}
-          onChange={handleDateChange}
-        />
-      </div>
-    </div>
-  );
-};
-const AdminRAFilters = ({
-  globalFilter,
-  setGlobalFilter,
-  useAsyncDebounce,
-}) => {
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-  const [countryOptions, setCountryOptions] = useState([]);
-  const [value, setValue] = React.useState(globalFilter);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedDates, setSelectedDates] = useState([]);
-
-  useEffect(() => {
-    const userObj = JSON.parse(sessionStorage.getItem("authUser"));
-    const options = userObj.otherCountries.map((country) => {
-      return {
-        value: country,
-        label: country,
-      };
-    });
-    setCountryOptions(options);
-  }, []);
-
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
-
-  const handleCheckboxChange = (event) => {
-    const switchInput = document.getElementById("form-grid-showcode");
-    const switchLabel = document.querySelector(".switch-label");
-    const checkbox = event.target;
-
-    if (checkbox.checked) {
-      setValue(checkbox.value);
-      switchInput.value = checkbox.value;
-      switchLabel.innerText = switchLabel.getAttribute("data-active");
-    } else {
-      setValue("false");
-      switchInput.value = "false";
-      switchLabel.innerText = switchLabel.getAttribute("data-inActive");
-    }
-
-    onChange(checkbox.checked ? "true" : "false");
-  };
-
-  const handleChangeCountry = (selectedOption) => {
-    setSelectedCountry(selectedOption);
-    setValue(selectedOption ? selectedOption.value : globalFilter);
-    onChange(selectedOption ? selectedOption.value : undefined);
-  };
-
-  const handleDateChange = (selectedDates) => {
-    console.log(selectedDates, "SEL DA");
-    const formattedDates = selectedDates.map((date) => {
-      const year = String(date.getFullYear());
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return [year, month, day].join(" && ").split(" && ");
-    });
-    console.log(formattedDates, "formatted Dates");
-    const year = formattedDates[0][0];
-    const month = formattedDates[0][1];
-    const day = formattedDates[0][2];
-
-    const concatenatedValue = year && month && day;
-
-    setSelectedDates(selectedDates);
-    setValue(concatenatedValue);
-    onChange(concatenatedValue);
-  };
-
+  input[type="checkbox"].code-switcher:checked ~ .switch-label:after {
+    content: attr(data-incomplete);
+  }
+`;
   return (
     <div className="d-flex justify-content-between align-items-center w-100">
-      <div className={"search-box me-2 mb-0 d-inline-block"}>
-        <input
-          onChange={(e) => {
-            setValue(e.target.value);
-            onChange(e.target.value);
-          }}
-          id="search-bar-0"
-          style={{ width: "300%" }}
+      <div
+        className="d-flex align-items-center gap-2 "
+        style={{ width: "220px" }}
+      >
+        <span>From Date </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
           type="text"
-          className="form-control search /"
-          placeholder="Search by Action"
-          value={value || ""}
-        />
-        <i className="bx bx-search-alt search-icon"></i>
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span></span>
+          <i class="ri-calendar-2-line"></i>
+        </div>
       </div>
-
+      <div
+        className="d-flex align-items-center gap-2 flex-shrink-0"
+        style={{ width: "200px" }}
+      >
+        <span>To Date </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span></span>
+          <i class="ri-calendar-2-line"></i>
+        </div>
+      </div>
       <div
         className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "30%", marginLeft: "50rem" }}
+        style={{ width: "200px" }}
       >
         <div>
+          <style>{cssCode}</style>
+
+          {/* Your JSX code */}
           <div className="form-check form-switch form-switch-right form-switch-md">
+            {/* <label
+              htmlFor="form-grid-showcode"
+              className="form-label text-muted"
+            >
+              Status:
+            </label> */}
             <input
               className="form-check-input code-switcher"
               type="checkbox"
-              value={value}
-              defaultValue="Status"
+              value="active"
+              defaultValue="Incomplete"
               id="form-grid-showcode"
-              onChange={handleCheckboxChange}
-              defaultChecked
             />
             <label
               htmlFor="form-grid-showcode"
               className="form-check-label switch-label"
-              defaultValue="Status"
-              data-inActive="false"
-              data-active="true"
-            >
-              Status
-            </label>
+              data-incomplete="Incomplete"
+              data-complete="Complete"
+            ></label>
           </div>
+        </div>
+      </div>
+      <div
+        className="d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "220px" }}
+      >
+        <span style={{ color: "black" }}>Filter by </span>
+        <div
+          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
+          type="text"
+          style={{ width: "140px" }}
+        >
+          {" "}
+          <span style={{ color: "black" }}>Country</span>
+          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
         </div>
       </div>
     </div>
   );
 };
-
 const CustomersGlobalFilter = () => {
   const [customerStatus, setcustomerStatus] = useState(null);
 
@@ -829,75 +404,6 @@ const CustomersGlobalFilter = () => {
         </Row>
       </Col>
     </React.Fragment>
-  );
-};
-
-const FilterLeaderBoard = ({ item, selectedData }) => {
-  const navigate = useNavigate();
-  return (
-    <div className="d-flex align-items-center justify-content-between">
-      <div className="d-flex gap-3">
-        <Col
-          className="d-flex align-items-center border border-dark p-1 rounded"
-          style={{ height: "37px" }}
-        >
-          <i className="bx bx-search-alt search-icon"></i>
-          <input
-            className="border-0"
-            placeholder="Search by name"
-            type="text"
-          />
-        </Col>
-        <div>
-          <select disable className="form-select">
-            <option hidden selected>
-              Orgnaisation
-            </option>
-          </select>
-        </div>
-      </div>
-      <Col lg={6} className="d-flex align-items-center gap-3">
-        <Col lg={2} className="border border-gray rounded p-1">
-          <label className="m-0">Points</label>
-          <input className="w-100 p-0 border-bottom border-0" type="text" />
-        </Col>
-        <Col>
-          <select disable className="form-select">
-            <option hidden selected>
-              Points Type
-            </option>
-            <option>Total Points</option>
-            <option>Action points</option>
-            <option>Collaboration points</option>
-            <option>Discussion points</option>
-          </select>
-        </Col>
-        <Col>
-          <select disable className="form-select">
-            <option hidden selected>
-              Realtionship
-            </option>
-            <option>Greater Than (>)</option>
-            <option>Equal to (=)</option>
-            <option>Not Equal to (!)</option>
-            <option>Greater than or Equal to (>=)</option>
-          </select>
-        </Col>
-      </Col>
-      <div>
-        <Button
-          // href="/leaderboardtablecard"
-          onClick={() => {
-            navigate("/leaderboardtablecard", {
-              state: { data: selectedData },
-            });
-          }}
-          disabled={selectedData?.length >= 2 ? false : true}
-        >
-          Compare
-        </Button>
-      </div>
-    </div>
   );
 };
 
@@ -1367,7 +873,6 @@ const LeadsGlobalFilter = ({ onClickDelete }) => {
 };
 
 export {
-  AdminRAFilters,
   ProductsGlobalFilter,
   CustomersGlobalFilter,
   OrderGlobalFilter,
@@ -1383,6 +888,4 @@ export {
   FilterAction,
   AllQaFilters,
   FilterBenchmarkAction,
-  FilterLeaderBoard,
-  FilterAdminBenchmark,
 };

@@ -31,6 +31,122 @@ import {
   getAllRecommendedAction,
   getAllRecommendedRelation,
 } from "../../slices/RecommendedAction/thunk";
+const arr = [
+  {
+    _id: "625d3cd5923ccd040209ebf1",
+    name: "Does your organisation have environmental commitments?",
+    phone: "NO",
+    email: "18",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    lead_score: "Switch to electric vehicles",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "intermediate",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebf3",
+    name: "Does your organisation have a ‘green’ strategy?",
+    phone: "NO",
+    email: "18",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    lead_score: "Introducing trip sharing",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "Short term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebee",
+    name: "Does your fleet policy contain references to a green strategy or environmental sustainability?",
+    phone: "-",
+    email: "05",
+    lead_score: "Enroll drivers in trainings",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "intermediate",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebf0",
+    name: "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
+    phone: "NO",
+    email: "10",
+    lead_score: "Carry out waste management audit ",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "Medium term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebf2",
+    name: "Do you have standardised fleet procurement (global framework agreement…)?",
+    phone: "-",
+    email: "12",
+    lead_score: "Route optimisation exercise",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "intermediate",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebeb",
+    name: "Do you use sustainability criteria to assess/ select suppliers?",
+    phone: "NO",
+    company: "iTest Factory",
+    designation: "UI / UX Designer",
+    email: "08",
+    lead_score: "Upload the JD or relevant points",
+    tags: "Automatic",
+    response: "Inactive",
+    Scale: "Medium term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebec",
+    name: "How do you dispose of vehicles?",
+    phone: "NO",
+    company: "Force Medicines",
+    designation: "PHP Developer",
+    email: "02",
+    last_contacted: "2010-11-05T00:00:02.016Z",
+    lead_score: "Complete sustainable FM training",
+    tags: "Automatic",
+    response: "Inactive",
+    Scale: "Short term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebea",
+    name: "Do you take the environmental impact into consideration when planning for disposal ?",
+    phone: "NO",
+    company: "Nesta Technologies",
+    designation: "Lead Designer / Developer",
+    email: "07",
+    lead_score: "Route optimisation exercise",
+    tags: "Automatic",
+    response: "Inactive",
+    Scale: "intermediate",
+  },
+
+  {
+    _id: "625d3cd5923ccd040209ebef",
+    name: "How do you dispose of vehicles?",
+    phone: "-",
+    company: "Micro Design",
+    designation: "Asp.Net Developer",
+    email: "07",
+    lead_score: "Route optimisation exercise",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "Long term",
+  },
+  {
+    _id: "625d3cd5923ccd040209ebed",
+    name: "How do you dispose of vehicles?",
+    phone: "NO",
+    company: "Digitech Galaxy",
+    designation: "Full Stack Developer",
+    email: "07",
+    lead_score: "Route optimisation exercise",
+    tags: "Automatic",
+    response: "Active",
+    Scale: "intermediate",
+  },
+];
 
 const AdminRelation = () => {
   const [modal_grid, setmodal_grid] = useState(false);
@@ -46,17 +162,13 @@ const AdminRelation = () => {
       .then((resp) => setRecommendedAction(resp))
       .catch((err) => toast.error("recommend action error"));
     getAllRecommendedRelation()
-      .then((resp) => {
-        setRecommendedRelation(resp);
-      })
-      .catch((err) => {
-        console.log("error", err);
-        toast.error("recommend action error");
-      });
+      .then((resp) => setRecommendedRelation(resp))
+      .catch((err) => toast.error("recommend action error"));
   };
   useEffect(() => {
     fetchAPIs();
   }, []);
+
   const [modal, setModal] = useState(false);
 
   const toggle = useCallback(() => {
@@ -71,7 +183,7 @@ const AdminRelation = () => {
   }, [modal]);
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
-  const [info, setInfo] = useState(null);
+  const [info, setInfo] = useState([]);
 
   const onClickDelete = (contact) => {
     deleteRecommendActionRelation(contact._id)
@@ -236,7 +348,6 @@ const AdminRelation = () => {
                     onClick={() => {
                       const contactData = cellProps.row.original;
                       setInfo(contactData);
-                      setmodal_grid(true);
                     }}
                   >
                     Edit
@@ -285,8 +396,6 @@ const AdminRelation = () => {
             modal_grid={modal_grid}
             questionList={questionList}
             recommendAction={recommendedAction}
-            info={info}
-            setInfo={setInfo}
             setmodal_grid={setmodal_grid}
             setRecommendedRelation={setRecommendedRelation}
             recommendedRelation={recommendedRelation}
