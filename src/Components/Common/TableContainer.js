@@ -30,12 +30,16 @@ import {
   TaskListGlobalFilter,
   DateRangeGlobalFilter,
   AllQaFilters,
+  FilterLeaderBoard,
+  AdminRAFilters,
+  FilterAdminBenchmark,
 } from "../../Components/Common/GlobalSearchFilter";
 
 // Define a default UI for filtering
 function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
+  selectedData,
   setGlobalFilter,
   isBenchmarkingQASearch,
   isCustomerFilter,
@@ -55,6 +59,9 @@ function GlobalFilter({
   isFilterAction,
   isFilterBenchmarkAction,
   isSearchInput,
+  isFilterLeaderBoard,
+  isFilterAdminRA,
+  isFilterAdminBenchmark,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -94,8 +101,27 @@ function GlobalFilter({
                   <i className="bx bx-search-alt search-icon"></i>
                 </div>
               )}
-              {isAllQaFilters && <AllQaFilters />}
-              {isFilterA && <FilterA />}
+              {isAllQaFilters && (
+                <AllQaFilters
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
+              {isFilterA && (
+                <FilterA
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
+              {isFilterAdminBenchmark && (
+                <FilterAdminBenchmark
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
               {isFilterBenchmarkAction && (
                 <FilterBenchmarkAction
                   globalFilter={globalFilter}
@@ -106,7 +132,18 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {isFilterAdminRA && (
+              <AdminRAFilters
+                useAsyncDebounce={useAsyncDebounce}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+              />
+            )}
+            {isFilterLeaderBoard && (
+              <FilterLeaderBoard selectedData={selectedData} />
+            )}
             {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
+
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
@@ -128,8 +165,10 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   setInfo,
+  isFilterAdminRA,
   isBenchmarkingQASearch,
   isFilterA,
+  selectedData,
   isFilterAction,
   isFilterBenchmarkAction,
   isAllQaFilters,
@@ -150,6 +189,8 @@ const TableContainer = ({
   isNFTRankingFilter,
   isSearchInput,
   isTaskListFilter,
+  isFilterLeaderBoard,
+  isFilterAdminBenchmark,
   isAddOptions,
   isAddUserList,
   handleOrderClicks,
@@ -160,7 +201,6 @@ const TableContainer = ({
   tableClass,
   theadClass,
   trClass,
-
   thClass,
   divClass,
   SearchPlaceholder,
@@ -238,6 +278,7 @@ const TableContainer = ({
         )}
         {isGlobalFilter && (
           <GlobalFilter
+            isFilterAdminRA={isFilterAdminRA}
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             isBenchmarkingQASearch={isBenchmarkingQASearch}
@@ -248,6 +289,7 @@ const TableContainer = ({
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}
+            selectedData={selectedData}
             isOrderFilter={isOrderFilter}
             isContactsFilter={isContactsFilter}
             isCompaniesFilter={isCompaniesFilter}
@@ -259,6 +301,8 @@ const TableContainer = ({
             isSearchInput={isSearchInput}
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
+            isFilterLeaderBoard={isFilterLeaderBoard}
+            isFilterAdminBenchmark={isFilterAdminBenchmark}
           />
         )}
         {isAddOptions && (

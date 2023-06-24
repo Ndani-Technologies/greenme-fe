@@ -14,13 +14,13 @@ export const getAllBenchmarks = async () => {
     let data;
     data = resp.map((value) => {
       return {
+        ...value,
         title: value?.title,
-        status: value?.status,
+        status: value?.status === "Active" ? "Complete" : "Incomplete",
         completion_level: Math.floor(value?.completionLevel),
         country: value?.country,
         start_date: value?.start_date,
         end_data: value?.end_date,
-        ...value,
       };
     });
     console.log("benchmark get all", data);
@@ -52,8 +52,8 @@ export const updateUserResp = async (id, user_resp, navigate) => {
   console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
 
   // let resp = await axios.patch(
-  //   `https://backend.greenme.fleetforum.org/api/v1/bench/benchmarking/user_resp_submit/${id}`,
-  //   { user_resp }
+  //   `http://192.168.137.1:5001/api/v1/bench/benchmarking/user_resp_submit/${id}`,
+  //   user_resp
   // );
   let resp = await axios.patch(
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_submit/${id}`,
@@ -66,14 +66,16 @@ export const updateUserResp = async (id, user_resp, navigate) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (resp) {
     toast.success("User response submitted successfully!");
-    navigate("/benchmarking");
+    if (navigate) {
+      navigate("/benchmarking");
+    }
   }
   return resp;
 };
 
 export const updateUserRespSave = async (id, user_resp) => {
   console.log(user_resp, "SAVE RESPONSE IN THUNK");
-  console.log("benchmark  user_resp_update req", user_resp);
+  // console.log("benchmark  user_resp_update req", user_resp);
 
   let resp = await axios.patch(
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
@@ -119,6 +121,18 @@ export const addBenchmark = async (benchmark) => {
 
 //ADMIN BENCHMARK SUMMARY
 
+export const removeBenchmarkUserResp = async (id, data) => {
+  try {
+    let resp = await axios.put(
+      `${process.env.REACT_APP_BENCHMARK_URL}/${id}`,
+      data
+    );
+    console.log(resp);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getAdminSummaryBenchmarking = async (id) => {
   // let resp = await axios.get(
   //   `${process.env.REACT_APP_BENCHMARK_URL}/summaryByAdmin/${id}`
@@ -140,7 +154,8 @@ export const getUserSummaryBenchmarking = async (id) => {
   //   `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`
   // );
   let resp = await axios.get(
-    `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`
+    `${process.env.REACT_APP_BENCHMARK_URL}/summaryByUser/${id}`,
+    data
   );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
 
@@ -161,7 +176,7 @@ export const getAllQA = async () => {
         response: value.response !== undefined ? value.response : 0,
         answered: value.whoHasAnswer?.totalUsers,
         category: value?.category?.titleEng,
-        status: value?.status ? "active" : "In-active",
+        status: value?.status ? "Complete" : "Incomplete",
         visibility: value?.visibility ? "True" : "False",
       };
     });
@@ -309,9 +324,11 @@ export const addQuestion = async (data, category) => {
         response: 0,
         answered: res.whoHasAnswer?.totalUsers,
         category: category,
-        status: res?.status ? "active" : "Inactive",
+        status: res?.status ? "Complete" : "Incomplete",
         visibility: res?.visibility ? "True" : "False",
       };
+      console.log(updatedResp, "updatedResp");
+      console.log(res, "res");
       return updatedResp;
     }
     return res;
@@ -331,6 +348,7 @@ export const getAllAdminBenchmarks = async () => {
         ...value,
         name: value.user.firstName + value.user.lastName,
         organization: value.user.organization,
+        status: value?.status === "Active" ? "Complete" : "Incomplete",
       };
     });
     console.log("admin benchmark get all", data);

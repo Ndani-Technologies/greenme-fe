@@ -2103,10 +2103,10 @@ const UiCards = () => {
                   </Card>
                   <Card className="bg-primary text-white text-center p-3">
                     <blockquote className="card-blockquote m-0">
-                      <p>
+                      {/* <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                         Integer posuere erat.
-                      </p>
+                      </p> */}
                       <footer className="blockquote-footer text-white font-size-12 mt-0 mb-0">
                         Someone famous in{" "}
                         <cite title="Source Title">Source Title</cite>

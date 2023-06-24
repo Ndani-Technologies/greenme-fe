@@ -46,6 +46,7 @@ import {
   addQuestion,
   updateQuestion,
   deleteQuestion,
+  getAllAdminBenchmarks,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -85,34 +86,27 @@ const BenchmarkingQA = () => {
   const allQA = () => {
     getAllQA()
       .then((resp) => setQA(resp))
-      .catch((err) => console.log("qa all error", err));
+      .catch((err) => toast.error("qa all error"));
     getAllAnswers()
       .then((resp) => setAllAnswers(resp))
-      .catch((err) => console.log("answer all error", err));
+      .catch((err) => toast.error("answer all error"));
     getAllCategories()
       .then((resp) => setAllCategories(resp))
-      .catch((err) => console.log("category all error", err));
+      .catch((err) => toast.error("category all error"));
   };
+  const [info, setInfo] = useState([]);
 
   useEffect(() => {
     allQA();
     if (isDataUpdated) {
       setSelectedAnswerOptions[info.answerOptions];
+      validation.setFieldValue("title", info.title);
+      validation.setFieldValue("category", info.category);
     }
   }, []);
-  useEffect(() => {
-    dispatch(onGetContacts(crmcontacts));
-  }, [dispatch, crmcontacts]);
-  useEffect(() => {
-    setContact(qa);
-  }, [crmcontacts]);
-
-  useEffect(() => {
-    if (!isEmpty(crmcontacts)) {
-      setContact(crmcontacts);
-      setIsEdit(false);
-    }
-  }, [crmcontacts]);
+  if (isDataUpdated) {
+    console.log(info.answerOptions, "INFO AO");
+  }
 
   const [isEdit, setIsEdit] = useState(false);
   const [contact, setContact] = useState([]);
@@ -151,12 +145,12 @@ const BenchmarkingQA = () => {
     enableReinitialize: true,
 
     initialValues: {
-      title: "",
+      title: isDataUpdated ? info.title : "",
       status: true,
       visibility: true,
-      description: "",
-      category: "",
-      answerOptions: [],
+      description: isDataUpdated ? info.description : "",
+      category: isDataUpdated ? info.category : "",
+      answerOptions: isDataUpdated ? info.answerOptions : "",
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Please Enter title"),
@@ -166,28 +160,21 @@ const BenchmarkingQA = () => {
 
     onSubmit: async (values) => {
       const cd = allCategories.find((value) => {
-        console.log(
-          "categories",
-          value.titleEng,
-          values.category,
-          value.titleEng.toString().includes(values.category)
-        );
         if (value.titleEng.toString().includes(values.category)) return value;
       });
-
+      console.log(values, "INSIDE SUBMIT");
       const mappedData = {
         ...values,
         category: cd?._id,
-        status: "active" ? true : false,
         visibility: "True" ? true : false,
       };
-      console.log(mappedData, "MAPPED");
+      console.log(mappedData, "MD");
       if (isDataUpdated) {
         updateQuestion(questionId, mappedData)
           .then((resp) => {
             getAllQA()
               .then((resp) => setQA(resp))
-              .catch((err) => console.log("qa all error", err));
+              .catch((err) => toast.error("qa all error"));
             toast.success("Successfully Updated");
           })
           .catch((err) => {
@@ -206,9 +193,8 @@ const BenchmarkingQA = () => {
             toast.error(`Error in adding question ${err}`);
           });
       }
-
+      setSelectedAnswerOptions([]);
       setIsDataUpdated(false);
-      console.log("values formik", values);
       setmodal_grid(false);
 
       toggle();
@@ -244,67 +230,6 @@ const BenchmarkingQA = () => {
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
   const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
   const deletedArr = [];
-  // const deleteMultiple = () => {
-  //   // const checkall = document.getElementById("checkBoxAll");
-  //   // console.log(selectedCheckBoxDelete, "SELECTED")
-  //   // selectedCheckBoxDelete.forEach((element) => {
-  //   //   console.log(element, "VAL")
-  //   //   dispatch(onDeleteContact(element.value));
-  //   //   // setTimeout(() => {
-  //   //   //   toast.clearWaitingQueue();
-  //   //   // }, 3000);
-  //   // });
-  //   // setIsMultiDeleteButton(false);
-  //   console.log("tobedeleted", toBeDeleted);
-  //   toBeDeleted.forEach((value) => {
-  //     setQA((prev) => prev.filter((element) => element._id !== value));
-  //   });
-  //   // checkall.checked = false;
-  // };
-
-  // Checked All
-
-  // const checkedAll = useCallback(() => {
-  //   const checkall = document.getElementById("checkBoxAll");
-  //   const ele = document.querySelectorAll(".contactCheckBox");
-
-  //   if (checkall.checked) {
-  //     ele.forEach((ele) => {
-  //       ele.checked = true;
-  //       setAllChecked(true)
-  //     });
-  //   } else {
-  //     ele.forEach((ele) => {
-  //       ele.checked = false;
-  //       setAllChecked(false)
-  //     });
-  //   }
-  //   deleteCheckbox();
-  // }, []);
-
-  // const checkedAll = useCallback(() => {
-  //   const checkall = document.getElementById("checkBoxAll");
-  //   const ele = document.querySelectorAll(".contactCheckBox");
-
-  //   if (checkall.checked) {
-  //     ele.forEach((ele) => {
-  //             ele.checked = true;
-  //             setAllChecked(true)
-  //     });
-  //     const allIds = Array.from(ele).map((el) => el.value._id);
-  //     setToBeDeleted(allIds);
-  //     setAllChecked(true);
-  //   } else {
-  //     ele.forEach((ele) => {
-  //             ele.checked = false;
-  //             setAllChecked(false)
-  //           });
-  //     setToBeDeleted([]);
-  //     setAllChecked(false);
-  //   }
-
-  //   deleteCheckbox();
-  // }, []);
 
   const checkedAll = useCallback(() => {
     const checkall = document.getElementById("checkBoxAll");
@@ -409,18 +334,21 @@ const BenchmarkingQA = () => {
             <div className="d-flex align-items-center">
               <div className="flex-shrink-0"></div>
               <div
-                className="flex-grow-1 ms-2 name"
+                className="flex-grow-1 ms-2 name cursor-pointer"
                 onClick={() => {
                   const contactData = cellProps.row.original;
-                  console.log("row", contactData);
+                  console.log(contactData, "CD");
                   setInfo(contactData);
-                  // console.log(contactData, "CD");
-                  // const answerOptions = contactData.answerOptions;
-                  // console.log(answerOptions,"answerOptions")
-                  // setInfo(cellProps.row.original);
-                  // setInfo1(cellProps.row.original);
-                  // validation?.setValues(cellProps.row.original.answerOptions);
-                  // setSelectedIndexes(info.answerOptions);
+                  setSelectedAnswerOptions(
+                    contactData.answerOptions.map((value) => {
+                      return {
+                        answerOption: value.answerOption._id,
+                        includeExplanation: value.includeExplanation,
+                        includeInputField: value.includeInputField,
+                      };
+                    })
+                  );
+
                   setQuestionId(cellProps.row.original._id);
                   setmodal_grid(true);
                   setIsDataUpdated(true);
@@ -438,13 +366,9 @@ const BenchmarkingQA = () => {
         filterable: false,
       },
       {
-        Header: "Who has answered",
+        Header: "# of users answered",
         accessor: "answered",
       },
-      // {
-      //   Header: "Status",
-      //   accessor: "status",
-      // },
       {
         Header: "Status",
         accessor: "status",
@@ -499,32 +423,20 @@ const BenchmarkingQA = () => {
                       className="dropdown-item"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        const answerOptions = contactData.answerOptions.map(
-                          (answerId) => {
-                            const answer = allAnswers.find(
-                              (item) => item._id === answerId
-                            );
-                            return answer ? answer.answerOption : "";
-                          }
+                        setInfo(contactData);
+                        setSelectedAnswerOptions(
+                          contactData.answerOptions.map((value) => {
+                            return {
+                              answerOption: value.answerOption._id,
+                              includeExplanation: value.includeExplanation,
+                              includeInputField: value.includeInputField,
+                            };
+                          })
                         );
 
-                        const result = {
-                          ...contactData,
-                          answerOptions: answerOptions,
-                        };
-                        setInfo(contactData.answerOptions);
-                        console.log("contact row", contactData);
-                        // const data = contactData.map((value)=>{
-                        //   return {
-                        //     ...value,
-                        //     answerOption
-                        //   }
-                        // })
-                        validation.setValues(result);
-                        // setSelectedIndexes(contactData.answerOptions);
                         setQuestionId(cellProps.row.original._id);
-                        setIsDataUpdated(true);
                         setmodal_grid(true);
+                        setIsDataUpdated(true);
                       }}
                     >
                       Edit
@@ -553,8 +465,6 @@ const BenchmarkingQA = () => {
   );
 
   // SideBar Contact Deatail
-  const [info, setInfo] = useState([]);
-  console.log(info, "INFO");
 
   // Export Modal
   const [modal_grid, setmodal_grid] = useState(false);
@@ -569,9 +479,12 @@ const BenchmarkingQA = () => {
   const [editingAnswerId, setEditingAnswerId] = useState(null);
   const [inputFields, setInputFields] = useState("");
   const handleEdits = (AnswerId) => {
+    setAnswerEdit(true);
     setEditingAnswerId(AnswerId);
     const Answer = allAnswers.find((c) => c._id === AnswerId);
     setInputFields(Answer.answerOption);
+    const inputFieldElement = document.getElementById("firstName"); // Replace "inputField" with the actual ID of your input field
+    inputFieldElement.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleUpdates = (e) => {
@@ -590,7 +503,6 @@ const BenchmarkingQA = () => {
       })
       .catch((err) => {
         toast.error("Error in updating answer");
-        console.log("error in updating answer", err);
       });
     setEditingAnswerId(null);
     setInputFields("");
@@ -614,7 +526,6 @@ const BenchmarkingQA = () => {
         })
         .catch((err) => {
           toast.error("Unable to update");
-          console.log("adding in answer", err);
         });
       setInputFields("");
     }
@@ -634,7 +545,7 @@ const BenchmarkingQA = () => {
         });
         setAllAnswers(updatedAnswers);
       })
-      .catch((err) => console.log("error in deleting answer", err));
+      .catch((err) => toast.error("error in deleting answer"));
     setDeleteConfirmation(false);
     setDeleteId(null);
   };
@@ -656,9 +567,19 @@ const BenchmarkingQA = () => {
   ]);
   const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [inputField, setInputField] = useState("");
+  const [categoryEdit, setCategoryEdit] = useState(false);
+  const [answerEdit, setAnswerEdit] = useState(false);
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    setInputFields("");
+    setCategoryEdit(false);
+    setAnswerEdit(false);
+  };
 
   const handleAdd = (e) => {
     e.preventDefault();
+
     const newCategoryName = inputField;
     if (newCategoryName) {
       const newCategory = {
@@ -672,15 +593,18 @@ const BenchmarkingQA = () => {
         })
         .catch((err) => {
           toast.error("Unable to Update");
-          console.log("error in adding category", err);
         });
       setInputField("");
     }
   };
+
   const handleEdit = (categoryId) => {
+    setCategoryEdit(true);
     setEditingCategoryId(categoryId);
     const category = allCategories.find((c) => c._id === categoryId);
     setInputField(category.titleEng);
+    const inputFieldElement = document.getElementById("firstName1"); // Replace "inputField" with the actual ID of your input field
+    inputFieldElement.scrollIntoView({ behavior: "smooth" });
   };
 
   const handleUpdate = (e) => {
@@ -702,7 +626,6 @@ const BenchmarkingQA = () => {
       })
       .catch((err) => {
         toast.error("Unable to Update");
-        console.log("err in updating category", err);
       });
     setEditingCategoryId(null);
     setInputField("");
@@ -720,7 +643,7 @@ const BenchmarkingQA = () => {
         );
         setAllCategories(updatedCategories);
       })
-      .catch((err) => console.log("err in deleteing category", err));
+      .catch((err) => toast.error("err in deleteing category"));
     setDeleteConfirmation2(false);
     setDeleteId(null);
   };
@@ -825,7 +748,12 @@ const BenchmarkingQA = () => {
                   <Button
                     type="button"
                     onClick={() => {
-                      // validation.resetForm();
+                      validation.resetForm();
+                      if (isDataUpdated) {
+                        setSelectedAnswerOptions(info.answerOptions);
+                      } else {
+                        setSelectedAnswerOptions([]);
+                      }
                       setIsDataUpdated(false);
                       setmodal_grid(false);
                     }}
@@ -972,11 +900,7 @@ const BenchmarkingQA = () => {
                             }}
                             onChange={validation.handleChange}
                             onBlur={validation.handleBlur}
-                            value={
-                              isDataUpdated
-                                ? info.title
-                                : validation.values.title || ""
-                            }
+                            value={validation.values.title || ""}
                             invalid={
                               validation.touched.title &&
                               validation.errors.title
@@ -994,7 +918,7 @@ const BenchmarkingQA = () => {
                         </div>
                       </Col>
                       <Col xxl={12} className="p-0">
-                        <div className="ck-editor-reverse">
+                        <div className="">
                           <CKEditor
                             editor={ClassicEditor}
                             ref={editorRef}
@@ -1014,22 +938,19 @@ const BenchmarkingQA = () => {
                             class="form-control"
                             placeholder="Description"
                             id="description"
-                            validate={{
-                              required: { value: true },
-                            }}
                             onBlur={(event, editor) => {
                               const value = editor.getData();
                               const div = document.createElement("div");
                               div.innerHTML = value;
                               const pValue = div.querySelector("p")?.innerHTML;
                               validation.setFieldValue("description", value);
+                              validation.handleBlur;
                             }}
                             value={
                               isDataUpdated
                                 ? info?.description
                                 : validation.values.description
                             }
-                            // value={validation.values.description || ""}
                             style={{
                               height: "120px",
                               overflow: "hidden",
@@ -1037,12 +958,6 @@ const BenchmarkingQA = () => {
                             }}
                           />
                         </div>
-                        {validation.touched.description &&
-                        validation.errors.description ? (
-                          <FormFeedback type="invalid">
-                            {validation.errors.description}
-                          </FormFeedback>
-                        ) : null}
                       </Col>
                       <Col xxl={12} className="p-0">
                         <Input
@@ -1064,13 +979,21 @@ const BenchmarkingQA = () => {
                               : false
                           }
                         >
-                          <option hidden selected>
-                            Select Category
-                          </option>
+                          {isDataUpdated ? (
+                            <option hidden selected>
+                              {info.category}
+                            </option>
+                          ) : (
+                            <option hidden selected>
+                              Select Category
+                            </option>
+                          )}
                           {allCategories &&
                             allCategories.map((value, index) => {
                               return (
-                                <option key={index}>{value.titleEng}</option>
+                                <option key={index}>
+                                  {categoryEdit ? "" : value?.titleEng}
+                                </option>
                               );
                             })}
                         </Input>
@@ -1095,111 +1018,6 @@ const BenchmarkingQA = () => {
                               >
                                 {isDataUpdated
                                   ? allAnswers &&
-                                    // allAnswers.map((value, index) => {
-                                    //   const isSelected =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //       {
-                                    //         return option.answerOption._id === value._id
-                                    //       }
-                                    //     );
-                                    //   const isSelectedIE =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //         option.answerOption._id === value._id &&
-                                    //         option.includeExplanation
-                                    //     );
-
-                                    //   const isSelectedIF =
-                                    //     info.answerOptions.some(
-                                    //       (option) =>
-                                    //         option.answerOption._id === value._id &&
-                                    //         option.includeInputField
-                                    //     );
-
-                                    //   return (
-                                    //     <Draggable key={value._id} draggableId={value._id.toString()} index={index}>
-                                    //       {(provided) => (
-                                    //         <div
-                                    //           className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
-                                    //           {...provided.draggableProps}
-                                    //           {...provided.dragHandleProps}
-                                    //           ref={provided.innerRef}
-                                    //         >
-                                    //           <div
-                                    //             className="d-flex align-items-center justify-content-between w-100 p-0"
-                                    //             style={{
-                                    //               color: isSelected ? "black" : "#cccccc",
-                                    //             }}
-                                    //             key={index}
-                                    //           >
-                                    //             <div>
-                                    //                 <Checkbox
-                                    //                   name="answerOptions"
-                                    //                   onBlur={() => {
-                                    //                     validation.setFieldValue(
-                                    //                       "answerOptions",
-                                    //                       selectedAnswerOptions
-                                    //                     );
-                                    //                   }}
-                                    //                   value={index}
-                                    //                   checked={isSelected}
-                                    //                   onChange={(e) => {
-                                    //                     e.preventDefault();
-                                    //                     const { checked } =
-                                    //                       e.target;
-
-                                    //                   }}
-                                    //                   icon={<CropSquareIcon />}
-                                    //                   checkedIcon={
-                                    //                     <SquareRoundedIcon />
-                                    //                   }
-                                    //                 />
-                                    //                 {value.answerOption}
-                                    //               </div>
-                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
-                                    //               <Label
-                                    //                 htmlFor={`form-grid-showcode-${index}`}
-                                    //                 className="form-label text-muted"
-                                    //               >
-                                    //                 Include Explanation
-                                    //               </Label>
-                                    //               <Checkbox
-                                    //                 id={`form-grid-showcode-${index}`}
-                                    //                 name="includeExplanation"
-                                    //                 checked={isSelectedIE}
-                                    //                 onChange={(e) => {
-                                    //                   e.preventDefault();
-                                    //                   const { checked } = e.target;
-                                    //                 }}
-
-                                    //                 icon={<CropSquareIcon />}
-                                    //                 checkedIcon={<SquareRoundedIcon />}
-                                    //               />
-                                    //             </div>
-
-                                    //             <div className="form-check form-switch form-switch-right form-switch-md">
-                                    //               <Label
-                                    //                 htmlFor={`form-grid-showcode-${index}`}
-                                    //                 className="form-label text-muted"
-                                    //               >
-                                    //                 Include Input Field
-                                    //               </Label>
-                                    //               <Checkbox
-                                    //                 id={`form-grid-showcode-${index}`}
-                                    //                 name="includeInputField"
-                                    //                 checked={isSelectedIF}
-                                    //                 icon={<CropSquareIcon />}
-                                    //                 checkedIcon={<SquareRoundedIcon />}
-                                    //               />
-                                    //             </div>
-                                    //           </div>
-                                    //         </div>
-                                    //       )}
-                                    //     </Draggable>
-                                    //   );
-                                    // })
-
                                     allAnswers.map((value, index) => {
                                       // Check if the current answer option is selected
                                       const isSelected =
@@ -1247,7 +1065,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOptions"
                                                       onBlur={() => {
@@ -1257,13 +1075,7 @@ const BenchmarkingQA = () => {
                                                         );
                                                       }}
                                                       value={index}
-                                                      checked={
-                                                        info.answerOptions.some(
-                                                          (option) =>
-                                                            option.answerOption
-                                                              ._id === value._id
-                                                        ) && isSelected
-                                                      }
+                                                      checked={isSelected}
                                                       onChange={(e) => {
                                                         e.preventDefault();
                                                         // setInfo((prev)=>{
@@ -1280,22 +1092,7 @@ const BenchmarkingQA = () => {
                                                           isSelectedIE;
                                                         const includeInputField =
                                                           isSelectedIF;
-                                                        setSelectedAnswerOptions(
-                                                          info.answerOptions.map(
-                                                            (value) => {
-                                                              return {
-                                                                answerOption:
-                                                                  value
-                                                                    .answerOption
-                                                                    ._id,
-                                                                includeExplanation:
-                                                                  value.includeExplanation,
-                                                                includeInputField:
-                                                                  value.includeInputField,
-                                                              };
-                                                            }
-                                                          )
-                                                        );
+
                                                         if (checked) {
                                                           const updatedOption =
                                                             {
@@ -1319,31 +1116,6 @@ const BenchmarkingQA = () => {
                                                               )
                                                           );
                                                         }
-                                                        const ans =
-                                                          allAnswers.answerOptions.filter(
-                                                            (value) => {
-                                                              return selectedAnswerOptions.filter(
-                                                                (val) =>
-                                                                  val.answerOption ===
-                                                                  value._id
-                                                              );
-                                                            }
-                                                          );
-                                                        setInfo((prev) => {
-                                                          prev.map((value) => {
-                                                            return {
-                                                              ...value,
-                                                              answerOptions:
-                                                                ans,
-                                                            };
-                                                          });
-                                                        });
-                                                        console.log(
-                                                          "selectedAns",
-                                                          selectedAnswerOptions,
-                                                          ans,
-                                                          info
-                                                        );
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           selectedAnswerOptions
@@ -1357,7 +1129,10 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
@@ -1368,15 +1143,7 @@ const BenchmarkingQA = () => {
                                                       id={`form-grid-showcode-${index}`}
                                                       name="includeExplanation"
                                                       value={index}
-                                                      checked={
-                                                        info.answerOptions.some(
-                                                          (option) =>
-                                                            option.answerOption
-                                                              ._id ===
-                                                              value._id &&
-                                                            option.includeExplanation
-                                                        ) || isSelectedIE
-                                                      }
+                                                      checked={isSelectedIE}
                                                       onChange={(e) => {
                                                         e.preventDefault();
                                                         const { checked } =
@@ -1530,7 +1297,7 @@ const BenchmarkingQA = () => {
                                                   }}
                                                   key={index}
                                                 >
-                                                  <div>
+                                                  <div style={{ width: "33%" }}>
                                                     <Checkbox
                                                       name="answerOptions"
                                                       onBlur={() => {
@@ -1589,7 +1356,10 @@ const BenchmarkingQA = () => {
                                                     {value.answerOption}
                                                   </div>
 
-                                                  <div className="form-check form-switch form-switch-right form-switch-md">
+                                                  <div
+                                                    className="form-check form-switch form-switch-right form-switch-md"
+                                                    style={{ width: "33%" }}
+                                                  >
                                                     <Label
                                                       htmlFor={`form-grid-showcode-${index}`}
                                                       className="form-label text-muted"
@@ -1660,13 +1430,11 @@ const BenchmarkingQA = () => {
                                                       name="includeInputField"
                                                       checked={isSelectedIF}
                                                       onChange={(e) => {
-                                                        const updatedAnswers = [
-                                                          ...allAnswers,
-                                                        ];
-                                                        updatedAnswers[
-                                                          index
-                                                        ].includeInputField =
-                                                          e.target.checked;
+                                                        e.preventDefault();
+                                                        const { checked } =
+                                                          e.target;
+                                                        const answerOption =
+                                                          value._id;
 
                                                         setSelectedAnswerOptions(
                                                           (prevOptions) =>
@@ -1674,13 +1442,12 @@ const BenchmarkingQA = () => {
                                                               (option) => {
                                                                 if (
                                                                   option.answerOption ===
-                                                                  value._id
+                                                                  answerOption
                                                                 ) {
                                                                   return {
                                                                     ...option,
                                                                     includeInputField:
-                                                                      e.target
-                                                                        .checked,
+                                                                      checked,
                                                                   };
                                                                 }
                                                                 return option;
@@ -1688,6 +1455,13 @@ const BenchmarkingQA = () => {
                                                             )
                                                         );
 
+                                                        validation.setFieldValue(
+                                                          "answerOptions",
+                                                          selectedAnswerOptions
+                                                        );
+                                                      }}
+                                                      onBlur={(e) => {
+                                                        e.preventDefault();
                                                         validation.setFieldValue(
                                                           "answerOptions",
                                                           selectedAnswerOptions
@@ -1718,7 +1492,12 @@ const BenchmarkingQA = () => {
                           <Button
                             className="btn btn-danger p-4 pt-2 pb-2"
                             onClick={() => {
-                              // validation.resetForm();
+                              validation.resetForm();
+                              if (isDataUpdated) {
+                                setSelectedAnswerOptions(info.answerOptions);
+                              } else {
+                                setSelectedAnswerOptions([]);
+                              }
                               setIsDataUpdated(false);
                               setmodal_grid(false);
                             }}
@@ -1747,7 +1526,7 @@ const BenchmarkingQA = () => {
                 onClick={() => {
                   getAllAnswers()
                     .then((res) => setAllAnswers(res))
-                    .catch((err) => console.log("err in getting answers", err));
+                    .catch((err) => toast.error("err in getting answers"));
                   setmodals_Answer(true);
                 }}
               >
@@ -1896,11 +1675,15 @@ const BenchmarkingQA = () => {
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
                                           ref={provided.innerRef}
+                                          style={{ cursor: "default" }}
                                         >
                                           <div className="d-flex align-items-center gap-2">
                                             <i
                                               className="ri-drag-move-2-line fs-24"
-                                              style={{ color: "#4A7BA4" }}
+                                              style={{
+                                                color: "#4A7BA4",
+                                                cursor: "grab",
+                                              }}
                                             ></i>
                                             <h5 className="m-0">
                                               {Answer.answerOption}
@@ -1908,14 +1691,14 @@ const BenchmarkingQA = () => {
                                           </div>
                                           <div className="d-flex justify-content-end gap-2">
                                             <i
-                                              className="ri-pencil-fill fs-18"
+                                              className="ri-pencil-fill fs-18 cursor-pointer"
                                               style={{ color: "gray" }}
                                               onClick={() =>
                                                 handleEdits(Answer._id)
                                               }
                                             ></i>
                                             <i
-                                              className="ri-delete-bin-2-line fs-18"
+                                              className="ri-delete-bin-2-line fs-18 cursor-pointer"
                                               style={{ color: "red" }}
                                               onClick={() =>
                                                 handleDeletes(Answer._id)
@@ -1965,7 +1748,7 @@ const BenchmarkingQA = () => {
                                     onChange={(e) =>
                                       setInputFields(e.target.value)
                                     }
-                                    value={inputFields}
+                                    value={inputFields || ""}
                                   />
                                 </div>
                               </Col>
@@ -1975,12 +1758,21 @@ const BenchmarkingQA = () => {
                                     Save
                                   </Button>
 
-                                  <Button
-                                    color="primary"
-                                    onClick={(e) => handleAnswerAdd(e)}
-                                  >
-                                    Add new item to list
-                                  </Button>
+                                  {answerEdit ? (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleCancel(e)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleAdd(e)}
+                                    >
+                                      Add new item to list
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             </div>
@@ -2001,7 +1793,7 @@ const BenchmarkingQA = () => {
                   getAllCategories()
                     .then((res) => setAllCategories(res))
                     .catch((err) =>
-                      console.log("err in getting cateories", err)
+                      toast.error("err in getting cateories", err)
                     );
                   setmodals_grid(true);
                 }}
@@ -2137,40 +1929,50 @@ const BenchmarkingQA = () => {
                               {allCategories &&
                                 allCategories.map((category, index) => (
                                   <Draggable
-                                    key={category._id}
-                                    draggableId={category._id.toString()}
+                                    key={category?._id}
+                                    draggableId={category?._id.toString()}
                                     index={index}
                                   >
                                     {(provided) => (
                                       <div
-                                        key={category._id}
+                                        key={category?._id}
                                         className="border p-3 pt-1 pb-1 bg-white d-flex justify-content-between align-items-center"
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                         ref={provided.innerRef}
+                                        style={{ cursor: "default " }}
                                       >
                                         <div className="d-flex align-items-center gap-2">
                                           <i
                                             className="ri-drag-move-2-line fs-24"
-                                            style={{ color: "#4A7BA4" }}
+                                            style={{
+                                              color: "#4A7BA4",
+                                              cursor: "grab",
+                                            }}
                                           ></i>
                                           <h5 className="m-0">
-                                            {category.titleEng}
+                                            {category?.titleEng}
                                           </h5>
                                         </div>
                                         <div className="d-flex gap-2">
                                           <i
                                             className="ri-pencil-fill fs-18"
-                                            style={{ color: "gray" }}
+                                            style={{
+                                              color: "gray",
+                                              cursor: "pointer",
+                                            }}
                                             onClick={() =>
-                                              handleEdit(category._id)
+                                              handleEdit(category?._id)
                                             }
                                           ></i>
                                           <i
                                             className="ri-delete-bin-2-line fs-18"
-                                            style={{ color: "red" }}
+                                            style={{
+                                              color: "red",
+                                              cursor: "pointer",
+                                            }}
                                             onClick={() =>
-                                              handleDelete(category._id)
+                                              handleDelete(category?._id)
                                             }
                                           ></i>
                                         </div>
@@ -2210,12 +2012,12 @@ const BenchmarkingQA = () => {
                                   <Input
                                     type="text"
                                     className="form-control mt-2"
-                                    id="firstName"
+                                    id="firstName1"
                                     placeholder="Edit Category name"
                                     onChange={(e) =>
                                       setInputField(e.target.value)
                                     }
-                                    value={inputField}
+                                    value={inputField || ""}
                                   />
                                 </div>
                               </Col>
@@ -2227,12 +2029,21 @@ const BenchmarkingQA = () => {
                                   >
                                     Update Category
                                   </Button>
-                                  <Button
-                                    color="primary"
-                                    onClick={(e) => handleAdd(e)}
-                                  >
-                                    Add new item to list
-                                  </Button>
+                                  {categoryEdit ? (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleCancel(e)}
+                                    >
+                                      Cancel
+                                    </Button>
+                                  ) : (
+                                    <Button
+                                      color="primary"
+                                      onClick={(e) => handleAdd(e)}
+                                    >
+                                      Add new item to list
+                                    </Button>
+                                  )}
                                 </div>
                               </div>
                             </div>
