@@ -16,7 +16,10 @@ const persistConfig = {
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-const store = configureStore({ reducer: persistedReducer, devTools: true });
+export const store = configureStore({
+  reducer: persistedReducer,
+  devTools: true,
+});
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
