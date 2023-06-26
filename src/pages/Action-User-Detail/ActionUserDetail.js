@@ -19,7 +19,11 @@ import classnames from "classnames";
 import PreviewCardHeader from "../../Components/Common/PreviewCardHeader";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
-import { updateAdminStep, updateSaveActionStep } from "../../slices/thunks";
+import {
+  completeUserActionStep,
+  updateAdminStep,
+  updateSaveActionStep,
+} from "../../slices/thunks";
 import { toast, ToastContainer } from "react-toastify";
 import { updateRecommendedActionStep } from "../../slices/RecommendedAction/thunk";
 
@@ -74,7 +78,9 @@ const ActionUserDetail = () => {
         for (const stepObject of steps) {
           await updateRecommendedActionStep(stepObject._id, stepObject);
         }
-
+        // completeUserActionStep(data._id, steps).then(()=>{
+        //   toast.success("Steps marked completed.")
+        // })
         // Show a final toast message after all updates are completed
         toast.success("All steps successfully updated");
         navigate("/actionuserdashboard");
@@ -135,6 +141,39 @@ const ActionUserDetail = () => {
       setActiveIndex(null);
     } else {
       setActiveIndex(index);
+    }
+  };
+  const handleComplete = () => {
+    let completedSteps = data.steps.filter((value) => value.isCompleted);
+
+    let steps = stepData.map((value) => {
+      if (value.isCheckBoxCompleted) {
+        value.step.isCompleted = true;
+        value.step.status = true;
+      }
+      return value.step;
+    });
+    completedSteps.forEach((value) => {
+      if (steps.some((e) => e._id !== value._id)) {
+        steps.push(value);
+      }
+      if (steps.length === 0) {
+        steps.push(value);
+      }
+    });
+
+    try {
+      // for (const stepObject of steps) {
+      //   await updateRecommendedActionStep(stepObject._id, stepObject);
+      // }
+      completeUserActionStep(data._id, steps).then(() => {
+        toast.success("Steps marked completed.");
+      });
+      // Show a final toast message after all updates are completed
+      // toast.success("All steps successfully updated");
+      navigate("/actionuserdashboard");
+    } catch (err) {
+      toast.error("Error in updating.");
     }
   };
   return (
@@ -403,7 +442,9 @@ const ActionUserDetail = () => {
                   Reset
                 </Button>
                 <Button type="submit">Save</Button>
-                <Button color="primary">Complete</Button>
+                <Button color="primary" onClick={handleComplete}>
+                  Complete
+                </Button>
               </Col>
             </Col>
           </form>

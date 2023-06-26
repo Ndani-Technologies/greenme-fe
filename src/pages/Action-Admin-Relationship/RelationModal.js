@@ -179,7 +179,6 @@ const RelationModal = ({
       if (info !== null) {
         const toastId = toast.loading("Updating Recommend Relation");
         updatedRecommendActionRelation(info._id, mappedData, toastId)
-
           .then((resp) => {
             console.log("resp", resp);
             let answers = "";
@@ -197,7 +196,17 @@ const RelationModal = ({
                 : "Automatic",
               number_of_assignment: resp?.number_of_assignment,
             };
-            setRecommendedRelation([...recommendedRelation, data]);
+            setRecommendedRelation((prev) => {
+              let data1 = [...prev];
+              data1 = data1.map((value) => {
+                if (value._id === resp._id) {
+                  return data;
+                } else {
+                  return value;
+                }
+              });
+              return data1;
+            });
 
             // const currentRecommendedRelation = recommendedRelation.find((rr)=>rr._id === info._id)
           })

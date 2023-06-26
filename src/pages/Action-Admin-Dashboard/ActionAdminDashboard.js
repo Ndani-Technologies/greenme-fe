@@ -42,122 +42,7 @@ import CategoryModal from "./components/CategoryModal";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import Layouts from "../../Layouts";
 import { useNavigate } from "react-router";
-const arr = [
-  {
-    _id: "625d3cd5923ccd040209ebf1",
-    name: "Does your organisation have environmental commitments?",
-    phone: "Max",
-    email: "low",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Avoid",
-    tags: "active",
-    response: "low",
-    Scale: "intermediate",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf3",
-    name: "Does your organisation have a ‘green’ strategy?",
-    phone: "Max",
-    email: "low",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "Improve",
-    tags: "In progress",
-    response: "low",
-    Scale: "Short term",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebee",
-    name: "Does your fleet policy contain references to a green strategy or environmental sustainability?",
-    phone: "Max",
-    email: "low",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf0",
-    name: "Does your fleet policy include guidance to use the vehicle with the lowest environmental impact?",
-    phone: "Medium",
-    email: "Very High",
-    lead_score: "Avoid",
-    tags: "In progress",
-    response: "low",
-    Scale: "Medium term",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebf2",
-    name: "Do you have standardised fleet procurement (global framework agreement…)?",
-    phone: "Medium",
-    email: "Medium",
-    lead_score: "Improve",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebeb",
-    name: "Do you use sustainability criteria to assess/ select suppliers?",
-    phone: "Low",
-    company: "iTest Factory",
-    designation: "UI / UX Designer",
-    email: "low",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "Medium term",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebec",
-    name: "How do you dispose of vehicles?",
-    phone: "Max",
-    company: "Force Medicines",
-    designation: "PHP Developer",
-    email: "Medium",
-    last_contacted: "2010-11-05T00:00:02.016Z",
-    lead_score: "General",
-    tags: "In progress",
-    response: "low",
-    Scale: "Short term",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebea",
-    name: "Do you take the environmental impact into consideration when planning for disposal ?",
-    phone: "Medium",
-    company: "Nesta Technologies",
-    designation: "Lead Designer / Developer",
-    email: "High",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
-  },
-
-  {
-    _id: "625d3cd5923ccd040209ebef",
-    name: "How do you dispose of vehicles?",
-    phone: "Max",
-    company: "Micro Design",
-    designation: "Asp.Net Developer",
-    email: "Very High",
-    lead_score: "Improve",
-    tags: "In progress",
-    response: "low",
-    Scale: "Long term",
-  },
-  {
-    _id: "625d3cd5923ccd040209ebed",
-    name: "How do you dispose of vehicles?",
-    phone: "Low",
-    company: "Digitech Galaxy",
-    designation: "Full Stack Developer",
-    email: "low",
-    lead_score: "Shift",
-    tags: "In progress",
-    response: "low",
-    Scale: "intermediate",
-  },
-];
+const arr = [];
 const ActionAdminDashboard = () => {
   const [adminActions, setAdminActions] = useState([]);
   const [adminResources, setAdminResources] = useState([]);
@@ -179,6 +64,7 @@ const ActionAdminDashboard = () => {
 
   const getAdminActions = () => {
     getAllAdminActions().then((res) => {
+      console.log("admin action", res);
       setAdminActions(res);
     });
     getAllAdminSteps().then((res) => {
@@ -630,35 +516,6 @@ const ActionAdminDashboard = () => {
     setAssignTag(assigned);
   }
 
-  const tags = [
-    { label: "Exiting", value: "Exiting" },
-    { label: "Lead", value: "Lead" },
-    { label: "Long-term", value: "Long-term" },
-    { label: "Partner", value: "Partner" },
-  ];
-
-  const categories = [
-    { id: 1, name: "Avoid" },
-    { id: 2, name: "Shift" },
-    { id: 3, name: "Improve" },
-  ];
-
-  const weight = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "Max" },
-  ];
-  const Status = [
-    { id: 1, name: "Not started" },
-    { id: 2, name: "In progress" },
-    { id: 3, name: "Completed" },
-  ];
-  const Potential = [
-    { id: 1, name: "Low" },
-    { id: 2, name: "Medium" },
-    { id: 3, name: "High" },
-  ];
-
   // Export Modal
   const [modalName, setModalName] = useState("");
   const [modalField, setModalField] = useState("");
@@ -875,6 +732,10 @@ const ActionAdminDashboard = () => {
                   <TableContainer
                     columns={columns}
                     data={adminActions || []}
+                    timeScale={adminTimeScale}
+                    category={adminCategories}
+                    cost={adminCosts}
+                    reductionPotential={adminPotential}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
