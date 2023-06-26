@@ -13,6 +13,7 @@ const Navdata = () => {
   const [isBanchmarking, setIsBanchmarking] = useState(false);
   const [isRecommend, setIsRecommend] = useState(false);
   const [isRecommended, setIsRecommended] = useState(false);
+  const [isCollaboration, setIsCollaboration] = useState(false);
   const [isBaseUi, setIsBaseUi] = useState(false);
   const [isAdvanceUi, setIsAdvanceUi] = useState(false);
   const [isForms, setIsForms] = useState(false);
@@ -375,8 +376,29 @@ const Navdata = () => {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "/UserCollaboration",
+      link: "/#",
       disable: false,
+      click: function (e) {
+        e.preventDefault();
+        setIsCollaboration(!isCollaboration);
+        setIscurrentState("Collaboration");
+        updateIconSidebar(e);
+      },
+      stateVariables: isCollaboration,
+      subItems: [
+        {
+          id: 1,
+          label: "Collaboration",
+          link: "/UserCollaboration",
+          parentId: "Collaboration",
+        },
+        {
+          id: 2,
+          label: "Chats",
+          link: "/collaborationChat",
+          parentId: "Collaboration",
+        },
+      ],
     },
     {
       id: 6,

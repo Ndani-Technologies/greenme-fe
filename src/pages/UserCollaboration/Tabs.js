@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+} from "react";
 import {
   Card,
   CardBody,
@@ -12,6 +18,7 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
+  Tooltip,
   ListGroupItem,
 } from "reactstrap";
 import classnames from "classnames";
@@ -58,26 +65,47 @@ const Tabs = () => {
     setCard(item);
     setModal(true);
   };
-
   const debouncedSearch = useMemo(
     () =>
       debounce((value, type) => {
-        debounceRef.current += 1;
-        const LocalRef = debounceRef.current;
-        setTimeout(() => {
-          if (LocalRef === debounceRef.current) {
-            if (type === "searchText") {
-              handleFilter({ searchTextValue: value });
-            }
-
-            if (type === "slider") {
-              handleFilter({ sliderValue: value });
-            }
-          }
-        }, 1);
+        if (type === "searchText") {
+          handleFilter({ searchTextValue: value });
+        } else if (type === "slider") {
+          handleFilter({ sliderValue: value });
+        }
       }, 300),
     []
   );
+
+  const handleInputChange = useCallback(
+    (e) => {
+      const searchTextValue = e.target.value.trim();
+      setSearchText(searchTextValue);
+      if (searchTextValue.length >= 3) {
+        debouncedSearch(searchTextValue, "searchText");
+      }
+    },
+    [debouncedSearch]
+  );
+  // const debouncedSearch = useMemo(
+  //   () =>
+  //     debounce((value, type) => {
+  //       debounceRef.current += 1;
+  //       const LocalRef = debounceRef.current;
+  //       setTimeout(() => {
+  //         if (LocalRef === debounceRef.current) {
+  //           if (type === "searchText") {
+  //             handleFilter({ searchTextValue: value });
+  //           }
+
+  //           if (type === "slider") {
+  //             handleFilter({ sliderValue: value });
+  //           }
+  //         }
+  //       }, 1);
+  //     }, 300),
+  //   []
+  // );
 
   const fetchAllUsers = async () => {
     setLoading(true);
@@ -93,7 +121,9 @@ const Tabs = () => {
         setUsersOrganizations([
           ...new Set(usersData.map((user) => user.organization)),
         ]);
-        setUsersCountries([...new Set(usersData.map((user) => user.country))]);
+        setUsersCountries([
+          ...new Set(usersData?.map((user) => user?.country).filter(Boolean)),
+        ]);
         setUsersOrganizationsData(getOrganizationsData(usersData));
       }
     } catch (error) {
@@ -134,20 +164,36 @@ const Tabs = () => {
       });
     }
 
+    // if (searchTextValue && searchTextValue !== "") {
+    //   filteredUsers = filteredUsers.filter((user) => {
+    //     return (
+    //       (user?.firstName?.includes(searchTextValue) ||
+    //         user?.lastName?.includes(searchTextValue)) &&
+    //       user
+    //     );
+    //   });
     if (searchTextValue && searchTextValue !== "") {
       filteredUsers = filteredUsers.filter((user) => {
-        return (
-          (user?.firstName?.includes(searchTextValue) ||
-            user?.lastName?.includes(searchTextValue)) &&
-          user
-        );
+        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+        return fullName.includes(searchTextValue.toLowerCase());
       });
+    } else {
+      setAllUsersData(allUsersDataSet);
     }
 
     setAllUsersData(filteredUsers);
     setTotalPages(Math.ceil(filteredUsers.length / 12));
   };
 
+  const [hoveredAvatar, setHoveredAvatar] = useState(null);
+
+  const handleMouseEnter = (avatarId) => {
+    setHoveredAvatar(avatarId);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredAvatar(null);
+  };
   return (
     <Col className="p-4 " xxl={12}>
       <h5 className="mb-3 p-3 pb-0">User details</h5>
@@ -175,7 +221,17 @@ const Tabs = () => {
           <TabContent activeTab={justifyTab} className="text-muted">
             <TabPane tabId="1" id="base-justified-home">
               <Row>
-                <div className="d-flex  gap-2">
+                <div className="d-flex  gap-3">
+                  <div
+                    className="d-flex align-items-center"
+                    style={{ height: "37px" }}
+                  >
+                    <i
+                      style={{ color: "blue" }}
+                      className="bx bx-filter-alt filter-icon"
+                    />
+                  </div>
+
                   <div
                     className="d-flex align-items-center border border-dark p-1 w-25 rounded"
                     style={{ height: "37px" }}
@@ -186,13 +242,7 @@ const Tabs = () => {
                       placeholder="Search By Name"
                       type="text"
                       value={searchText}
-                      onChange={(e) => {
-                        const searchTextValue = e.target.value.trim();
-                        setSearchText(searchTextValue);
-                        if (searchTextValue?.length >= 3) {
-                          debouncedSearch(searchTextValue, "searchText");
-                        }
-                      }}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="mb-5 w-25">
@@ -203,15 +253,17 @@ const Tabs = () => {
                       }
                     >
                       <option selected value="">
-                        All
+                        Organisation
                       </option>
                       {usersOrganizations.map((item) => {
                         return <option value={item}> {item} </option>;
                       })}
                     </select>
                   </div>
-                  <div>
+                  <div style={{ width: "180px", textAlign: "-webkit-center" }}>
                     <Box sx={{ width: 120 }}>
+                      <label style={{ color: "black" }}>Position</label>
+
                       <Slider
                         getAriaLabel={() => "Temperature range"}
                         value={sliderValue}
@@ -230,12 +282,14 @@ const Tabs = () => {
                         handleFilter({ countryValue: event.target.value });
                       }}
                     >
-                      <option value="" selected>
-                        All
-                      </option>
-                      {usersCountries?.map((item) => {
-                        return <option value={item}>{item}</option>;
-                      })}
+                      <option value="">Country</option>
+                      {usersCountries
+                        ?.sort((a, b) => a.localeCompare(b)) // Sort the country names alphabetically
+                        .map((item) => (
+                          <option key={item} value={item}>
+                            {item}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>
@@ -244,63 +298,99 @@ const Tabs = () => {
                 ) : allUsersData?.length > 0 ? (
                   allUsersData
                     ?.slice((currentPage - 1) * 12, currentPage * 12)
-                    ?.map((item, index) => (
-                      <Col
-                        xs={12}
-                        md={6}
-                        lg={4}
-                        xl={4}
-                        xxl={4}
-                        key={index}
-                        onClick={() => handleSelectedCard(item)}
-                      >
-                        <Col
-                          className="d-flex gap-2 border border-light rounded p-2 mb-2"
-                          style={{ fontSize: "12px" }}
-                        >
-                          <div>
-                            <img src={item.profilePic} />
-                          </div>
-                          <div>
-                            <div className="text-dark fs-6 d-flex justify-content-between">
-                              {item.firstName} {item.lastName}
-                              <div>
-                                <i
-                                  style={{ color: "grey", marginRight: "6px" }}
-                                  class="ri-question-answer-line"
-                                />
-                                <i
-                                  style={{ color: "grey" }}
-                                  class="ri-mail-line"
-                                />
+                    ?.map((item, index) => {
+                      const createdAt = item.createdAt;
+
+                      // Format the createdAt time
+                      const formattedTime = moment(createdAt).format(
+                        "MMMM Do YYYY, h:mm:ss a"
+                      );
+
+                      // Calculate the time difference
+                      const now = moment();
+                      const diffDuration = moment.duration(now.diff(createdAt));
+                      const days = diffDuration.asDays();
+                      const weeks = diffDuration.asWeeks();
+                      const months = diffDuration.asMonths();
+                      const years = diffDuration.asYears();
+
+                      let timeAgo;
+                      if (days <= 1) {
+                        timeAgo = `${Math.floor(
+                          diffDuration.asHours()
+                        )} hours ago`;
+                      } else if (weeks <= 1) {
+                        timeAgo = `${Math.floor(days)} days ago`;
+                      } else if (months <= 1) {
+                        timeAgo = `${Math.floor(weeks)} weeks ago`;
+                      } else if (years <= 1) {
+                        timeAgo = `${Math.floor(months)} months ago`;
+                      } else {
+                        timeAgo = `${Math.floor(years)} years ago`;
+                      }
+
+                      return (
+                        <Col xs={12} md={6} lg={4} xl={4} xxl={4} key={index}>
+                          <Col
+                            className="d-flex gap-2 border border-light rounded p-2 mb-2"
+                            style={{ fontSize: "12px" }}
+                          >
+                            <div
+                              className="cursor-pointer"
+                              onClick={() => handleSelectedCard(item)}
+                            >
+                              <img src={item.profilePic} />
+                            </div>
+                            <div style={{ width: "300px" }}>
+                              <div className="text-dark fs-6 d-flex justify-content-between">
+                                <p
+                                  className="text-dark"
+                                  // style={{ color: "black", fontWeight: "500" }}
+                                >
+                                  {item.firstName} {item.lastName}
+                                </p>
+                                <div className="ms-auto align-self-center">
+                                  <i
+                                    style={{
+                                      color: "grey",
+                                      marginRight: "6px",
+                                    }}
+                                    class="ri-question-answer-line"
+                                  />
+                                  <i
+                                    style={{ color: "grey" }}
+                                    class="ri-mail-line"
+                                  />
+                                </div>
                               </div>
-                            </div>
-                            {item.organization}
-                            <div className="d-flex align-items-center gap-1">
-                              <img src={Medal} />
-                              {item.totalPoint}
-                            </div>
-                            <div className="d-flex gap-3">
+                              {item.organization}
                               <div className="d-flex align-items-center gap-1">
-                                <img src={Kenya} />
-                                {item.country}
+                                <img src={Medal} />
+                                {item.totalPoint}
                               </div>
-                              {item?.otherCountries?.map((country) => {
-                                return (
-                                  <div className="d-flex align-items-center gap-1">
-                                    <img src={Tanzania} />
-                                    {country}
-                                  </div>
-                                );
-                              })}
+                              <div className="d-flex gap-3">
+                                <div className="d-flex align-items-center gap-1">
+                                  <img src={Kenya} />
+                                  {item.country}
+                                </div>
+                                {item?.otherCountries?.map((country) => {
+                                  return (
+                                    <div className="d-flex align-items-center gap-1">
+                                      <img src={Tanzania} />
+                                      {country}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              <div className="text-success">
+                                <p>{formattedTime}</p>
+                                <p>Last Active: {timeAgo}</p>
+                              </div>
                             </div>
-                            <div className="text-success">
-                              {moment(item.createdAt).format()}
-                            </div>
-                          </div>
+                          </Col>
                         </Col>
-                      </Col>
-                    ))
+                      );
+                    })
                 ) : (
                   <h5 className="mb-3 p-3 pb-0">No Record Found</h5>
                 )}
@@ -385,12 +475,17 @@ const Tabs = () => {
                               </span>
                               <div className="avatar-group justify-content-center">
                                 {item?.active_users?.map((user) => {
+                                  const tooltipTarget = `tooltip-${user._id}`;
                                   return (
                                     <div className="avatar-group-item">
                                       <Link
                                         to="#"
                                         className="d-inline-block"
-                                        id={user._id}
+                                        id={`tooltip-${user._id}`}
+                                        onMouseEnter={() =>
+                                          handleMouseEnter(user._id)
+                                        }
+                                        onMouseLeave={handleMouseLeave}
                                       >
                                         <img
                                           src={user.profilePic}
@@ -398,6 +493,14 @@ const Tabs = () => {
                                           className="rounded-circle avatar-xxs"
                                         />
                                       </Link>
+                                      <Tooltip
+                                        placement="top"
+                                        isOpen={hoveredAvatar === user._id}
+                                        target={`tooltip-${user._id}`}
+                                        toggle={handleMouseLeave}
+                                      >
+                                        {user.firstName}
+                                      </Tooltip>
                                     </div>
                                   );
                                 })}
