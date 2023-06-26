@@ -7,7 +7,7 @@ const UserCollaboration = () => {
   return (
     <React.Fragment>
       <div className="page-content overflow-auto ">
-        <h1>User Mapping and Collaboration </h1>
+        <h1>Communication and Collaboration </h1>
         <Col className="bg-white">
           <Map />
           <Tabs />

@@ -22,7 +22,29 @@ const CategoryModal = ({ modal, setModal, card }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = JSON.parse(sessionStorage.getItem("authUser"));
+  const createdAt = card.createdAt;
+  const formattedTime = moment(createdAt).format("MMMM Do YYYY, h:mm:ss a");
 
+  // Calculate the time difference
+  const now = moment();
+  const diffDuration = moment.duration(now.diff(createdAt));
+  const days = diffDuration.asDays();
+  const weeks = diffDuration.asWeeks();
+  const months = diffDuration.asMonths();
+  const years = diffDuration.asYears();
+
+  let timeAgo;
+  if (days <= 1) {
+    timeAgo = `${Math.floor(diffDuration.asHours())} hours ago`;
+  } else if (weeks <= 1) {
+    timeAgo = `${Math.floor(days)} days ago`;
+  } else if (months <= 1) {
+    timeAgo = `${Math.floor(weeks)} weeks ago`;
+  } else if (years <= 1) {
+    timeAgo = `${Math.floor(months)} months ago`;
+  } else {
+    timeAgo = `${Math.floor(years)} years ago`;
+  }
   return (
     <Modal size="md p-5" className="postion-relative" isOpen={modal}>
       <div
@@ -141,7 +163,7 @@ const CategoryModal = ({ modal, setModal, card }) => {
               </div>
               <div className="d-flex align-items-center mb-3">
                 <h6 className="mb-0 me-3">Last Active</h6>
-                <span className="ms-5">{moment(card.createdAt).format()}</span>
+                <span className="ms-5">{formattedTime}</span>
               </div>
             </Col>
           </div>
