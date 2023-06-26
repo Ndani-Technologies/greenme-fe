@@ -640,6 +640,10 @@ const AdminRAFilters = ({
   globalFilter,
   setGlobalFilter,
   useAsyncDebounce,
+  category,
+  timeScale,
+  reductionPotential,
+  cost,
 }) => {
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -651,21 +655,53 @@ const AdminRAFilters = ({
       },
     },
   };
-  const [countryOptions, setCountryOptions] = useState([]);
   const [value, setValue] = React.useState(globalFilter);
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const [selectedDates, setSelectedDates] = useState([]);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+
+  const [potentialOptions, setpotentialOptions] = useState([]);
+  const [selectedPotential, setSelectedPotential] = useState([]);
+
+  const [costOptions, setCostOptions] = useState([]);
+  const [selectedCost, setSelectedCost] = useState([]);
+
+  const [timeScaleOptions, setTimeScaleOptions] = useState([]);
+  const [selectedTimeScale, setSelectedTimeScale] = useState([]);
 
   useEffect(() => {
-    const userObj = JSON.parse(sessionStorage.getItem("authUser"));
-    const options = userObj.otherCountries.map((country) => {
-      return {
-        value: country,
-        label: country,
-      };
-    });
-    setCountryOptions(options);
-  }, []);
+    setCategoryOptions(
+      (category || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+    setpotentialOptions(
+      (reductionPotential || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+    setCostOptions(
+      (cost || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+    setTimeScaleOptions(
+      (timeScale || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+  }, [category]);
 
   const onChange = useAsyncDebounce((value) => {
     setGlobalFilter(value || undefined);
@@ -689,56 +725,68 @@ const AdminRAFilters = ({
     onChange(checkbox.checked ? "true" : "false");
   };
 
-  const handleChangeCountry = (selectedOption) => {
-    setSelectedCountry(selectedOption);
+  const handleChangeCategory = (selectedOption) => {
+    setSelectedCategory(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+  const handleChangePotential = (selectedOption) => {
+    setSelectedPotential(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+  const handleChangeCost = (selectedOption) => {
+    setSelectedCost(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+  const handleChangeTimescale = (selectedOption) => {
+    setSelectedTimeScale(selectedOption);
     setValue(selectedOption ? selectedOption.value : globalFilter);
     onChange(selectedOption ? selectedOption.value : undefined);
   };
 
-  const handleDateChange = (selectedDates) => {
-    console.log(selectedDates, "SEL DA");
-    const formattedDates = selectedDates.map((date) => {
-      const year = String(date.getFullYear());
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-
-      return [year, month, day].join(" && ").split(" && ");
-    });
-    console.log(formattedDates, "formatted Dates");
-    const year = formattedDates[0][0];
-    const month = formattedDates[0][1];
-    const day = formattedDates[0][2];
-
-    const concatenatedValue = year && month && day;
-
-    setSelectedDates(selectedDates);
-    setValue(concatenatedValue);
-    onChange(concatenatedValue);
-  };
-
   return (
-    <div className="d-flex justify-content-between align-items-center w-100">
-      <div className={"search-box me-2 mb-0 d-inline-block"}>
-        <input
-          onChange={(e) => {
-            setValue(e.target.value);
-            onChange(e.target.value);
-          }}
-          id="search-bar-0"
-          style={{ width: "300%" }}
-          type="text"
-          className="form-control search /"
-          placeholder="Search by Action"
-          value={value || ""}
-        />
-        <i className="bx bx-search-alt search-icon"></i>
-      </div>
-
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "30%", marginLeft: "50rem" }}
-      >
-        <div>
+    <>
+      <div className="d-flex justify-content-between">
+        <Col sm={3}>
+          <div className="search-box">
+            <Input
+              type="text"
+              onChange={(e) => {
+                setValue(e.target.value);
+                onChange(e.target.value);
+              }}
+              value={value || ""}
+              className="form-control search"
+              placeholder="Search for..."
+            />
+            <i className="ri-search-line search-icon"></i>
+          </div>
+        </Col>
+        <Col
+          lg={6}
+          className="d-flex gap-2 w-50 align-items-center justify-content-end m-0"
+        >
+          <div>
+            <Select
+              isClearable={true}
+              name="category"
+              placeholder="Category"
+              value={selectedCategory}
+              onChange={handleChangeCategory}
+              onBlur={() => handleChangeCategory(selectedCategory)}
+              options={categoryOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
           <div className="form-check form-switch form-switch-right form-switch-md">
             <input
               className="form-check-input code-switcher"
@@ -759,9 +807,66 @@ const AdminRAFilters = ({
               Status
             </label>
           </div>
-        </div>
+          <div>
+            <Select
+              isClearable={true}
+              name="category"
+              placeholder="Reduction Potential"
+              value={selectedPotential}
+              onChange={handleChangePotential}
+              onBlur={() => handleChangePotential(selectedPotential)}
+              options={potentialOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+          <div>
+            <Select
+              isClearable={true}
+              name="Cost"
+              placeholder="Cost"
+              value={selectedCost}
+              onChange={handleChangeCost}
+              onBlur={() => handleChangeCost(selectedCost)}
+              options={potentialOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+          <div>
+            <Select
+              isClearable={true}
+              name="timescale"
+              placeholder="Timescale"
+              value={selectedTimeScale}
+              onChange={handleChangeTimescale}
+              onBlur={() => handleChangeTimescale(selectedTimeScale)}
+              options={timeScaleOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+        </Col>
       </div>
-    </div>
+    </>
   );
 };
 

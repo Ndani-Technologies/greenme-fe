@@ -27,6 +27,11 @@ import {
   updateContact as onUpdateContact,
   deleteContact as onDeleteContact,
   getAllAdminActionsByUser,
+  completeUserActionStep,
+  getAdminCategories,
+  getAdminCosts,
+  getAdminPotentials,
+  getAdminTimeScale,
 } from "../../slices/thunks";
 import { isEmpty } from "lodash";
 import TableContainer from "../../Components/Common/TableContainer";
@@ -42,6 +47,10 @@ const ActionUserDashboard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [actionData, setActionData] = useState([]);
+  const [adminCategories, setAdminCategories] = useState([]);
+  const [adminTimeScale, setAdminTimeScale] = useState([]);
+  const [adminCosts, setAdminCosts] = useState([]);
+  const [adminPotential, setAdminPotential] = useState([]);
   const getRAbyUser = () => {
     // let data = arr.map((value) => {
     //   return {
@@ -67,9 +76,49 @@ const ActionUserDashboard = () => {
     isContactSuccess: state.Crm.isContactSuccess,
     error: state.Crm.error,
   }));
+  const getAllAdminCategories = () => {
+    getAdminCategories()
+      .then((res) => {
+        setAdminCategories(res);
+      })
+      .catch((err) => console.log(err));
+  };
+  const getAllAdminCosts = () => {
+    getAdminCosts()
+      .then((res) => {
+        setAdminCosts(res);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getAllAdminPotentials = () => {
+    getAdminPotentials()
+      .then((res) => {
+        setAdminPotential(res);
+      })
+      .catch((err) => console.log(err));
+  };
+  const getAllAdminTimeScale = () => {
+    getAdminTimeScale()
+      .then((res) => {
+        setAdminTimeScale(res);
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     getRAbyUser();
+    getAllAdminCategories();
+    getAllAdminPotentials();
+    getAllAdminCosts();
+    getAllAdminTimeScale();
   }, []);
+  console.log(
+    "filters",
+    adminCategories,
+    adminCosts,
+    adminPotential,
+    adminTimeScale
+  );
   useEffect(() => {
     dispatch(onGetContacts(arr));
   }, [dispatch, crmcontacts]);
@@ -386,6 +435,9 @@ const ActionUserDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         onClickDelete(contactData);
+                        completeUserActionStep(contactData._id, []).then(() => {
+                          toast.success("Steps got reset.");
+                        });
                       }}
                     >
                       Reset
@@ -440,9 +492,9 @@ const ActionUserDashboard = () => {
     <React.Fragment>
       <div className="page-content overflow-auto ">
         <ActionMain
-          Title={"Recommended Actions"}
+          Title={"Recommended Actions - Assigned"}
           Text={
-            "Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
+            "On this page you will be presented with actions that are recommended to implement based on your assessment. You can view the action and look at the steps that each action takes to implement. Once you have completed the action, you can mark it as ‘complete’. This will give you points which will be reflected in the leaderboard. It is recommended, but not mandatory, to complete the actions in the sequence presented to you."
           }
         />
         <Col xxl={12} className="mt-5">
@@ -453,6 +505,10 @@ const ActionUserDashboard = () => {
                   <TableContainer
                     columns={columns}
                     data={actionData || []}
+                    timeScale={adminTimeScale}
+                    category={adminCategories}
+                    cost={adminCosts}
+                    reductionPotential={adminPotential}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}

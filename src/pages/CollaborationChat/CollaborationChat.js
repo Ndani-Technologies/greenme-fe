@@ -63,6 +63,8 @@ import {
 } from "../../realtimeCommunication/socketConnection";
 import moment from "moment";
 import { v4 as uuid } from "uuid";
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const CollaborationChat = () => {
   const [customActiveTab, setcustomActiveTab] = useState("1");
@@ -81,6 +83,8 @@ const CollaborationChat = () => {
   const [reply, setreply] = useState("");
   const [emojiPicker, setEmojiPicker] = useState(false);
   const [currentMessages, setCurrentMessages] = useState([]);
+  const [contactUser, setContactUsers] = useState([]);
+  const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
 
   const { chats, messages, channels, chosenChatDetails, onlineUsers } =
     useSelector((state) => ({
@@ -108,6 +112,7 @@ const CollaborationChat = () => {
   const user = JSON.parse(sessionStorage.getItem("authUser"));
 
   useEffect(() => {
+    fetchAllUsers();
     if (user) {
       dispatch(getDirectContact(user._id)); // get all conversations
       dispatch(getChannels());
@@ -126,6 +131,35 @@ const CollaborationChat = () => {
       }
     }
   }, []);
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
+      console.log("res", response);
+      if (response) {
+        let usersData = response.filter(
+          (user) => user._id !== loggedInUser._id
+        );
+        usersData = usersData.map((userData) => {
+          const { firstName, lastName, status, roomId } = userData;
+          const contact = {
+            id: userData.uid,
+            name: `${firstName} ${lastName}`,
+            status: status || "offline",
+            roomId: roomId || null,
+          };
+
+          return {
+            title: firstName.charAt(0),
+            contacts: [contact],
+          };
+        });
+        setContactUsers(usersData);
+      }
+    } catch (error) {
+      toast.error(error?.message ?? "Something Went Wrong");
+    }
+  };
 
   useEffect(() => {
     setCurrentMessages(messages);
@@ -193,7 +227,7 @@ const CollaborationChat = () => {
     Array.prototype.forEach.call(userList, function (el) {
       li = el.getElementsByTagName("li");
       for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("a")[0];
+        a = li[i].getElementsByTagName("div")[0];
         txtValue = a.textContent || a.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           li[i].style.display = "";
@@ -499,7 +533,7 @@ const CollaborationChat = () => {
                     style={{ margin: "-16px 0px 0px" }}
                   >
                     <div className="sort-contact">
-                      {(chatContactData || []).map((item, key) => (
+                      {(contactUser || []).map((item, key) => (
                         <div className="mt-3" key={key}>
                           <div className="contact-list-title">{item.title}</div>
                           <ul

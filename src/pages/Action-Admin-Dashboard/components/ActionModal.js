@@ -382,8 +382,15 @@ const ActionModal = ({
       potentialId: isPotentialClick._id,
       timescaleId: isScaleClick._id,
     };
-
-    if (title !== "" && description !== "") {
+    console.log("mapp", mappedData);
+    if (
+      title !== "" &&
+      description !== "" &&
+      mappedData.categoryId !== undefined &&
+      mappedData.costId !== undefined &&
+      mappedData.potentialId !== undefined &&
+      mappedData.timescaleId !== undefined
+    ) {
       createAdminActions(mappedData)
         .then((resp) => {
           if (resp !== undefined) {
@@ -394,7 +401,7 @@ const ActionModal = ({
         })
         .catch((err) => toast.error("Error in creating action"));
     } else {
-      toast.error("title or description can not be null");
+      toast.error("title, description, or dropdowns can not be null");
     }
   };
 
