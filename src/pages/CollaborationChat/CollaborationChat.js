@@ -97,7 +97,6 @@ const CollaborationChat = () => {
       onlineUsers: state.Chat.onlineUsers,
     }));
 
-  console.log("users", onlineUsers);
   //Toggle Chat Box Menus
   const toggleSearch = () => {
     setsearch_Menu(!search_Menu);
@@ -204,8 +203,9 @@ const CollaborationChat = () => {
   };
 
   const scrollToBottom = useCallback(() => {
+    console.log("scroll", messageBox, messageBox?.scrollHeight);
     if (messageBox) {
-      messageBox.scrollTop = messageBox.scrollHeight + 1000;
+      messageBox.scrollTop = messageBox.scrollHeight + 10000;
     }
   }, [messageBox]);
 
@@ -299,7 +299,7 @@ const CollaborationChat = () => {
     return receiver;
   }
 
-  document.title = "Chat | Velzon - React Admin & Dashboard Template";
+  document.title = "Chat | GreenMe";
   return (
     <React.Fragment>
       <div className="page-content">
@@ -415,6 +415,7 @@ const CollaborationChat = () => {
                             <div
                               className="cursor-pointer"
                               onClick={() => {
+                                scrollToBottom();
                                 dispatch(
                                   storeChosenChatDetails({
                                     author: user._id,
@@ -773,6 +774,7 @@ const CollaborationChat = () => {
                           className="chat-conversation p-3 p-lg-4"
                           id="chat-conversation"
                           containerRef={(ref) => setMessageBox(ref)}
+                          // containerRef={messageBox}
                         >
                           <div id="elmLoader" />
                           <ul
@@ -898,7 +900,10 @@ const CollaborationChat = () => {
                           Message copied
                         </div>
                         {emojiPicker && (
-                          <div className="alert pickerEmoji">
+                          <div
+                            className="alert pickerEmoji"
+                            style={{ left: "17%", bottom: "-42px" }}
+                          >
                             <Picker
                               disableSearchBar={true}
                               onEmojiClick={onEmojiClick}
@@ -946,9 +951,9 @@ const CollaborationChat = () => {
                                 <div className="links-list-item">
                                   <Button
                                     type="submit"
-                                    s
                                     color="info"
                                     onClick={(e) => {
+                                      scrollToBottom();
                                       e.preventDefault();
                                       sendMessage();
                                       setEmojiPicker(false);

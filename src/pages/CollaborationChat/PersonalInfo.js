@@ -220,7 +220,7 @@ const PersonalInfo = ({
             <p className="text-muted text-uppercase fw-medium fs-12 mb-1">
               Name
             </p>
-            <h6>{currentuser.receiverFullName}</h6>
+            <h6>{currentuser?.receiverFullName}</h6>
           </div>
         </div>
 
