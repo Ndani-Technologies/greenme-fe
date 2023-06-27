@@ -128,7 +128,7 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
       </div>
       <div>
         <Box sx={{ width: 120 }}>
-          <label className="mb-0">No of user ansered</label>
+          <label className="mb-0 text-center">No of user answered</label>
           <Slider
             getAriaLabel={() => "Temperature range"}
             value={values}
@@ -178,7 +178,7 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
       </div>
       <div>
         <Box sx={{ width: 120 }}>
-          <label className="mb-0">Response</label>
+          <label className="mb-0 text-center">Response</label>
           <Slider
             getAriaLabel={() => "Temperature range"}
             value={response}

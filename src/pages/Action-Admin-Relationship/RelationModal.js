@@ -179,7 +179,6 @@ const RelationModal = ({
       if (info !== null) {
         const toastId = toast.loading("Updating Recommend Relation");
         updatedRecommendActionRelation(info._id, mappedData, toastId)
-
           .then((resp) => {
             console.log("resp", resp);
             let answers = "";
@@ -378,7 +377,7 @@ const RelationModal = ({
               </Col>
             </Col>
             {isQuestionClicked !== null && (
-              <Col className="d-flex align-items-center gap-2 mb-3">
+              <Col className="d-flex align-items-center gap-2  mb-3">
                 <Col lg={12} className="p-0">
                   <Col
                     lg={12}

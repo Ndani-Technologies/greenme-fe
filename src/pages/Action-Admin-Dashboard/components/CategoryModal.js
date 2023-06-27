@@ -376,7 +376,7 @@ const CategoryModal = ({
                               {...provided.dragHandleProps}
                               ref={provided.innerRef}
                             >
-                              <div className="d-flex align-items-center gap-2">
+                              <div className="d-flex align-items-center  gap-2">
                                 <i
                                   className="ri-drag-move-2-line fs-24"
                                   style={{ color: "#4A7BA4" }}

@@ -1663,7 +1663,7 @@ const BenchmarkingQA = () => {
                                           {...provided.dragHandleProps}
                                           ref={provided.innerRef}
                                         >
-                                          <div className="d-flex align-items-center gap-2">
+                                          <div className="d-flex align-items-center  gap-2">
                                             <i
                                               className="ri-drag-move-2-line fs-24"
                                               style={{ color: "#4A7BA4" }}
@@ -1924,7 +1924,7 @@ const BenchmarkingQA = () => {
                                             {category.titleEng}
                                           </h5>
                                         </div>
-                                        <div className="d-flex gap-2">
+                                        <div className="d-flex justify-content-end gap-2">
                                           <i
                                             className="ri-pencil-fill fs-18"
                                             style={{ color: "gray" }}
