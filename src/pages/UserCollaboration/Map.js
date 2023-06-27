@@ -30,7 +30,7 @@ const Map = () => {
 
   let countries = [];
   Countries.map((country) => {
-    return countries.push(country.value);
+    countries.push({ code: country.code, name: country.value }); // Push an object with code and name properties
   });
 
   const regionAndCountires = {

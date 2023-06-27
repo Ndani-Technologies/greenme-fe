@@ -49,6 +49,8 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
   const [categories, setCategories] = useState([]);
   const [value, setValue] = React.useState(globalFilter);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [response, setResponse] = React.useState([0, 0]);
+  const [response1, setResponse1] = React.useState([0, 0]);
 
   useEffect(() => {
     getAllCategories().then((res) => {
@@ -63,7 +65,8 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
   }, []);
 
   const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
+    console.log(value, "VAL");
+    setGlobalFilter(value[0] || value[1] || undefined);
   }, 200);
 
   const handleCheckboxChange = (event) => {
@@ -90,15 +93,27 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     onChange(selectedOption ? selectedOption.value : undefined);
   };
 
+  const handleSliderChange = (event, newValue) => {
+    setResponse(newValue);
+    onChange(newValue);
+    // Perform any additional logic or filtering based on the new slider value
+  };
+
+  const handleSliderChange2 = (event, newValue) => {
+    setResponse1(newValue);
+    onChange(newValue);
+    // Perform any additional logic or filtering based on the new slider value
+  };
+
   return (
     <div className="d-flex align-items-center w-100 p-0">
       <div
         className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "40%" }}
+        style={{ width: "30%" }}
       ></div>
       <div
         className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "33%" }}
+        style={{ width: "27%" }}
       >
         <span style={{ color: "black" }}>Filter by </span>
         <div>
@@ -121,22 +136,28 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
           />
         </div>
       </div>
+      <div style={{ width: "18%" }}>
+        <Box sx={{ width: 120 }}>
+          <label className="mb-0 text-center">No of user answered</label>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={response}
+            onChange={handleSliderChange} // Uncomment this line
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
+      </div>
 
       <div
         className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "25%" }}
+        style={{ width: "13%" }}
       >
         <div>
-          <div className="form-check form-switch form-switch-right form-switch-md">
-            <input
-              className="form-check-input code-switcher"
-              type="checkbox"
-              value={value}
-              defaultValue="Complete"
-              id="form-grid-showcode"
-              onChange={handleCheckboxChange}
-              defaultChecked
-            />
+          <div
+            className="form-check form-switch form-switch-right form-switch-md"
+            style={{ display: "grid" }}
+          >
             <label
               htmlFor="form-grid-showcode"
               className="form-check-label switch-label"
@@ -146,12 +167,34 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
             >
               Status
             </label>
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              defaultValue="Complete"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
+            />
           </div>
         </div>
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <label className="mb-0 text-center">Response</label>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={response1}
+            onChange={handleSliderChange2}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
       </div>
     </div>
   );
 };
+
 const FilterBenchmarkAction = ({
   setGlobalFilter,
   globalFilter,
