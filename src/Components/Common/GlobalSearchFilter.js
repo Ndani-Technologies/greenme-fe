@@ -656,6 +656,7 @@ const AdminRAFilters = ({
     },
   };
   const [value, setValue] = React.useState(globalFilter);
+  const [valueStatus, setValueStatus] = React.useState(false);
   const [categoryOptions, setCategoryOptions] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState([]);
 
@@ -713,16 +714,16 @@ const AdminRAFilters = ({
     const checkbox = event.target;
 
     if (checkbox.checked) {
-      setValue(checkbox.value);
+      setValueStatus(checkbox.value ? "Completed" : "In Progress");
       switchInput.value = checkbox.value;
-      switchLabel.innerText = switchLabel.getAttribute("data-active");
+      // switchLabel.innerText = switchLabel.getAttribute("data-active");
     } else {
-      setValue("false");
-      switchInput.value = "false";
-      switchLabel.innerText = switchLabel.getAttribute("data-inActive");
+      setValueStatus(false);
+      switchInput.value = false;
+      // switchLabel.innerText = switchLabel.getAttribute("data-inActive");
     }
 
-    onChange(checkbox.checked ? "true" : "false");
+    onChange(checkbox.checked ? "Completed" : "In Progress");
   };
 
   const handleChangeCategory = (selectedOption) => {
@@ -791,11 +792,10 @@ const AdminRAFilters = ({
             <input
               className="form-check-input code-switcher"
               type="checkbox"
-              value={value}
+              value={valueStatus}
               defaultValue="Status"
               id="form-grid-showcode"
               onChange={handleCheckboxChange}
-              defaultChecked
             />
             <label
               htmlFor="form-grid-showcode"

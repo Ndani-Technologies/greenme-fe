@@ -65,6 +65,7 @@ import moment from "moment";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-toastify";
 import axios from "axios";
+import PersonalInfo from "./PersonalInfo";
 
 const CollaborationChat = () => {
   const [customActiveTab, setcustomActiveTab] = useState("1");
@@ -84,6 +85,7 @@ const CollaborationChat = () => {
   const [emojiPicker, setEmojiPicker] = useState(false);
   const [currentMessages, setCurrentMessages] = useState([]);
   const [contactUser, setContactUsers] = useState([]);
+  const [isUserOnline, setIsUserOnline] = useState("");
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
 
   const { chats, messages, channels, chosenChatDetails, onlineUsers } =
@@ -95,6 +97,7 @@ const CollaborationChat = () => {
       onlineUsers: state.Chat.onlineUsers,
     }));
 
+  console.log("users", onlineUsers);
   //Toggle Chat Box Menus
   const toggleSearch = () => {
     setsearch_Menu(!search_Menu);
@@ -113,6 +116,7 @@ const CollaborationChat = () => {
 
   useEffect(() => {
     fetchAllUsers();
+
     if (user) {
       dispatch(getDirectContact(user._id)); // get all conversations
       dispatch(getChannels());
@@ -135,7 +139,6 @@ const CollaborationChat = () => {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
-      console.log("res", response);
       if (response) {
         let usersData = response.filter(
           (user) => user._id !== loggedInUser._id
@@ -207,9 +210,12 @@ const CollaborationChat = () => {
   }, [messageBox]);
 
   useEffect(() => {
+    const ob = onlineUsers?.includes(chosenChatDetails?.receiver)
+      ? "Online"
+      : "offline";
+    setIsUserOnline(ob);
     if (!isEmpty(messages?.messages)) scrollToBottom();
   }, [messages, scrollToBottom]);
-
   const onKeyPress = (e) => {
     const { key, value } = e;
     if (key === "Enter") {
@@ -532,7 +538,7 @@ const CollaborationChat = () => {
                     className="chat-room-list pt-3"
                     style={{ margin: "-16px 0px 0px" }}
                   >
-                    <div className="sort-contact">
+                    <div className="sort-contact users-list">
                       {(contactUser || []).map((item, key) => (
                         <div className="mt-3" key={key}>
                           <div className="contact-list-title">{item.title}</div>
@@ -842,11 +848,11 @@ const CollaborationChat = () => {
                                             </DropdownItem>
                                             <DropdownItem
                                               href="#"
-                                              onClick={() =>
+                                              onClick={() => {
                                                 dispatch(
-                                                  deleteMessage(message.id)
-                                                )
-                                              }
+                                                  deleteMessage(message._id)
+                                                );
+                                              }}
                                             >
                                               <i className="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>
                                               Delete
@@ -995,12 +1001,13 @@ const CollaborationChat = () => {
         </Container>
       </div>
 
-      {/* <PersonalInfo
+      <PersonalInfo
         show={isInfoDetails}
         onCloseClick={() => setIsInfoDetails(false)}
-        currentuser={Chat_Box_Username}
-        cuurentiseImg={Chat_Box_Image}
-      /> */}
+        currentuser={chosenChatDetails}
+        isUserOnline={isUserOnline}
+        // cuurentiseImg={Chat_Box_Image}
+      />
     </React.Fragment>
   );
 };

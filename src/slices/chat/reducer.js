@@ -59,7 +59,7 @@ const chatSlice = createSlice({
     builder.addCase(deleteMessage.fulfilled, (state, action) => {
       state.messages = (state.messages || []).filter((message) => {
         console.log("meessage ", message);
-        message?.id.toString() !== action.payload.toString();
+        message?._id.toString() !== action.payload.toString();
       });
     });
     builder.addCase(deleteMessage.rejected, (state, action) => {
