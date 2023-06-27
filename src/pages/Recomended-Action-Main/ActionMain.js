@@ -6,7 +6,7 @@ const ActionMain = ({ Title, Text, ra_title }) => {
       <div className="d-flex  justify-content-between align-items-center">
         <div>
           <h1>{Title}</h1>
-          <p>{Text}</p>
+          <p> {Text}</p>
           {ra_title && <div style={{ color: "white" }}>Title : {ra_title}</div>}
         </div>
         <div className="d-flex gap-3">

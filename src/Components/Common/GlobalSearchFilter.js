@@ -236,6 +236,75 @@ const FilterLeaderBoard = ({ item, selectedData }) => {
     </div>
   );
 };
+const FilterUserAction = () => {
+  return (
+    <div className="d-flex justify-content-between">
+      <Col sm={3}>
+        <div className="search-box">
+          <Input
+            type="text"
+            className="form-control search"
+            placeholder="Search for..."
+          />
+          <i className="ri-search-line search-icon"></i>
+        </div>
+      </Col>
+      <Col
+        lg={6}
+        className="d-flex gap-2 w-50 align-items-center justify-content-end m-0"
+      >
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Category
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+        <div className="form-check form-switch form-switch-right form-switch-md">
+          <label htmlFor="form-grid-showcode" className="form-label text-muted">
+            Status:
+          </label>
+          <input
+            className="form-check-input code-switcher"
+            type="checkbox"
+            value="active"
+            defaultValue="Incomplete"
+            id="form-grid-showcode"
+          />
+        </div>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Potential
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Cost
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              TimeScale
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+      </Col>
+    </div>
+  );
+};
 const FilterAction = () => {
   const [value, setValue] = React.useState([8, 37]);
 
@@ -954,6 +1023,7 @@ export {
   LeadsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterUserAction,
   FilterLeaderBoard,
   AllQaFilters,
   FilterBenchmarkAction,

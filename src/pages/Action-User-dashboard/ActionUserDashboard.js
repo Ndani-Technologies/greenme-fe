@@ -706,7 +706,7 @@ const ActionUserDashboard = () => {
         accessor: "stat",
       },
       {
-        Header: "Potential",
+        Header: "Reduction Potential",
         accessor: "potential",
         filterable: false,
       },
@@ -841,6 +841,7 @@ const ActionUserDashboard = () => {
                     data={actionData || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
+                    isFilterUserAction={true}
                     isFilterA={false}
                     isFooter={true}
                     setInfo={() => {}}
