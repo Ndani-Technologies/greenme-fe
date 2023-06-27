@@ -166,7 +166,7 @@ export const getAllAdminActionsByUser = async () => {
       return {
         title: value?.title,
         category: value?.categoryId?.title,
-        stat: value?.status ? "true" : "false",
+        stat: value?.isCompleted ? "Complete" : "In-progress",
         potential: value?.potentialId?.title,
         cost: value?.costId?.title,
         timescale: value?.timescaleId?.title,
@@ -223,7 +223,7 @@ export const getAllAdminActions = async () => {
       return {
         title: value?.title,
         category: value?.categoryId?.title,
-        stat: value?.status ? "true" : "false",
+        stat: value?.isCompleted ? "Complete" : "In Progress",
         potential: value?.potentialId?.title,
         cost: value?.costId?.title,
         timescale: value?.timescaleId?.title,
@@ -287,6 +287,32 @@ export const updatedAdminActions = async (data, id) => {
       };
       return updatedResp;
     }
+    return res;
+  } catch (error) {
+    console.error(error);
+    return {};
+  }
+};
+export const completeUserActionStep = async (id, data) => {
+  try {
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/update/stepcomplete/ByUser/${id}`,
+
+      data
+    );
+    // if (res !== undefined) {
+    //   const updatedResp = {
+    //     title: res?.title,
+    //     category: res?.categoryId?.title,
+    //     stat: res?.status ? "true" : "false",
+    //     potential: res?.potentialId?.title,
+    //     cost: res?.costId?.title,
+    //     timescale: res?.timescaleId?.title,
+
+    //     ...res,
+    //   };
+    //   return updatedResp;
+    // }
     return res;
   } catch (error) {
     console.error(error);

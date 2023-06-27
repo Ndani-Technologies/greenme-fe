@@ -8,7 +8,7 @@ const user = JSON.parse(sessionStorage.getItem("authUser"));
 export const connectionWithSocketServer = (userDetails) => {
   const jwtToken = userDetails?._id;
   socket = io("https://backend.greenme.fleetforum.org", {
-    path:"/webSocket",
+    path: "/webSocket",
     auth: {
       token: jwtToken,
     },

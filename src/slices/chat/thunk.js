@@ -20,7 +20,7 @@ export const getDirectContact = createAsyncThunk(
       // return response;
       const response = await axios.get(
         // `http://localhost:5002/api/v1/auth/chat/get-all-conversation/${id}`
-        `${process.env.USER_URL}chat/get-all-conversation/${id}`
+        `${process.env.REACT_APP_USER_URL}chat/get-all-conversation/${id}`
       );
       if (!response?.success) {
         throw new Error("Something Went Wrong While Getting Conversations");
@@ -50,7 +50,7 @@ export const getMessages = createAsyncThunk(
       // return data;
       const response = await axios.get(
         // `http://localhost:5002/api/v1/chat/get-conversation?author=${author}&receiver=${receiver}&conversationId=${conversationId}`
-        `${process.env.USER_URL}chat/get-conversation?author=${author}&receiver=${receiver}&conversationId=${conversationId}`
+        `${process.env.REACT_APP_USER_URL}chat/get-conversation?author=${author}&receiver=${receiver}&conversationId=${conversationId}`
       );
       if (!response?.success) {
         throw new Error("Something Went Wrong While Getting Conversations");

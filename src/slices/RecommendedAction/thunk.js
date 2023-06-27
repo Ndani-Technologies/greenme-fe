@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const getAllRecommendedAction = async () => {
   let resp = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
@@ -35,4 +36,19 @@ export const createRecommendActionRelation = (data) => {
 };
 export const deleteRecommendActionRelation = (id) => {
   return axios.delete(`${process.env.REACT_APP_RA_URL}relationships/${id}`);
+};
+
+export const updatedRecommendActionRelation = async (id, data, toastId) => {
+  let resp = await axios.patch(
+    `${process.env.REACT_APP_RA_URL}relationships/${id}`,
+    data
+  );
+  if (resp) {
+    toast.update(toastId, {
+      render: "Recommend Relation is updated.",
+      type: "success",
+      isLoading: false,
+    });
+    return resp;
+  }
 };

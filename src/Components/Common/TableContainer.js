@@ -55,6 +55,13 @@ function GlobalFilter({
   isFilterAction,
   isFilterBenchmarkAction,
   isSearchInput,
+  isFilterLeaderBoard,
+  isFilterAdminRA,
+  isFilterAdminBenchmark,
+  category,
+  timeScale,
+  reductionPotential,
+  cost,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -106,6 +113,20 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
+            {isFilterAdminRA && (
+              <AdminRAFilters
+                useAsyncDebounce={useAsyncDebounce}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                category={category}
+                timeScale={timeScale}
+                reductionPotential={reductionPotential}
+                cost={cost}
+              />
+            )}
+            {isFilterLeaderBoard && (
+              <FilterLeaderBoard selectedData={selectedData} />
+            )}
             {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
@@ -128,6 +149,11 @@ function GlobalFilter({
 const TableContainer = ({
   columns,
   setInfo,
+  category,
+  timeScale,
+  reductionPotential,
+  cost,
+  isFilterAdminRA,
   isBenchmarkingQASearch,
   isFilterA,
   isFilterAction,
@@ -242,6 +268,10 @@ const TableContainer = ({
             globalFilter={state.globalFilter}
             isBenchmarkingQASearch={isBenchmarkingQASearch}
             isFilterA={isFilterA}
+            category={category}
+            timeScale={timeScale}
+            reductionPotential={reductionPotential}
+            cost={cost}
             isFilterAction={isFilterAction}
             isFilterBenchmarkAction={isFilterBenchmarkAction}
             isAllQaFilters={isAllQaFilters}
