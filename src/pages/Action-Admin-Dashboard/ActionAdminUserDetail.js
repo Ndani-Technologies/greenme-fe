@@ -243,7 +243,7 @@ const ActionUserDetail = () => {
                         className="accordion-collapse "
                         id={`accor_lefticonExamplecollapse${index + 1}`}
                       >
-                        <div className="accordion-body d-flex justify-content-between">
+                        <div className="accordion-body d-flex justify-content-between text-white">
                           <div
                             dangerouslySetInnerHTML={{
                               __html: step.description,

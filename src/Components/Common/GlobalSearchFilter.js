@@ -89,16 +89,21 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
     setValue(selectedOption ? selectedOption.value : globalFilter);
     onChange(selectedOption ? selectedOption.value : undefined);
   };
+  const [values, setValues] = React.useState([8, 37]);
 
+  const handleChange = (event, newValue) => {
+    setValues(newValue);
+  };
+  const [response, setIsResponse] = React.useState([8, 37]);
+
+  const handleChanges = (event, newValue) => {
+    setIsResponse(newValue);
+  };
   return (
-    <div className="d-flex align-items-center justify-content-between w-100 p-0">
+    <div className="d-flex align-items-center justify-content-end gap-2 w-75 p-0">
       <div
-        style={{ width: "30%", marginLeft: "50px" }}
-        className={"search-box me-2 mb-0 d-inline-block"}
-      ></div>
-      <div
-        className="d-flex align-items-center gap-1 flex-shrink-0"
-        style={{ width: "30%", marginLeft: "50px" }}
+        className="d-flex align-items-center gap-1 flex-shrink-0 ms-0"
+        style={{ width: "180px" }}
       >
         <span style={{ color: "black" }}>Filter by </span>
         <div>
@@ -121,11 +126,19 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
           />
         </div>
       </div>
-
-      <div
-        className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "25%" }}
-      >
+      <div>
+        <Box sx={{ width: 120 }}>
+          <label className="mb-0">No of user ansered</label>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={values}
+            onChange={handleChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
+      </div>
+      <div className=" d-flex align-items-center gap-3 flex-shrink-0">
         <div>
           <div className="form-check form-switch form-switch-right form-switch-md">
             <input
@@ -148,6 +161,32 @@ const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
             </label>
           </div>
         </div>
+      </div>
+      <div className=" d-flex align-items-center gap-3 flex-shrink-0">
+        <div>
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            <label>Visibilty</label>
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              id="form-grid-showcode"
+              defaultChecked
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <label className="mb-0">Response</label>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={response}
+            onChange={handleChanges}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
       </div>
     </div>
   );

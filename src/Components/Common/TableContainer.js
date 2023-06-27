@@ -71,7 +71,7 @@ function GlobalFilter({
       <CardBody className="border border-dashed border-end-0 border-start-0">
         <form>
           <Row className="g-3">
-            <Col className="d-flex align-items-center justify-content-between w-100">
+            <Col className="d-flex align-items-center justify-content-between w-100 p-0">
               {true && (
                 <div
                   className={
