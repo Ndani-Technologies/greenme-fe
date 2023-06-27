@@ -235,25 +235,25 @@ const attachements = [
   {
     id: 1,
     foldericon: "ri-folder-zip-line",
-    foldername: "App pages.zip",
+    foldername: "sample.zip",
     foldersize: "2.2MB",
   },
   {
     id: 2,
     foldericon: "ri-file-ppt-2-line",
-    foldername: "Velzon admin.ppt",
+    foldername: "sample1.ppt",
     foldersize: "2.4MB",
   },
   {
     id: 3,
     foldericon: "ri-folder-zip-line",
-    foldername: "Images.zip",
+    foldername: "sample2.zip",
     foldersize: "1.2MB",
   },
   {
     id: 4,
     foldericon: "ri-image-2-line",
-    foldername: "bg-pattern.png",
+    foldername: "sample3.png",
     foldersize: "1.1MB",
   },
 ];

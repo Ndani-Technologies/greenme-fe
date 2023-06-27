@@ -38,10 +38,11 @@ const Attachements = (props) => {
             <button
               type="button"
               className="btn btn-icon text-muted btn-sm fs-18"
+              disabled
             >
               <i className="ri-download-2-line"></i>
             </button>
-            <UncontrolledDropdown>
+            <UncontrolledDropdown disabled>
               <DropdownToggle
                 tag="button"
                 className="btn btn-icon text-muted btn-sm fs-18 dropdown"
@@ -70,10 +71,15 @@ const Attachements = (props) => {
   );
 };
 
-const PersonalInfo = ({ show, onCloseClick, currentuser, cuurentiseImg }) => {
+const PersonalInfo = ({
+  show,
+  onCloseClick,
+  currentuser,
+  cuurentiseImg,
+  isUserOnline,
+}) => {
   const [menu1, setMenu1] = useState(false);
   const [menu2, setMenu2] = useState(false);
-
   return (
     <Offcanvas
       isOpen={show}
@@ -133,7 +139,7 @@ const PersonalInfo = ({ show, onCloseClick, currentuser, cuurentiseImg }) => {
         <div className="p-3 text-center">
           {cuurentiseImg ? (
             <img
-              src={cuurentiseImg}
+              src={currentuser?.receiverProfilePicture}
               alt=""
               className="avatar-lg img-thumbnail rounded-circle mx-auto profile-img"
             />
@@ -147,12 +153,12 @@ const PersonalInfo = ({ show, onCloseClick, currentuser, cuurentiseImg }) => {
           <div className="mt-3">
             <h5 className="fs-16 mb-1">
               <Link to="#" className="link-primary username">
-                {currentuser}
+                {currentuser?.receiverFullName}
               </Link>
             </h5>
             <p className="text-muted">
               <i className="ri-checkbox-blank-circle-fill me-1 align-bottom text-success"></i>
-              Online
+              {isUserOnline}
             </p>
           </div>
           <div className="d-flex gap-3 justify-content-center">
@@ -180,19 +186,12 @@ const PersonalInfo = ({ show, onCloseClick, currentuser, cuurentiseImg }) => {
               </span>
             </button>
 
-            <button
-              type="button"
-              className="btn avatar-xs p-0"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              title="Phone"
+            <Dropdown
+              isOpen={menu2}
+              toggle={() => setMenu2(!menu2)}
+              disabled
+              className="cursor"
             >
-              <span className="avatar-title rounded bg-light text-body">
-                <i className="ri-phone-line"></i>
-              </span>
-            </button>
-
-            <Dropdown isOpen={menu2} toggle={() => setMenu2(!menu2)}>
               <DropdownToggle className="btn avatar-xs p-0" tag="a">
                 <span className="avatar-title bg-light text-body rounded">
                   <i className="ri-more-fill"></i>
@@ -219,21 +218,9 @@ const PersonalInfo = ({ show, onCloseClick, currentuser, cuurentiseImg }) => {
           <h5 className="fs-15 mb-3">Personal Details</h5>
           <div className="mb-3">
             <p className="text-muted text-uppercase fw-medium fs-12 mb-1">
-              Number
+              Name
             </p>
-            <h6>+(256) 2451 8974</h6>
-          </div>
-          <div className="mb-3">
-            <p className="text-muted text-uppercase fw-medium fs-12 mb-1">
-              Email
-            </p>
-            <h6>lisaparker@gmail.com</h6>
-          </div>
-          <div>
-            <p className="text-muted text-uppercase fw-medium fs-12 mb-1">
-              Location
-            </p>
-            <h6 className="mb-0">California, USA</h6>
+            <h6>{currentuser?.receiverFullName}</h6>
           </div>
         </div>
 
@@ -245,12 +232,12 @@ const PersonalInfo = ({ show, onCloseClick, currentuser, cuurentiseImg }) => {
               <Attachements attachement={attachement} key={key} />
             ))}
 
-            <div className="text-center mt-2">
+            {/* <div className="text-center mt-2">
               <button type="button" className="btn btn-danger">
                 Load more{" "}
                 <i className="ri-arrow-right-fill align-bottom ms-1"></i>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </OffcanvasBody>
