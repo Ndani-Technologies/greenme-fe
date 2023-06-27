@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useMemo,
-  useRef,
-  useCallback,
-} from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -30,7 +24,6 @@ import Medal from "../../assets/images/Medal.png";
 import Tanzania from "../../../src/assets/images/Tanzania.png";
 import Kenya from "../../assets/images/Kenya-1.png";
 import moment from "moment";
-import debounce from "lodash/debounce";
 import WFP from "../../assets/images/WFP.png";
 import getOrganizationsData from "../../common/getOrganizationsData";
 
@@ -49,7 +42,6 @@ const Tabs = () => {
   const [sliderValue, setSliderValue] = React.useState([0, 0]);
   const [usersOrganizationsData, setUsersOrganizationsData] = useState([]);
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
-  const debounceRef = useRef(0);
 
   const justifyToggle = (tab) => {
     if (justifyTab !== tab) {
@@ -65,47 +57,40 @@ const Tabs = () => {
     setCard(item);
     setModal(true);
   };
-  const debouncedSearch = useMemo(
-    () =>
-      debounce((value, type) => {
-        if (type === "searchText") {
-          handleFilter({ searchTextValue: value });
-        } else if (type === "slider") {
-          handleFilter({ sliderValue: value });
-        }
-      }, 300),
-    []
-  );
 
-  const handleInputChange = useCallback(
-    (e) => {
-      const searchTextValue = e.target.value.trim();
-      setSearchText(searchTextValue);
-      if (searchTextValue.length >= 3) {
-        debouncedSearch(searchTextValue, "searchText");
-      }
-    },
-    [debouncedSearch]
-  );
-  // const debouncedSearch = useMemo(
-  //   () =>
-  //     debounce((value, type) => {
-  //       debounceRef.current += 1;
-  //       const LocalRef = debounceRef.current;
-  //       setTimeout(() => {
-  //         if (LocalRef === debounceRef.current) {
-  //           if (type === "searchText") {
-  //             handleFilter({ searchTextValue: value });
-  //           }
+  const handleInputChange = (e) => {
+    const searchTextValue = e.target.value.trim();
+    setSearchText(searchTextValue);
+    // if (searchTextValue.length >= 3) {
+    let filteredUsers = allUsersDataSet;
 
-  //           if (type === "slider") {
-  //             handleFilter({ sliderValue: value });
-  //           }
-  //         }
-  //       }, 1);
-  //     }, 300),
-  //   []
-  // );
+    if (searchTextValue && searchTextValue !== "") {
+      filteredUsers = filteredUsers.filter((user) => {
+        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+        return fullName.includes(searchTextValue.toLowerCase());
+      });
+      setAllUsersData(filteredUsers);
+    } else {
+      setAllUsersData(allUsersData);
+    }
+  };
+
+  const handleSliderChange = (value) => {
+    const sliderRangeValue = value;
+    setSliderValue(sliderRangeValue);
+    let filteredUsers = allUsersDataSet;
+    if (sliderRangeValue && sliderRangeValue.length === 2) {
+      filteredUsers = filteredUsers.filter((user) => {
+        return (
+          user.totalPoint >= sliderRangeValue[0] &&
+          user.totalPoint <= sliderRangeValue[1]
+        );
+      });
+      setAllUsersData(filteredUsers);
+    } else {
+      setAllUsersData(allUsersData);
+    }
+  };
 
   const fetchAllUsers = async () => {
     setLoading(true);
@@ -136,13 +121,10 @@ const Tabs = () => {
     fetchAllUsers();
   }, []);
 
-  const handleFilter = ({
-    organizationValue,
-    countryValue,
-    sliderValue,
-    searchTextValue,
-  }) => {
-    let filteredUsers = allUsersDataSet;
+  const handleFilter = (filterValues) => {
+    const { organizationValue, countryValue, searchTextValue } = filterValues;
+
+    let filteredUsers = allUsersDataSet && allUsersDataSet;
 
     if (organizationValue && organizationValue !== "") {
       filteredUsers = filteredUsers.filter(
@@ -156,35 +138,9 @@ const Tabs = () => {
       );
     }
 
-    if (sliderValue && sliderValue?.length === 2) {
-      filteredUsers = filteredUsers.filter((user) => {
-        return (
-          user.totalPoint >= sliderValue[0] && user.totalPoint <= sliderValue[1]
-        );
-      });
-    }
-
-    // if (searchTextValue && searchTextValue !== "") {
-    //   filteredUsers = filteredUsers.filter((user) => {
-    //     return (
-    //       (user?.firstName?.includes(searchTextValue) ||
-    //         user?.lastName?.includes(searchTextValue)) &&
-    //       user
-    //     );
-    //   });
-    if (searchTextValue && searchTextValue !== "") {
-      filteredUsers = filteredUsers.filter((user) => {
-        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
-        return fullName.includes(searchTextValue.toLowerCase());
-      });
-    } else {
-      setAllUsersData(allUsersDataSet);
-    }
-
     setAllUsersData(filteredUsers);
     setTotalPages(Math.ceil(filteredUsers.length / 12));
   };
-
   const [hoveredAvatar, setHoveredAvatar] = useState(null);
 
   const handleMouseEnter = (avatarId) => {
@@ -242,7 +198,7 @@ const Tabs = () => {
                       placeholder="Search By Name"
                       type="text"
                       value={searchText}
-                      onChange={handleInputChange}
+                      onChange={(e) => handleInputChange(e, value)}
                     />
                   </div>
                   <div className="mb-5 w-25">
@@ -267,10 +223,7 @@ const Tabs = () => {
                       <Slider
                         getAriaLabel={() => "Temperature range"}
                         value={sliderValue}
-                        onChange={(event, value) => {
-                          setSliderValue(value);
-                          debouncedSearch(value, "slider");
-                        }}
+                        onChange={(e, value) => handleSliderChange(value)}
                         valueLabelDisplay="auto"
                       />
                     </Box>
@@ -438,6 +391,7 @@ const Tabs = () => {
             <TabPane tabId="2" id="product">
               <Row>
                 {usersOrganizationsData?.map((item) => {
+                  console.log(item, item?.countries, "item");
                   return (
                     <Col
                       lg={3}
