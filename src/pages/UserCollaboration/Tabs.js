@@ -59,7 +59,7 @@ const Tabs = () => {
   };
 
   const handleInputChange = (e) => {
-    const searchTextValue = e.target.value.trim();
+    const searchTextValue = e.target.value;
     setSearchText(searchTextValue);
     // if (searchTextValue.length >= 3) {
     let filteredUsers = allUsersDataSet;
@@ -75,8 +75,8 @@ const Tabs = () => {
     }
   };
 
-  const handleSliderChange = (value) => {
-    const sliderRangeValue = value;
+  const handleSliderChange = (e) => {
+    const sliderRangeValue = e.target.value;
     setSliderValue(sliderRangeValue);
     let filteredUsers = allUsersDataSet;
     if (sliderRangeValue && sliderRangeValue.length === 2) {
@@ -198,7 +198,7 @@ const Tabs = () => {
                       placeholder="Search By Name"
                       type="text"
                       value={searchText}
-                      onChange={(e) => handleInputChange(e, value)}
+                      onChange={(e) => handleInputChange(e)}
                     />
                   </div>
                   <div className="mb-5 w-25">
@@ -223,7 +223,7 @@ const Tabs = () => {
                       <Slider
                         getAriaLabel={() => "Temperature range"}
                         value={sliderValue}
-                        onChange={(e, value) => handleSliderChange(value)}
+                        onChange={(e) => handleSliderChange(e)}
                         valueLabelDisplay="auto"
                       />
                     </Box>
@@ -391,7 +391,6 @@ const Tabs = () => {
             <TabPane tabId="2" id="product">
               <Row>
                 {usersOrganizationsData?.map((item) => {
-                  console.log(item, item?.countries, "item");
                   return (
                     <Col
                       lg={3}
