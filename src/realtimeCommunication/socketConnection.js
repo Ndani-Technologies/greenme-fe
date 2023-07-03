@@ -32,7 +32,6 @@ export const connectionWithSocketServer = (userDetails) => {
   });
 
   socket.on("seen-message-response", (data) => {
-    debugger;
     let existingMessages = [...store?.getState()?.Chat?.messages];
 
     console.log({ existingMessages, key: 0 });

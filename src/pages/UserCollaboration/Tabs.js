@@ -38,6 +38,7 @@ const Tabs = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [usersOrganizations, setUsersOrganizations] = useState([]);
   const [usersCountries, setUsersCountries] = useState([]);
+  console.log(usersCountries, "usersCountries");
   const [searchText, setSearchText] = useState("");
   const [sliderValue, setSliderValue] = React.useState([0, 0]);
   const [usersOrganizationsData, setUsersOrganizationsData] = useState([]);
@@ -106,8 +107,20 @@ const Tabs = () => {
         setUsersOrganizations([
           ...new Set(usersData.map((user) => user.organization)),
         ]);
+        console.log(usersData, "UD");
         setUsersCountries([
-          ...new Set(usersData?.map((user) => user?.country).filter(Boolean)),
+          ...new Set(
+            usersData?.reduce((acc, user) => {
+              if (user?.country) {
+                acc.push(user.country);
+              }
+              if (user?.otherCountries) {
+                const validOtherCountries = user.otherCountries.filter(Boolean);
+                acc.push(...validOtherCountries);
+              }
+              return acc;
+            }, [])
+          ),
         ]);
         setUsersOrganizationsData(getOrganizationsData(usersData));
       }

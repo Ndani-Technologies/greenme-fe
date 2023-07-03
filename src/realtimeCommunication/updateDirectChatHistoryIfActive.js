@@ -10,7 +10,6 @@ import {
 } from "./socketConnection";
 
 export const updateDirectChatHistoryIfActive = (data, chatBox) => {
-  debugger;
   const { participants, message, conversation, isActive } = data;
   const user = JSON.parse(sessionStorage.getItem("authUser"));
 
@@ -48,7 +47,6 @@ const updateDirectChatHistoryIfSameConversationActive = ({
   userId,
   chatBox,
 }) => {
-  debugger;
   const result = participants.every(function (participantId) {
     return usersInConversation.includes(participantId);
   });
