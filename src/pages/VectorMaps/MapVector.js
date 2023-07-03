@@ -1,10 +1,60 @@
 import React, { useState, useEffect, useRef } from "react";
 import { VectorMap } from "react-jvectormap";
 import "./jquery-jvectormap.scss";
+import axios from "axios";
+import Countries from "../UserDetail/Countries";
 
 const Vectormap = (props) => {
+  const [usersCountries, setUsersCountries] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
+  const fetchAllUsers = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
+      if (response) {
+        const usersData = response.filter(
+          (user) => user._id !== loggedInUser._id
+        );
+        setUsersCountries([
+          ...new Set(
+            usersData?.reduce((acc, user) => {
+              if (user?.country) {
+                acc.push(user.country);
+              }
+              if (user?.otherCountries) {
+                const validOtherCountries = user.otherCountries.filter(Boolean);
+                acc.push(...validOtherCountries);
+              }
+              return acc;
+            }, [])
+          ),
+        ]);
+      }
+    } catch (error) {
+      console.log(error?.message ?? "Something Went Wrong");
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+
+  const countriesArray = usersCountries
+    .map((userCountry) => {
+      const country = Countries.find((c) => c.value === userCountry);
+      if (country) {
+        return {
+          name: userCountry,
+          code: country.code,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
+
   const [selectedRegion, setSelectedRegion] = useState("");
-  console.log(selectedRegion, "selectedRegion");
   const [selectedCountry, setSelectedCountry] = useState("");
   const vectorMapRef = useRef(null);
   const { regions, countries } = props.regionAndCountires;
@@ -17,22 +67,25 @@ const Vectormap = (props) => {
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
-    const selCountry = countries.map((c) => {
-      console.log(c.name, selectedCountry, "CHECK");
-      return c.code === selectedCountry;
-    });
-    console.log(selCountry, "SC");
     setSelectedCountry(selectedCountry);
-    const region = getRegionByCountry(selCountry);
-    console.log(region, "REGION");
+    const region = getRegionByCountry(selectedCountry);
     setSelectedRegion(region);
 
-    if (vectorMapRef.current && selectedCountry) {
+    if (vectorMapRef.current) {
       const mapObject = vectorMapRef.current.$mapObject;
       const regionSeries = mapObject.series.regions[0];
 
       const selectedCountryData = {};
-      selectedCountryData[selectedCountry] = "#39B54A";
+
+      if (selectedCountry === "All") {
+        // Highlight all countries
+        filteredCountries.forEach((country) => {
+          selectedCountryData[getRegionByCountry(country)] = "#39B54A";
+        });
+      } else {
+        // Highlight only the selected country
+        selectedCountryData[getRegionByCountry(selectedCountry)] = "#39B54A";
+      }
 
       regionSeries.clear(); // Clear any existing selections
       regionSeries.setValues(selectedCountryData);
@@ -40,18 +93,17 @@ const Vectormap = (props) => {
     }
   };
 
-  const getRegionByCountry = (country) => {
-    console.log(country, "C");
+  const getRegionByCountry = (selCountry) => {
     const { regions, countries } = props.regionAndCountires;
     for (const region in regions) {
-      if (regions[region].includes(country.name)) {
-        console.log(typeof country, country, "CD");
+      if (regions[region].includes(selCountry.name)) {
         const country = countries.find((c) => {
-          return c.code == country.code;
+          return c.code == selCountry.code;
         });
-        console.log(country, "COUNT");
         if (country) {
           return region;
+        } else {
+          return regions.hasOwnProperty("All") ? "All" : "";
         }
       }
     }
@@ -64,19 +116,26 @@ const Vectormap = (props) => {
       const regionSeries = mapObject.series.regions[0];
 
       const selectedCountryData = {};
-      selectedCountryData[selectedCountry] = "#39B54A";
+      if (selectedCountry === "All") {
+        countriesArray.forEach((country) => {
+          selectedCountryData[country.code] = "#39B54A";
+        });
+      } else {
+        selectedCountryData[selectedCountry] = "#39B54A";
+      }
+      console.log(selectedCountryData, "selectedCountryData");
 
       regionSeries.clear(); // Clear any existing selections
       regionSeries.setValues(selectedCountryData);
       mapObject.applyTransform();
     }
-  }, [selectedCountry]);
+  }, [selectedCountry, countriesArray]);
 
   const { value, width, color, regionAndCountires } = props;
 
   const filteredCountries = selectedRegion
     ? regions[selectedRegion]
-    : countries.map((country) => country.name);
+    : usersCountries.map((country) => country);
 
   return (
     <>
@@ -105,7 +164,7 @@ const Vectormap = (props) => {
                 textAlign: "left",
               }}
             >
-              <option value="">All</option>
+              <option value="All">All</option>
               {Object.keys(regions).map((region) => (
                 <option key={region} value={region}>
                   {region}
@@ -136,7 +195,7 @@ const Vectormap = (props) => {
                 textAlign: "left",
               }}
             >
-              <option value="">All</option>
+              <option value="All">All</option>
               {filteredCountries.map((country) => {
                 const countryData = countries.find((c) => c.name === country);
                 return (
@@ -171,13 +230,19 @@ const Vectormap = (props) => {
           series={{
             regions: [
               {
-                values: filteredCountries.reduce(
-                  (obj, country) => ({
-                    ...obj,
-                    [getRegionByCountry(country)]: "#39B54A",
-                  }),
-                  {}
-                ),
+                values: {
+                  ...(selectedCountry === "" || selectedCountry === "All"
+                    ? filteredCountries.reduce(
+                        (obj, country) => ({
+                          ...obj,
+                          [getRegionByCountry(country)]: "#39B54A",
+                        }),
+                        {}
+                      )
+                    : {
+                        [getRegionByCountry(selectedCountry)]: "#39B54A",
+                      }),
+                },
               },
             ],
           }}

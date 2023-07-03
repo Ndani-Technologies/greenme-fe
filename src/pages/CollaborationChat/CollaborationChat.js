@@ -163,10 +163,6 @@ const CollaborationChat = () => {
     }
   };
 
-  useEffect(() => {
-    setCurrentMessages(messages);
-  }, [messages]);
-
   const userChatOpen = (selectedChat) => {
     dispatch(
       getMessages({
@@ -202,12 +198,32 @@ const CollaborationChat = () => {
     }
   };
 
+  // const scrollToBottom = useCallback(() => {
+  //   console.log("scroll", messageBox, messageBox?.scrollHeight);
+  //   if (messageBox) {
+  //     messageBox.scrollTop = messageBox.scrollHeight + 10000;
+  //   }
+  // }, [messageBox]);
   const scrollToBottom = useCallback(() => {
     console.log("scroll", messageBox, messageBox?.scrollHeight);
     if (messageBox) {
-      messageBox.scrollTop = messageBox.scrollHeight + 10000;
+      messageBox.scrollTop = messageBox.scrollHeight;
     }
   }, [messageBox]);
+
+  const [messageBoxScroll, setMessageBoxScroll] = useState(false);
+
+  useEffect(() => {
+    setCurrentMessages(messages);
+    setMessageBoxScroll(true);
+  }, [messages]);
+
+  useEffect(() => {
+    if (messageBoxScroll) {
+      scrollToBottom();
+      setMessageBoxScroll(false);
+    }
+  }, [messageBoxScroll, scrollToBottom]);
 
   useEffect(() => {
     const ob = onlineUsers?.includes(chosenChatDetails?.receiver)
@@ -299,6 +315,8 @@ const CollaborationChat = () => {
     return receiver;
   }
 
+  const searchInputRef = useRef(null);
+
   document.title = "Chat | GreenMe";
   return (
     <React.Fragment>
@@ -320,6 +338,10 @@ const CollaborationChat = () => {
                       color=""
                       id="addcontact"
                       className="btn btn-soft-info btn-sm"
+                      onClick={() => {
+                        toggleCustom("2");
+                        searchInputRef.current.focus();
+                      }}
                     >
                       <i className="ri-add-line align-bottom"></i>
                     </Button>
@@ -327,6 +349,7 @@ const CollaborationChat = () => {
                 </div>
                 <div className="search-box">
                   <input
+                    ref={searchInputRef}
                     onKeyUp={searchUsers}
                     id="search-user"
                     type="text"
