@@ -31,7 +31,6 @@ const ActionUserDetail = () => {
   const location = useLocation();
   const navigate = useNavigate();
   let { data } = location.state;
-  console.log("data", data);
   const entities = {
     "&nbsp;": " ",
     "<br>": "\n",
@@ -53,32 +52,7 @@ const ActionUserDetail = () => {
       init: 5,
     },
     onSubmit: async (values) => {
-      // let completedSteps = data.steps.filter((value)=>value.isCompleted)
-
-      // let steps = stepData.map((value) => {
-      //   if (value.isCheckBoxCompleted) {
-      //     value.step.isCompleted = true;
-      //     value.step.status = true;
-      //   }
-      //   return value.step;
-      // });
-      // completedSteps.forEach((value)=>{
-      //   if(steps.some((e)=>e._id !== value._id)){
-      //     steps.push(value)
-      //   }
-      //   if(steps.length===0){
-      //     steps.push(value)
-
-      //   }
-      // })
-
       try {
-        // for (const stepObject of steps) {
-        //   await updateAdminStep(stepObject._id, stepObject);
-        //       console.log(`Successfully updated step with ID: ${stepObject._id}`);
-        // }
-
-        // toast.success("All steps successfully updated");
         navigate("/actionuserdashboard");
       } catch (err) {
         toast.error("Error in updating.");
@@ -145,9 +119,9 @@ const ActionUserDetail = () => {
         <div className="page-content overflow-auto ">
           <ActionMain
             Title={"Recommended Actions - Details"}
-            Text={
-              "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-            }
+            // Text={
+            //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+            // }
             ra_title={data.title}
           />
           <div className="card-wrapper">
@@ -159,7 +133,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Category</span>
                   <div>
-                    <span className="span">{data.categoryId.title}</span>
+                    <span className="span">{data.categoryId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -168,7 +142,9 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Status</span>
                   <div>
-                    <span className="span">{data.status}</span>
+                    <span className="span">
+                      {data.isCompleted ? "Completed" : "In Progress"}
+                    </span>
                   </div>
                 </div>
                 <div
@@ -177,7 +153,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Potential</span>
                   <div>
-                    <span className="span">{data.potentialId.title}</span>
+                    <span className="span">{data.potentialId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -186,7 +162,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Cost</span>
                   <div>
-                    <span className="span">{data.costId.title}</span>
+                    <span className="span">{data.costId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -195,7 +171,7 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Time scale</span>
                   <div>
-                    <span className="span">{data.timescaleId.title}</span>
+                    <span className="span">{data.timescaleId?.title}</span>
                   </div>
                 </div>
                 <div
@@ -204,16 +180,20 @@ const ActionUserDetail = () => {
                 >
                   <span className="fs-7">Start Date</span>
                   <div>
-                    <span className="span">{data.startdate}</span>g
+                    <span className="span">
+                      {new Date(data.startdate).toLocaleDateString("en-US")}
+                    </span>
                   </div>
                 </div>
                 <div
                   className={`w-25 p-2  border-end custom-padding
                     }`}
                 >
-                  <span className="fs-7">End Date</span>
+                  <span className="fs-7">Completion Date</span>
                   <div>
-                    <span className="span">{data.enddate}</span>
+                    <span className="span">
+                      {new Date(data.enddate).toLocaleDateString("en-US")}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -278,7 +258,10 @@ const ActionUserDetail = () => {
                           <div
                             className="Discription"
                             style={{
-                              width: "200px",
+                              width: "250px",
+                              height: "80px",
+                              padding: "5px",
+                              borderRadius: "10px",
                               border: "1px solid grey",
                               backgroundColor: "#bec887",
                             }}
@@ -309,16 +292,27 @@ const ActionUserDetail = () => {
           <Col lg={12} className="card-wrapper d-flex justify-content-between">
             <Col lg={5}>
               <h4 className="mb-4">Resource Links</h4>
-              {data.resourcelinkId.map((item) => (
-                <div className="hover">
-                  <div className="Links d-flex justify-content-between">
-                    <a>{item.title}</a>
-                    <span>
-                      <i class="ri-arrow-right-line"></i>
-                    </span>
+              {data.resourcelinkId.map((item) => {
+                const isExternal = item.title.includes(
+                  "(greenme.fleetforum.org)"
+                )
+                  ? false
+                  : true;
+                const linkTarget = isExternal ? "_blank" : "_self";
+
+                return (
+                  <div className="hover" key={item.id}>
+                    <div className="Links d-flex justify-content-between">
+                      <a href={item.title} target={linkTarget}>
+                        {item.title}
+                      </a>
+                      <span>
+                        <i class="ri-arrow-right-line"></i>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </Col>
             <Col lg={6} className="card-wrapper-one Feeedback">
               <h4>

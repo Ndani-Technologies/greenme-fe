@@ -1,18 +1,36 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 
 export const getAllRecommendedAction = async () => {
   let resp = await axios.get(`${process.env.REACT_APP_RA_URL}actionsteps`);
   console.log("get action steps", resp);
   return resp;
 };
+
+export const updateRecommendedActionStep = async (id, data) => {
+  try {
+    // const res = await axios.patch(
+    //   `http://localhost:5002/api/v1/ra/steps/${id}`,
+    //   data
+    // );
+    const res = await axios.patch(
+      `${process.env.REACT_APP_RA_URL}actionsteps/${id}`,
+      data
+    );
+    console.log(res, "INSIDE RA THUNK");
+    return res;
+  } catch (error) {
+    console.log("Unable to Add", error);
+  }
+};
+
 export const getAllRecommendedRelation = async () => {
   let resp = await axios.get(`${process.env.REACT_APP_RA_URL}relationships`);
-  console.log("get action relation", resp);
   let answers = "";
   let data = resp.map((value) => {
     answers = "";
-    value.qid?.answerOptions.forEach((element) => {
-      answers += element.answerOption + ",";
+    value?.qid?.answerOptions.forEach((element) => {
+      answers += element.answerOption.answerOption + ",";
     });
     return {
       ...value,
@@ -26,13 +44,33 @@ export const getAllRecommendedRelation = async () => {
       number_of_assignment: value?.number_of_assignment || 0,
     };
   });
-  console.log("get action relation2", data);
 
   return data;
 };
-export const createRecommendActionRelation = (data) => {
-  return axios.post(`${process.env.REACT_APP_RA_URL}relationships`, data);
+export const createRecommendActionRelation = async (data) => {
+  let resp = await axios.post(
+    `${process.env.REACT_APP_RA_URL}relationships`,
+    data
+  );
+  if (resp) {
+    return resp;
+  }
 };
+export const updatedRecommendActionRelation = async (id, data, toastId) => {
+  let resp = await axios.patch(
+    `${process.env.REACT_APP_RA_URL}relationships/${id}`,
+    data
+  );
+  if (resp) {
+    toast.update(toastId, {
+      render: "Recommend Relation is updated.",
+      type: "success",
+      isLoading: false,
+    });
+    return resp;
+  }
+};
+
 export const deleteRecommendActionRelation = (id) => {
   return axios.delete(`${process.env.REACT_APP_RA_URL}relationships/${id}`);
 };

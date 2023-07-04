@@ -4,7 +4,6 @@ import { Link, useLocation } from "react-router-dom";
 const TableCard = () => {
   const location = useLocation();
   const { data } = location?.state;
-  console.log("data", data);
   return (
     <div>
       <React.Fragment>

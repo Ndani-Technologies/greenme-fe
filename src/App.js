@@ -11,8 +11,7 @@ import Route from "./Routes";
 
 // Fake Backend
 import fakeBackend from "./helpers/AuthType/fakeBackend";
-import { LeaderBoardProvider } from "./context/leaderBoardContext";
-
+import { SocketContextProvider } from "./context/socketContext";
 // Activating fake backend
 fakeBackend();
 
@@ -33,9 +32,9 @@ fakeBackend();
 function App() {
   return (
     <React.Fragment>
-      <LeaderBoardProvider>
+      <SocketContextProvider>
         <Route />
-      </LeaderBoardProvider>
+      </SocketContextProvider>
     </React.Fragment>
   );
 }

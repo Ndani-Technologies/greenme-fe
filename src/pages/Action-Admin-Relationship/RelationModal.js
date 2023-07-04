@@ -14,6 +14,7 @@ import { getAllQA } from "../../slices/thunks";
 import {
   createAnswerRelation,
   createRecommendActionRelation,
+  updatedRecommendActionRelation,
 } from "../../slices/RecommendedAction/thunk";
 
 const answerRelationship = [
@@ -61,6 +62,8 @@ const RelationModal = ({
   recommendAction,
   setRecommendedRelation,
   recommendedRelation,
+  info,
+  setInfo,
 }) => {
   const [isQuestionClicked, setIsQuestionClicked] = useState(0);
   const [selectedAnswerOptions, setSelectedAnswerOptions] = useState([]);
@@ -77,13 +80,44 @@ const RelationModal = ({
   const [selectedRecommendAction, setSelectedRecommendAction] = useState([]);
   const [count, setCount] = useState(0);
 
+  useEffect(() => {
+    console.log("info ch", info);
+    if (info !== null && info !== undefined) {
+      const qIndex = questionList.findIndex(
+        (value) => value._id === info.qid._id
+      );
+      console.log("info", info, qIndex);
+      setIsQuestionClicked(qIndex);
+      setList(!list);
+      if (info.qid.answerOptions.length > 0) {
+        setBenchmarkCounter(info.qid.answerOptions);
+      }
+      info.qid.answerOptions.forEach((value, index) => {
+        setSelectedAnswerOptions((prevState) => {
+          const updatedSelectedAnswerOptions = [...prevState];
+          updatedSelectedAnswerOptions[index] = {
+            qid: info.qid._id,
+            aid: value._id,
+          };
+          return updatedSelectedAnswerOptions;
+        });
+      });
+      isAnswerOpen(!answerOpen);
+      setSelectedRecommendAction([
+        ...selectedRecommendAction,
+        info.recomendedActionId[0]._id,
+      ]);
+      setIsRecommendedActionOpen(!isRecommendedActionOpen);
+
+      // const selectedAnswers = info.answer_option.split(",").filter(item => item.trim() !== "")
+    }
+  }, []);
+  console.log("RA", selectedRecommendAction);
   const handleQuestionClicked = (index) => {
-    console.log("question clicked", questionList[index].title);
     setIsQuestionClicked(index);
   };
 
   const handleAnswerOptionChange = (qid, aid, index) => {
-    console.log("answer and question clicked", qid, aid);
     setSelectedAnswerOptions((prevState) => {
       const updatedSelectedAnswerOptions = [...prevState];
       updatedSelectedAnswerOptions[index] = { qid, aid };
@@ -91,11 +125,9 @@ const RelationModal = ({
     });
   };
   const handleAnswerRelationChange = (arId) => {
-    console.log("answer relation selected", selectedAnswerRelation);
     setSelectedAnswerRelation([arId]);
   };
   const handlePercentageOptionChange = (pid, index) => {
-    console.log("percentage", pid, index);
     setSelectedPercentageOptions((prevState) => {
       const updatedSelectedOptions = [...prevState];
       updatedSelectedOptions[index] = { pid };
@@ -104,14 +136,12 @@ const RelationModal = ({
   };
 
   function addAnotherBenchmarkQuestion(index) {
-    console.log("add");
     setBenchmarkCounter([
       ...benchmarkCounter,
       { id: benchmarkCounter.length + 1 },
     ]);
   }
   const removeBenchmarkQuestion = (index) => {
-    console.log("remove", index);
     // if(benchmarkCounter.length!==1){
     const updatedCounter = benchmarkCounter.filter((item) => item.id !== index);
     setBenchmarkCounter(updatedCounter);
@@ -119,7 +149,11 @@ const RelationModal = ({
   };
 
   const handleRecommendedAction = (id, index) => {
-    setSelectedRecommendAction([...selectedRecommendAction, id]);
+    if (!selectedRecommendAction.some((a) => a === id)) {
+      setSelectedRecommendAction([...selectedRecommendAction, id]);
+    } else {
+      setSelectedRecommendAction((prev) => prev.filter((a) => a !== id));
+    }
   };
 
   const handleSubmit = () => {
@@ -141,30 +175,73 @@ const RelationModal = ({
       selectedAnswerOptions.forEach((value) => {
         mappedData.aid.push(value.aid);
       });
-      createRecommendActionRelation(mappedData)
-        .then((resp) => {
-          let answers = "";
-          resp?.qid?.answerOptions.forEach((element) => {
-            answers += element.answerOption + ",";
-          });
-          let data = {
-            ...resp,
-            status: resp.status ? "true" : false,
-            ra_title: resp?.recomendedActionId[0]?.title,
-            answr_option: answers,
-            question_title: resp?.qid?.title,
-            assignment_type: resp?.assignment_type
-              ? resp.assignment_type
-              : "Automatic",
-            number_of_assignment: resp?.number_of_assignment,
-          };
+      console.log("mapped", mappedData);
+      if (info !== null) {
+        const toastId = toast.loading("Updating Recommend Relation");
+        updatedRecommendActionRelation(info._id, mappedData, toastId)
+          .then((resp) => {
+            console.log("resp", resp);
+            let answers = "";
+            resp?.qid?.answerOptions.forEach((element) => {
+              answers += element.answerOption.answerOption + ",";
+            });
+            let data = {
+              ...resp,
+              status: resp.status ? "true" : false,
+              ra_title: resp?.recomendedActionId[0]?.title,
+              answr_option: answers,
+              question_title: resp?.qid?.title,
+              assignment_type: resp?.assignment_type
+                ? resp.assignment_type
+                : "Automatic",
+              number_of_assignment: resp?.number_of_assignment,
+            };
+            setRecommendedRelation((prev) => {
+              let data1 = [...prev];
+              data1 = data1.map((value) => {
+                if (value._id === resp._id) {
+                  return data;
+                } else {
+                  return value;
+                }
+              });
+              return data1;
+            });
 
-          console.log("here", data);
-          setRecommendedRelation([...recommendedRelation, data]);
-          toast.success("Relation Succesfully Created.");
-          setmodal_grid(false);
-        })
-        .catch((err) => toast.error("Couldn't create the relation."));
+            // const currentRecommendedRelation = recommendedRelation.find((rr)=>rr._id === info._id)
+          })
+          .then(() => {
+            setmodal_grid(false);
+          })
+          .catch((err) => {
+            console.log("error", err);
+            toast.error("Couldn't update the relation.");
+          });
+      } else {
+        createRecommendActionRelation(mappedData)
+          .then((resp) => {
+            let answers = "";
+            resp?.qid?.answerOptions.forEach((element) => {
+              answers += element.answerOption.answerOption + ",";
+            });
+            let data = {
+              ...resp,
+              status: resp.status ? "true" : false,
+              ra_title: resp?.recomendedActionId[0]?.title,
+              answr_option: answers,
+              question_title: resp?.qid?.title,
+              assignment_type: resp?.assignment_type
+                ? resp.assignment_type
+                : "Automatic",
+              number_of_assignment: resp?.number_of_assignment,
+            };
+
+            setRecommendedRelation([...recommendedRelation, data]);
+            toast.success("Relation Succesfully Created.");
+            setmodal_grid(false);
+          })
+          .catch((err) => toast.error("Couldn't create the relation."));
+      }
     }
   };
 
@@ -375,10 +452,6 @@ const RelationModal = ({
                         lg={12}
                         className="p-1 mb-3 border-top-0 border border-grey"
                       >
-                        {console.log(
-                          "question clicked",
-                          questionList[isQuestionClicked]
-                        )}
                         {questionList[isQuestionClicked]?.answerOptions.map(
                           (option, optionIndex) => (
                             <li
@@ -405,7 +478,7 @@ const RelationModal = ({
                                     }
                               }
                             >
-                              {option.answerOption}
+                              {option.answerOption.answerOption}
                             </li>
                           )
                         )}
@@ -417,7 +490,7 @@ const RelationModal = ({
                 {questionList[isQuestionClicked].answerOptions.some((a) => {
                   return (
                     a._id === selectedAnswerOptions[index]?.aid &&
-                    a.answerOption === "Percentage"
+                    a.answerOption.answerOption === "Percentage"
                   );
                 }) && (
                   <>
@@ -508,13 +581,11 @@ const RelationModal = ({
                         index + 1 <
                         questionList[isQuestionClicked]?.answerOptions.length
                       ) {
-                        console.log("here1");
                         addAnotherBenchmarkQuestion();
                       } else {
                         toast.info(
                           `only ${selectedAnswerOptions.length} can be selected.`
                         );
-                        console.log("here2");
                       }
                     }}
                     className="ri-add-circle-fill cursor-pointer"
@@ -523,10 +594,8 @@ const RelationModal = ({
                     style={{ color: "#C7C9CA" }}
                     onClick={() => {
                       if (benchmarkCounter.length === 1) {
-                        console.log("here1");
                         toast.info(`Can't delete more.`);
                       } else {
-                        console.log("here2");
                         removeBenchmarkQuestion(value.id);
                       }
                     }}
@@ -559,6 +628,9 @@ const RelationModal = ({
                         {" "}
                         <Input
                           type="checkbox"
+                          checked={selectedRecommendAction.some(
+                            (a) => a === value._id
+                          )}
                           onChange={() =>
                             handleRecommendedAction(value._id, index)
                           }

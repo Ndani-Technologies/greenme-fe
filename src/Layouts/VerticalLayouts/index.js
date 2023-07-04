@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import withRouter from "../../Components/Common/withRouter";
 import { Collapse } from "reactstrap";
 
@@ -77,11 +77,20 @@ const VerticalLayout = (props) => {
   useEffect(() => {
     window.addEventListener("resize", resizeSidebarMenu, true);
   }, [resizeSidebarMenu]);
-
+  const location = useLocation();
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+    const menuItemNavigate = location.state?.menuItem;
+
     const initMenu = () => {
-      const pathName = process.env.PUBLIC_URL + props.router.location.pathname;
+      let pathName;
+      if (menuItemNavigate) {
+        pathName = menuItemNavigate;
+      } else {
+        pathName = process.env.PUBLIC_URL + props.router.location.pathname;
+      }
+      // const pathName = '/benchmarking';
+      console.log("pathName", pathName, menuItemNavigate);
       const ul = document.getElementById("navbar-nav");
       const items = ul.getElementsByTagName("a");
       let itemsArray = [...items]; // converts NodeList to Array

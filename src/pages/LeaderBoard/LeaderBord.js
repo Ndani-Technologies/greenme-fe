@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
 import LeaderBoardCards from "./LeaderBoardCards";
 import { Col, Label, Row } from "reactstrap";
 import Select from "react-select";
-import {
-  Box,
-  Chip,
-  MenuItem,
-  OutlinedInput,
-  Slider,
-  useTheme,
-} from "@mui/material";
-import Nouislider from "nouislider-react";
+import { Box, Slider } from "@mui/material";
+import { getAllUsers } from "../../slices/thunks";
 const LeaderBord = () => {
   const [selectCountry, setselectCountry] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    getAllUsers()
+      .then((res) => {
+        setAllUsers(res);
+      })
+      .catch((err) => console.log(err, "UNABLE TO GET USERS"));
+  }, []);
 
   function handleselectCountry(selectCountry) {
     setselectCountry(selectCountry);
@@ -60,9 +62,9 @@ const LeaderBord = () => {
       <div className="page-content">
         <ActionMain
           Title={"Leader Board"}
-          Text={
-            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-          }
+          // Text={
+          //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+          // }
         />
         <div className="d-flex align-items-center justify-content-between w-100 mt-5 mb-3">
           <div className="d-flex align-items-center justify-content-evenly gap-3 w-75">
@@ -124,7 +126,7 @@ const LeaderBord = () => {
             </Box>
           </div>
         </div>
-        <LeaderBoardCards />
+        <LeaderBoardCards allUsers={allUsers} />
       </div>
     </React.Fragment>
   );

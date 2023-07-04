@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Col,
   Row,
@@ -10,11 +10,12 @@ import {
   Input,
   Label,
 } from "reactstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Flatpickr from "react-flatpickr";
 import Select from "react-select";
-import { Box, Slider } from "@mui/material";
-import { useLeaderBoardContext } from "../../context/leaderBoardContext";
+import { Box, Slider, Chip, OutlinedInput } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { getAllAdminBenchmarks, getAllCategories } from "../../slices/thunks";
 
 const ProductsGlobalFilter = () => {
   return (
@@ -33,52 +34,167 @@ function valuetext(value) {
   return `${value}°C`;
 }
 
-const AllQaFilters = () => {
-  return (
-    <div className="d-flex align-items-center justify-content-between w-100 p-0">
-      <div className={"search-box me-2 mb-0 d-inline-block"}></div>
+const AllQaFilters = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
 
-      <div className="col-xxl-3 col-sm-4">
-        <Flatpickr
-          placeholder="Select date range"
-          className="form-control bg-light border-light"
-          options={{
-            mode: "range",
-            dateFormat: "d M, Y",
-          }}
-        />
-      </div>
-      <div className="flex-shrink-0">
-        <div className="form-check form-switch form-switch-right form-switch-md">
-          <Label htmlFor="form-grid-showcode" className="form-label text-muted">
-            Status:
-          </Label>
-          <Input
-            className="form-check-input code-switcher"
-            type="checkbox"
-            value="active"
-            defaultValue="Incomplete"
+  const [categories, setCategories] = useState([]);
+  const [value, setValue] = React.useState(globalFilter);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [response, setResponse] = React.useState([0, 0]);
+  const [response1, setResponse1] = React.useState([0, 0]);
+
+  useEffect(() => {
+    getAllCategories().then((res) => {
+      const categoryOptions = res.map((category) => {
+        return {
+          value: category.titleEng,
+          label: category.titleEng,
+        };
+      });
+      setCategories(categoryOptions);
+    });
+  }, []);
+
+  const onChange = useAsyncDebounce((value) => {
+    console.log(value, "VAL");
+    setGlobalFilter(value[0] || value[1] || undefined);
+  }, 200);
+
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValue(checkbox.value);
+      switchInput.value = checkbox.value;
+      switchLabel.innerText = switchLabel.getAttribute("data-complete");
+    } else {
+      setValue("Incomplete");
+      switchInput.value = "Incomplete";
+      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
+    }
+
+    onChange(checkbox.checked ? "Complete" : "Incomplete");
+  };
+
+  const handleChangeCategory = (selectedOption) => {
+    setSelectedCategory(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
+  const handleSliderChange = (event, newValue) => {
+    setResponse(newValue);
+    onChange(newValue);
+    // Perform any additional logic or filtering based on the new slider value
+  };
+
+  const handleSliderChange2 = (event, newValue) => {
+    setResponse1(newValue);
+    onChange(newValue);
+    // Perform any additional logic or filtering based on the new slider value
+  };
+
+  return (
+    <div className="d-flex align-items-center w-100 p-0">
+      <div
+        className="d-flex align-items-center gap-1 flex-shrink-0"
+        style={{ width: "30%" }}
+      ></div>
+      <div
+        className="d-flex align-items-center gap-1 flex-shrink-0"
+        style={{ width: "27%" }}
+      >
+        <span style={{ color: "black" }}>Filter by </span>
+        <div>
+          <Select
+            isClearable={true}
+            name="country"
+            value={selectedCategory}
+            placeholder="Category"
+            onChange={handleChangeCategory}
+            onBlur={() => handleChangeCategory(selectedCategory)}
+            options={categories}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected &&
+                  selected.map((value) => <Chip key={value} label={value} />)}
+              </Box>
+            )}
+            MenuProps={MenuProps}
           />
         </div>
       </div>
+      <div style={{ width: "18%" }}>
+        <Box sx={{ width: 120 }}>
+          <label className="mb-0 text-center">No of user answered</label>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={response}
+            onChange={handleSliderChange} // Uncomment this line
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
+      </div>
+
       <div
-        className="d-flex align-items-center gap-4"
-        style={{ width: "220px" }}
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "13%" }}
       >
-        <span style={{ color: "black" }}>Filter by </span>
-        <div
-          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
-          type="text"
-          style={{ width: "140px" }}
-        >
-          {" "}
-          <span style={{ color: "black" }}>Country</span>
-          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
+        <div>
+          <div
+            className="form-check form-switch form-switch-right form-switch-md"
+            style={{ display: "grid" }}
+          >
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              defaultValue="Complete"
+              data-incomplete="Incomplete"
+              data-complete="Complete"
+            >
+              Status
+            </label>
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              defaultValue="Complete"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
+            />
+          </div>
         </div>
+      </div>
+      <div>
+        <Box sx={{ width: 120 }}>
+          <label className="mb-0 text-center">Response</label>
+          <Slider
+            getAriaLabel={() => "Temperature range"}
+            value={response1}
+            onChange={handleSliderChange2}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+          />
+        </Box>
       </div>
     </div>
   );
 };
+
 const FilterBenchmarkAction = ({
   setGlobalFilter,
   globalFilter,
@@ -370,113 +486,569 @@ const FilterAction = () => {
   );
 };
 
-const FilterA = () => {
-  const cssCode = `
-  .switch-label:before {
-    content: attr(data-incomplete);
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 0.375rem 0.75rem;
-  }
+const FilterA = ({ globalFilter, setGlobalFilter, useAsyncDebounce }) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [value, setValue] = React.useState(globalFilter);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
 
-  .switch-label:after {
-    content: attr(data-complete);
-    position: absolute;
-    right: 0;
-    top: 0;
-    padding: 0.375rem 0.75rem;
-  }
+  useEffect(() => {
+    const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+    const options = userObj.otherCountries.map((country) => {
+      return {
+        value: country,
+        label: country,
+      };
+    });
+    setCountryOptions(options);
+  }, []);
 
-  input[type="checkbox"].code-switcher:checked ~ .switch-label:before {
-    content: attr(data-complete);
-  }
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
 
-  input[type="checkbox"].code-switcher:checked ~ .switch-label:after {
-    content: attr(data-incomplete);
-  }
-`;
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValue(checkbox.value);
+      switchInput.value = checkbox.value;
+      switchLabel.innerText = switchLabel.getAttribute("data-complete");
+    } else {
+      setValue("Incomplete");
+      switchInput.value = "Incomplete";
+      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
+    }
+
+    onChange(checkbox.checked ? "Complete" : "Incomplete");
+  };
+
+  const handleChangeCountry = (selectedOption) => {
+    setSelectedCountry(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
+  const handleDateChange = (selectedDates) => {
+    const formattedDates = selectedDates.map((date) => {
+      const year = String(date.getFullYear());
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return [year, month, day].join(" && ").split(" && ");
+    });
+    const year = formattedDates[0][0];
+    const month = formattedDates[0][1];
+    const day = formattedDates[0][2];
+
+    const concatenatedValue = year && month && day;
+
+    setSelectedDates(selectedDates);
+    setValue(concatenatedValue);
+    onChange(concatenatedValue);
+  };
+
   return (
-    <div className="d-flex justify-content-between align-items-center w-100">
-      <div
-        className="d-flex align-items-center gap-2 "
-        style={{ width: "220px" }}
-      >
-        <span>From Date </span>
-        <div
-          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
-          type="text"
-          style={{ width: "140px" }}
-        >
-          {" "}
-          <span></span>
-          <i class="ri-calendar-2-line"></i>
+    <div className="d-flex w-100">
+      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-25">
+        <div>
+          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
+        </div>
+        <div className="w-75">
+          <Select
+            isClearable={true}
+            name="country"
+            placeholder="country"
+            value={selectedCountry}
+            onChange={handleChangeCountry}
+            onBlur={() => handleChangeCountry(selectedCountry)}
+            options={countryOptions}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected &&
+                  selected.map((value) => <Chip key={value} label={value} />)}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          />
         </div>
       </div>
-      <div
-        className="d-flex align-items-center gap-2 flex-shrink-0"
-        style={{ width: "200px" }}
-      >
-        <span>To Date </span>
-        <div
-          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
-          type="text"
-          style={{ width: "140px" }}
-        >
-          {" "}
-          <span></span>
-          <i class="ri-calendar-2-line"></i>
-        </div>
-      </div>
+
       <div
         className=" d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "200px" }}
+        style={{ width: "35%", marginLeft: "35px" }}
       >
         <div>
-          <style>{cssCode}</style>
-
-          {/* Your JSX code */}
           <div className="form-check form-switch form-switch-right form-switch-md">
-            {/* <label
-              htmlFor="form-grid-showcode"
-              className="form-label text-muted"
-            >
-              Status:
-            </label> */}
             <input
               className="form-check-input code-switcher"
               type="checkbox"
-              value="active"
-              defaultValue="Incomplete"
+              value={value}
+              defaultValue="Complete"
               id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
             />
             <label
               htmlFor="form-grid-showcode"
               className="form-check-label switch-label"
+              defaultValue="Complete"
               data-incomplete="Incomplete"
               data-complete="Complete"
-            ></label>
+            >
+              Status
+            </label>
           </div>
         </div>
       </div>
-      <div
-        className="d-flex align-items-center gap-3 flex-shrink-0"
-        style={{ width: "220px" }}
-      >
-        <span style={{ color: "black" }}>Filter by </span>
-        <div
-          className="pe-none border border-dark p-1 rounded d-flex justify-content-between bg-white"
-          type="text"
-          style={{ width: "140px" }}
-        >
-          {" "}
-          <span style={{ color: "black" }}>Country</span>
-          <i class="ri-arrow-drop-down-line" style={{ color: "black" }}></i>
-        </div>
+
+      <div className="col-xxl-3 col-sm-4">
+        <Flatpickr
+          placeholder="Select date range"
+          className="form-control bg-light border-light"
+          options={{
+            mode: "range",
+            dateFormat: "d M, Y",
+            minDate: new Date().fp_incr(-365),
+          }}
+          value={selectedDates}
+          onChange={handleDateChange}
+        />
       </div>
     </div>
   );
 };
+
+const FilterAdminBenchmark = ({
+  globalFilter,
+  setGlobalFilter,
+  useAsyncDebounce,
+}) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [organizationOptions, setOrganizationOptions] = useState([]);
+  console.log(organizationOptions, "OOP");
+  const [value, setValue] = React.useState(globalFilter);
+  const [selectedOrganization, setSelectedOrganization] = useState(null);
+  const [selectedDates, setSelectedDates] = useState([]);
+
+  useEffect(() => {
+    getAllAdminBenchmarks()
+      .then((res) => {
+        const options = res.map((bench) => {
+          return {
+            value: bench.organization,
+            label: bench.organization,
+          };
+        });
+        const uniqueArray = Array.from(
+          options
+            .reduce((map, obj) => map.set(obj.value, obj), new Map())
+            .values()
+        );
+        setOrganizationOptions(uniqueArray);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValue(checkbox.value);
+      switchInput.value = checkbox.value;
+      switchLabel.innerText = switchLabel.getAttribute("data-complete");
+    } else {
+      setValue("Incomplete");
+      switchInput.value = "Incomplete";
+      switchLabel.innerText = switchLabel.getAttribute("data-incomplete");
+    }
+
+    onChange(checkbox.checked ? "Complete" : "Incomplete");
+  };
+
+  const handleChangeOrganization = (selectedOption) => {
+    setSelectedOrganization(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
+  const handleDateChange = (selectedDates) => {
+    const formattedDates = selectedDates.map((date) => {
+      const year = String(date.getFullYear());
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return [year, month, day].join(" && ").split(" && ");
+    });
+    const year = formattedDates[0][0];
+    const month = formattedDates[0][1];
+    const day = formattedDates[0][2];
+
+    const concatenatedValue = year && month && day;
+
+    setSelectedDates(selectedDates);
+    setValue(concatenatedValue);
+    onChange(concatenatedValue);
+  };
+
+  return (
+    <div className="d-flex w-100">
+      <div
+        className={"search-box me-2 mb-0 d-inline-block"}
+        style={{ width: "100%" }}
+      >
+        <input
+          onChange={(e) => {
+            setValue(e.target.value);
+            onChange(e.target.value);
+          }}
+          id="search-bar-0"
+          style={{ width: "70%" }}
+          type="text"
+          className="form-control search /"
+          placeholder="Search by Title"
+          value={value || ""}
+        />
+        <i className="bx bx-search-alt search-icon"></i>
+      </div>
+      <div className="d-flex align-items-center gap-1 flex-shrink-0 w-10">
+        <div>
+          <span style={{ color: "black", fontSize: "11px" }}>Filter by </span>
+        </div>
+        <div className="w-75">
+          <Select
+            isClearable={true}
+            name="country"
+            placeholder="Organization"
+            value={selectedOrganization}
+            onChange={handleChangeOrganization}
+            onBlur={() => handleChangeOrganization(selectedOrganization)}
+            options={organizationOptions}
+            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+            renderValue={(selected) => (
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                {selected &&
+                  selected.map((value) => <Chip key={value} label={value} />)}
+              </Box>
+            )}
+            MenuProps={MenuProps}
+          />
+        </div>
+      </div>
+
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "29%" }}
+      ></div>
+      <div
+        className=" d-flex align-items-center gap-3 flex-shrink-0"
+        style={{ width: "11%" }}
+      >
+        <div>
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={value}
+              defaultValue="Complete"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+              defaultChecked
+            />
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              defaultValue="Complete"
+              data-incomplete="Incomplete"
+              data-complete="Complete"
+            >
+              Status
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="col-xxl-3 col-sm-4 w-15"
+        style={{ width: "20%", marginRight: "20px" }}
+      >
+        <Flatpickr
+          placeholder="Select date range"
+          className="form-control bg-light border-light"
+          options={{
+            mode: "range",
+            dateFormat: "d M, Y",
+            minDate: new Date().fp_incr(-365),
+          }}
+          value={selectedDates}
+          onChange={handleDateChange}
+        />
+      </div>
+    </div>
+  );
+};
+const AdminRAFilters = ({
+  globalFilter,
+  setGlobalFilter,
+  useAsyncDebounce,
+  category,
+  timeScale,
+  reductionPotential,
+  cost,
+}) => {
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+  const [value, setValue] = React.useState(globalFilter);
+  const [valueStatus, setValueStatus] = React.useState(false);
+  const [categoryOptions, setCategoryOptions] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState([]);
+
+  const [potentialOptions, setpotentialOptions] = useState([]);
+  const [selectedPotential, setSelectedPotential] = useState([]);
+
+  const [costOptions, setCostOptions] = useState([]);
+  const [selectedCost, setSelectedCost] = useState([]);
+
+  const [timeScaleOptions, setTimeScaleOptions] = useState([]);
+  const [selectedTimeScale, setSelectedTimeScale] = useState([]);
+
+  useEffect(() => {
+    setCategoryOptions(
+      (category || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+    setpotentialOptions(
+      (reductionPotential || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+    setCostOptions(
+      (cost || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+    setTimeScaleOptions(
+      (timeScale || []).map((value) => {
+        return {
+          label: value.title,
+          value: value.title,
+        };
+      })
+    );
+  }, [category]);
+
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  const handleCheckboxChange = (event) => {
+    const switchInput = document.getElementById("form-grid-showcode");
+    const switchLabel = document.querySelector(".switch-label");
+    const checkbox = event.target;
+
+    if (checkbox.checked) {
+      setValueStatus(checkbox.value ? "Completed" : "In Progress");
+      switchInput.value = checkbox.value;
+      // switchLabel.innerText = switchLabel.getAttribute("data-active");
+    } else {
+      setValueStatus(false);
+      switchInput.value = false;
+      // switchLabel.innerText = switchLabel.getAttribute("data-inActive");
+    }
+
+    onChange(checkbox.checked ? "Completed" : "In Progress");
+  };
+
+  const handleChangeCategory = (selectedOption) => {
+    setSelectedCategory(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+  const handleChangePotential = (selectedOption) => {
+    setSelectedPotential(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+  const handleChangeCost = (selectedOption) => {
+    setSelectedCost(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+  const handleChangeTimescale = (selectedOption) => {
+    setSelectedTimeScale(selectedOption);
+    setValue(selectedOption ? selectedOption.value : globalFilter);
+    onChange(selectedOption ? selectedOption.value : undefined);
+  };
+
+  return (
+    <>
+      <div className="d-flex justify-content-between">
+        <Col sm={3}>
+          <div className="search-box">
+            <Input
+              type="text"
+              onChange={(e) => {
+                setValue(e.target.value);
+                onChange(e.target.value);
+              }}
+              value={value || ""}
+              className="form-control search"
+              placeholder="Search for..."
+            />
+            <i className="ri-search-line search-icon"></i>
+          </div>
+        </Col>
+        <Col
+          lg={6}
+          className="d-flex gap-2 w-50 align-items-center justify-content-end m-0"
+        >
+          <div>
+            <Select
+              isClearable={true}
+              name="category"
+              placeholder="Category"
+              value={selectedCategory}
+              onChange={handleChangeCategory}
+              onBlur={() => handleChangeCategory(selectedCategory)}
+              options={categoryOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+          <div className="form-check form-switch form-switch-right form-switch-md">
+            <input
+              className="form-check-input code-switcher"
+              type="checkbox"
+              value={valueStatus}
+              defaultValue="Status"
+              id="form-grid-showcode"
+              onChange={handleCheckboxChange}
+            />
+            <label
+              htmlFor="form-grid-showcode"
+              className="form-check-label switch-label"
+              defaultValue="Status"
+              data-inActive="false"
+              data-active="true"
+            >
+              Status
+            </label>
+          </div>
+          <div>
+            <Select
+              isClearable={true}
+              name="category"
+              placeholder="Reduction Potential"
+              value={selectedPotential}
+              onChange={handleChangePotential}
+              onBlur={() => handleChangePotential(selectedPotential)}
+              options={potentialOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+          <div>
+            <Select
+              isClearable={true}
+              name="Cost"
+              placeholder="Cost"
+              value={selectedCost}
+              onChange={handleChangeCost}
+              onBlur={() => handleChangeCost(selectedCost)}
+              options={potentialOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+          <div>
+            <Select
+              isClearable={true}
+              name="timescale"
+              placeholder="Timescale"
+              value={selectedTimeScale}
+              onChange={handleChangeTimescale}
+              onBlur={() => handleChangeTimescale(selectedTimeScale)}
+              options={timeScaleOptions}
+              input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+              renderValue={(selected) => (
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                  {selected &&
+                    selected.map((value) => <Chip key={value} label={value} />)}
+                </Box>
+              )}
+              MenuProps={MenuProps}
+            />
+          </div>
+        </Col>
+      </div>
+    </>
+  );
+};
+
 const CustomersGlobalFilter = () => {
   const [customerStatus, setcustomerStatus] = useState(null);
 
@@ -1010,6 +1582,7 @@ const LeadsGlobalFilter = ({ onClickDelete }) => {
 };
 
 export {
+  AdminRAFilters,
   ProductsGlobalFilter,
   CustomersGlobalFilter,
   OrderGlobalFilter,
@@ -1027,4 +1600,5 @@ export {
   FilterLeaderBoard,
   AllQaFilters,
   FilterBenchmarkAction,
+  FilterAdminBenchmark,
 };

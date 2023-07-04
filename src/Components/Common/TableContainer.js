@@ -32,14 +32,16 @@ import {
   TaskListGlobalFilter,
   DateRangeGlobalFilter,
   AllQaFilters,
+  AdminRAFilters,
+  FilterAdminBenchmark,
 } from "../../Components/Common/GlobalSearchFilter";
 
 // Define a default UI for filtering
 function GlobalFilter({
   preGlobalFilteredRows,
   globalFilter,
-  setGlobalFilter,
   selectedData,
+  setGlobalFilter,
   isBenchmarkingQASearch,
   isCustomerFilter,
   isOrderFilter,
@@ -60,6 +62,12 @@ function GlobalFilter({
   isFilterLeaderBoard,
   isFilterBenchmarkAction,
   isSearchInput,
+  isFilterAdminRA,
+  isFilterAdminBenchmark,
+  category,
+  timeScale,
+  reductionPotential,
+  cost,
 }) {
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -99,8 +107,27 @@ function GlobalFilter({
                   <i className="bx bx-search-alt search-icon"></i>
                 </div>
               )}
-              {isAllQaFilters && <AllQaFilters />}
-              {isFilterA && <FilterA />}
+              {isAllQaFilters && (
+                <AllQaFilters
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
+              {isFilterA && (
+                <FilterA
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
+              {isFilterAdminBenchmark && (
+                <FilterAdminBenchmark
+                  useAsyncDebounce={useAsyncDebounce}
+                  globalFilter={globalFilter}
+                  setGlobalFilter={setGlobalFilter}
+                />
+              )}
               {isFilterBenchmarkAction && (
                 <FilterBenchmarkAction
                   globalFilter={globalFilter}
@@ -111,11 +138,22 @@ function GlobalFilter({
               {/* <FilterA /> */}
             </Col>
             {isFilterAction && <FilterAction />}
-            {isFilterUserAction && <FilterUserAction />}
+            {isFilterAdminRA && (
+              <AdminRAFilters
+                useAsyncDebounce={useAsyncDebounce}
+                globalFilter={globalFilter}
+                setGlobalFilter={setGlobalFilter}
+                category={category}
+                timeScale={timeScale}
+                reductionPotential={reductionPotential}
+                cost={cost}
+              />
+            )}
             {isFilterLeaderBoard && (
               <FilterLeaderBoard selectedData={selectedData} />
             )}
             {/* {isFilterBenchmarkAction && <FilterBenchmarkAction />} */}
+
             {isProductsFilter && <ProductsGlobalFilter />}
             {isCustomerFilter && <CustomersGlobalFilter />}
             {isOrderFilter && <OrderGlobalFilter />}
@@ -138,11 +176,15 @@ const TableContainer = ({
   columns,
   selectedData,
   setInfo,
+  category,
+  timeScale,
+  reductionPotential,
+  cost,
+  isFilterAdminRA,
   isBenchmarkingQASearch,
   isFilterA,
   isFilterAction,
   isFilterUserAction,
-  FilterLeaderBoard,
   isFilterBenchmarkAction,
   isAllQaFilters,
   isHorzontal,
@@ -162,6 +204,8 @@ const TableContainer = ({
   isNFTRankingFilter,
   isSearchInput,
   isTaskListFilter,
+  isFilterLeaderBoard,
+  isFilterAdminBenchmark,
   isAddOptions,
   isAddUserList,
   handleOrderClicks,
@@ -172,7 +216,6 @@ const TableContainer = ({
   tableClass,
   theadClass,
   trClass,
-
   thClass,
   divClass,
   SearchPlaceholder,
@@ -250,14 +293,19 @@ const TableContainer = ({
         )}
         {isGlobalFilter && (
           <GlobalFilter
+            isFilterAdminRA={isFilterAdminRA}
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             isBenchmarkingQASearch={isBenchmarkingQASearch}
             isFilterA={isFilterA}
+            category={category}
+            timeScale={timeScale}
+            reductionPotential={reductionPotential}
+            cost={cost}
             isFilterAction={isFilterAction}
             isFilterUserAction={isFilterUserAction}
             selectedData={selectedData}
-            isFilterLeaderBoard={FilterLeaderBoard}
+            isFilterLeaderBoard={isFilterLeaderBoard}
             isFilterBenchmarkAction={isFilterBenchmarkAction}
             isAllQaFilters={isAllQaFilters}
             setGlobalFilter={setGlobalFilter}
@@ -274,6 +322,7 @@ const TableContainer = ({
             isSearchInput={isSearchInput}
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
+            isFilterAdminBenchmark={isFilterAdminBenchmark}
           />
         )}
         {isAddOptions && (
@@ -341,6 +390,7 @@ const TableContainer = ({
                         {...column.getSortByToggleProps()}
                       >
                         {column.render("Header")}
+                        {/* <i class="bi bi-sort-alpha-up-alt"></i> */}
                         {generateSortingIndicator(column)}
                       </th>
                     ))}

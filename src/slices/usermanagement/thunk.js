@@ -1,12 +1,21 @@
 import axios from "axios";
 import { apiError, userDetailFailure, userDetailSuccess } from "./reducer";
+
+export const getAllUsers = async () => {
+  try {
+    const resp = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
+    return resp;
+  } catch (error) {
+    console.log(error, "Unable to get Users");
+  }
+};
+
 export const getUserDetails = async () => {
   try {
     // const resp = await axios.get("http://localhost:5000/api/v1/user/");
     const resp = await axios.get(process.env.REACT_APP_USER_URL + "user");
     // if (resp.success) {
     let data = resp;
-    console.log("response post", data);
     data = data.map((value) => {
       return {
         _id: value?._id,
@@ -23,10 +32,6 @@ export const getUserDetails = async () => {
       };
     });
     return data;
-    // dispatch(userDetailSuccess(data));
-    // } else {
-    //   dispatch(userDetailFailure());
-    // }
   } catch (error) {
     console.error(error);
   }
@@ -34,15 +39,11 @@ export const getUserDetails = async () => {
 
 export const deleteUserDetails = (userId) => async (dispatch, getState) => {
   try {
-    // const resp = await axios.delete(
-    //   `http://localhost:5000/api/v1/user/${userId}`
-    // );
     const resp = await axios.delete(
       `${process.env.REACT_APP_USER_URL}user/${userId}`
     );
     if (resp.success) {
       const userDetail = getState().UserDetail.userDetail;
-      // console.log("Current state", userDetail);
       const updateded = userDetail.filter((elem) => elem._id !== userId);
       //filter:
       dispatch(userDetailSuccess(updateded));
@@ -58,17 +59,10 @@ export const deleteUserDetails = (userId) => async (dispatch, getState) => {
 export const updatedUserDetails = (user) => async (dispatch, getState) => {
   try {
     const { _id } = user;
-    // console.log("for replace data", _id, user);
-    // const resp = await axios.patch(
-    //   `http://localhost:5000/api/v1/user/${user._id}`,
-    //   user
-    // );
     const resp = await axios.delete(
       `${process.env.REACT_APP_USER_URL}user/${user._Id}`
     );
     if (resp.success) {
-      console.log("updated users", resp, user);
-
       const userDetail = getState().UserDetail.userDetail;
       let ob;
       dispatch(userDetailSuccess());

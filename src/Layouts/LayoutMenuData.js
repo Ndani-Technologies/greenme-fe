@@ -14,6 +14,7 @@ const Navdata = () => {
   const [isRecommend, setIsRecommend] = useState(false);
   const [isLeaderBoard, setIsLeaderBoard] = useState(false);
   const [isRecommended, setIsRecommended] = useState(false);
+  const [isCollaboration, setIsCollaboration] = useState(false);
   const [isBaseUi, setIsBaseUi] = useState(false);
   const [isAdvanceUi, setIsAdvanceUi] = useState(false);
   const [isForms, setIsForms] = useState(false);
@@ -197,33 +198,33 @@ const Navdata = () => {
       },
       stateVariables: isRecommended,
       subItems: [
-        {
-          id: 1,
-          label: "Admin Report",
-          link: "/adminreport",
-          parentId: "Recommended Actions Admin",
-        },
-        {
-          id: 2,
-          label: "Admin Summary",
-          link: "/adminSummary",
-          parentId: "Recommended Actions Admin",
-        },
-        {
-          id: 3,
-          label: "Comparison",
-          link: "/actioncomparison",
-          parentId: "Recommended Actions Admin",
-        },
+        // {
+        //   id: 1,
+        //   label: "Admin Report",
+        //   link: "/adminreport",
+        //   parentId: "Recommended Actions Admin",
+        // },
+        // {
+        //   id: 2,
+        //   label: "Admin Summary",
+        //   link: "/adminSummary",
+        //   parentId: "Recommended Actions Admin",
+        // },
+        // {
+        //   id: 3,
+        //   label: "Comparison",
+        //   link: "/actioncomparison",
+        //   parentId: "Recommended Actions Admin",
+        // },
         {
           id: 4,
-          label: "Admin Dashboard",
+          label: "Dashboard",
           link: "/actionadmindashboard",
           parentId: "Recommended Actions Admin",
         },
         {
           id: 5,
-          label: "Admin Relation",
+          label: "Relationship",
           link: "/AdminRelationship",
           parentId: "Recommended Actions Admin",
         },
@@ -250,12 +251,39 @@ const Navdata = () => {
       link: "/",
       disable: true,
     },
+    // {
+    //   id: 7,
+    //   icon: "ri-rocket-line",
+    //   label: "Leaderboard",
+    //   link: "/leaderboard",
+    //   disable: false,
+    // },
     {
-      id: 7,
-      icon: "ri-rocket-line",
-      label: "Leaderboard",
-      link: "/",
-      disable: true,
+      id: "Leaderboard",
+      icon: "ri-pencil-ruler-2-line",
+      label: "Leader Board",
+      link: "/#",
+      click: function (e) {
+        e.preventDefault();
+        setIsLeaderBoard(!isLeaderBoard);
+        setIscurrentState("LeaderBoard");
+        updateIconSidebar(e);
+      },
+      stateVariables: isLeaderBoard,
+      subItems: [
+        {
+          id: 1,
+          label: "User Leaderboard",
+          link: "/leaderboard",
+          parentId: "Recommended Actions",
+        },
+        {
+          id: 2,
+          label: "Dashboard",
+          link: "/leaderboardtable",
+          parentId: "Recommended Actions",
+        },
+      ],
     },
     {
       id: 8,
@@ -313,28 +341,22 @@ const Navdata = () => {
       },
       stateVariables: isRecommend,
       subItems: [
-        {
-          id: 1,
-          label: "Report",
-          link: "/userreport",
-          parentId: "Recommended Actions",
-        },
-        {
-          id: 2,
-          label: "User Summary",
-          link: "/usersummary",
-          parentId: "Recommended Actions",
-        },
-        //         {
-        //           id: 3,
-        //           label: "User Details",
-        //           link: "/actionuserdetail",
-        //           parentId: "Recommended Actions",
-        //         },
+        // {
+        //   id: 1,
+        //   label: "Report",
+        //   link: "/userreport",
+        //   parentId: "Recommended Actions",
+        // },
+        // {
+        //   id: 2,
+        //   label: "User Summary",
+        //   link: "/usersummary",
+        //   parentId: "Recommended Actions",
+        // },
 
         {
           id: 3,
-          label: "User Dashboard",
+          label: "Dashboard",
           link: "/actionuserdashboard",
           parentId: "Recommended Actions",
         },
@@ -353,8 +375,29 @@ const Navdata = () => {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "/UserCollaboration",
+      link: "/#",
       disable: false,
+      click: function (e) {
+        e.preventDefault();
+        setIsCollaboration(!isCollaboration);
+        setIscurrentState("Collaboration");
+        updateIconSidebar(e);
+      },
+      stateVariables: isCollaboration,
+      subItems: [
+        {
+          id: 1,
+          label: "Collaboration",
+          link: "/UserCollaboration",
+          parentId: "Collaboration",
+        },
+        {
+          id: 2,
+          label: "Chats",
+          link: "/collaborationChat",
+          parentId: "Collaboration",
+        },
+      ],
     },
     {
       id: 6,
@@ -398,7 +441,6 @@ const Navdata = () => {
       disable: true,
     },
   ];
-  console.log("user role", user?.role, user);
   return (
     <React.Fragment>
       {obj?.role?.title == "admin" ? menuItemsAdmin : menuItems}

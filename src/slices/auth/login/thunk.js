@@ -38,7 +38,7 @@ export const loginUserReal = (history) => async (dispatch) => {
     const resp = await messagePromise;
     if (resp) {
       sessionStorage.setItem("authUser", JSON.stringify(resp));
-      if (env.REACT_APP_DEFAULTAUTH === "fake") {
+      if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
         var finallogin = JSON.stringify(resp);
         finallogin = JSON.parse(finallogin);
         resp = finallogin.data;
@@ -80,7 +80,7 @@ export const registerUserReal = (history) => async (dispatch) => {
     const resp = await messagePromise;
     if (resp) {
       sessionStorage.setItem("authUser", JSON.stringify(resp));
-      if (env.REACT_APP_DEFAULTAUTH === "fake") {
+      if (process.env.REACT_APP_DEFAULTAUTH === "fake") {
         var finallogin = JSON.stringify(resp);
         finallogin = JSON.parse(finallogin);
         resp = finallogin.data;
@@ -104,11 +104,10 @@ export const updateUser = async (userId, user) => {
     const obj = JSON.parse(sessionStorage.getItem("authUser"));
     obj.otherCountries = user.otherCountries;
     obj.country = user.country;
-    console.log(obj, "OBJ IN THUNK");
-    console.log(user, "user IN THUNK");
-    // let c = user?.country[0]?.value.toString();
-    // user.country = c;
-    // obj.country = c;
+
+    obj.scope = user.scope;
+    obj.backgroundPic = user.banner;
+
     let resp = await axios.patch(
       process.env.REACT_APP_USER_URL + `user/${userId}`,
       user
@@ -124,7 +123,7 @@ export const logoutUser = () => async (dispatch) => {
   try {
     sessionStorage.removeItem("authUser");
 
-    if (env.REACT_APP_DEFAULTAUTH === "firebase") {
+    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       // let response = await axios.get(
       //   "http://localhost:5000/api/v1/user/logout"
       // );
@@ -145,7 +144,7 @@ export const socialLogin = (data, history, type) => async (dispatch) => {
   try {
     let response;
 
-    if (env.REACT_APP_DEFAULTAUTH === "firebase") {
+    if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
       const fireBaseBackend = getFirebaseBackend();
       response = fireBaseBackend.socialLoginUser(data, type);
     } else {

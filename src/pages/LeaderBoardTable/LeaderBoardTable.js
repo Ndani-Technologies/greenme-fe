@@ -35,8 +35,8 @@ import Loader from "../../Components/Common/Loader";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ActionMain from "../Recomended-Action-Main/ActionMain";
-import { useLeaderBoardContext } from "../../context/leaderBoardContext";
 import Img from "../../../src/assets/images/card-pic.png";
+import { getAllUsers } from "../../slices/thunks";
 
 const arr = [
   {
@@ -192,6 +192,34 @@ const arr = [
   },
 ];
 const LeaderBoardTable = () => {
+  const [allUsers, setAllUsers] = useState([]);
+  useEffect(() => {
+    getAllUsers()
+      .then((res) => {
+        const updatedUsers = res.map((user) => ({
+          _id: user._id,
+          name: `${user.firstName} ${user.lastName}`,
+          Organisation: user.organization,
+          TotalPoints:
+            user.collaborationPoints +
+            user.discussionPoints +
+            user.actionPoints,
+          ActionPoints: user.actionPoints,
+          CollabPoints: user.collaborationPoints,
+          DisscussPoints: user.discussionPoints,
+          Image: user.profilePic,
+          Position: user.role.title,
+          email: user.email,
+          phone: "", // You can set the phone value accordingly if available
+          lead_score: "", // You can set the lead score value accordingly if available
+          tags: "", // You can set the tags value accordingly if available
+        }));
+
+        setAllUsers(updatedUsers);
+      })
+      .catch((err) => console.log(err, "UNABLE TO GET USERS"));
+  }, []);
+
   const [info, setInfo] = useState([]);
   const dispatch = useDispatch();
   const { crmcontacts, isContactSuccess, error } = useSelector((state) => ({
@@ -386,7 +414,6 @@ const LeaderBoardTable = () => {
 
   const [selectedCheckBoxDelete, setSelectedCheckBoxDelete] = useState([]);
   const [isMultiDeleteButton, setIsMultiDeleteButton] = useState(false);
-  const { setIsCompareBtnDisable } = useLeaderBoardContext();
   const deleteMultiple = () => {
     const checkall = document.getElementById("checkBoxAll");
     selectedCheckBoxDelete.forEach((element) => {
@@ -417,7 +444,6 @@ const LeaderBoardTable = () => {
 
   const [selectedData, setSelectedData] = useState([]);
   // Column
-  console.log("row 1", selectedData);
   const columns = useMemo(
     () => [
       {
@@ -463,7 +489,7 @@ const LeaderBoardTable = () => {
       },
       {
         Header: "Organisation",
-        accessor: "Orgnaisation",
+        accessor: "Organisation",
         filterable: false,
       },
       {
@@ -552,26 +578,25 @@ const LeaderBoardTable = () => {
       <div className="page-content overflow-auto ">
         <ActionMain
           Title={"Leader Board"}
-          Text={
-            "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
-          }
+          // Text={
+          //   "Lorem ipsum dolor sit amet consectetur. A tellus arcu lacus vestibulum integer massa vel sem id. Mi quis a et quis. Rhoncus mattis urna adipiscing dolor nam sem sit vel netus. Egestas vulputate adipiscing aenean tellus elit commodo tellus. Tincidunt sit turpis est dolor convallis viverra enim aliquet euismod. "
+          // }
         />
         <Col xxl={12} className="mt-5">
           <Card id="contactList">
             <CardBody className="pt-0">
               <div>
-                {console.log("contact", crmcontacts)}
-                {isContactSuccess && crmcontacts && crmcontacts.length ? (
+                {allUsers && allUsers.length ? (
                   <TableContainer
                     columns={columns}
                     selectedData={selectedData}
-                    data={crmcontacts || []}
+                    data={allUsers || []}
                     isGlobalFilter={true}
                     isAddUserList={false}
                     isFilterA={false}
                     setInfo={setInfo}
                     isFooter={true}
-                    FilterLeaderBoard={true}
+                    // FilterLeaderBoard={true}
                     customPageSize={8}
                     className="custom-header-css"
                     divClass="table-responsive table-card mb-0"
@@ -580,6 +605,7 @@ const LeaderBoardTable = () => {
                     handleContactClick={handleContactClicks}
                     isContactsFilter={false}
                     SearchPlaceholder="Search by  title "
+                    isFilterLeaderBoard={true}
                   />
                 ) : (
                   <Loader error={error} />

@@ -26,7 +26,7 @@ import SimpleBar from "simplebar-react";
 
 //Import Icons
 import FeatherIcon from "feather-icons-react";
-import PersonalInfo from "./PersonalInfo";
+// import PersonalInfo from "./PersonalInfo";
 
 import { chatContactData } from "../../common/data";
 
@@ -43,7 +43,7 @@ import { useSelector, useDispatch } from "react-redux";
 // } from "../../store/actions";
 
 import avatar2 from "../../assets/images/users/avatar-2.jpg";
-import userDummayImage from "../../assets/images/users/user-dummy-img.jpg";
+import userDummyImage from "../../assets/images/users/user-dummy-img.jpg";
 
 //Import Scrollbar
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -54,7 +54,18 @@ import {
   getChannels,
   getDirectContact,
   getMessages,
+  storeChosenChatDetails,
 } from "../../slices/thunks";
+import {
+  getDirectChatHistory,
+  sendDirectMessage,
+  socketServer,
+} from "../../realtimeCommunication/socketConnection";
+import moment from "moment";
+import { v4 as uuid } from "uuid";
+import { toast } from "react-toastify";
+import axios from "axios";
+import PersonalInfo from "./PersonalInfo";
 
 const CollaborationChat = () => {
   const [customActiveTab, setcustomActiveTab] = useState("1");
@@ -64,29 +75,28 @@ const CollaborationChat = () => {
     }
   };
 
-  const ref = useRef();
   const dispatch = useDispatch();
   const [isInfoDetails, setIsInfoDetails] = useState(false);
-  const [Chat_Box_Username, setChat_Box_Username] = useState("Lisa Parker");
-  const [Chat_Box_Image, setChat_Box_Image] = useState(avatar2);
-  const [currentRoomId, setCurrentRoomId] = useState(1);
-  const [curMessage, setcurMessage] = useState("");
+  const [currentMessage, setCurrentMessage] = useState("");
   const [search_Menu, setsearch_Menu] = useState(false);
   const [settings_Menu, setsettings_Menu] = useState(false);
   const [messageBox, setMessageBox] = useState(null);
   const [reply, setreply] = useState("");
-  const [emojiPicker, setemojiPicker] = useState(false);
-  const [currentUser, setCurrentUser] = useState({
-    name: "Anna Adame",
-    isActive: true,
-  });
-  const obj = useSelector((state) => state);
-  console.log("state", obj);
-  const { chats, messages, channels } = useSelector((state) => ({
-    chats: state.Chat.chats,
-    messages: state.Chat.messages,
-    channels: state.Chat.channels,
-  }));
+  const [emojiPicker, setEmojiPicker] = useState(false);
+  const [currentMessages, setCurrentMessages] = useState([]);
+  const [contactUser, setContactUsers] = useState([]);
+  const [isUserOnline, setIsUserOnline] = useState("");
+  const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
+
+  const { chats, messages, channels, chosenChatDetails, onlineUsers } =
+    useSelector((state) => ({
+      chats: state.Chat.chats,
+      messages: state.Chat.messages,
+      channels: state.Chat.channels,
+      chosenChatDetails: state.Chat.chosenChatDetails,
+      onlineUsers: state.Chat.onlineUsers,
+    }));
+
   //Toggle Chat Box Menus
   const toggleSearch = () => {
     setsearch_Menu(!search_Menu);
@@ -100,48 +110,127 @@ const CollaborationChat = () => {
   const toggleSettings = () => {
     setsettings_Menu(!settings_Menu);
   };
-  useEffect(() => {
-    dispatch(getDirectContact());
-    dispatch(getChannels());
-    dispatch(getMessages(currentRoomId));
-  }, [dispatch, currentRoomId]);
 
-  //Use For Chat Box
-  const userChatOpen = (id, name, status, roomId, image) => {
-    setChat_Box_Username(name);
-    setCurrentRoomId(roomId);
-    setChat_Box_Image(image);
-    dispatch(getMessages(roomId));
+  const user = JSON.parse(sessionStorage.getItem("authUser"));
+
+  useEffect(() => {
+    fetchAllUsers();
+
+    if (user) {
+      dispatch(getDirectContact(user._id)); // get all conversations
+      dispatch(getChannels());
+      if (chosenChatDetails) {
+        dispatch(
+          getMessages({
+            receiver: chosenChatDetails?.receiver,
+            author: user._id,
+            conversationId:
+              chosenChatDetails?.conversationId &&
+              chosenChatDetails?.conversationId !== ""
+                ? chosenChatDetails?.conversationId
+                : "",
+          })
+        ); // get messages of active conversation
+      }
+    }
+  }, []);
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
+      if (response) {
+        let usersData = response.filter(
+          (user) => user._id !== loggedInUser._id
+        );
+        usersData = usersData.map((userData) => {
+          const { firstName, lastName, status, roomId } = userData;
+          const contact = {
+            id: userData.uid,
+            name: `${firstName} ${lastName}`,
+            status: status || "offline",
+            roomId: roomId || null,
+          };
+
+          return {
+            title: firstName.charAt(0),
+            contacts: [contact],
+          };
+        });
+        setContactUsers(usersData);
+      }
+    } catch (error) {
+      toast.error(error?.message ?? "Something Went Wrong");
+    }
   };
 
-  const addMessag = (roomId, sender) => {
-    const message = {
-      id: Math.floor(Math.random() * 100),
-      roomId,
-      sender,
-      message: curMessage,
-      // createdAt: new Date(),
-    };
-    console.log("here");
-    setcurMessage("");
-    dispatch(addMessage(message));
+  const userChatOpen = (selectedChat) => {
+    console.log(selectedChat, "SEL CHAT");
+    dispatch(
+      getMessages({
+        receiver: getReceiverInfo(selectedChat)?._id,
+        author: user._id,
+        conversationId: selectedChat?._id,
+      })
+    );
+  };
+
+  const sendMessage = () => {
+    if (currentMessage !== "") {
+      const id = uuid();
+      let temp = {
+        content: currentMessage,
+        author: {
+          _id: user._id,
+        },
+        date: new Date(),
+        receiver: chosenChatDetails?.receiver,
+        uuid: id,
+      };
+      debugger;
+      let tempMessages = [...(messages ?? []), temp];
+      dispatch(addMessage(tempMessages));
+      sendDirectMessage({
+        author: chosenChatDetails?.author,
+        receiver: chosenChatDetails?.receiver,
+        content: currentMessage,
+        uuid: id,
+      });
+      setCurrentMessage("");
+    }
   };
 
   const scrollToBottom = useCallback(() => {
     if (messageBox) {
-      messageBox.scrollTop = messageBox.scrollHeight + 1000;
+      messageBox.scrollTop = messageBox.scrollHeight;
     }
   }, [messageBox]);
 
-  useEffect(() => {
-    if (!isEmpty(messages)) scrollToBottom();
-  }, [messages, scrollToBottom]);
+  const [messageBoxScroll, setMessageBoxScroll] = useState(false);
 
+  useEffect(() => {
+    setCurrentMessages(messages);
+    setMessageBoxScroll(true);
+  }, [messages]);
+
+  useEffect(() => {
+    if (messageBoxScroll) {
+      scrollToBottom();
+      setMessageBoxScroll(false);
+    }
+  }, [messageBoxScroll, scrollToBottom]);
+
+  useEffect(() => {
+    const ob = onlineUsers?.includes(chosenChatDetails?.receiver)
+      ? "Online"
+      : "offline";
+    setIsUserOnline(ob);
+    if (!isEmpty(messages?.messages)) scrollToBottom();
+  }, [messages, scrollToBottom]);
   const onKeyPress = (e) => {
     const { key, value } = e;
     if (key === "Enter") {
-      setcurMessage(value);
-      addMessage(currentRoomId, currentUser.name);
+      setCurrentMessage(value);
+      sendMessage();
     }
   };
 
@@ -154,7 +243,7 @@ const CollaborationChat = () => {
     Array.prototype.forEach.call(userList, function (el) {
       li = el.getElementsByTagName("li");
       for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("a")[0];
+        a = li[i].getElementsByTagName("div")[0];
         txtValue = a.textContent || a.innerText;
         if (txtValue.toUpperCase().indexOf(filter) > -1) {
           li[i].style.display = "";
@@ -187,7 +276,7 @@ const CollaborationChat = () => {
   };
 
   // Copy Message
-  const handleCkick = (ele) => {
+  const handleCopyMessage = (ele) => {
     var copy = ele
       .closest(".chat-list")
       .querySelector(".ctext-content").innerHTML;
@@ -199,17 +288,30 @@ const CollaborationChat = () => {
     }, 2000);
   };
 
-  // emoji
-  const [emojiArray, setemojiArray] = useState("");
-
-  const onEmojiClick = (event, emojiObject) => {
-    setemojiArray([...emojiArray, emojiObject.emoji]);
-    let emoji = [...emojiArray, emojiObject.emoji].join(" ");
-    setcurMessage(emoji);
+  const onEmojiClick = (event) => {
+    setCurrentMessage((prev) => prev + event.emoji);
   };
 
-  document.title = "Chat";
+  function generateRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  }
 
+  function getReceiverInfo(chat) {
+    let receiver;
+    if (chat?.participants[0]?._id === user._id) {
+      receiver = chat.participants[1];
+    } else {
+      receiver = chat.participants[0];
+    }
+    return receiver;
+  }
+
+  const searchInputRef = useRef(null);
+
+  document.title = "Chat | GreenMe";
   return (
     <React.Fragment>
       <div className="page-content">
@@ -230,6 +332,10 @@ const CollaborationChat = () => {
                       color=""
                       id="addcontact"
                       className="btn btn-soft-info btn-sm"
+                      onClick={() => {
+                        toggleCustom("2");
+                        searchInputRef.current.focus();
+                      }}
                     >
                       <i className="ri-add-line align-bottom"></i>
                     </Button>
@@ -237,6 +343,7 @@ const CollaborationChat = () => {
                 </div>
                 <div className="search-box">
                   <input
+                    ref={searchInputRef}
                     onKeyUp={searchUsers}
                     id="search-user"
                     type="text"
@@ -314,62 +421,71 @@ const CollaborationChat = () => {
                         className="list-unstyled chat-list chat-user-list users-list"
                         id="userList"
                       >
-                        {(chats || []).map((chat) => (
+                        {(chats?.conversations || []).map((chat, index) => (
                           <li
-                            key={chat.id + chat.status}
-                            className={
-                              currentRoomId === chat.roomId ? "active" : ""
-                            }
+                            key={index}
+                            className={`active px-3 py-1`}
+                            // className={
+                            //   currentRoomId === chat.roomId ? "active" : ""
+                            // }
                           >
-                            <Link
-                              to="#"
-                              onClick={(e) => {
-                                userChatOpen(
-                                  chat.id,
-                                  chat.name,
-                                  chat.status,
-                                  chat.roomId,
-                                  chat.image
+                            <div
+                              className="cursor-pointer"
+                              onClick={() => {
+                                scrollToBottom();
+                                dispatch(
+                                  storeChosenChatDetails({
+                                    author: user._id,
+                                    receiver: getReceiverInfo(chat)?._id,
+                                    receiverProfilePicture:
+                                      getReceiverInfo(chat)?.profilePic || "",
+                                    receiverFullName:
+                                      getReceiverInfo(chat)?.firstName +
+                                      getReceiverInfo(chat)?.lastName,
+                                  })
                                 );
+                                userChatOpen(chat);
                               }}
                             >
                               <div className="d-flex align-items-center">
                                 <div className="flex-shrink-0 chat-user-img online align-self-center me-2 ms-0">
                                   <div className="avatar-xxs">
-                                    {chat.image ? (
+                                    {getReceiverInfo(chat)?.profilePic !==
+                                    "" ? (
                                       <img
-                                        src={chat.image}
+                                        src={getReceiverInfo(chat)?.profilePic}
                                         className="rounded-circle img-fluid userprofile"
                                         alt=""
                                       />
                                     ) : (
                                       <div
-                                        className={
-                                          "avatar-title rounded-circle bg-" +
-                                          chat.bgColor +
-                                          " userprofile"
-                                        }
+                                        className="avatar-title rounded-circle userprofile"
+                                        style={{
+                                          backgroundColor:
+                                            generateRandomColor(),
+                                        }}
                                       >
-                                        {chat.name.charAt(0)}
+                                        {getReceiverInfo(
+                                          chat
+                                        )?.firstName.charAt(0)}
                                       </div>
                                     )}
                                   </div>
-                                  <span className="user-status"></span>
+                                  <span className="user-status" />
                                 </div>
                                 <div className="flex-grow-1 overflow-hidden">
                                   <p className="text-truncate mb-0">
-                                    {chat.name}
+                                    {getReceiverInfo(chat)?.firstName}
+                                    {getReceiverInfo(chat)?.lastName}
                                   </p>
                                 </div>
-                                {chat.badge && (
-                                  <div className="flex-shrink-0">
-                                    <span className="badge badge-soft-dark rounded p-1">
-                                      {chat.badge}
-                                    </span>
-                                  </div>
-                                )}
+                                <div className="flex-shrink-0">
+                                  <span className="badge badge-soft-dark rounded p-1">
+                                    {chat.unreadCount}
+                                  </span>
+                                </div>
                               </div>
-                            </Link>
+                            </div>
                           </li>
                         ))}
                       </ul>
@@ -441,8 +557,8 @@ const CollaborationChat = () => {
                     className="chat-room-list pt-3"
                     style={{ margin: "-16px 0px 0px" }}
                   >
-                    <div className="sort-contact">
-                      {(chatContactData || []).map((item, key) => (
+                    <div className="sort-contact users-list">
+                      {(contactUser || []).map((item, key) => (
                         <div className="mt-3" key={key}>
                           <div className="contact-list-title">{item.title}</div>
                           <ul
@@ -475,13 +591,19 @@ const CollaborationChat = () => {
                                   <div
                                     className="flex-grow-1"
                                     onClick={(e) => {
-                                      userChatOpen(
-                                        item.id,
-                                        item.name,
-                                        item.status,
-                                        item.roomId,
-                                        item.image
+                                      console.log(item, "ITEM");
+                                      dispatch(
+                                        storeChosenChatDetails({
+                                          author: user._id,
+                                          receiver: item._id,
+                                          receiverProfilePicture:
+                                            (item.profilePic &&
+                                              item.profilePic) ||
+                                            "",
+                                          receiverFullName: item.name,
+                                        })
                                       );
+                                      // userChatOpen(chat);
                                     }}
                                   >
                                     <p className="text-truncate contactlist-name mb-0">
@@ -525,346 +647,382 @@ const CollaborationChat = () => {
             </div>
 
             <div className="user-chat w-100 overflow-hidden">
-              <div className="chat-content d-lg-flex">
-                <div className="w-100 overflow-hidden position-relative">
-                  <div className="position-relative">
-                    <div className="p-3 user-chat-topbar">
-                      <Row className="align-items-center">
-                        <Col sm={4} xs={8}>
-                          <div className="d-flex align-items-center">
-                            <div className="flex-shrink-0 d-block d-lg-none me-3">
-                              <Link
-                                to="#"
-                                className="user-chat-remove fs-18 p-1"
-                              >
-                                <i className="ri-arrow-left-s-line align-bottom"></i>
-                              </Link>
-                            </div>
-                            <div className="flex-grow-1 overflow-hidden">
-                              <div className="d-flex align-items-center">
-                                <div className="flex-shrink-0 chat-user-img online user-own-img align-self-center me-3 ms-0">
-                                  {Chat_Box_Image === undefined ? (
+              <div className="chat-content d-lg-flex h-100">
+                <div className="w-100 overflow-hidden position-relative h-100">
+                  {chosenChatDetails ? (
+                    <div className="position-relative">
+                      <div className="p-3 user-chat-topbar">
+                        <Row className="align-items-center">
+                          <Col sm={4} xs={8}>
+                            <div className="d-flex align-items-center">
+                              <div className="flex-shrink-0 d-block d-lg-none me-3">
+                                <Link
+                                  to="#"
+                                  className="user-chat-remove fs-18 p-1"
+                                >
+                                  <i className="ri-arrow-left-s-line align-bottom"></i>
+                                </Link>
+                              </div>
+                              <div className="flex-grow-1 overflow-hidden">
+                                <div className="d-flex align-items-center">
+                                  <div className="flex-shrink-0 chat-user-img online user-own-img align-self-center me-3 ms-0">
                                     <img
-                                      src={userDummayImage}
+                                      src={
+                                        chosenChatDetails?.receiverProfilePicture &&
+                                        chosenChatDetails?.receiverProfilePicture !==
+                                          ""
+                                          ? chosenChatDetails?.receiverProfilePicture
+                                          : userDummyImage
+                                      }
                                       className="rounded-circle avatar-xs"
-                                      alt=""
+                                      alt={`${chosenChatDetails?.receiverFullName}`}
                                     />
-                                  ) : (
-                                    <img
-                                      src={Chat_Box_Image}
-                                      className="rounded-circle avatar-xs"
-                                      alt=""
-                                    />
-                                  )}
-                                  <span className="user-status"></span>
-                                </div>
-                                <div className="flex-grow-1 overflow-hidden">
-                                  <h5 className="text-truncate mb-0 fs-16">
-                                    <a
-                                      className="text-reset username"
-                                      data-bs-toggle="offcanvas"
-                                      href="#userProfileCanvasExample"
-                                      aria-controls="userProfileCanvasExample"
-                                    >
-                                      {Chat_Box_Username}
-                                    </a>
-                                  </h5>
-                                  <p className="text-truncate text-muted fs-14 mb-0 userStatus">
-                                    <small>Online</small>
-                                  </p>
+                                    <span className="user-status" />
+                                  </div>
+                                  <div className="flex-grow-1 overflow-hidden">
+                                    <h5 className="text-truncate mb-0 fs-16">
+                                      <a
+                                        className="text-reset username"
+                                        data-bs-toggle="offcanvas"
+                                        href="#userProfileCanvasExample"
+                                        aria-controls="userProfileCanvasExample"
+                                      >
+                                        {chosenChatDetails?.receiverFullName}
+                                      </a>
+                                    </h5>
+                                    <p className="text-truncate text-muted fs-14 mb-0 userStatus">
+                                      <small>
+                                        {onlineUsers?.includes(
+                                          chosenChatDetails.receiver
+                                        )
+                                          ? "Online"
+                                          : "offline"}
+                                      </small>
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        </Col>
-                        <Col sm={8} xs={4}>
-                          <ul className="list-inline user-chat-nav text-end mb-0">
-                            <li className="list-inline-item m-0">
-                              <Dropdown
-                                isOpen={search_Menu}
-                                toggle={toggleSearch}
-                              >
-                                <DropdownToggle
-                                  className="btn btn-ghost-secondary btn-icon"
-                                  tag="button"
+                          </Col>
+                          <Col sm={8} xs={4}>
+                            <ul className="list-inline user-chat-nav text-end mb-0">
+                              <li className="list-inline-item m-0">
+                                <Dropdown
+                                  isOpen={search_Menu}
+                                  toggle={toggleSearch}
                                 >
-                                  <FeatherIcon
-                                    icon="search"
-                                    className="icon-sm"
-                                  />
-                                </DropdownToggle>
-                                <DropdownMenu className="p-0 dropdown-menu-end dropdown-menu-lg">
-                                  <div className="p-2">
-                                    <div className="search-box">
-                                      <Input
-                                        onKeyUp={searchMessages}
-                                        type="text"
-                                        className="form-control bg-light border-light"
-                                        placeholder="Search here..."
-                                        id="searchMessage"
-                                      />
-                                      <i className="ri-search-2-line search-icon"></i>
-                                    </div>
-                                  </div>
-                                </DropdownMenu>
-                              </Dropdown>
-                            </li>
-
-                            <li className="list-inline-item d-none d-lg-inline-block m-0">
-                              <button
-                                type="button"
-                                className="btn btn-ghost-secondary btn-icon"
-                                onClick={toggleInfo}
-                              >
-                                <FeatherIcon icon="info" className="icon-sm" />
-                              </button>
-                            </li>
-
-                            <li className="list-inline-item m-0">
-                              <Dropdown
-                                isOpen={settings_Menu}
-                                toggle={toggleSettings}
-                              >
-                                <DropdownToggle
-                                  className="btn btn-ghost-secondary btn-icon"
-                                  tag="button"
-                                >
-                                  <FeatherIcon
-                                    icon="more-vertical"
-                                    className="icon-sm"
-                                  />
-                                </DropdownToggle>
-                                <DropdownMenu>
-                                  <DropdownItem
-                                    href="#"
-                                    className="d-block d-lg-none user-profile-show"
+                                  <DropdownToggle
+                                    className="btn btn-ghost-secondary btn-icon"
+                                    tag="button"
                                   >
-                                    <i className="ri-user-2-fill align-bottom text-muted me-2"></i>{" "}
-                                    View Profile
-                                  </DropdownItem>
-                                  <DropdownItem href="#">
-                                    <i className="ri-inbox-archive-line align-bottom text-muted me-2"></i>{" "}
-                                    Archive
-                                  </DropdownItem>
-                                  <DropdownItem href="#">
-                                    <i className="ri-mic-off-line align-bottom text-muted me-2"></i>{" "}
-                                    Muted
-                                  </DropdownItem>
-                                  <DropdownItem href="#">
-                                    {" "}
-                                    <i className="ri-delete-bin-5-line align-bottom text-muted me-2"></i>{" "}
-                                    Delete
-                                  </DropdownItem>
-                                </DropdownMenu>
-                              </Dropdown>
-                            </li>
-                          </ul>
-                        </Col>
-                      </Row>
-                    </div>
-
-                    <div className="position-relative" id="users-chat">
-                      <PerfectScrollbar
-                        className="chat-conversation p-3 p-lg-4"
-                        id="chat-conversation"
-                        containerRef={(ref) => setMessageBox(ref)}
-                      >
-                        <div id="elmLoader"></div>
-                        <ul
-                          className="list-unstyled chat-conversation-list"
-                          id="users-conversation"
-                        >
-                          {messages &&
-                            map(messages, (message, key) => (
-                              <li
-                                className={
-                                  message.sender === Chat_Box_Username
-                                    ? " chat-list left"
-                                    : "chat-list right"
-                                }
-                                key={key}
-                              >
-                                <div className="conversation-list">
-                                  {message.sender === Chat_Box_Username && (
-                                    <div className="chat-avatar">
-                                      {Chat_Box_Image === undefined ? (
-                                        <img src={userDummayImage} alt="" />
-                                      ) : (
-                                        <img src={Chat_Box_Image} alt="" />
-                                      )}
-                                    </div>
-                                  )}
-
-                                  <div className="user-chat-content">
-                                    <div className="ctext-wrap">
-                                      <div className="ctext-wrap-content">
-                                        <p className="mb-0 ctext-content">
-                                          {message.message}
-                                        </p>
+                                    <FeatherIcon
+                                      icon="search"
+                                      className="icon-sm"
+                                    />
+                                  </DropdownToggle>
+                                  <DropdownMenu className="p-0 dropdown-menu-end dropdown-menu-lg">
+                                    <div className="p-2">
+                                      <div className="search-box">
+                                        <Input
+                                          onKeyUp={searchMessages}
+                                          type="text"
+                                          className="form-control bg-light border-light"
+                                          placeholder="Search here..."
+                                          id="searchMessage"
+                                        />
+                                        <i className="ri-search-2-line search-icon"></i>
                                       </div>
-                                      <UncontrolledDropdown className="align-self-start message-box-drop">
-                                        <DropdownToggle
-                                          href="#"
-                                          className="btn nav-btn"
-                                          tag="i"
-                                        >
-                                          <i className="ri-more-2-fill"></i>
-                                        </DropdownToggle>
-                                        <DropdownMenu>
-                                          <DropdownItem
-                                            href="#"
-                                            className="reply-message"
-                                            onClick={() => setreply(message)}
-                                          >
-                                            <i className="ri-reply-line me-2 text-muted align-bottom"></i>
-                                            Reply
-                                          </DropdownItem>
-                                          <DropdownItem href="#">
-                                            <i className="ri-share-line me-2 text-muted align-bottom"></i>
-                                            Forward
-                                          </DropdownItem>
-                                          <DropdownItem
-                                            href="#"
-                                            onClick={(e) =>
-                                              handleCkick(e.target)
-                                            }
-                                          >
-                                            <i className="ri-file-copy-line me-2 text-muted align-bottom"></i>
-                                            Copy
-                                          </DropdownItem>
-                                          <DropdownItem href="#">
-                                            <i className="ri-bookmark-line me-2 text-muted align-bottom"></i>
-                                            Bookmark
-                                          </DropdownItem>
-                                          <DropdownItem
-                                            href="#"
-                                            onClick={() =>
-                                              dispatch(
-                                                deleteMessage(message.id)
-                                              )
-                                            }
-                                          >
-                                            <i className="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>
-                                            Delete
-                                          </DropdownItem>
-                                        </DropdownMenu>
-                                      </UncontrolledDropdown>
                                     </div>
-                                    <div className="conversation-name">
-                                      <small className="text-muted time">
-                                        {new Date().toLocaleTimeString([], {
-                                          hour: "2-digit",
-                                          minute: "2-digit",
-                                        })}
-                                      </small>{" "}
-                                      <span className="text-success check-message-icon">
-                                        <i className="ri-check-double-line align-bottom"></i>
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
+                                  </DropdownMenu>
+                                </Dropdown>
                               </li>
-                            ))}
-                        </ul>
-                      </PerfectScrollbar>
-                      <div
-                        className="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade show "
-                        id="copyClipBoard"
-                        role="alert"
-                      >
-                        Message copied
-                      </div>
-                      {emojiPicker && (
-                        <div className="alert pickerEmoji">
-                          <Picker
-                            disableSearchBar={true}
-                            onEmojiClick={onEmojiClick}
-                          />
-                        </div>
-                      )}
-                    </div>
 
-                    <div className="chat-input-section p-3 p-lg-4">
-                      <form id="chatinput-form">
-                        <Row className="g-0 align-items-center">
-                          <div className="col-auto">
-                            <div className="chat-input-links me-2">
-                              <div className="links-list-item">
+                              <li className="list-inline-item d-none d-lg-inline-block m-0">
                                 <button
                                   type="button"
-                                  className="btn btn-link text-decoration-none emoji-btn"
-                                  id="emoji-btn"
-                                  onClick={() => setemojiPicker(!emojiPicker)}
+                                  className="btn btn-ghost-secondary btn-icon"
+                                  onClick={toggleInfo}
                                 >
-                                  <i className="bx bx-smile align-middle"></i>
+                                  <FeatherIcon
+                                    icon="info"
+                                    className="icon-sm"
+                                  />
+                                </button>
+                              </li>
+
+                              <li className="list-inline-item m-0">
+                                <Dropdown
+                                  isOpen={settings_Menu}
+                                  toggle={toggleSettings}
+                                >
+                                  <DropdownToggle
+                                    className="btn btn-ghost-secondary btn-icon"
+                                    tag="button"
+                                  >
+                                    <FeatherIcon
+                                      icon="more-vertical"
+                                      className="icon-sm"
+                                    />
+                                  </DropdownToggle>
+                                  <DropdownMenu>
+                                    <DropdownItem
+                                      href="#"
+                                      className="d-block d-lg-none user-profile-show"
+                                    >
+                                      <i className="ri-user-2-fill align-bottom text-muted me-2"></i>{" "}
+                                      View Profile
+                                    </DropdownItem>
+                                    <DropdownItem href="#">
+                                      <i className="ri-inbox-archive-line align-bottom text-muted me-2"></i>{" "}
+                                      Archive
+                                    </DropdownItem>
+                                    <DropdownItem href="#">
+                                      <i className="ri-mic-off-line align-bottom text-muted me-2"></i>{" "}
+                                      Muted
+                                    </DropdownItem>
+                                    <DropdownItem href="#">
+                                      {" "}
+                                      <i className="ri-delete-bin-5-line align-bottom text-muted me-2"></i>{" "}
+                                      Delete
+                                    </DropdownItem>
+                                  </DropdownMenu>
+                                </Dropdown>
+                              </li>
+                            </ul>
+                          </Col>
+                        </Row>
+                      </div>
+
+                      <div className="position-relative" id="users-chat">
+                        <PerfectScrollbar
+                          className="chat-conversation p-3 p-lg-4"
+                          id="chat-conversation"
+                          containerRef={(ref) => setMessageBox(ref)}
+                          // containerRef={messageBox}
+                        >
+                          <div id="elmLoader" />
+                          <ul
+                            className="list-unstyled chat-conversation-list"
+                            id="users-conversation"
+                          >
+                            {currentMessages?.length > 0 &&
+                              map(currentMessages, (message, key) => (
+                                <li
+                                  className={
+                                    message.author?._id === user?._id
+                                      ? "chat-list right"
+                                      : "chat-list left"
+                                  }
+                                  key={key}
+                                >
+                                  <div className="conversation-list">
+                                    {message?.author?._id !== user._id && (
+                                      <div className="chat-avatar">
+                                        <img
+                                          src={
+                                            chosenChatDetails.receiverProfilePicture &&
+                                            chosenChatDetails.receiverProfilePicture !==
+                                              ""
+                                              ? chosenChatDetails.receiverProfilePicture
+                                              : userDummyImage
+                                          }
+                                          alt=""
+                                        />
+                                      </div>
+                                    )}
+
+                                    <div className="user-chat-content">
+                                      <div className="ctext-wrap">
+                                        <div className="ctext-wrap-content">
+                                          <p className="mb-0 ctext-content">
+                                            {message.content}
+                                          </p>
+                                        </div>
+                                        <UncontrolledDropdown className="align-self-start message-box-drop">
+                                          <DropdownToggle
+                                            href="#"
+                                            className="btn nav-btn"
+                                            tag="i"
+                                          >
+                                            <i className="ri-more-2-fill"></i>
+                                          </DropdownToggle>
+                                          <DropdownMenu>
+                                            <DropdownItem
+                                              href="#"
+                                              className="reply-message"
+                                              onClick={() => setreply(message)}
+                                            >
+                                              <i className="ri-reply-line me-2 text-muted align-bottom"></i>
+                                              Reply
+                                            </DropdownItem>
+                                            <DropdownItem href="#">
+                                              <i className="ri-share-line me-2 text-muted align-bottom"></i>
+                                              Forward
+                                            </DropdownItem>
+                                            <DropdownItem
+                                              href="#"
+                                              onClick={(e) =>
+                                                handleCopyMessage(e.target)
+                                              }
+                                            >
+                                              <i className="ri-file-copy-line me-2 text-muted align-bottom"></i>
+                                              Copy
+                                            </DropdownItem>
+                                            <DropdownItem href="#">
+                                              <i className="ri-bookmark-line me-2 text-muted align-bottom"></i>
+                                              Bookmark
+                                            </DropdownItem>
+                                            <DropdownItem
+                                              href="#"
+                                              onClick={() => {
+                                                dispatch(
+                                                  deleteMessage(message._id)
+                                                );
+                                              }}
+                                            >
+                                              <i className="ri-delete-bin-5-line me-2 text-muted align-bottom"></i>
+                                              Delete
+                                            </DropdownItem>
+                                          </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                      </div>
+                                      <div className="conversation-name">
+                                        <small className="text-muted time">
+                                          {moment(message.date)
+                                            .subtract(1, "minutes")
+                                            .fromNow()}
+                                        </small>
+                                        <span className="text-success check-message-icon">
+                                          {!message?.createdAt ? (
+                                            <FeatherIcon
+                                              icon="circle"
+                                              className="align-bottom"
+                                            />
+                                          ) : message?.createdAt &&
+                                            !message?.read ? (
+                                            <FeatherIcon
+                                              icon="check"
+                                              className="align-bottom"
+                                            />
+                                          ) : message?.createdAt &&
+                                            message?.read ? (
+                                            <i className="ri-check-double-line align-bottom" />
+                                          ) : null}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </li>
+                              ))}
+                          </ul>
+                        </PerfectScrollbar>
+                        <div
+                          className="alert alert-warning alert-dismissible copyclipboard-alert px-4 fade show "
+                          id="copyClipBoard"
+                          role="alert"
+                        >
+                          Message copied
+                        </div>
+                        {emojiPicker && (
+                          <div
+                            className="alert pickerEmoji"
+                            style={{ left: "17%", bottom: "-42px" }}
+                          >
+                            <Picker
+                              disableSearchBar={true}
+                              onEmojiClick={onEmojiClick}
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="chat-input-section p-3 p-lg-4">
+                        <form id="chatinput-form">
+                          <Row className="g-0 align-items-center">
+                            <div className="col-auto">
+                              <div className="chat-input-links me-2">
+                                <div className="links-list-item">
+                                  <button
+                                    type="button"
+                                    className="btn btn-link text-decoration-none emoji-btn"
+                                    id="emoji-btn"
+                                    onClick={() => setEmojiPicker(!emojiPicker)}
+                                  >
+                                    <i className="bx bx-smile align-middle" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="col">
+                              <div className="chat-input-feedback">
+                                Please Enter a Message
+                              </div>
+                              <input
+                                type="text"
+                                value={currentMessage}
+                                KeyPress={onKeyPress}
+                                onChange={(e) =>
+                                  setCurrentMessage(e.target.value)
+                                }
+                                className="form-control chat-input bg-light border-light"
+                                id="chat-input"
+                                placeholder="Type your message..."
+                              />
+                            </div>
+                            <div className="col-auto">
+                              <div className="chat-input-links ms-2">
+                                <div className="links-list-item">
+                                  <Button
+                                    type="submit"
+                                    color="info"
+                                    onClick={(e) => {
+                                      scrollToBottom();
+                                      e.preventDefault();
+                                      sendMessage();
+                                      setEmojiPicker(false);
+                                    }}
+                                    className="chat-send waves-effect waves-light"
+                                  >
+                                    <i className="ri-send-plane-2-fill align-bottom"></i>
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          </Row>
+                        </form>
+                      </div>
+
+                      <div className={reply ? "replyCard show" : "replyCard"}>
+                        <Card className="mb-0">
+                          <CardBody className="py-3">
+                            <div className="replymessage-block mb-0 d-flex align-items-start">
+                              <div className="flex-grow-1">
+                                <h5 className="conversation-name">
+                                  {reply && reply.sender}
+                                </h5>
+                                <p className="mb-0">{reply && reply.message}</p>
+                              </div>
+                              <div className="flex-shrink-0">
+                                <button
+                                  type="button"
+                                  id="close_toggle"
+                                  className="btn btn-sm btn-link mt-n2 me-n3 fs-18"
+                                  onClick={() => setreply("")}
+                                >
+                                  <i className="bx bx-x align-middle"></i>
                                 </button>
                               </div>
                             </div>
-                          </div>
-
-                          <div className="col">
-                            <div className="chat-input-feedback">
-                              Please Enter a Message
-                            </div>
-                            <input
-                              type="text"
-                              value={curMessage}
-                              KeyPress={onKeyPress}
-                              onChange={(e) => setcurMessage(e.target.value)}
-                              className="form-control chat-input bg-light border-light"
-                              id="chat-input"
-                              placeholder="Type your message..."
-                            />
-                          </div>
-                          <div className="col-auto">
-                            <div className="chat-input-links ms-2">
-                              <div className="links-list-item">
-                                <Button
-                                  type="submit"
-                                  s
-                                  color="info"
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    addMessag(currentRoomId, currentUser.name);
-                                    setemojiPicker(false);
-                                    setemojiArray("");
-                                  }}
-                                  className="chat-send waves-effect waves-light"
-                                >
-                                  <i className="ri-send-plane-2-fill align-bottom"></i>
-                                </Button>
-                              </div>
-                            </div>
-                          </div>
-                        </Row>
-                      </form>
+                          </CardBody>
+                        </Card>
+                      </div>
                     </div>
-
-                    <div className={reply ? "replyCard show" : "replyCard"}>
-                      <Card className="mb-0">
-                        <CardBody className="py-3">
-                          <div className="replymessage-block mb-0 d-flex align-items-start">
-                            <div className="flex-grow-1">
-                              <h5 className="conversation-name">
-                                {reply && reply.sender}
-                              </h5>
-                              <p className="mb-0">{reply && reply.message}</p>
-                            </div>
-                            <div className="flex-shrink-0">
-                              <button
-                                type="button"
-                                id="close_toggle"
-                                className="btn btn-sm btn-link mt-n2 me-n3 fs-18"
-                                onClick={() => setreply("")}
-                              >
-                                <i className="bx bx-x align-middle"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </CardBody>
-                      </Card>
+                  ) : (
+                    <div className="d-flex align-items-center justify-content-center h-100">
+                      <h1>No Chat Selected</h1>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -875,8 +1033,9 @@ const CollaborationChat = () => {
       <PersonalInfo
         show={isInfoDetails}
         onCloseClick={() => setIsInfoDetails(false)}
-        currentuser={Chat_Box_Username}
-        cuurentiseImg={Chat_Box_Image}
+        currentuser={chosenChatDetails}
+        isUserOnline={isUserOnline}
+        // cuurentiseImg={Chat_Box_Image}
       />
     </React.Fragment>
   );

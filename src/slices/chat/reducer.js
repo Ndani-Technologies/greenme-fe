@@ -3,21 +3,38 @@ import {
   getDirectContact,
   getChannels,
   getMessages,
-  addMessage,
   deleteMessage,
 } from "./thunk";
 
 export const initialState = {
   chats: [],
-  messages: {},
+  messages: [],
   channels: [],
   error: {},
+  chosenChatDetails: null,
+  onlineUsers: [],
 };
 
 const chatSlice = createSlice({
   name: "chat",
   initialState,
-  reducers: {},
+  reducers: {
+    setChosenChatDetails(state, action) {
+      state.chosenChatDetails = action.payload;
+      state.loading = false;
+      state.errorMsg = false;
+    },
+    setMessages(state, action) {
+      state.messages = action.payload;
+      state.loading = false;
+      state.errorMsg = false;
+    },
+    setOnlineUsers(state, action) {
+      state.onlineUsers = action.payload;
+      state.loading = false;
+      state.errorMsg = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(getDirectContact.fulfilled, (state, action) => {
       state.chats = action.payload;
@@ -39,18 +56,10 @@ const chatSlice = createSlice({
     builder.addCase(getMessages.rejected, (state, action) => {
       state.error = action.payload.error || null;
     });
-
-    builder.addCase(addMessage.fulfilled, (state, action) => {
-      state.messages.push(action.payload);
-    });
-    builder.addCase(addMessage.rejected, (state, action) => {
-      state.error = action.payload.error || null;
-    });
-
     builder.addCase(deleteMessage.fulfilled, (state, action) => {
       state.messages = (state.messages || []).filter((message) => {
         console.log("meessage ", message);
-        message?.id.toString() !== action.payload.toString();
+        message?._id.toString() !== action.payload.toString();
       });
     });
     builder.addCase(deleteMessage.rejected, (state, action) => {
@@ -58,5 +67,8 @@ const chatSlice = createSlice({
     });
   },
 });
+
+export const { setChosenChatDetails, setMessages, setOnlineUsers } =
+  chatSlice.actions;
 
 export default chatSlice.reducer;
