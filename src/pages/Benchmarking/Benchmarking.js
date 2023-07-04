@@ -372,7 +372,6 @@ const Benchmarking = () => {
     // setBenchmark(bench);
 
     if (bench.user_resp.length > 0) {
-      console.log("here");
       setUser_resp(bench.user_resp);
       setSelectedAnswerIds((prevSelectedAnswerIds) => {
         let selectedAnswerIds = { ...prevSelectedAnswerIds };
@@ -561,17 +560,14 @@ const Benchmarking = () => {
   // };
 
   const [progressPercentageValue, setProgressPercentageValue] = useState(0);
-  console.log(progressPercentageValue, "CHECKING progressPercentageValue");
 
   const [answeredAids, setAnsweredAids] = useState([]);
-  console.log(answeredAids, "CHECKING answeredAids");
 
   const handleResponseProgress = (qid, aid) => {
     const questionIdentifier = `${aid}_${qid}`;
 
     if (answeredAids.some((answeredAid) => answeredAid.endsWith(`_${qid}`))) {
       // Aid with the same qid already exists in the array, skip adding it
-      console.log("Aid already exists for qid:", qid);
       return;
     }
 
@@ -670,26 +666,6 @@ const Benchmarking = () => {
             includeExplanation: isIncludeExplanation,
             includeInputField: isInlcudeInput,
           });
-
-          // if (emptyOptionIndex !== -1) {
-          //   updatedUserResp.selectedOption[emptyOptionIndex] = {
-          //     ...updatedUserResp.selectedOption[emptyOptionIndex],
-          //     answerOption: aid,
-          //     includeExplanationValue: explanationValue || "",
-          //     includeInputFieldValue: inputFieldValue || "",
-          //   };
-          // console.log("inside third if", updateUserResp)
-          // } else {
-          //   updatedUserResp.selectedOption.push({
-          //     answerOption: aid,
-          //     includeExplanationValue: explanationValue || "",
-          //     includeInputFieldValue: inputFieldValue || "",
-          //     includeExplanation: isIncludeExplanation,
-          //     includeInputField: isInlcudeInput,
-          //   });
-          // console.log("inside third else", updateUserResp)
-
-          // }
         }
 
         newUserResp[userRespIndex] = updatedUserResp;
@@ -711,119 +687,362 @@ const Benchmarking = () => {
 
       return newUserResp;
     });
-    // if (
-    //   user_resp?.some(
-    //     (value) =>
-    //       value.questionId === qid ||
-    //       value.selectedOption.some((answer) => answer.answerOption === aid)
-    //   )
-    // ) {
-    //   setUser_resp((prev) => prev.filter((value) => value.questionId !== qid));
-    // }
   };
 
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const renderedQuestions =
     questions?.length >= 0 &&
-    questions
-      // .slice((currentPage - 1) * numPages, currentPage * numPages)
-      .map((item, index) => {
-        const activeButtonIndex = activeIndexes[index];
+    questions.map((item, index) => {
+      const activeButtonIndex = activeIndexes[index];
 
-        const userResponse = benchmark?.user_resp?.find(
-          (resp) => resp?.questionId === item?._id
-        );
+      const userResponse = benchmark?.user_resp?.find(
+        (resp) => resp?.questionId === item?._id
+      );
 
-        const selectedOptionIndex = item.answerOptions.findIndex(
-          (option) =>
-            option?._id === userResponse?.selectedOption.map((val) => val)
-        );
-        const selectedOption = userResponse?.selectedOption.filter((selct) =>
-          item?.answerOptions?.find((option) => {
-            return selct.answerOption === option.answerOption._id;
-          })
-        );
-        return (
-          <div className={rowClassName} key={index}>
-            <h5>Question {index + 1}</h5>
-            <p className="w-75 fs-5">{item.title}</p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: item.description,
-              }}
-            ></p>
-            {location?.state?.isDataUpdated &&
-            benchmark.user_resp?.length > 0 ? (
-              <div
-                className="d-flex mt-4"
-                style={{ display: "flex", flexWrap: "wrap" }}
-              >
-                {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => {
-                    const isSelected =
-                      selectedAnswerIds[item._id]?.includes((btn) => {
-                        return btn === btn.answerOption._id;
-                      }) || false;
-                    let buttonClass = "button";
+      const selectedOptionIndex = item.answerOptions.findIndex(
+        (option) =>
+          option?._id === userResponse?.selectedOption.map((val) => val)
+      );
+      const selectedOption = userResponse?.selectedOption.filter((selct) =>
+        item?.answerOptions?.find((option) => {
+          return selct.answerOption === option.answerOption._id;
+        })
+      );
+      return (
+        <div className={rowClassName} key={index}>
+          <h5>Question {index + 1}</h5>
+          <p className="w-75 fs-5">{item.title}</p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: item.description,
+            }}
+          ></p>
+          {location?.state?.isDataUpdated && benchmark.user_resp?.length > 0 ? (
+            <div
+              className="d-flex mt-4"
+              style={{ display: "flex", flexWrap: "wrap" }}
+            >
+              {item.answerOptions &&
+                item.answerOptions.map((btn, btnIndex) => {
+                  const isSelected =
+                    selectedAnswerIds[item._id]?.includes((btn) => {
+                      return btn === btn.answerOption._id;
+                    }) || false;
+                  let buttonClass = "button";
 
-                    if (
-                      selectedAnswerIds[item._id] &&
-                      selectedAnswerIds[item._id].includes(btn.answerOption._id)
-                    ) {
-                      buttonClass += " active";
-                    }
+                  if (
+                    selectedAnswerIds[item._id] &&
+                    selectedAnswerIds[item._id].includes(btn.answerOption._id)
+                  ) {
+                    buttonClass += " active";
+                  }
 
-                    const check = selectedOption?.some((a) => {
-                      return a.answerOption !== undefined;
-                    });
-                    const check2 = selectedOption?.some((a) => {
-                      return a.answerOption === btn.answerOption._id;
-                    });
+                  const check = selectedOption?.some((a) => {
+                    return a.answerOption !== undefined;
+                  });
+                  const check2 = selectedOption?.some((a) => {
+                    return a.answerOption === btn.answerOption._id;
+                  });
 
-                    const btn_user_resp = selectedOption?.find((a) => {
-                      return a.answerOption === btn.answerOption._id;
-                    });
-                    if (check ? check2 : false) {
-                      buttonClass += " active";
-                    }
-                    const inputFieldValue =
-                      includeInputField[`${item._id}_${btn._id}`] || "";
-                    const selectedAnswer = selectedOption?.some(
-                      (option) => option.answerOption === btn.answerOption._id
+                  const btn_user_resp = selectedOption?.find((a) => {
+                    return a.answerOption === btn.answerOption._id;
+                  });
+                  if (check ? check2 : false) {
+                    buttonClass += " active";
+                  }
+                  const inputFieldValue =
+                    includeInputField[`${item._id}_${btn._id}`] || "";
+                  const selectedAnswer = selectedOption?.some(
+                    (option) => option.answerOption === btn.answerOption._id
+                  );
+                  const includeExplanationValue =
+                    selectedAnswer?.includeExplanationValue || "";
+                  const conditon1 =
+                    btn_user_resp?.includeExplanation !== undefined &&
+                    btn_user_resp.includeExplanation !== "false";
+                  const condition2 =
+                    btn.includeExplanation &&
+                    selectedAnswerIds[item._id]?.some(
+                      (value) => value === btn.answerOption._id
                     );
-                    const includeExplanationValue =
-                      selectedAnswer?.includeExplanationValue || "";
-                    const conditon1 =
-                      btn_user_resp?.includeExplanation !== undefined &&
-                      btn_user_resp.includeExplanation !== "false";
-                    const condition2 =
-                      btn.includeExplanation &&
-                      selectedAnswerIds[item._id]?.some(
-                        (value) => value === btn.answerOption._id
-                      );
-                    const condition3 =
-                      btn.includeInputField &&
-                      selectedAnswerIds[item._id]?.some(
-                        (value) => value === btn.answerOption._id
-                      );
-                    return (
-                      <div
-                        key={btnIndex}
-                        className={btnIndex >= 5 ? "mt-2" : ""}
-                      >
-                        {/* {check ? (
-                          <> */}
-                        {
-                          //btn.includeExplanation
-                          condition2 && btn.includeExplanation && (
+                  const condition3 =
+                    btn.includeInputField &&
+                    selectedAnswerIds[item._id]?.some(
+                      (value) => value === btn.answerOption._id
+                    );
+                  return (
+                    <div key={btnIndex} className={btnIndex >= 5 ? "mt-2" : ""}>
+                      {
+                        //btn.includeExplanation
+                        condition2 && btn.includeExplanation && (
+                          <div className="">
+                            <CKEditor
+                              editor={ClassicEditor}
+                              onReady={(editor) => {
+                                editor.setData(
+                                  btn_user_resp?.includeExplanationValue || ""
+                                );
+                              }}
+                              onChange={(e, editor) => {
+                                const value = editor.getData();
+                                setIncludeExplanation((prevState) => ({
+                                  ...prevState,
+                                  [item._id]: value,
+                                }));
+                              }}
+                              onBlur={(e, editor) => {
+                                const value = editor.getData();
+                                setIncludeExplanation((prevState) => ({
+                                  ...prevState,
+                                  [item._id]: value,
+                                }));
+                                setUser_resp((prevUserResp) => {
+                                  const newUserResp = [...prevUserResp];
+                                  const userRespIndex = newUserResp.findIndex(
+                                    (resp) => resp?.questionId === item._id
+                                  );
+                                  if (userRespIndex !== -1) {
+                                    const updatedUserResp = {
+                                      ...newUserResp[userRespIndex],
+                                      selectedOption: [
+                                        ...newUserResp[userRespIndex]
+                                          .selectedOption,
+                                      ],
+                                    };
+                                    const optionIndex =
+                                      updatedUserResp.selectedOption.findIndex(
+                                        (option) =>
+                                          option.answerOption ===
+                                          btn.answerOption._id
+                                      );
+                                    if (optionIndex !== -1) {
+                                      const selectedOption =
+                                        updatedUserResp.selectedOption[
+                                          optionIndex
+                                        ];
+                                      updatedUserResp.selectedOption[
+                                        optionIndex
+                                      ] = {
+                                        ...selectedOption,
+                                        includeExplanationValue:
+                                          btn.includeExplanation && value,
+                                      };
+                                    }
+                                    newUserResp[userRespIndex] =
+                                      updatedUserResp;
+                                  }
+                                  return newUserResp;
+                                });
+                              }}
+                              class="form-control"
+                              placeholder="Description"
+                              id="floatingTextarea"
+                              value=""
+                              style={{
+                                height: "120px",
+                                overflow: "hidden",
+                                backgroundColor: "#dfdfdf",
+                              }}
+                            />
+                          </div>
+                        )
+                      }
+
+                      {condition3 && btn.includeInputField ? (
+                        <div>
+                          <Input
+                            type="text"
+                            className="form-control"
+                            id="input-field"
+                            placeholder=""
+                            value={
+                              includeInputField[
+                                `${item._id}_${btn.answerOption._id}`
+                              ] ||
+                              selectedOption.find(
+                                (a) => a.answerOption === btn.answerOption._id
+                              )?.includeInputFieldValue
+                            }
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setIncludeInputField((prevState) => ({
+                                ...prevState,
+                                [`${item._id}_${btn.answerOption._id}`]: value,
+                              }));
+                            }}
+                            onBlur={(e) => {
+                              const value = e.target.value;
+                              setIncludeInputField((prevState) => ({
+                                ...prevState,
+                                [`${item._id}_${btn.answerOption._id}`]: value,
+                              }));
+                              setUser_resp((prevUserResp) => {
+                                const newUserResp = [...prevUserResp];
+                                const userRespIndex = newUserResp.findIndex(
+                                  (resp) => resp?.questionId === item._id
+                                );
+                                if (userRespIndex !== -1) {
+                                  const updatedUserResp = {
+                                    ...newUserResp[userRespIndex],
+                                    selectedOption: [
+                                      ...newUserResp[userRespIndex]
+                                        .selectedOption,
+                                    ],
+                                  };
+                                  const optionIndex =
+                                    updatedUserResp.selectedOption.findIndex(
+                                      (option) =>
+                                        option.answerOption ===
+                                        btn.answerOption._id
+                                    );
+                                  if (optionIndex !== -1) {
+                                    const selectedOption =
+                                      updatedUserResp.selectedOption[
+                                        optionIndex
+                                      ];
+                                    updatedUserResp.selectedOption[
+                                      optionIndex
+                                    ] = {
+                                      ...selectedOption,
+                                      includeInputFieldValue:
+                                        btn.includeInputField && value,
+                                    };
+                                  }
+                                  newUserResp[userRespIndex] = updatedUserResp;
+                                }
+                                return newUserResp;
+                              });
+                            }}
+                          />
+                        </div>
+                      ) : null}
+                      {/* </>
+                        ) : null} */}
+                      <div className="buttons-container">
+                        <button
+                          onClick={() => {
+                            if (
+                              !selectedAnswerIds[item._id]?.some(
+                                (value) => value === btn.answerOption._id
+                              )
+                            ) {
+                              setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                                const questionId = item._id;
+                                const selectedIds =
+                                  prevSelectedAnswerIds[questionId] || [];
+
+                                if (isSelected) {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: selectedIds.filter(
+                                      (id) => id !== btn.answerOption._id
+                                    ),
+                                  };
+                                } else {
+                                  return {
+                                    ...prevSelectedAnswerIds,
+                                    [questionId]: [
+                                      ...selectedIds,
+                                      btn.answerOption._id,
+                                    ],
+                                  };
+                                }
+                              });
+                            } else {
+                              setSelectedAnswerIds((prev) => {
+                                const updatedAnswerIds = prev[item._id]?.filter(
+                                  (value) => {
+                                    return value !== btn.answerOption._id;
+                                  }
+                                );
+
+                                return {
+                                  ...prev,
+                                  [item._id]: updatedAnswerIds,
+                                };
+                              });
+                            }
+                            let boo = true;
+                            handleResponseProgress(
+                              item?._id,
+                              btn.answerOption._id
+                            );
+                            if (
+                              !user_resp.some(
+                                (q) =>
+                                  q.questionId === item._id &&
+                                  q.selectedOption.some(
+                                    (ans) =>
+                                      ans.answerOption === btn.answerOption._id
+                                  )
+                              )
+                            ) {
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn.answerOption._id,
+                                btn.includeExplanation,
+                                btn.includeInputField,
+                                isSelected,
+                                "",
+                                "",
+                                boo
+                              );
+                            } else {
+                              if (btn.answerOption._id && user_resp) {
+                                user_resp.forEach((resp) => {
+                                  if (resp.questionId === item._id) {
+                                    resp.selectedOption =
+                                      resp.selectedOption.filter(
+                                        (option) =>
+                                          option.answerOption !==
+                                          btn.answerOption._id
+                                      );
+                                  }
+                                });
+                              }
+                            }
+                          }}
+                          className={buttonClass}
+                        >
+                          {btn.answerOption.answerOption}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+            </div>
+          ) : (
+            <div
+              className="d-flex mt-4"
+              style={{ display: "flex", flexWrap: "wrap" }}
+            >
+              {item.answerOptions &&
+                item.answerOptions.map((btn, btnIndex) => {
+                  const isSelected =
+                    selectedAnswerIds[item._id]?.includes(btn._id) || false;
+
+                  let buttonClass = "button";
+                  if (
+                    selectedAnswerIds[item._id] &&
+                    selectedAnswerIds[item._id].includes(btn._id)
+                  ) {
+                    buttonClass += " active";
+                  }
+                  const explanationValue = includeExplanation[item._id] || ""; // Get the value for the explanation input field
+                  const inputFieldValue =
+                    includeInputField[`${item._id}_${btn._id}`] || ""; // Get the value for the input field
+                  return (
+                    <div key={btnIndex} className={btnIndex >= 5 ? "mt-2" : ""}>
+                      {isSelected ? (
+                        <>
+                          {btn.includeExplanation && (
                             <div className="">
                               <CKEditor
                                 editor={ClassicEditor}
-                                onReady={(editor) => {
-                                  editor.setData(
-                                    btn_user_resp?.includeExplanationValue || ""
-                                  );
-                                }}
+                                onReady={(editor) => {}}
                                 onChange={(e, editor) => {
                                   const value = editor.getData();
                                   setIncludeExplanation((prevState) => ({
@@ -837,6 +1056,7 @@ const Benchmarking = () => {
                                     ...prevState,
                                     [item._id]: value,
                                   }));
+
                                   setUser_resp((prevUserResp) => {
                                     const newUserResp = [...prevUserResp];
                                     const userRespIndex = newUserResp.findIndex(
@@ -875,10 +1095,13 @@ const Benchmarking = () => {
                                     return newUserResp;
                                   });
                                 }}
+                                validate={{
+                                  required: { value: true },
+                                }}
                                 class="form-control"
                                 placeholder="Description"
                                 id="floatingTextarea"
-                                value=""
+                                value={explanationValue}
                                 style={{
                                   height: "120px",
                                   overflow: "hidden",
@@ -886,478 +1109,146 @@ const Benchmarking = () => {
                                 }}
                               />
                             </div>
-                          )
-                        }
-                        {/* </>
-                        ) : null} */}
-                        {/* {check  ? (
-                          <> */}
-                        {condition3 && btn.includeInputField ? (
-                          <div>
-                            <Input
-                              type="text"
-                              className="form-control"
-                              id="input-field"
-                              placeholder=""
-                              value={
-                                includeInputField[
-                                  `${item._id}_${btn.answerOption._id}`
-                                ] ||
-                                selectedOption.find(
-                                  (a) => a.answerOption === btn.answerOption._id
-                                )?.includeInputFieldValue
-                              }
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                setIncludeInputField((prevState) => ({
-                                  ...prevState,
-                                  [`${item._id}_${btn.answerOption._id}`]:
-                                    value,
-                                }));
-                              }}
-                              onBlur={(e) => {
-                                const value = e.target.value;
-                                setIncludeInputField((prevState) => ({
-                                  ...prevState,
-                                  [`${item._id}_${btn.answerOption._id}`]:
-                                    value,
-                                }));
-                                setUser_resp((prevUserResp) => {
-                                  const newUserResp = [...prevUserResp];
-                                  const userRespIndex = newUserResp.findIndex(
-                                    (resp) => resp?.questionId === item._id
-                                  );
-                                  if (userRespIndex !== -1) {
-                                    const updatedUserResp = {
-                                      ...newUserResp[userRespIndex],
-                                      selectedOption: [
-                                        ...newUserResp[userRespIndex]
-                                          .selectedOption,
-                                      ],
-                                    };
-                                    const optionIndex =
-                                      updatedUserResp.selectedOption.findIndex(
-                                        (option) =>
-                                          option.answerOption ===
-                                          btn.answerOption._id
-                                      );
-                                    if (optionIndex !== -1) {
-                                      const selectedOption =
-                                        updatedUserResp.selectedOption[
-                                          optionIndex
-                                        ];
-                                      updatedUserResp.selectedOption[
-                                        optionIndex
-                                      ] = {
-                                        ...selectedOption,
-                                        includeInputFieldValue:
-                                          btn.includeInputField && value,
-                                      };
-                                    }
-                                    newUserResp[userRespIndex] =
-                                      updatedUserResp;
-                                  }
-                                  return newUserResp;
-                                });
-                                // handleButtonClick(
-                                //   (currentPage - 1) * numPages + index,
-                                //   btnIndex,
-                                //   btn.answerOption,
-                                //   item?._id,
-                                //   btn.answerOption._id,
-                                //   btn.includeExplanation,s
-                                //   btn.includeInputField,
-                                //   includeExplanation,
-                                //   includeExplanationValue
-                                // );
-                              }}
-                            />
-                          </div>
-                        ) : null}
-                        {/* </>
-                        ) : null} */}
-                        <div className="buttons-container">
-                          <button
-                            onClick={() => {
-                              if (
-                                !selectedAnswerIds[item._id]?.some(
-                                  (value) => value === btn.answerOption._id
-                                )
-                              ) {
-                                setSelectedAnswerIds(
-                                  (prevSelectedAnswerIds) => {
-                                    const questionId = item._id;
-                                    const selectedIds =
-                                      prevSelectedAnswerIds[questionId] || [];
-
-                                    if (isSelected) {
-                                      return {
-                                        ...prevSelectedAnswerIds,
-                                        [questionId]: selectedIds.filter(
-                                          (id) => id !== btn.answerOption._id
-                                        ),
-                                      };
-                                    } else {
-                                      return {
-                                        ...prevSelectedAnswerIds,
-                                        [questionId]: [
-                                          ...selectedIds,
-                                          btn.answerOption._id,
+                          )}
+                          {btn.includeInputField && (
+                            <div>
+                              <Input
+                                type="text"
+                                className="form-control"
+                                id="input-field"
+                                placeholder=""
+                                value={inputFieldValue}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  setIncludeInputField((prevState) => ({
+                                    ...prevState,
+                                    [`${item._id}_${btn._id}`]: value,
+                                  }));
+                                }}
+                                onBlur={(e) => {
+                                  const value = e.target.value;
+                                  setIncludeInputField((prevState) => ({
+                                    ...prevState,
+                                    [`${item._id}_${btn._id}`]: value,
+                                  }));
+                                  setUser_resp((prevUserResp) => {
+                                    const newUserResp = [...prevUserResp];
+                                    const userRespIndex = newUserResp.findIndex(
+                                      (resp) => resp?.questionId === item._id
+                                    );
+                                    if (userRespIndex !== -1) {
+                                      const updatedUserResp = {
+                                        ...newUserResp[userRespIndex],
+                                        selectedOption: [
+                                          ...newUserResp[userRespIndex]
+                                            .selectedOption,
                                         ],
                                       };
+                                      const optionIndex =
+                                        updatedUserResp.selectedOption.findIndex(
+                                          (option) =>
+                                            option.answerOption ===
+                                            btn.answerOption._id
+                                        );
+                                      if (optionIndex !== -1) {
+                                        const selectedOption =
+                                          updatedUserResp.selectedOption[
+                                            optionIndex
+                                          ];
+                                        updatedUserResp.selectedOption[
+                                          optionIndex
+                                        ] = {
+                                          ...selectedOption,
+                                          includeInputFieldValue:
+                                            btn.includeInputField && value,
+                                        };
+                                      }
+                                      newUserResp[userRespIndex] =
+                                        updatedUserResp;
                                     }
-                                  }
-                                );
-                              } else {
-                                setSelectedAnswerIds((prev) => {
-                                  const updatedAnswerIds = prev[
-                                    item._id
-                                  ]?.filter((value) => {
-                                    return value !== btn.answerOption._id;
+                                    return newUserResp;
                                   });
+                                }}
+                              />
+                            </div>
+                          )}
+                        </>
+                      ) : null}
+                      <div className="buttons-container">
+                        <button
+                          onClick={() => {
+                            setSelectedAnswer(btn);
+                            setSelectedAnswerIds((prevSelectedAnswerIds) => {
+                              const questionId = item._id;
+                              const selectedIds =
+                                prevSelectedAnswerIds[questionId] || [];
 
-                                  return {
-                                    ...prev,
-                                    [item._id]: updatedAnswerIds,
-                                  };
+                              if (isSelected) {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: selectedIds.filter(
+                                    (id) => id !== btn._id
+                                  ),
+                                };
+                              } else {
+                                return {
+                                  ...prevSelectedAnswerIds,
+                                  [questionId]: [...selectedIds, btn._id],
+                                };
+                              }
+                            });
+                            handleResponseProgress(
+                              item?._id,
+                              btn.answerOption._id
+                            );
+                            if (
+                              !user_resp.some(
+                                (q) =>
+                                  q.questionId === item._id &&
+                                  q.selectedOption.some(
+                                    (ans) =>
+                                      ans.answerOption === btn.answerOption._id
+                                  )
+                              )
+                            ) {
+                              handleButtonClick(
+                                (currentPage - 1) * numPages + index,
+                                btnIndex,
+                                btn.answerOption,
+                                item?._id,
+                                btn.answerOption._id,
+                                btn.includeExplanation,
+                                btn.includeInputField
+                              );
+                            } else {
+                              if (btn.answerOption._id && user_resp) {
+                                user_resp.forEach((resp) => {
+                                  if (resp.questionId === item._id) {
+                                    resp.selectedOption =
+                                      resp.selectedOption.filter(
+                                        (option) =>
+                                          option.answerOption !==
+                                          btn.answerOption._id
+                                      );
+                                  }
                                 });
                               }
-                              let boo = true;
-                              handleResponseProgress(
-                                item?._id,
-                                btn.answerOption._id
-                              );
-                              if (
-                                !user_resp.some(
-                                  (q) =>
-                                    q.questionId === item._id &&
-                                    q.selectedOption.some(
-                                      (ans) =>
-                                        ans.answerOption ===
-                                        btn.answerOption._id
-                                    )
-                                )
-                              ) {
-                                handleButtonClick(
-                                  (currentPage - 1) * numPages + index,
-                                  btnIndex,
-                                  btn.answerOption,
-                                  item?._id,
-                                  btn.answerOption._id,
-                                  btn.includeExplanation,
-                                  btn.includeInputField,
-                                  isSelected,
-                                  "",
-                                  "",
-                                  boo
-                                );
-                              } else {
-                                if (btn.answerOption._id && user_resp) {
-                                  user_resp.forEach((resp) => {
-                                    if (resp.questionId === item._id) {
-                                      resp.selectedOption =
-                                        resp.selectedOption.filter(
-                                          (option) =>
-                                            option.answerOption !==
-                                            btn.answerOption._id
-                                        );
-                                    }
-                                  });
-                                }
-                              }
-
-                              // handleButtonClick(
-                              //   (currentPage - 1) * numPages + index,
-                              //   btnIndex,
-                              //   btn.answerOption,
-                              //   item?._id,
-                              //   btn.answerOption._id
-                              // );
-                            }}
-                            className={buttonClass}
-                          >
-                            {btn.answerOption.answerOption}
-                          </button>
-                        </div>
+                            }
+                          }}
+                          onBlur={() => {}}
+                          className={buttonClass}
+                        >
+                          {btn.answerOption.answerOption}
+                        </button>
                       </div>
-                    );
-                  })}
-              </div>
-            ) : (
-              <div
-                className="d-flex mt-4"
-                style={{ display: "flex", flexWrap: "wrap" }}
-              >
-                {item.answerOptions &&
-                  item.answerOptions.map((btn, btnIndex) => {
-                    const isSelected =
-                      selectedAnswerIds[item._id]?.includes(btn._id) || false;
-
-                    let buttonClass = "button";
-                    if (
-                      selectedAnswerIds[item._id] &&
-                      selectedAnswerIds[item._id].includes(btn._id)
-                    ) {
-                      buttonClass += " active";
-                    }
-                    // const explanationValue = includeExplanation[item._id] || ""; // Get the value for the explanation input field
-                    const explanationValue = includeExplanation[item._id] || ""; // Get the value for the explanation input field
-                    const inputFieldValue =
-                      includeInputField[`${item._id}_${btn._id}`] || ""; // Get the value for the input field
-                    return (
-                      <div
-                        key={btnIndex}
-                        className={btnIndex >= 5 ? "mt-2" : ""}
-                      >
-                        {isSelected ? (
-                          <>
-                            {btn.includeExplanation && (
-                              <div className="">
-                                <CKEditor
-                                  editor={ClassicEditor}
-                                  onReady={(editor) => {}}
-                                  onChange={(e, editor) => {
-                                    const value = editor.getData();
-                                    setIncludeExplanation((prevState) => ({
-                                      ...prevState,
-                                      [item._id]: value,
-                                    }));
-                                  }}
-                                  onBlur={(e, editor) => {
-                                    const value = editor.getData();
-                                    setIncludeExplanation((prevState) => ({
-                                      ...prevState,
-                                      [item._id]: value,
-                                    }));
-                                    // handleButtonClick(
-                                    //   (currentPage - 1) * numPages + index,
-                                    //   btnIndex,
-                                    //   btn.answerOption,
-                                    //   item?._id,
-                                    //   btn.answerOption._id,
-                                    //   btn.includeExplanation,
-                                    //   btn.includeInputField,
-                                    //   explanationValue,
-                                    //   inputFieldValue // Pass the explanation value to handleButtonClick
-                                    // );
-                                    setUser_resp((prevUserResp) => {
-                                      const newUserResp = [...prevUserResp];
-                                      const userRespIndex =
-                                        newUserResp.findIndex(
-                                          (resp) =>
-                                            resp?.questionId === item._id
-                                        );
-                                      if (userRespIndex !== -1) {
-                                        const updatedUserResp = {
-                                          ...newUserResp[userRespIndex],
-                                          selectedOption: [
-                                            ...newUserResp[userRespIndex]
-                                              .selectedOption,
-                                          ],
-                                        };
-                                        const optionIndex =
-                                          updatedUserResp.selectedOption.findIndex(
-                                            (option) =>
-                                              option.answerOption ===
-                                              btn.answerOption._id
-                                          );
-                                        if (optionIndex !== -1) {
-                                          const selectedOption =
-                                            updatedUserResp.selectedOption[
-                                              optionIndex
-                                            ];
-                                          updatedUserResp.selectedOption[
-                                            optionIndex
-                                          ] = {
-                                            ...selectedOption,
-                                            includeExplanationValue:
-                                              btn.includeExplanation && value,
-                                          };
-                                        }
-                                        newUserResp[userRespIndex] =
-                                          updatedUserResp;
-                                      }
-                                      return newUserResp;
-                                    });
-                                  }}
-                                  validate={{
-                                    required: { value: true },
-                                  }}
-                                  class="form-control"
-                                  placeholder="Description"
-                                  id="floatingTextarea"
-                                  value={explanationValue}
-                                  style={{
-                                    height: "120px",
-                                    overflow: "hidden",
-                                    backgroundColor: "#dfdfdf",
-                                  }}
-                                />
-                              </div>
-                            )}
-                            {btn.includeInputField && (
-                              <div>
-                                <Input
-                                  type="text"
-                                  className="form-control"
-                                  id="input-field"
-                                  placeholder=""
-                                  value={inputFieldValue}
-                                  onChange={(e) => {
-                                    const value = e.target.value;
-                                    setIncludeInputField((prevState) => ({
-                                      ...prevState,
-                                      [`${item._id}_${btn._id}`]: value,
-                                    }));
-                                  }}
-                                  onBlur={(e) => {
-                                    const value = e.target.value;
-                                    setIncludeInputField((prevState) => ({
-                                      ...prevState,
-                                      [`${item._id}_${btn._id}`]: value,
-                                    }));
-                                    setUser_resp((prevUserResp) => {
-                                      const newUserResp = [...prevUserResp];
-                                      const userRespIndex =
-                                        newUserResp.findIndex(
-                                          (resp) =>
-                                            resp?.questionId === item._id
-                                        );
-                                      if (userRespIndex !== -1) {
-                                        const updatedUserResp = {
-                                          ...newUserResp[userRespIndex],
-                                          selectedOption: [
-                                            ...newUserResp[userRespIndex]
-                                              .selectedOption,
-                                          ],
-                                        };
-                                        const optionIndex =
-                                          updatedUserResp.selectedOption.findIndex(
-                                            (option) =>
-                                              option.answerOption ===
-                                              btn.answerOption._id
-                                          );
-                                        if (optionIndex !== -1) {
-                                          const selectedOption =
-                                            updatedUserResp.selectedOption[
-                                              optionIndex
-                                            ];
-                                          updatedUserResp.selectedOption[
-                                            optionIndex
-                                          ] = {
-                                            ...selectedOption,
-                                            includeInputFieldValue:
-                                              btn.includeInputField && value,
-                                          };
-                                        }
-                                        newUserResp[userRespIndex] =
-                                          updatedUserResp;
-                                      }
-                                      return newUserResp;
-                                    });
-                                    // handleButtonClick(
-                                    //   (currentPage - 1) * numPages + index,
-                                    //   btnIndex,
-                                    //   btn.answerOption,
-                                    //   item?._id,
-                                    //   btn.answerOption._id,
-                                    //   btn.includeExplanation,
-                                    //   btn.includeInputField,
-                                    //   explanationValue,
-                                    //   inputFieldValue
-                                    // );
-                                  }}
-                                />
-                              </div>
-                            )}
-                          </>
-                        ) : null}
-                        <div className="buttons-container">
-                          <button
-                            onClick={() => {
-                              setSelectedAnswer(btn);
-                              setSelectedAnswerIds((prevSelectedAnswerIds) => {
-                                const questionId = item._id;
-                                const selectedIds =
-                                  prevSelectedAnswerIds[questionId] || [];
-
-                                if (isSelected) {
-                                  return {
-                                    ...prevSelectedAnswerIds,
-                                    [questionId]: selectedIds.filter(
-                                      (id) => id !== btn._id
-                                    ),
-                                  };
-                                } else {
-                                  return {
-                                    ...prevSelectedAnswerIds,
-                                    [questionId]: [...selectedIds, btn._id],
-                                  };
-                                }
-                              });
-                              handleResponseProgress(
-                                item?._id,
-                                btn.answerOption._id
-                              );
-                              if (
-                                !user_resp.some(
-                                  (q) =>
-                                    q.questionId === item._id &&
-                                    q.selectedOption.some(
-                                      (ans) =>
-                                        ans.answerOption ===
-                                        btn.answerOption._id
-                                    )
-                                )
-                              ) {
-                                handleButtonClick(
-                                  (currentPage - 1) * numPages + index,
-                                  btnIndex,
-                                  btn.answerOption,
-                                  item?._id,
-                                  btn.answerOption._id,
-                                  btn.includeExplanation,
-                                  btn.includeInputField
-                                );
-                              } else {
-                                if (btn.answerOption._id && user_resp) {
-                                  user_resp.forEach((resp) => {
-                                    if (resp.questionId === item._id) {
-                                      resp.selectedOption =
-                                        resp.selectedOption.filter(
-                                          (option) =>
-                                            option.answerOption !==
-                                            btn.answerOption._id
-                                        );
-                                    }
-                                  });
-                                }
-                              }
-                            }}
-                            onBlur={() => {
-                              // handleButtonClick(
-                              //   (currentPage - 1) * numPages + index,
-                              //   btnIndex,
-                              //   btn.answerOption,
-                              //   item?._id,
-                              //   btn.answerOption._id,
-                              //   btn.includeExplanation,
-                              //   btn.includeInputField
-                              // );
-                            }}
-                            className={buttonClass}
-                          >
-                            {btn.answerOption.answerOption}
-                          </button>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </div>
-            )}
-          </div>
-        );
-      });
+                    </div>
+                  );
+                })}
+            </div>
+          )}
+        </div>
+      );
+    });
 
   const obj = JSON.parse(sessionStorage.getItem("authUser"));
   const userId = obj._id;
@@ -1374,7 +1265,6 @@ const Benchmarking = () => {
         type: "success",
         isLoading: false,
       });
-      // toast.success("benchmark is successfully submitted");
     });
   };
 
@@ -1395,20 +1285,7 @@ const Benchmarking = () => {
 
   const requestBody = {
     userId: userId,
-    // user_resp: user_resp.flat().map((item) => {
-    //   if (item.selectedOption && item.selectedOption.length > 0) {
-    //     const selectedOption = item.selectedOption[0];
-    //     if (
-    //       selectedOption.includeExplanationValue &&
-    //       typeof selectedOption.includeExplanationValue === "object"
-    //     ) {
-    //       selectedOption.includeExplanationValue = Object.values(
-    //         selectedOption.includeExplanationValue
-    //       )[0];
-    //     }
-    //   }
-    //   return item;
-    // }),
+
     user_resp: benchmark?.user_resp?.length > 0 ? user_resp.flat() : user_resp,
   };
 
@@ -1417,7 +1294,29 @@ const Benchmarking = () => {
       {/* <Layouts> */}
       <div className="page-content overflow-auto ">
         <div className="Main-sec mx-n4 mt-n4 w-100">
-          <h1>Benchmarking</h1>
+          <div
+            style={{
+              width: "50%",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              display: "flex",
+            }}
+          >
+            {" "}
+            <h1>Benchmarking</h1>
+            <h6 style={{ color: "white" }}>
+              Title {"  "}:{"  "}
+              <span style={{ fontSize: "14px" }}>
+                {location.state.contactData.title}
+              </span>
+            </h6>
+            <h6 style={{ color: "white" }}>
+              Country{"  "}:{"  "}
+              <span style={{ fontSize: "14px" }}>
+                {location.state.contactData.country}
+              </span>
+            </h6>
+          </div>
           <p>
             This is a page where users can take self-assessment questionnaires
             and view their results. It will feature the ability for users to
@@ -1426,6 +1325,7 @@ const Benchmarking = () => {
             the user to view their score and their benchmark results
           </p>
         </div>
+
         <Col lg={12} className="m-auto">
           <Card style={{ marginTop: "50px" }}>
             <CardBody className="pl-1 pr-1">
@@ -1569,9 +1469,6 @@ const Benchmarking = () => {
                             type="button"
                             className="btn btn-primary"
                             onClick={() => {
-                              // user_resp = user_resp.filter(
-                              //   (item) => item.selectedOption.length !== 0
-                              // )
                               const requestBody = {
                                 userId: userId,
                                 user_resp: user_resp.filter(

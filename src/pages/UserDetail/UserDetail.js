@@ -348,7 +348,6 @@ const Profile = () => {
                       aria-valuemin="0"
                       aria-valuemax="100"
                     >
-                      if{}
                       <div className="label">{userPercentage}%</div>
                     </div>
                   </div>

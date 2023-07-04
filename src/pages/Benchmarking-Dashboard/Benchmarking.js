@@ -65,7 +65,6 @@ const BenchmarkingDashboard = () => {
   const getBenchmarks = () => {
     getAllBenchmarks()
       .then((resp) => {
-        console.log("response get all benchamrks", resp);
         setBenchmarks(resp ?? []);
       })
       .catch((err) => {
@@ -251,9 +250,7 @@ const BenchmarkingDashboard = () => {
   });
 
   // Update Data
-  const handleContactClick = (data) => {
-    console.log(data, "DATA");
-  };
+
   const handleValidDate = (date) => {
     const date1 = moment(new Date(date)).format("YYYY MM DD");
     return date == "" ? date : date1;
@@ -315,28 +312,28 @@ const BenchmarkingDashboard = () => {
       : setIsMultiDeleteButton(false);
     setSelectedCheckBoxDelete(ele);
   };
-  const [isDataUpdated, setIsDataUpdated] = useState(false);
 
   const handleTitleClick = (e, cellProps) => {
     e.preventDefault();
     const contactData = cellProps.row.original;
     setInfo(contactData);
     navigate(`/benchmarking/${cellProps.row.original._id}`, {
-      state: { isDataUpdated: true, menuItem: "/benchmarking" },
+      state: {
+        isDataUpdated: true,
+        contactData: contactData,
+        menuItem: "/benchmarking",
+      },
     });
   };
   const handleResetClick = (data) => {
     setInfo(data);
-    console.log(data, "IN CLICK");
   };
   const handleResetConfirm = (info) => {
-    console.log(info, "IN CONFIRM");
     const resetData = {
       user_resp: [],
     };
     removeBenchmarkUserResp(info._id, resetData)
       .then((res) => {
-        console.log(res);
         toast.success("Reset Successfully");
       })
       .catch((err) => console.log(err));
@@ -461,7 +458,6 @@ const BenchmarkingDashboard = () => {
                       onClick={() => {
                         const contactData = cellProps.row.original;
                         setInfo(contactData);
-                        console.log("contact data", contactData);
                       }}
                     >
                       View
@@ -483,7 +479,6 @@ const BenchmarkingDashboard = () => {
                       href="#"
                       onClick={() => {
                         const contactData = cellProps.row.original;
-                        handleContactClick(contactData);
                         handleResetClick(contactData);
                       }}
                     >
@@ -517,7 +512,7 @@ const BenchmarkingDashboard = () => {
         },
       },
     ],
-    [handleContactClick, checkedAll]
+    [checkedAll]
   );
 
   const [tag, setTag] = useState([]);
@@ -553,14 +548,8 @@ const BenchmarkingDashboard = () => {
     },
     validationSchema: Yup.object({
       title: Yup.string().required("Title is required"),
-      // country: Yup.mixed().required("Country is required"),
     }),
     onSubmit: async (values) => {
-      console.log(values, valError, "VALS");
-
-      // if (values.country === null) {
-      //   setValError("Please select a country");
-      // }
       if (countryOptions.length < 1) {
         toast.info(
           <div style={{ display: "block" }}>
@@ -671,7 +660,13 @@ const BenchmarkingDashboard = () => {
             progress and return later. We do encourage you to complete the
             assessment but if you don’t have the answer to questions, you can
             skip them. Once you are done with the assessment, press submit and
-            you will receive a benchmark report.
+            you will receive a benchmark report.In this section you will find a
+            self-assessment questionnaire and, once completed, you can view your
+            results against your peers. You have the option to complete the
+            assessment at once or save your progress and return later. We do
+            encourage you to complete the assessment but if you don’t have the
+            answer to questions, you can skip them. Once you are done with the
+            assessment, press submit and you will receive a benchmark report.
           </p>
         </div>
         <Col xxl={12}>
