@@ -1307,13 +1307,13 @@ const Benchmarking = () => {
             <h6 style={{ color: "white" }}>
               Title {"  "}:{"  "}
               <span style={{ fontSize: "14px" }}>
-                {location.state.contactData.title}
+                {location && location?.state?.contactData?.title}
               </span>
             </h6>
             <h6 style={{ color: "white" }}>
               Country{"  "}:{"  "}
               <span style={{ fontSize: "14px" }}>
-                {location.state.contactData.country}
+                {location && location?.state?.contactData?.country}
               </span>
             </h6>
           </div>
