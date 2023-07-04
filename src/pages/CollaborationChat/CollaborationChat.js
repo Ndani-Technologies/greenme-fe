@@ -164,11 +164,12 @@ const CollaborationChat = () => {
   };
 
   const userChatOpen = (selectedChat) => {
+    console.log(selectedChat, "SEL CHAT");
     dispatch(
       getMessages({
-        receiver: getReceiverInfo(selectedChat)._id,
+        receiver: getReceiverInfo(selectedChat)?._id,
         author: user._id,
-        conversationId: selectedChat._id,
+        conversationId: selectedChat?._id,
       })
     );
   };
@@ -198,14 +199,7 @@ const CollaborationChat = () => {
     }
   };
 
-  // const scrollToBottom = useCallback(() => {
-  //   console.log("scroll", messageBox, messageBox?.scrollHeight);
-  //   if (messageBox) {
-  //     messageBox.scrollTop = messageBox.scrollHeight + 10000;
-  //   }
-  // }, [messageBox]);
   const scrollToBottom = useCallback(() => {
-    console.log("scroll", messageBox, messageBox?.scrollHeight);
     if (messageBox) {
       messageBox.scrollTop = messageBox.scrollHeight;
     }
@@ -306,8 +300,9 @@ const CollaborationChat = () => {
   }
 
   function getReceiverInfo(chat) {
+    console.log(chat, "IN RECIEVER INFO");
     let receiver;
-    if (chat.participants[0]._id === user._id) {
+    if (chat?.participants[0]?._id === user._id) {
       receiver = chat.participants[1];
     } else {
       receiver = chat.participants[0];
@@ -438,16 +433,17 @@ const CollaborationChat = () => {
                             <div
                               className="cursor-pointer"
                               onClick={() => {
+                                console.log(chat, "ON CLCIK");
                                 scrollToBottom();
                                 dispatch(
                                   storeChosenChatDetails({
                                     author: user._id,
-                                    receiver: getReceiverInfo(chat)._id,
+                                    receiver: getReceiverInfo(chat)?._id,
                                     receiverProfilePicture:
-                                      getReceiverInfo(chat).profilePic,
+                                      getReceiverInfo(chat)?.profilePic || "",
                                     receiverFullName:
-                                      getReceiverInfo(chat).firstName +
-                                      getReceiverInfo(chat).lastName,
+                                      getReceiverInfo(chat)?.firstName +
+                                      getReceiverInfo(chat)?.lastName,
                                   })
                                 );
                                 userChatOpen(chat);
@@ -456,9 +452,10 @@ const CollaborationChat = () => {
                               <div className="d-flex align-items-center">
                                 <div className="flex-shrink-0 chat-user-img online align-self-center me-2 ms-0">
                                   <div className="avatar-xxs">
-                                    {getReceiverInfo(chat).profilePic !== "" ? (
+                                    {getReceiverInfo(chat)?.profilePic !==
+                                    "" ? (
                                       <img
-                                        src={getReceiverInfo(chat).profilePic}
+                                        src={getReceiverInfo(chat)?.profilePic}
                                         className="rounded-circle img-fluid userprofile"
                                         alt=""
                                       />
@@ -470,9 +467,9 @@ const CollaborationChat = () => {
                                             generateRandomColor(),
                                         }}
                                       >
-                                        {getReceiverInfo(chat).firstName.charAt(
-                                          0
-                                        )}
+                                        {getReceiverInfo(
+                                          chat
+                                        )?.firstName.charAt(0)}
                                       </div>
                                     )}
                                   </div>
@@ -480,8 +477,9 @@ const CollaborationChat = () => {
                                 </div>
                                 <div className="flex-grow-1 overflow-hidden">
                                   <p className="text-truncate mb-0">
-                                    {getReceiverInfo(chat).firstName}
-                                    {getReceiverInfo(chat).lastName}
+                                    {console.log(getReceiverInfo(chat), "FUNC")}
+                                    {getReceiverInfo(chat)?.firstName}
+                                    {getReceiverInfo(chat)?.lastName}
                                   </p>
                                 </div>
                                 <div className="flex-shrink-0">
@@ -596,12 +594,16 @@ const CollaborationChat = () => {
                                   <div
                                     className="flex-grow-1"
                                     onClick={(e) => {
-                                      userChatOpen(
-                                        item.id,
-                                        item.name,
-                                        item.status,
-                                        item.roomId,
-                                        item.image
+                                      dispatch(
+                                        storeChosenChatDetails({
+                                          author: user._id,
+                                          receiver: item._id,
+                                          receiverProfilePicture:
+                                            (item.profilePic &&
+                                              item.profilePic) ||
+                                            "",
+                                          receiverFullName: item.name,
+                                        })
                                       );
                                     }}
                                   >
@@ -815,7 +817,7 @@ const CollaborationChat = () => {
                                   key={key}
                                 >
                                   <div className="conversation-list">
-                                    {message.author._id !== user._id && (
+                                    {message?.author?._id !== user._id && (
                                       <div className="chat-avatar">
                                         <img
                                           src={
