@@ -70,39 +70,6 @@ const DashboardTabs = () => {
     }
   };
   const [modalProject, setModalProject] = useState(false);
-  // const [editThread, setEditThread] = useState();
-  // const { threads, setThreads } = useState([
-  //   { id: 1, title: "Switch to electric vehicles" },
-  //   { id: 2, title: "Introducing trip sharing" },
-  //   { id: 3, title: "Enroll drivers in trainings" },
-  //   { id: 4, title: "Carry out waste management audit" },
-  //   { id: 5, title: "Route optimisation exercise" },
-  //   { id: 6, title: "Complete sustainable FM training" },
-  // ]);
-  // const handleEditThread = (thread) => {
-  //   setEditThread(thread);
-  //   setModalProject(true);
-  // };
-  // const handleDeleteThread = (thread) => {
-  //   setThreads(threads.filter((t) => t.id !== thread.id));
-  // };
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (threads) {
-  //     setThreads(
-  //       threads.map((thread) =>
-  //         thread.id === editThread.id
-  //           ? { ...thread, title: e.target.value }
-  //           : thread
-  //       )
-  //     );
-  //     setEditThread(null);
-  //   } else {
-  //     const newThread = { id: Date.now(), title: e.target.value };
-  //     setThreads([...threads, newThread]);
-  //   }
-  //   setModalProject(false);
-  // };
   const [editThread, setEditThread] = useState(null);
   const [threads, setThreads] = useState([
     { id: 1, title: "Switch to electric vehicles" },
