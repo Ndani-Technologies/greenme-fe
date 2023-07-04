@@ -300,7 +300,6 @@ const CollaborationChat = () => {
   }
 
   function getReceiverInfo(chat) {
-    console.log(chat, "IN RECIEVER INFO");
     let receiver;
     if (chat?.participants[0]?._id === user._id) {
       receiver = chat.participants[1];
@@ -433,7 +432,6 @@ const CollaborationChat = () => {
                             <div
                               className="cursor-pointer"
                               onClick={() => {
-                                console.log(chat, "ON CLCIK");
                                 scrollToBottom();
                                 dispatch(
                                   storeChosenChatDetails({
@@ -477,7 +475,6 @@ const CollaborationChat = () => {
                                 </div>
                                 <div className="flex-grow-1 overflow-hidden">
                                   <p className="text-truncate mb-0">
-                                    {console.log(getReceiverInfo(chat), "FUNC")}
                                     {getReceiverInfo(chat)?.firstName}
                                     {getReceiverInfo(chat)?.lastName}
                                   </p>
@@ -594,6 +591,7 @@ const CollaborationChat = () => {
                                   <div
                                     className="flex-grow-1"
                                     onClick={(e) => {
+                                      console.log(item, "ITEM");
                                       dispatch(
                                         storeChosenChatDetails({
                                           author: user._id,
@@ -605,6 +603,7 @@ const CollaborationChat = () => {
                                           receiverFullName: item.name,
                                         })
                                       );
+                                      // userChatOpen(chat);
                                     }}
                                   >
                                     <p className="text-truncate contactlist-name mb-0">

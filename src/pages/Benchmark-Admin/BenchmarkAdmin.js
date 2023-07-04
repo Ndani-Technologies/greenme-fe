@@ -600,7 +600,7 @@ const BenchmarkAdmin = () => {
             progress and return later. We do encourage you to complete the
             assessment but if you don’t have the answer to questions, you can
             skip them. Once you are done with the assessment, press submit and
-            you will receive a benchmark report.
+            you will receive a benchmark report..
           </p>
         </div>
         <Col xxl={12}>
