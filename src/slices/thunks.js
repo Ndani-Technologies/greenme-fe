@@ -19,3 +19,5 @@ export * from "./BenchmarkingUser/thunk";
 
 // API Key
 export * from "./apiKey/thunk";
+
+export * from "./fileManager/thunk";

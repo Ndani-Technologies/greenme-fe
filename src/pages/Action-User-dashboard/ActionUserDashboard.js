@@ -511,6 +511,7 @@ const ActionUserDashboard = () => {
                     reductionPotential={adminPotential}
                     isGlobalFilter={true}
                     isAddUserList={false}
+                    isFilterUserAction={true}
                     isFilterA={false}
                     isFilterAdminRA={true}
                     isFooter={true}
