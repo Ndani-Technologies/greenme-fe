@@ -6,10 +6,8 @@ import Countries from "../UserDetail/Countries";
 
 const Vectormap = (props) => {
   const [usersCountries, setUsersCountries] = useState([]);
-  const [loading, setLoading] = useState(false);
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
   const fetchAllUsers = async () => {
-    setLoading(true);
     try {
       const response = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
       if (response) {
@@ -34,7 +32,6 @@ const Vectormap = (props) => {
     } catch (error) {
       console.log(error?.message ?? "Something Went Wrong");
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -55,7 +52,7 @@ const Vectormap = (props) => {
     .filter(Boolean);
 
   const [selectedRegion, setSelectedRegion] = useState("");
-  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("All");
   const vectorMapRef = useRef(null);
   const { regions, countries } = props.regionAndCountires;
 
@@ -76,6 +73,12 @@ const Vectormap = (props) => {
       const regionSeries = mapObject.series.regions[0];
 
       const selectedCountryData = {};
+      if (!selectedCountry) {
+        // Highlight all countries
+        filteredCountries.forEach((country) => {
+          selectedCountryData[getRegionByCountry(country)] = "#39B54A";
+        });
+      }
 
       if (selectedCountry === "All") {
         // Highlight all countries
@@ -123,7 +126,6 @@ const Vectormap = (props) => {
       } else {
         selectedCountryData[selectedCountry] = "#39B54A";
       }
-      console.log(selectedCountryData, "selectedCountryData");
 
       regionSeries.clear(); // Clear any existing selections
       regionSeries.setValues(selectedCountryData);
@@ -131,7 +133,7 @@ const Vectormap = (props) => {
     }
   }, [selectedCountry, countriesArray]);
 
-  const { value, width, color, regionAndCountires } = props;
+  const { value, width, color } = props;
 
   const filteredCountries = selectedRegion
     ? regions[selectedRegion]
@@ -164,8 +166,8 @@ const Vectormap = (props) => {
                 textAlign: "left",
               }}
             >
-              <option value="All">All</option>
-              {Object.keys(regions).map((region) => (
+              <option value="">All</option>
+              {Object.keys(regions)?.map((region) => (
                 <option key={region} value={region}>
                   {region}
                 </option>
@@ -199,11 +201,11 @@ const Vectormap = (props) => {
               {filteredCountries.map((country) => {
                 const countryData = countries.find((c) => c.name === country);
                 return (
-                  <option key={countryData.code} value={countryData.code}>
+                  <option key={countryData?.code} value={countryData?.code}>
                     {country}
                   </option>
                 );
-              })}
+              })}{" "}
             </select>
           </div>
         </div>
