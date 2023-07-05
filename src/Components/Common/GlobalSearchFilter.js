@@ -234,7 +234,7 @@ const FilterBenchmarkAction = ({
       <div>
         <select disable className="form-select">
           <option hidden selected>
-            Organization
+            Organisations
           </option>
           <option>NO</option>
           <option>I DON'T KNOW</option>
@@ -611,7 +611,7 @@ const FilterAdminBenchmark = ({
           <Select
             isClearable={true}
             name="country"
-            placeholder="Organization"
+            placeholder="Organisations"
             value={selectedOrganization}
             onChange={handleChangeOrganization}
             onBlur={() => handleChangeOrganization(selectedOrganization)}

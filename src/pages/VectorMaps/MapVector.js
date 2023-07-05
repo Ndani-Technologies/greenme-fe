@@ -56,15 +56,80 @@ const Vectormap = (props) => {
   const vectorMapRef = useRef(null);
   const { regions, countries } = props.regionAndCountires;
 
+  //FOR REGIONS
   const handleRegionChange = (e) => {
     const selectedRegion = e.target.value;
     setSelectedRegion(selectedRegion);
+    localStorage.setItem("selectedRegion", selectedRegion);
     setSelectedCountry("");
+
+    if (vectorMapRef.current) {
+      const mapObject = vectorMapRef.current.$mapObject;
+      const regionSeries = mapObject.series.regions[0];
+
+      const selectedCountryData = {};
+
+      if (!selectedRegion || selectedRegion === "All") {
+        filteredCountries.forEach((country) => {
+          selectedCountryData[getRegionByCountry(country)] = "#39B54A";
+        });
+      } else {
+        // Highlight countries in the selected region
+        const countriesInRegion = getCountriesByRegion(selectedRegion);
+        countriesInRegion.forEach((country) => {
+          selectedCountryData[getRegionByCountry(country)] = "#39B54A";
+        });
+      }
+
+      regionSeries.clear(); // Clear any existing selections
+      regionSeries.setValues(selectedCountryData);
+      mapObject.applyTransform();
+    }
   };
+
+  const getCountriesByRegion = (region) => {
+    const { regions, countries } = props.regionAndCountires;
+    const regionCountries = regions[region];
+    return countriesArray.filter((country) =>
+      regionCountries?.some((rc) => rc.name === country.name)
+    );
+  };
+
+  useEffect(() => {
+    if (vectorMapRef.current && selectedRegion) {
+      const mapObject = vectorMapRef.current.$mapObject;
+      const regionSeries = mapObject.series.regions[0];
+
+      const selectedCountryData = {};
+
+      if (!selectedRegion || selectedRegion === "All") {
+        // Highlight all countries
+        countriesArray.forEach((country) => {
+          selectedCountryData[country.code] = "#39B54A";
+        });
+      } else {
+        // Highlight countries in the selected region
+        const countriesInRegion = getCountriesByRegion(selectedRegion);
+        countriesInRegion.forEach((country) => {
+          selectedCountryData[country.code] = "#39B54A";
+        });
+      }
+
+      regionSeries.clear(); // Clear any existing selections
+      regionSeries.setValues(selectedCountryData);
+      mapObject.applyTransform();
+    }
+  }, [selectedRegion, countriesArray]);
+
+  //FOR COUNTRIES
 
   const handleCountryChange = (e) => {
     const selectedCountry = e.target.value;
     setSelectedCountry(selectedCountry);
+    const selectedCountryName = countriesArray.find(
+      (c) => c.code === selectedCountry
+    )?.name;
+    props.setCountryFilter(selectedCountryName);
     const region = getRegionByCountry(selectedCountry);
     setSelectedRegion(region);
 
@@ -73,14 +138,8 @@ const Vectormap = (props) => {
       const regionSeries = mapObject.series.regions[0];
 
       const selectedCountryData = {};
-      if (!selectedCountry) {
-        // Highlight all countries
-        filteredCountries.forEach((country) => {
-          selectedCountryData[getRegionByCountry(country)] = "#39B54A";
-        });
-      }
 
-      if (selectedCountry === "All") {
+      if (!selectedCountry || selectedCountry === "All") {
         // Highlight all countries
         filteredCountries.forEach((country) => {
           selectedCountryData[getRegionByCountry(country)] = "#39B54A";
@@ -98,11 +157,15 @@ const Vectormap = (props) => {
 
   const getRegionByCountry = (selCountry) => {
     const { regions, countries } = props.regionAndCountires;
+
     for (const region in regions) {
-      if (regions[region].includes(selCountry.name)) {
-        const country = countries.find((c) => {
-          return c.code == selCountry.code;
-        });
+      const countriesInRegion = regions[region];
+      const foundCountry = countriesInRegion.find(
+        (country) => country.name === selCountry.name
+      );
+
+      if (foundCountry) {
+        const country = countries.find((c) => c.code === selCountry.code);
         if (country) {
           return region;
         } else {
@@ -110,6 +173,7 @@ const Vectormap = (props) => {
         }
       }
     }
+
     return "";
   };
 
@@ -119,6 +183,7 @@ const Vectormap = (props) => {
       const regionSeries = mapObject.series.regions[0];
 
       const selectedCountryData = {};
+
       if (selectedCountry === "All") {
         countriesArray.forEach((country) => {
           selectedCountryData[country.code] = "#39B54A";
@@ -135,9 +200,10 @@ const Vectormap = (props) => {
 
   const { value, width, color } = props;
 
-  const filteredCountries = selectedRegion
-    ? regions[selectedRegion]
-    : usersCountries.map((country) => country);
+  const filteredCountries =
+    selectedRegion === "All" || !selectedRegion
+      ? countriesArray.map((country) => country)
+      : regions[selectedRegion]?.map((country) => country);
 
   return (
     <>
@@ -157,7 +223,7 @@ const Vectormap = (props) => {
                 appearance: "none",
                 background: "transparent",
                 backgroundImage:
-                  "url('data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>')",
+                  "url('data:image/svg+xml;utf8,<svg fill=%22gray%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/></svg>')",
                 backgroundPosition: "right 10px center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "auto 60%",
@@ -166,14 +232,16 @@ const Vectormap = (props) => {
                 textAlign: "left",
               }}
             >
-              <option value="">All</option>
-              {Object.keys(regions)?.map((region) => (
+              <option value="All">All</option>
+
+              {Object.keys(props?.regionAndCountires?.regions).map((region) => (
                 <option key={region} value={region}>
                   {region}
                 </option>
               ))}
             </select>
           </div>
+
           <div>
             <label>Country:</label>
             <select
@@ -199,10 +267,12 @@ const Vectormap = (props) => {
             >
               <option value="All">All</option>
               {filteredCountries.map((country) => {
-                const countryData = countries.find((c) => c.name === country);
+                const countryData = countries.find(
+                  (c) => c.name === country.name
+                );
                 return (
                   <option key={countryData?.code} value={countryData?.code}>
-                    {country}
+                    {country.name}
                   </option>
                 );
               })}{" "}

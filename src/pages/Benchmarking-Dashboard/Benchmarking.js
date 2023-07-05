@@ -49,6 +49,7 @@ import * as Yup from "yup";
 import dummyImg from "../../assets/images/users/user-dummy-img.jpg";
 import { Height } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const BenchmarkingDashboard = () => {
   const dispatch = useDispatch();
@@ -313,6 +314,12 @@ const BenchmarkingDashboard = () => {
     setSelectedCheckBoxDelete(ele);
   };
 
+  const location = useLocation();
+
+  const { isSubmitted } = location.state;
+
+  console.log(location.state, "ON DASHBOARD");
+
   const handleTitleClick = (e, cellProps) => {
     e.preventDefault();
     const contactData = cellProps.row.original;
@@ -320,6 +327,7 @@ const BenchmarkingDashboard = () => {
     navigate(`/benchmarking/${cellProps.row.original._id}`, {
       state: {
         isDataUpdated: true,
+        isSubmitted,
         contactData: contactData,
         menuItem: "/benchmarking",
       },

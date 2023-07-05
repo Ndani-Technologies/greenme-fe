@@ -10,7 +10,6 @@ export const getAllBenchmarks = async () => {
     let resp = await axios.get(
       `${process.env.REACT_APP_BENCHMARK_URL}/getBenchmarksById/${obj._id}`
     );
-    console.log(resp, "RESP");
     let data;
     data = resp.map((value) => {
       return {
@@ -23,7 +22,6 @@ export const getAllBenchmarks = async () => {
         end_data: value?.end_date,
       };
     });
-    console.log("benchmark get all", data);
     return data;
     // dispatch(benchmarkSuccess(data))
   } catch (error) {
@@ -36,7 +34,6 @@ export const getSingleBenchmark = async (id) => {
   // let resp = await axios.get(`http://192.168.137.120:5001/api/v1/bench/benchmarking/${id}`);
 
   // let resp = await axios.get(process.env.REACT_APP_BENCHMARK_URL);
-  console.log("benchmark get single", resp && resp);
   return resp;
 };
 
@@ -44,13 +41,10 @@ export const getUserProgress = async (id) => {
   let resp = await axios.get(
     `${process.env.REACT_APP_BENCHMARK_URL}/percentage/percentageOfBenchmarks/${id}`
   );
-  console.log(resp, "PROGRESS IN THUNK");
   return resp;
 };
 
-export const updateUserResp = async (id, user_resp, navigate) => {
-  console.log(user_resp, "SUBMIT RESPONSE IN THUNK");
-
+export const updateUserResp = async (id, user_resp, navigate, isSubmitted) => {
   // let resp = await axios.patch(
   //   `http://192.168.137.1:5001/api/v1/bench/benchmarking/user_resp_submit/${id}`,
   //   user_resp
@@ -60,30 +54,26 @@ export const updateUserResp = async (id, user_resp, navigate) => {
     user_resp
   );
 
-  console.log(resp, "RESP INSIDE THUNK");
-
   // Wait for the toast notification to be displayed for a brief duration
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (resp) {
     toast.success("User response submitted successfully!");
     if (navigate) {
-      navigate("/benchmarking");
+      navigate("/benchmarking", {
+        state: { isSubmitted: true },
+      });
     }
   }
   return resp;
 };
 
 export const updateUserRespSave = async (id, user_resp) => {
-  console.log(user_resp, "SAVE RESPONSE IN THUNK");
-  // console.log("benchmark  user_resp_update req", user_resp);
-
   let resp = await axios.patch(
     `${process.env.REACT_APP_BENCHMARK_URL}/user_resp_save/${id}`,
     user_resp
   );
   if (resp) {
     toast.success("progress is successfullly saved");
-    console.log(resp);
   } else {
     toast.error("Unable to save progress");
   }
@@ -103,7 +93,6 @@ export const addBenchmark = async (benchmark) => {
     };
     resp = await axios.post(process.env.REACT_APP_BENCHMARK_URL, mapData);
     // resp = await axios.post("http://localhost:5001/api/v1/benchmarking", mapData);
-    console.log("benchmark add", mapData, resp);
     if (resp) {
       resp = {
         completion_level: resp?.completionLevel,
@@ -127,7 +116,6 @@ export const removeBenchmarkUserResp = async (id, data) => {
       `${process.env.REACT_APP_BENCHMARK_URL}/${id}`,
       data
     );
-    console.log(resp);
   } catch (error) {
     console.log(error);
   }
@@ -143,7 +131,6 @@ export const getAdminSummaryBenchmarking = async (id) => {
   );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
 
-  console.log("benchmark getSummary", resp);
   return resp;
 };
 
@@ -159,7 +146,6 @@ export const getUserSummaryBenchmarking = async (id) => {
   );
   // let resp = await axios.patch(`${process.env.REACT_APP_BENCHMARK_URL}/${id}`, { user_resp });
 
-  console.log("benchmark getSummary", resp);
   return resp;
 };
 
@@ -169,7 +155,6 @@ export const getAllQA = async () => {
     let resp = await axios.get(process.env.REACT_APP_QUESTION_URL);
 
     let data;
-    console.log("QA get all", resp);
     data = resp.map((value) => {
       return {
         ...value,
@@ -187,8 +172,6 @@ export const getAllQA = async () => {
 };
 
 export const getQAComparison = async (id) => {
-  console.log(id, "ID inside comparison");
-
   const body = {
     id: id,
   };
@@ -199,12 +182,10 @@ export const getQAComparison = async (id) => {
     }
   );
 
-  console.log("benchmark get QA Comparison", resp);
   return resp;
 };
 
 export const removeAllQA = async (idsArr) => {
-  console.log(idsArr);
   try {
     const body = {
       id: idsArr,
@@ -215,7 +196,6 @@ export const removeAllQA = async (idsArr) => {
         data: body,
       }
     );
-    console.log("delete ALL QA", resp);
   } catch (error) {
     console.error(error);
   }
@@ -226,7 +206,6 @@ export const getAllAnswers = async () => {
     // let resp = await axios.get("http://localhost:5001/api/v1/answer");
     let resp = await axios.get(process.env.REACT_APP_ANSWER_URL);
 
-    console.log("get all answers", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -236,7 +215,6 @@ export const addAnswer = async (data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/answer", data);
     let resp = await axios.post(process.env.REACT_APP_ANSWER_URL, data);
-    console.log("add answers", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -250,7 +228,6 @@ export const updateAnswer = async (id, data) => {
       data
     );
 
-    console.log("update answers", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -261,7 +238,6 @@ export const deleteAnswer = async (id) => {
     // let resp = await axios.delete(`http://localhost:5001/api/v1/answer/${id}`);
     let resp = await axios.delete(`${process.env.REACT_APP_ANSWER_URL}/${id}`);
 
-    console.log("delete answers", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -272,7 +248,6 @@ export const getAllCategories = async () => {
     // let resp = await axios.get("http://localhost:5001/api/v1/category");
     let resp = await axios.get(process.env.REACT_APP_CATEGORY_URL);
 
-    console.log("get all categories", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -286,7 +261,6 @@ export const updateCategory = async (id, data) => {
       data
     );
 
-    console.log("update categories", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -299,7 +273,6 @@ export const deleteCategory = async (id) => {
       `${process.env.REACT_APP_CATEGORY_URL}/${id}`
     );
 
-    console.log("delete category", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -309,7 +282,6 @@ export const addCategory = async (data) => {
   try {
     // let resp = await axios.post("http://localhost:5001/api/v1/category", data);
     let resp = await axios.post(process.env.REACT_APP_CATEGORY_URL, data);
-    console.log("add category", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -327,8 +299,6 @@ export const addQuestion = async (data, category) => {
         status: res?.status ? "Complete" : "Incomplete",
         visibility: res?.visibility ? "True" : "False",
       };
-      console.log(updatedResp, "updatedResp");
-      console.log(res, "res");
       return updatedResp;
     }
     return res;
@@ -351,7 +321,6 @@ export const getAllAdminBenchmarks = async () => {
         status: value?.status === "Active" ? "Complete" : "Incomplete",
       };
     });
-    console.log("admin benchmark get all", data);
     return data;
     // dispatch(benchmarkSuccess(data))
   } catch (error) {
@@ -367,7 +336,6 @@ export const updateQuestion = async (id, data) => {
 
       data
     );
-    console.log("update question", resp);
     return resp;
   } catch (error) {
     console.error(error);
@@ -380,7 +348,6 @@ export const deleteQuestion = async (id) => {
     let resp = await axios.delete(
       `${process.env.REACT_APP_QUESTION_URL}/${id}`
     );
-    console.log("delete question", resp);
     // return resp;
   } catch (error) {
     console.error(error);
@@ -394,7 +361,6 @@ export const deleteBenchmark = async (id) => {
     let resp = await axios.delete(
       `${process.env.REACT_APP_BENCHMARK_URL}/${id}`
     );
-    console.log("delete benchmark", resp);
     // return resp;
   } catch (error) {
     console.error(error);
