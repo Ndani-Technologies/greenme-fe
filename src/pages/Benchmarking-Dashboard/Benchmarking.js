@@ -316,9 +316,7 @@ const BenchmarkingDashboard = () => {
 
   const location = useLocation();
 
-  const { isSubmitted } = location.state;
-
-  console.log(location.state, "ON DASHBOARD");
+  const { isSubmitted } = location?.state || {};
 
   const handleTitleClick = (e, cellProps) => {
     e.preventDefault();
@@ -327,7 +325,7 @@ const BenchmarkingDashboard = () => {
     navigate(`/benchmarking/${cellProps.row.original._id}`, {
       state: {
         isDataUpdated: true,
-        isSubmitted,
+        isSubmitted: isSubmitted || false,
         contactData: contactData,
         menuItem: "/benchmarking",
       },
