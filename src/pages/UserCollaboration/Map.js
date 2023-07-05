@@ -4,7 +4,7 @@ import VectorMap from "../VectorMaps/MapVector";
 import axios from "axios";
 import Countries from "../UserDetail/Countries";
 
-const Map = () => {
+const Map = ({ setCountryFilter }) => {
   useEffect(() => {
     const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
       "India"
@@ -36,37 +36,55 @@ const Map = () => {
   const regionAndCountires = {
     regions: {
       Africa: [
-        "Algeria",
-        "Egypt",
-        "Nigeria",
-        "South Africa",
-        // ... other countries in Africa
+        {
+          name: "Algeria",
+          code: "DZ",
+        },
+        {
+          name: "Kenya",
+          code: "KE",
+        },
+        {
+          name: "Benin",
+          code: "BJ",
+        },
       ],
-      Americas: [
-        "Canada",
-        "United States",
-        "Mexico",
-        "Brazil",
-        // ... other countries in the Americas
-      ],
+
       Asia: [
-        "China",
-        "India",
-        "Japan",
-        "South Korea",
-        // ... other countries in Asia
+        {
+          name: "Afghanistan",
+          code: "AF",
+        },
+        {
+          name: "Iraq",
+          code: "IQ",
+        },
+        {
+          name: "Jordan",
+          code: "JO",
+        },
       ],
       Europe: [
-        "Germany",
-        "France",
-        "Italy",
-        "United Kingdom",
-        // ... other countries in Europe
-      ],
-      Oceania: [
-        "Australia",
-        "New Zealand",
-        // ... other countries in Oceania
+        {
+          name: "Ukraine",
+          code: "UA",
+        },
+        {
+          name: "Turkey",
+          code: "TR",
+        },
+        {
+          name: "Bosnia and Herzegovina",
+          code: "BA",
+        },
+        {
+          name: "Lebanon",
+          code: "LB",
+        },
+        {
+          name: "Albania",
+          code: "AL",
+        },
       ],
     },
     countries,
@@ -83,6 +101,7 @@ const Map = () => {
             <VectorMap
               value="world_mill"
               regionAndCountires={regionAndCountires}
+              setCountryFilter={setCountryFilter}
               width="500"
               color="grey"
             />

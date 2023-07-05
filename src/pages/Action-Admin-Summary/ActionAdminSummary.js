@@ -42,7 +42,7 @@ const ActionAdminSummary = () => {
             <div>
               <select disable className="form-select">
                 <option hidden selected>
-                  Organization
+                  Organisations
                 </option>
               </select>
             </div>

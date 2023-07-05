@@ -416,7 +416,7 @@ const BenchmarkAdmin = () => {
         filterable: false,
       },
       {
-        Header: "Organization",
+        Header: "Organisations",
         accessor: "organization",
         filterable: false,
       },

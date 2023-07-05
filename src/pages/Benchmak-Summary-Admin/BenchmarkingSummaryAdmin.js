@@ -41,7 +41,7 @@ const BenchmarkSummaryAdmin = () => {
               <b>User Name:</b> {adminSummary && adminSummary?.username}
             </div>
             <div>
-              <b>Organization:</b> {adminSummary && adminSummary?.organization}
+              <b>Organisations:</b> {adminSummary && adminSummary?.organization}
             </div>
           </div>
         </div>

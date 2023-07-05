@@ -151,7 +151,7 @@ const AdminReport = () => {
               <div className="mb-5">
                 <select disable className="form-select mb-3">
                   <option hidden selected>
-                    Organization
+                    Organisations
                   </option>
                 </select>
               </div>

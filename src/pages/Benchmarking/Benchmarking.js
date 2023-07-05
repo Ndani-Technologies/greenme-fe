@@ -51,6 +51,8 @@ const Benchmarking = () => {
   const [includeExplanation, setIncludeExplanation] = useState("");
   const [includeInputField, setIncludeInputField] = useState("");
   const [category, setCategory] = useState([]);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  console.log(isSubmitted, "IS SUBMITTED");
   const callApi = async () => {
     const bench = await getSingleBenchmark(params.id);
     setBenchmark(bench);
@@ -401,6 +403,8 @@ const Benchmarking = () => {
     setQuestions(benchmarkByCategory);
   };
   const location = useLocation();
+
+  console.log(location.state, "ON SINGLE PAGE");
   useEffect(() => {
     callApi();
     // getProgressPercentage();
@@ -920,6 +924,12 @@ const Benchmarking = () => {
                         ) : null} */}
                       <div className="buttons-container">
                         <button
+                          style={{
+                            cursor: location?.state?.isSubmitted
+                              ? "default"
+                              : "pointer",
+                            opacity: location?.state?.isSubmitted ? "0.5" : "1",
+                          }}
                           onClick={() => {
                             if (
                               !selectedAnswerIds[item._id]?.some(
@@ -1006,6 +1016,7 @@ const Benchmarking = () => {
                             }
                           }}
                           className={buttonClass}
+                          disabled={location?.state?.isSubmitted}
                         >
                           {btn.answerOption.answerOption}
                         </button>
@@ -1176,6 +1187,11 @@ const Benchmarking = () => {
                       ) : null}
                       <div className="buttons-container">
                         <button
+                          style={{
+                            cursor: location?.state?.isSubmitted
+                              ? "default"
+                              : "pointer",
+                          }}
                           onClick={() => {
                             setSelectedAnswer(btn);
                             setSelectedAnswerIds((prevSelectedAnswerIds) => {
@@ -1237,6 +1253,7 @@ const Benchmarking = () => {
                           }}
                           onBlur={() => {}}
                           className={buttonClass}
+                          disabled={location?.state?.isSubmitted}
                         >
                           {btn.answerOption.answerOption}
                         </button>
@@ -1259,13 +1276,16 @@ const Benchmarking = () => {
       user_resp: user_resp,
     };
     const toastt_id = toast.loading("Please wait...");
-    updateUserResp(benchmark?._id, requestBody, navigate).then((resp) => {
-      toast.update(toastt_id, {
-        render: "benchmark is successfully submitted",
-        type: "success",
-        isLoading: false,
-      });
-    });
+    updateUserResp(benchmark?._id, requestBody, navigate, isSubmitted).then(
+      (resp) => {
+        setIsSubmitted(true);
+        toast.update(toastt_id, {
+          render: "benchmark is successfully submitted",
+          type: "success",
+          isLoading: false,
+        });
+      }
+    );
   };
 
   const [benchmarkCreation, setbenchmarkCreation] = useState(false);
@@ -1497,6 +1517,7 @@ const Benchmarking = () => {
                                 updateUserRespSave(benchmark?._id, requestBody);
                               }
                             }}
+                            disabled={location?.state?.isSubmitted}
                           >
                             SAVE
                           </button>
@@ -1505,6 +1526,7 @@ const Benchmarking = () => {
                             type="button"
                             onClick={handleSubmitModal}
                             className="btn btn-secondary"
+                            disabled={location?.state?.isSubmitted}
                           >
                             SUBMIT
                           </button>

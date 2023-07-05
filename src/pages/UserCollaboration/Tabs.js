@@ -26,8 +26,11 @@ import Kenya from "../../assets/images/Kenya-1.png";
 import moment from "moment";
 import WFP from "../../assets/images/WFP.png";
 import getOrganizationsData from "../../common/getOrganizationsData";
+import { storeChosenChatDetails } from "../../slices/thunks";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const Tabs = () => {
+const Tabs = ({ countryFilter }) => {
   const [modal, setModal] = useState(false);
   const [card, setCard] = useState(null);
   const [justifyTab, setJustifyTab] = useState("1");
@@ -38,11 +41,14 @@ const Tabs = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [usersOrganizations, setUsersOrganizations] = useState([]);
   const [usersCountries, setUsersCountries] = useState([]);
-  console.log(usersCountries, "usersCountries");
   const [searchText, setSearchText] = useState("");
   const [sliderValue, setSliderValue] = React.useState([0, 0]);
   const [usersOrganizationsData, setUsersOrganizationsData] = useState([]);
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
+
+  const dispatch = useDispatch();
+  const user = JSON.parse(sessionStorage.getItem("authUser"));
+  const navigate = useNavigate();
 
   const justifyToggle = (tab) => {
     if (justifyTab !== tab) {
@@ -107,7 +113,6 @@ const Tabs = () => {
         setUsersOrganizations([
           ...new Set(usersData.map((user) => user.organization)),
         ]);
-        console.log(usersData, "UD");
         setUsersCountries([
           ...new Set(
             usersData?.reduce((acc, user) => {
@@ -135,7 +140,7 @@ const Tabs = () => {
   }, []);
 
   const handleFilter = (filterValues) => {
-    const { organizationValue, countryValue, searchTextValue } = filterValues;
+    const { organizationValue, countryValue } = filterValues;
 
     let filteredUsers = allUsersDataSet && allUsersDataSet;
 
@@ -145,15 +150,20 @@ const Tabs = () => {
       );
     }
 
-    if (countryValue && countryValue !== "") {
+    if (countryValue !== "" || countryFilter !== "") {
       filteredUsers = filteredUsers.filter(
-        (user) => user.country === countryValue
+        (user) =>
+          user.country === countryValue || user.country === countryFilter
       );
     }
 
     setAllUsersData(filteredUsers);
     setTotalPages(Math.ceil(filteredUsers.length / 12));
   };
+
+  useEffect(() => {
+    handleFilter({ countryValue: countryFilter });
+  }, [countryFilter]);
   const [hoveredAvatar, setHoveredAvatar] = useState(null);
 
   const handleMouseEnter = (avatarId) => {
@@ -182,7 +192,7 @@ const Tabs = () => {
                 className={classnames({ active: justifyTab === "2" })}
                 onClick={() => justifyToggle("2")}
               >
-                Organization
+                Organisations
               </NavLink>
             </NavItem>
           </Nav>
@@ -315,17 +325,30 @@ const Tabs = () => {
                                 >
                                   {item.firstName} {item.lastName}
                                 </p>
-                                <div className="ms-auto align-self-center">
+                                <div
+                                  className="ms-auto align-self-center cursor-pointer"
+                                  onClick={() => {
+                                    navigate("/collaborationChat");
+                                    if (user) {
+                                      dispatch(
+                                        storeChosenChatDetails({
+                                          author: user._id,
+                                          receiver: item._id,
+                                          receiverProfilePicture:
+                                            item.profilePic,
+                                          receiverFullName:
+                                            item.firstName + item.lastName,
+                                        })
+                                      );
+                                    }
+                                  }}
+                                >
                                   <i
                                     style={{
                                       color: "grey",
                                       marginRight: "6px",
                                     }}
                                     class="ri-question-answer-line"
-                                  />
-                                  <i
-                                    style={{ color: "grey" }}
-                                    class="ri-mail-line"
                                   />
                                 </div>
                               </div>
@@ -403,74 +426,81 @@ const Tabs = () => {
 
             <TabPane tabId="2" id="product">
               <Row>
-                {usersOrganizationsData?.map((item) => {
-                  return (
-                    <Col
-                      lg={3}
-                      xs={12}
-                      md={6}
-                      xl={4}
-                      xxl={4}
-                      className="border border-light rounded p-3"
-                    >
-                      <div>
-                        <img className="mx-auto d-block" src={WFP} />
-                      </div>
-                      <div className="text-center">{item.name}</div>
-                      <div className="d-flex justify-content-center gap-2">
-                        {item?.countries?.map((country) => {
-                          return <span>{country}</span>;
-                        })}
-                        {/* <img src={item.Flg1} />
+                {usersOrganizationsData
+                  ?.filter((item) => {
+                    // Check if countryFilter is not empty and item.countries includes countryFilter
+                    return (
+                      !countryFilter || item.countries.includes(countryFilter)
+                    );
+                  })
+                  .map((item) => {
+                    return (
+                      <Col
+                        lg={3}
+                        xs={12}
+                        md={6}
+                        xl={4}
+                        xxl={4}
+                        className="border border-light rounded p-3"
+                      >
+                        <div>
+                          <img className="mx-auto d-block" src={WFP} />
+                        </div>
+                        <div className="text-center">{item.name}</div>
+                        <div className="d-flex justify-content-center gap-2">
+                          {item?.countries?.map((country) => {
+                            return <span>{country}</span>;
+                          })}
+                          {/* <img src={item.Flg1} />
                         <img src={item.Flg2} />
                         <img src={item.Flg3} />
                         <img src={item.Flg4} />
                         <img src={item.Flg5} />
                         <img src={item.Flg6} /> */}
-                      </div>
-                      <div className="d-flex mt-2">
-                        <Col lg={4} className="border-end text-center">
-                          No of Points <br /> {item.number_of_points}
-                        </Col>
-                        <Col lg={5}>
-                          <ListGroupItem className="ps-0">
-                            <Col className="col-sm-auto  text-center border-end">
-                              <span>
-                                Active <br />
-                                users
-                              </span>
-                              <div className="avatar-group justify-content-center">
-                                {item?.active_users?.map((user) => {
-                                  const tooltipTarget = `tooltip-${user._id}`;
-                                  return (
-                                    <div className="avatar-group-item">
-                                      <Link
-                                        to="#"
-                                        className="d-inline-block"
-                                        id={`tooltip-${user._id}`}
-                                        onMouseEnter={() =>
-                                          handleMouseEnter(user._id)
-                                        }
-                                        onMouseLeave={handleMouseLeave}
-                                      >
-                                        <img
-                                          src={user.profilePic}
-                                          alt=""
-                                          className="rounded-circle avatar-xxs"
-                                        />
-                                      </Link>
-                                      <Tooltip
-                                        placement="top"
-                                        isOpen={hoveredAvatar === user._id}
-                                        target={`tooltip-${user._id}`}
-                                        toggle={handleMouseLeave}
-                                      >
-                                        {user.firstName}
-                                      </Tooltip>
-                                    </div>
-                                  );
-                                })}
-                                {/* {item.subItem.map((item, key) => (
+                        </div>
+                        <div className="d-flex mt-2">
+                          <Col lg={4} className="border-end text-center">
+                            No of Points <br /> {item.number_of_points}
+                          </Col>
+                          <Col lg={5}>
+                            <ListGroupItem className="ps-0">
+                              <Col className="col-sm-auto  text-center border-end">
+                                <span>
+                                  Active <br />
+                                  users
+                                </span>
+                                <div className="avatar-group justify-content-center">
+                                  {item?.active_users?.map((user) => {
+                                    const tooltipTarget = `tooltip-${user._id}`;
+                                    return (
+                                      <div className="avatar-group-item">
+                                        <Link
+                                          to="#"
+                                          className="d-inline-block"
+                                          id={`tooltip-${user._id}`}
+                                          onMouseEnter={() =>
+                                            handleMouseEnter(user._id)
+                                          }
+                                          onMouseLeave={handleMouseLeave}
+                                        >
+                                          <img
+                                            src={user.profilePic}
+                                            alt=""
+                                            className="rounded-circle avatar-xxs"
+                                          />
+                                        </Link>
+                                        <Tooltip
+                                          placement="top"
+                                          isOpen={hoveredAvatar === user._id}
+                                          target={`tooltip-${user._id}`}
+                                          toggle={handleMouseLeave}
+                                        >
+                                          {user.firstName}
+                                        </Tooltip>
+                                      </div>
+                                    );
+                                  })}
+                                  {/* {item.subItem.map((item, key) => (
                                     <React.Fragment key={key}>
                                       {item.img ? (
                                         <div className="avatar-group-item">
@@ -504,20 +534,20 @@ const Tabs = () => {
                                       )}
                                     </React.Fragment>
                                   ))} */}
-                              </div>
-                            </Col>
-                          </ListGroupItem>
-                          {/* {widgetsActivities.map((item, key) => (
+                                </div>
+                              </Col>
+                            </ListGroupItem>
+                            {/* {widgetsActivities.map((item, key) => (
                           ))} */}
-                        </Col>
-                        <Col className=" text-center">
-                          No of Users <br />
-                          {item.number_of_users}
-                        </Col>
-                      </div>
-                    </Col>
-                  );
-                })}
+                          </Col>
+                          <Col className=" text-center">
+                            No of Users <br />
+                            {item.number_of_users}
+                          </Col>
+                        </div>
+                      </Col>
+                    );
+                  })}
               </Row>
             </TabPane>
           </TabContent>
