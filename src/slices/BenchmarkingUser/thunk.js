@@ -44,7 +44,7 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
-export const updateUserResp = async (id, user_resp, navigate, isSubmitted) => {
+export const updateUserResp = async (id, user_resp, navigate) => {
   // let resp = await axios.patch(
   //   `http://192.168.137.1:5001/api/v1/bench/benchmarking/user_resp_submit/${id}`,
   //   user_resp
