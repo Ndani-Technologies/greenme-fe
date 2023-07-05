@@ -242,8 +242,29 @@ const Navdata = () => {
       id: 5,
       icon: "ri-layout-grid-line",
       label: "Collaboration",
-      link: "/",
-      disable: true,
+      link: "/#",
+      disable: false,
+      click: function (e) {
+        e.preventDefault();
+        setIsCollaboration(!isCollaboration);
+        setIscurrentState("Collaboration");
+        updateIconSidebar(e);
+      },
+      stateVariables: isCollaboration,
+      subItems: [
+        {
+          id: 1,
+          label: "Collaboration",
+          link: "/UserCollaboration",
+          parentId: "Collaboration",
+        },
+        {
+          id: 2,
+          label: "Chats",
+          link: "/collaborationChat",
+          parentId: "Collaboration",
+        },
+      ],
     },
     {
       id: 6,

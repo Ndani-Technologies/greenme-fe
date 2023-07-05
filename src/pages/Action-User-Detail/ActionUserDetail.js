@@ -33,6 +33,8 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 const ActionUserDetail = () => {
   const [value, setValue] = useState(1);
   const location = useLocation();
+  const userObj = JSON.parse(sessionStorage.getItem("authUser"));
+
   const navigate = useNavigate();
   let { data } = location.state;
   const entities = {
@@ -75,15 +77,21 @@ const ActionUserDetail = () => {
       });
 
       try {
-        for (const stepObject of steps) {
-          await updateRecommendedActionStep(stepObject._id, stepObject);
-        }
-        // completeUserActionStep(data._id, steps).then(()=>{
-        //   toast.success("Steps marked completed.")
-        // })
+        // for (const stepObject of steps) {
+        //   await updateRecommendedActionStep(stepObject._id, stepObject);
+        // }
+        const body = {
+          userId: userObj._id,
+          steps: steps,
+        };
+        console.log("param id", data._id);
+        console.log("body", body);
+        completeUserActionStep(data._id, body).then(() => {
+          toast.success("Steps marked completed.");
+        });
+
         // Show a final toast message after all updates are completed
-        toast.success("All steps successfully updated");
-        navigate("/actionuserdashboard");
+        // navigate("/actionuserdashboard");
       } catch (err) {
         toast.error("Error in updating.");
       }
