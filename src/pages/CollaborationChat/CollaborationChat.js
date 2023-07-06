@@ -17,6 +17,10 @@ import {
   NavItem,
   NavLink,
   TabContent,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
   TabPane,
 } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -44,6 +48,11 @@ import { useSelector, useDispatch } from "react-redux";
 
 import avatar2 from "../../assets/images/users/avatar-2.jpg";
 import userDummyImage from "../../assets/images/users/user-dummy-img.jpg";
+import Hadley from "../../assets/images/Hadley.png";
+import Ball from "../../assets/images/Ball.png";
+import Philipa from "../../assets/images/Philipa.png";
+import Scott from "../../assets/images/Scott.png";
+import Allen from "../../assets/images/Allen.png";
 
 //Import Scrollbar
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -309,6 +318,43 @@ const CollaborationChat = () => {
     return receiver;
   }
 
+  const [modal_standard, setmodal_standard] = useState(false);
+  function tog_standard() {
+    setmodal_standard(!modal_standard);
+  }
+
+  const activeParticipants = [
+    {
+      id: 1,
+      Image: Allen,
+      name: "Nancy Martino",
+      Designation: "Fleet Manager",
+    },
+    {
+      id: 2,
+      Image: Scott,
+      name: "Nancy Martino",
+      Designation: "Fleet Manager",
+    },
+    {
+      id: 3,
+      Image: Philipa,
+      name: "Nancy Martino",
+      Designation: "Fleet Manager",
+    },
+    {
+      id: 4,
+      Image: Ball,
+      name: "Nancy Martino",
+      Designation: "Fleet Manager",
+    },
+    {
+      id: 5,
+      Image: Allen,
+      name: "Nancy Martino",
+      Designation: "Fleet Manager",
+    },
+  ];
   const searchInputRef = useRef(null);
 
   document.title = "Chat | GreenMe";
@@ -497,7 +543,10 @@ const CollaborationChat = () => {
                           Channels
                         </h4>
                       </div>
-                      <div className="flex-shrink-0">
+                      <div
+                        className="flex-shrink-0"
+                        onClick={() => tog_standard()}
+                      >
                         <UncontrolledTooltip
                           placement="bottom"
                           target="createnewmsg"
@@ -513,6 +562,104 @@ const CollaborationChat = () => {
                         </Button>
                       </div>
                     </div>
+                    <Modal
+                      id="myModal"
+                      isOpen={modal_standard}
+                      toggle={() => {
+                        tog_standard();
+                      }}
+                      style={{ width: "300px" }}
+                    >
+                      <ModalHeader>
+                        <Button
+                          type="button"
+                          className="btn-close"
+                          onClick={() => {
+                            setmodal_standard(false);
+                          }}
+                          aria-label="Close"
+                        ></Button>
+                      </ModalHeader>
+                      <ModalBody style={{ width: "300px" }}>
+                        <Col
+                          className="d-flex flex-column align-items-center gap-2 "
+                          style={{ width: "258px" }}
+                        >
+                          <Col style={{ width: "242px" }}>
+                            <input
+                              placeholder="Add Channel Name"
+                              className="w-100 p-2 rounded border-light shadow border-0"
+                            />
+                          </Col>
+                          <Col
+                            className="bg-light border border-dark-subtle rounded"
+                            style={{ width: "242px" }}
+                          >
+                            <div className="p-3">
+                              <h5 className="ms-3" style={{ color: "#878A99" }}>
+                                Add a paticipant
+                              </h5>
+                              <Col sm={12}>
+                                <div className="search-box">
+                                  <Input
+                                    type="text"
+                                    className="form-control search"
+                                    placeholder="Select a participant"
+                                  />
+                                  <i className="ri-search-line search-icon"></i>
+                                </div>
+                              </Col>
+                            </div>
+                            <div
+                              className="pt-3 pb-0 ps-2 pe-2 border-top border-dark-subtle "
+                              style={{ height: "250px", overflow: "auto" }}
+                            >
+                              {activeParticipants.map((item, index) => {
+                                return (
+                                  <div className="vstack gap-3 mb-3">
+                                    <div className="d-flex align-items-center gap-3 border-bottom border-dark-subtle pb-2">
+                                      <input type="checkbox" />
+                                      <div className="avatar-xs flex-shrink-0">
+                                        <img
+                                          src={item.Image}
+                                          alt=""
+                                          className="img-fluid rounded-circle"
+                                        />
+                                      </div>
+                                      <div className="flex-grow-1">
+                                        <h5 className="fs-14 mb-0">
+                                          <Link
+                                            to="#"
+                                            className="text-body d-block"
+                                          >
+                                            {item.name}
+                                          </Link>
+                                        </h5>
+                                        <span style={{ color: "#878A99" }}>
+                                          {item.Designation}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </Col>
+                        </Col>
+                      </ModalBody>
+                      <ModalFooter className="d-flex justify-content-center">
+                        <Button
+                          color="danger"
+                          onClick={() => {
+                            tog_standard();
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button color="success">Save </Button>
+                        <Button color="primary">Update </Button>
+                      </ModalFooter>
+                    </Modal>
 
                     <div className="chat-message-list">
                       <ul
