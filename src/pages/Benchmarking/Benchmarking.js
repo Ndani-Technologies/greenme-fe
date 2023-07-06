@@ -1566,6 +1566,12 @@ const Benchmarking = () => {
                               <p>
                                 You have answered{" "}
                                 <span style={{ fontSize: "24px" }}>
+                                  {console.log(
+                                    location?.state?.isDataUpdated,
+                                    benchmark.user_resp?.length,
+                                    user_resp?.length,
+                                    "user_resp?.length"
+                                  )}
                                   {location?.state?.isDataUpdated
                                     ? benchmark.user_resp?.length +
                                       user_resp?.length

@@ -4,7 +4,7 @@ import VectorMap from "../VectorMaps/MapVector";
 import axios from "axios";
 import Countries from "../UserDetail/Countries";
 
-const Map = ({ setCountryFilter }) => {
+const Map = ({ setCountryFilter, setMapClickValue, orgData }) => {
   useEffect(() => {
     const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
       "India"
@@ -102,6 +102,8 @@ const Map = ({ setCountryFilter }) => {
               value="world_mill"
               regionAndCountires={regionAndCountires}
               setCountryFilter={setCountryFilter}
+              setMapClickValue={setMapClickValue}
+              orgData={orgData}
               width="500"
               color="grey"
             />

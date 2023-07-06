@@ -3,9 +3,13 @@ import { VectorMap } from "react-jvectormap";
 import "./jquery-jvectormap.scss";
 import axios from "axios";
 import Countries from "../UserDetail/Countries";
+import { getAllUsers } from "../../slices/thunks";
 
 const Vectormap = (props) => {
   const [usersCountries, setUsersCountries] = useState([]);
+  const [selectedMapCountry, setSelectedMapCountry] = useState("");
+  const [allUsers, setAllUsers] = useState([]);
+
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
   const fetchAllUsers = async () => {
     try {
@@ -36,7 +40,44 @@ const Vectormap = (props) => {
 
   useEffect(() => {
     fetchAllUsers();
+    getAllUsers()
+      .then((res) => {
+        setAllUsers(res);
+      })
+      .catch((err) => console.log(err, "UNABLE TO GET USERS"));
   }, []);
+
+  const getUserCountByCountry = (countryCode) => {
+    const selectedCountryName = countriesArray.find(
+      (c) => c.code === countryCode
+    )?.name;
+    if (!selectedCountryName) return 0;
+
+    let count = 0;
+    allUsers.forEach((user) => {
+      if (user.country === selectedCountryName) {
+        count++;
+      }
+    });
+
+    return count;
+  };
+
+  const getOrganisationsCountByCountry = (countryCode) => {
+    const selectedCountryName = countriesArray.find(
+      (c) => c.code === countryCode
+    )?.name;
+    if (!selectedCountryName) return 0;
+
+    let count = 0;
+    props.orgData?.forEach((organization) => {
+      if (organization.countries.includes(selectedCountryName)) {
+        count++;
+      }
+    });
+
+    return count;
+  };
 
   const countriesArray = usersCountries
     .map((userCountry) => {
@@ -298,6 +339,46 @@ const Vectormap = (props) => {
               fill: "#39B54A",
               cursor: "pointer",
             },
+            unselected: {
+              fill: color, // Use the initial fill color
+              // Additional styles for unselected state
+              // Add other styles as per your requirements
+            },
+          }}
+          regionsSelectableOne={true}
+          onRegionClick={(e, countryCode) => {
+            if (selectedMapCountry === countryCode) {
+              setSelectedMapCountry(""); // Deselect the country
+              props.setMapClickValue(""); // Pass an empty string to clear the map click value
+
+              if (vectorMapRef.current) {
+                const mapObject = vectorMapRef.current.$mapObject;
+                const regionSeries = mapObject.series.regions[0];
+                regionSeries.clear(); // Clear the selected country from the map
+              }
+            } else {
+              setSelectedMapCountry(countryCode); // Select the country
+              const selectedCountryName = countriesArray.find(
+                (c) => c.code === countryCode
+              )?.name;
+              props.setMapClickValue(selectedCountryName); // Pass the country name to props
+            }
+          }}
+          onRegionTipShow={(e, tip, countryCode) => {
+            const userCount = getUserCountByCountry(countryCode);
+            const orgCount = getOrganisationsCountByCountry(countryCode);
+            if (userCount) {
+              tip.html(tip.html() + " - " + userCount + " users");
+            }
+            if (orgCount) {
+              tip.html(
+                tip.html() +
+                  " - " +
+                  orgCount +
+                  " " +
+                  `${orgCount > 1 ? " Organisations" : "Organisation"}`
+              );
+            }
           }}
           series={{
             regions: [
@@ -312,7 +393,10 @@ const Vectormap = (props) => {
                         {}
                       )
                     : {
-                        [getRegionByCountry(selectedCountry)]: "#39B54A",
+                        ...(selectedMapCountry &&
+                        selectedCountry === selectedMapCountry
+                          ? { [getRegionByCountry(selectedCountry)]: "#39B54A" }
+                          : {}),
                       }),
                 },
               },
