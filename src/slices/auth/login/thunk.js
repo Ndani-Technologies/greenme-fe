@@ -17,7 +17,6 @@ import axios from "axios";
 import { api } from "../../../config";
 
 const fireBaseBackend = getFirebaseBackend();
-
 export const loginUserReal = (history) => async (dispatch) => {
   try {
     // Open a popup window to initiate the SSO
@@ -122,11 +121,16 @@ export const updateUser = async (userId, user) => {
 export const logoutUser = () => async (dispatch) => {
   try {
     sessionStorage.removeItem("authUser");
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+      var cookie = cookies[i];
+      var eqPos = cookie.indexOf("=");
+      var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+      document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+    }
 
     if (process.env.REACT_APP_DEFAULTAUTH === "firebase") {
-      // let response = await axios.get(
-      //   "http://localhost:5000/api/v1/user/logout"
-      // );
       let response = await axios.get(
         `${process.env.REACT_APP_USER_URL}user/logout`
       );
@@ -135,6 +139,15 @@ export const logoutUser = () => async (dispatch) => {
     } else {
       dispatch(logoutUserSuccess(true));
     }
+  } catch (error) {
+    dispatch(apiError(error));
+  }
+};
+
+export const resetLoginFlag = () => async (dispatch) => {
+  try {
+    const response = dispatch(reset_login_flag());
+    return response;
   } catch (error) {
     dispatch(apiError(error));
   }
@@ -158,15 +171,6 @@ export const socialLogin = (data, history, type) => async (dispatch) => {
       dispatch(loginSuccess(response));
       history("/dashboard");
     }
-  } catch (error) {
-    dispatch(apiError(error));
-  }
-};
-
-export const resetLoginFlag = () => async (dispatch) => {
-  try {
-    const response = dispatch(reset_login_flag());
-    return response;
   } catch (error) {
     dispatch(apiError(error));
   }

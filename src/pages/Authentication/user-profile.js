@@ -43,6 +43,8 @@ const UserProfile = () => {
 
   useEffect(() => {
     if (sessionStorage.getItem("authUser")) {
+      console.log(sessionStorage.getItem("authUser"), "SESSION IN PROFILE");
+      console.log(document.cookie.split(";"), "cookie PROFILE");
       const obj = JSON.parse(sessionStorage.getItem("authUser"));
 
       if (!isEmpty(user)) {

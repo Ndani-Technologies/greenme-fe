@@ -54,7 +54,7 @@ const Vectormap = (props) => {
     if (!selectedCountryName) return 0;
 
     let count = 0;
-    allUsers.forEach((user) => {
+    allUsers?.forEach((user) => {
       if (user.country === selectedCountryName) {
         count++;
       }
@@ -345,18 +345,28 @@ const Vectormap = (props) => {
               // Add other styles as per your requirements
             },
           }}
-          regionsSelectableOne={true}
+          // regionsSelectableOne={true}
           onRegionClick={(e, countryCode) => {
+            e.preventDefault();
             if (selectedMapCountry === countryCode) {
               setSelectedMapCountry(""); // Deselect the country
               props.setMapClickValue(""); // Pass an empty string to clear the map click value
 
               if (vectorMapRef.current) {
-                const mapObject = vectorMapRef.current.$mapObject;
+                const mapObject = vectorMapRef.current.getMapObject();
                 const regionSeries = mapObject.series.regions[0];
                 regionSeries.clear(); // Clear the selected country from the map
               }
+              if (vectorMapRef.current) {
+                const mapObject = vectorMapRef.current.getMapObject();
+                mapObject.tip.hide();
+              }
+              // Hide the tooltip
             } else {
+              if (vectorMapRef.current) {
+                const mapObject = vectorMapRef.current.getMapObject();
+                mapObject.tip.hide();
+              }
               setSelectedMapCountry(countryCode); // Select the country
               const selectedCountryName = countriesArray.find(
                 (c) => c.code === countryCode
@@ -365,19 +375,39 @@ const Vectormap = (props) => {
             }
           }}
           onRegionTipShow={(e, tip, countryCode) => {
+            // e.preventDefault();
             const userCount = getUserCountByCountry(countryCode);
             const orgCount = getOrganisationsCountByCountry(countryCode);
-            if (userCount) {
-              tip.html(tip.html() + " - " + userCount + " users");
-            }
-            if (orgCount) {
-              tip.html(
-                tip.html() +
-                  " - " +
-                  orgCount +
-                  " " +
-                  `${orgCount > 1 ? " Organisations" : "Organisation"}`
-              );
+            if (selectedMapCountry === countryCode) {
+              if (vectorMapRef.current) {
+                const mapObject = vectorMapRef.current.getMapObject();
+
+                mapObject.tip.hide();
+              }
+              tip.hide();
+            } else {
+              if (userCount > 0) {
+                tip.html(
+                  tip.html() +
+                    " - " +
+                    userCount +
+                    " " +
+                    `${userCount > 1 ? " Users" : "User"}`
+                );
+              } else {
+                tip.html(tip.html() + " - " + 0 + " " + "User");
+              }
+              if (orgCount > 0) {
+                tip.html(
+                  tip.html() +
+                    " - " +
+                    orgCount +
+                    " " +
+                    `${orgCount > 1 ? " Organisations" : "Organisation"}`
+                );
+              } else {
+                tip.html(tip.html() + " - " + 0 + " " + "Organisation");
+              }
             }
           }}
           series={{

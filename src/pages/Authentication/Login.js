@@ -54,6 +54,8 @@ const Login = (props) => {
   const [passwordShow, setPasswordShow] = useState(false);
 
   useEffect(() => {
+    console.log(sessionStorage.getItem("authUser"), "SESSION");
+    console.log(document.cookie.split(";"), "cookie");
     if (user && user) {
       setUserLogin({
         email: user.user.email,
