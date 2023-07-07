@@ -1316,21 +1316,21 @@ const Benchmarking = () => {
         <div className="Main-sec mx-n4 mt-n4 w-100">
           <div
             style={{
-              width: "50%",
+              width: "100%",
               alignItems: "baseline",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
               display: "flex",
             }}
           >
             {" "}
             <h1>Benchmarking</h1>
-            <h6 style={{ color: "white" }}>
+            <h6 style={{ color: "white", marginLeft: "20px" }}>
               Title {"  "}:{"  "}
               <span style={{ fontSize: "14px" }}>
                 {location && location?.state?.contactData?.title}
               </span>
             </h6>
-            <h6 style={{ color: "white" }}>
+            <h6 style={{ color: "white", marginLeft: "20px" }}>
               Country{"  "}:{"  "}
               <span style={{ fontSize: "14px" }}>
                 {location && location?.state?.contactData?.country}
@@ -1566,6 +1566,12 @@ const Benchmarking = () => {
                               <p>
                                 You have answered{" "}
                                 <span style={{ fontSize: "24px" }}>
+                                  {console.log(
+                                    location?.state?.isDataUpdated,
+                                    benchmark.user_resp?.length,
+                                    user_resp?.length,
+                                    "user_resp?.length"
+                                  )}
                                   {location?.state?.isDataUpdated
                                     ? benchmark.user_resp?.length +
                                       user_resp?.length

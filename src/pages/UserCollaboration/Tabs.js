@@ -30,7 +30,7 @@ import { storeChosenChatDetails } from "../../slices/thunks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const Tabs = ({ countryFilter }) => {
+const Tabs = ({ countryFilter, mapClickValue, setOrgData }) => {
   const [modal, setModal] = useState(false);
   const [card, setCard] = useState(null);
   const [justifyTab, setJustifyTab] = useState("1");
@@ -44,6 +44,7 @@ const Tabs = ({ countryFilter }) => {
   const [searchText, setSearchText] = useState("");
   const [sliderValue, setSliderValue] = React.useState([0, 0]);
   const [usersOrganizationsData, setUsersOrganizationsData] = useState([]);
+  setOrgData(usersOrganizationsData);
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
 
   const dispatch = useDispatch();
@@ -150,10 +151,12 @@ const Tabs = ({ countryFilter }) => {
       );
     }
 
-    if (countryValue !== "" || countryFilter !== "") {
+    if (countryValue !== "" || countryFilter !== "" || mapClickValue !== "") {
       filteredUsers = filteredUsers.filter(
         (user) =>
-          user.country === countryValue || user.country === countryFilter
+          user.country === countryValue ||
+          user.country === countryFilter ||
+          user.country === mapClickValue
       );
     }
 
@@ -162,8 +165,8 @@ const Tabs = ({ countryFilter }) => {
   };
 
   useEffect(() => {
-    handleFilter({ countryValue: countryFilter });
-  }, [countryFilter]);
+    handleFilter({ countryValue: countryFilter || mapClickValue });
+  }, [countryFilter, mapClickValue]);
   const [hoveredAvatar, setHoveredAvatar] = useState(null);
 
   const handleMouseEnter = (avatarId) => {
@@ -430,7 +433,9 @@ const Tabs = ({ countryFilter }) => {
                   ?.filter((item) => {
                     // Check if countryFilter is not empty and item.countries includes countryFilter
                     return (
-                      !countryFilter || item.countries.includes(countryFilter)
+                      (!countryFilter ||
+                        item.countries.includes(countryFilter)) &&
+                      (!mapClickValue || item.countries.includes(mapClickValue))
                     );
                   })
                   .map((item) => {
