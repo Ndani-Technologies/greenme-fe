@@ -44,7 +44,7 @@ export const getUserProgress = async (id) => {
   return resp;
 };
 
-export const updateUserResp = async (id, user_resp, navigate) => {
+export const updateUserResp = async (id, user_resp) => {
   // let resp = await axios.patch(
   //   `http://192.168.137.1:5001/api/v1/bench/benchmarking/user_resp_submit/${id}`,
   //   user_resp
@@ -58,11 +58,9 @@ export const updateUserResp = async (id, user_resp, navigate) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   if (resp) {
     toast.success("User response submitted successfully!");
-    if (navigate) {
-      navigate("/benchmarking", {
-        state: { isSubmitted: true },
-      });
-    }
+    // if (navigate) {
+    //   navigate("/benchmarking");
+    // }
   }
   return resp;
 };

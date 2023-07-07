@@ -25,6 +25,7 @@ const loginSlice = createSlice({
     },
     logoutUserSuccess(state, action) {
       state.isUserLogout = true;
+      state.user = "";
     },
     reset_login_flag(state, action) {
       state.error = null;

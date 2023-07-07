@@ -925,10 +925,10 @@ const Benchmarking = () => {
                       <div className="buttons-container">
                         <button
                           style={{
-                            cursor: location?.state?.isSubmitted
+                            cursor: location?.state.isSubmitted
                               ? "default"
                               : "pointer",
-                            opacity: location?.state?.isSubmitted ? "0.5" : "1",
+                            opacity: location?.state.isSubmitted ? "0.5" : "1",
                           }}
                           onClick={() => {
                             if (
@@ -1016,7 +1016,7 @@ const Benchmarking = () => {
                             }
                           }}
                           className={buttonClass}
-                          disabled={location?.state?.isSubmitted}
+                          disabled={location?.state.isSubmitted}
                         >
                           {btn.answerOption.answerOption}
                         </button>
@@ -1188,7 +1188,7 @@ const Benchmarking = () => {
                       <div className="buttons-container">
                         <button
                           style={{
-                            cursor: location?.state?.isSubmitted
+                            cursor: location?.state.isSubmitted
                               ? "default"
                               : "pointer",
                           }}
@@ -1253,7 +1253,7 @@ const Benchmarking = () => {
                           }}
                           onBlur={() => {}}
                           className={buttonClass}
-                          disabled={location?.state?.isSubmitted}
+                          disabled={location?.state.isSubmitted}
                         >
                           {btn.answerOption.answerOption}
                         </button>
@@ -1276,16 +1276,20 @@ const Benchmarking = () => {
       user_resp: user_resp,
     };
     const toastt_id = toast.loading("Please wait...");
-    updateUserResp(benchmark?._id, requestBody, navigate, isSubmitted).then(
-      (resp) => {
-        setIsSubmitted(true);
+    updateUserResp(benchmark?._id, requestBody)
+      .then((resp) => {
+        console.log(resp.isComplete, "ISCOMPLETE");
+        setIsSubmitted(resp.isComplete);
         toast.update(toastt_id, {
           render: "benchmark is successfully submitted",
           type: "success",
           isLoading: false,
         });
-      }
-    );
+        return resp.isComplete; // Return the updated value
+      })
+      .then((isComplete) => {
+        navigate("/benchmarking", { state: { isSubmitted: isComplete } }); // Pass the updated value as location state
+      });
   };
 
   const [benchmarkCreation, setbenchmarkCreation] = useState(false);
@@ -1517,7 +1521,7 @@ const Benchmarking = () => {
                                 updateUserRespSave(benchmark?._id, requestBody);
                               }
                             }}
-                            disabled={location?.state?.isSubmitted}
+                            disabled={location?.state.isSubmitted}
                           >
                             SAVE
                           </button>
@@ -1526,7 +1530,7 @@ const Benchmarking = () => {
                             type="button"
                             onClick={handleSubmitModal}
                             className="btn btn-secondary"
-                            disabled={location?.state?.isSubmitted}
+                            disabled={location?.state.isSubmitted}
                           >
                             SUBMIT
                           </button>
