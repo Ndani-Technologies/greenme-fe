@@ -96,6 +96,10 @@ const CollaborationChat = () => {
   const [contactUser, setContactUsers] = useState([]);
   const [isUserOnline, setIsUserOnline] = useState("");
   const loggedInUser = JSON.parse(sessionStorage.getItem("authUser"));
+  const [allUsersData, setAllUsersData] = useState([]);
+  const [allUsersDataSet, setAllUsersDataSet] = useState([]);
+  console.log(allUsersData, "ALL");
+  const [searchText, setSearchText] = useState("");
 
   const { chats, messages, channels, chosenChatDetails, onlineUsers } =
     useSelector((state) => ({
@@ -147,10 +151,13 @@ const CollaborationChat = () => {
   const fetchAllUsers = async () => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_USER_URL}user`);
+
       if (response) {
         let usersData = response.filter(
           (user) => user._id !== loggedInUser._id
         );
+        setAllUsersData(usersData);
+        setAllUsersDataSet(usersData);
         usersData = usersData.map((userData) => {
           const { firstName, lastName, status, roomId } = userData;
           const contact = {
@@ -323,38 +330,22 @@ const CollaborationChat = () => {
     setmodal_standard(!modal_standard);
   }
 
-  const activeParticipants = [
-    {
-      id: 1,
-      Image: Allen,
-      name: "Nancy Martino",
-      Designation: "Fleet Manager",
-    },
-    {
-      id: 2,
-      Image: Scott,
-      name: "Nancy Martino",
-      Designation: "Fleet Manager",
-    },
-    {
-      id: 3,
-      Image: Philipa,
-      name: "Nancy Martino",
-      Designation: "Fleet Manager",
-    },
-    {
-      id: 4,
-      Image: Ball,
-      name: "Nancy Martino",
-      Designation: "Fleet Manager",
-    },
-    {
-      id: 5,
-      Image: Allen,
-      name: "Nancy Martino",
-      Designation: "Fleet Manager",
-    },
-  ];
+  const handleInputChange = (e) => {
+    const searchTextValue = e.target.value;
+    setSearchText(searchTextValue);
+    // if (searchTextValue.length >= 3) {
+    let filteredUsers = allUsersDataSet;
+
+    if (searchTextValue && searchTextValue !== "") {
+      filteredUsers = filteredUsers.filter((user) => {
+        const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
+        return fullName.includes(searchTextValue.toLowerCase());
+      });
+      setAllUsersData(filteredUsers);
+    } else {
+      setAllUsersData(allUsersData);
+    }
+  };
   const searchInputRef = useRef(null);
 
   document.title = "Chat | GreenMe";
@@ -605,7 +596,10 @@ const CollaborationChat = () => {
                                     type="text"
                                     className="form-control search"
                                     placeholder="Select a participant"
+                                    value={searchText}
+                                    onChange={(e) => handleInputChange(e)}
                                   />
+
                                   <i className="ri-search-line search-icon"></i>
                                 </div>
                               </Col>
@@ -614,14 +608,17 @@ const CollaborationChat = () => {
                               className="pt-3 pb-0 ps-2 pe-2 border-top border-dark-subtle "
                               style={{ height: "250px", overflow: "auto" }}
                             >
-                              {activeParticipants.map((item, index) => {
+                              {allUsersData.map((user, index) => {
                                 return (
                                   <div className="vstack gap-3 mb-3">
-                                    <div className="d-flex align-items-center gap-3 border-bottom border-dark-subtle pb-2">
+                                    <div
+                                      className="d-flex align-items-center gap-3 border-bottom border-dark-subtle pb-2"
+                                      key={index}
+                                    >
                                       <input type="checkbox" />
                                       <div className="avatar-xs flex-shrink-0">
                                         <img
-                                          src={item.Image}
+                                          src={user.profilePic}
                                           alt=""
                                           className="img-fluid rounded-circle"
                                         />
@@ -632,11 +629,11 @@ const CollaborationChat = () => {
                                             to="#"
                                             className="text-body d-block"
                                           >
-                                            {item.name}
+                                            {user.firstName} {user.lastName}
                                           </Link>
                                         </h5>
                                         <span style={{ color: "#878A99" }}>
-                                          {item.Designation}
+                                          {user?.scope[0]}
                                         </span>
                                       </div>
                                     </div>
