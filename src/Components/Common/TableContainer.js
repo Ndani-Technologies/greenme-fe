@@ -16,6 +16,8 @@ import {
   ProductsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterUserAction,
+  FilterLeaderBoard,
   FilterBenchmarkAction,
   FilterCollaboration,
   CustomersGlobalFilter,
@@ -30,7 +32,6 @@ import {
   TaskListGlobalFilter,
   DateRangeGlobalFilter,
   AllQaFilters,
-  FilterLeaderBoard,
   AdminRAFilters,
   FilterAdminBenchmark,
 } from "../../Components/Common/GlobalSearchFilter";
@@ -57,9 +58,10 @@ function GlobalFilter({
   SearchPlaceholder,
   isFilterA,
   isFilterAction,
+  isFilterUserAction,
+  isFilterLeaderBoard,
   isFilterBenchmarkAction,
   isSearchInput,
-  isFilterLeaderBoard,
   isFilterAdminRA,
   isFilterAdminBenchmark,
   category,
@@ -172,6 +174,7 @@ function GlobalFilter({
 
 const TableContainer = ({
   columns,
+  selectedData,
   setInfo,
   category,
   timeScale,
@@ -180,8 +183,8 @@ const TableContainer = ({
   isFilterAdminRA,
   isBenchmarkingQASearch,
   isFilterA,
-  selectedData,
   isFilterAction,
+  isFilterUserAction,
   isFilterBenchmarkAction,
   isAllQaFilters,
   isHorzontal,
@@ -300,12 +303,14 @@ const TableContainer = ({
             reductionPotential={reductionPotential}
             cost={cost}
             isFilterAction={isFilterAction}
+            isFilterUserAction={isFilterUserAction}
+            selectedData={selectedData}
+            isFilterLeaderBoard={isFilterLeaderBoard}
             isFilterBenchmarkAction={isFilterBenchmarkAction}
             isAllQaFilters={isAllQaFilters}
             setGlobalFilter={setGlobalFilter}
             isProductsFilter={isProductsFilter}
             isCustomerFilter={isCustomerFilter}
-            selectedData={selectedData}
             isOrderFilter={isOrderFilter}
             isContactsFilter={isContactsFilter}
             isCompaniesFilter={isCompaniesFilter}
@@ -317,7 +322,6 @@ const TableContainer = ({
             isSearchInput={isSearchInput}
             isTaskListFilter={isTaskListFilter}
             SearchPlaceholder={SearchPlaceholder}
-            isFilterLeaderBoard={isFilterLeaderBoard}
             isFilterAdminBenchmark={isFilterAdminBenchmark}
           />
         )}

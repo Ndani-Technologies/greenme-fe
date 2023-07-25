@@ -33,6 +33,8 @@ import ActionAdminDashboard from "../pages/Action-Admin-Dashboard/ActionAdminDas
 import AdminRelation from "../pages/Action-Admin-Relationship/AdminRelation";
 import ActionUserDetail from "../pages/Action-User-Detail/ActionUserDetail";
 import UserCollaboration from "../pages/UserCollaboration/UserCollaboration";
+import DiscussionDashboard from "../pages/Discussion-Dashboard/DiscussionDasboard";
+import DashboardCardDetails from "../pages/Discussion-Dashboard/DashboardCardDetails";
 import CollaborationChat from "../pages/CollaborationChat/CollaborationChat";
 import ActionUserDashboard from "../pages/Action-User-dashboard/ActionUserDashboard";
 import ActionAdminUserDetail from "../pages/Action-Admin-Dashboard/ActionAdminUserDetail";
@@ -91,7 +93,14 @@ const authProtectedRoutes = [
   { path: "/AdminRelationship", component: <AdminRelation /> },
   //User Collaboration
   { path: "/UserCollaboration", component: <UserCollaboration /> },
-  { path: "/collaborationChat", component: <CollaborationChat /> },
+  { path: "/collaborationchat", component: <CollaborationChat /> },
+  //LeaderBoard
+  { path: "/leaderboard", component: <LeaderBord /> },
+  { path: "/leaderboardtable", component: <LeaderBoardTable /> },
+  { path: "/leaderboardtablecard", component: <TableCard /> },
+  //Discussion
+  { path: "/discussiondashboard", component: <DiscussionDashboard /> },
+  { path: "/dashboardcardetail", component: <DashboardCardDetails /> },
 ];
 
 const publicRoutes = [

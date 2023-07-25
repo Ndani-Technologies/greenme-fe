@@ -12,6 +12,7 @@ const Navdata = () => {
   const [isPages, setIsPages] = useState(false);
   const [isBanchmarking, setIsBanchmarking] = useState(false);
   const [isRecommend, setIsRecommend] = useState(false);
+  const [isLeaderBoard, setIsLeaderBoard] = useState(false);
   const [isRecommended, setIsRecommended] = useState(false);
   const [isCollaboration, setIsCollaboration] = useState(false);
   const [isBaseUi, setIsBaseUi] = useState(false);
@@ -52,8 +53,6 @@ const Navdata = () => {
   // Pages
   const [isProfile, setIsProfile] = useState(false);
   const [isLanding, setIsLanding] = useState(false);
-
-  const [isLeaderBoard, setIsLeaderBoard] = useState(false);
 
   // Charts
   const [isApex, setIsApex] = useState(false);
@@ -425,8 +424,8 @@ const Navdata = () => {
       id: 6,
       icon: "ri-apps-2-line",
       label: "Discussions",
-      link: "/",
-      disable: true,
+      link: "/discussiondashboard",
+      disable: false,
     },
     {
       id: "Leaderboard",

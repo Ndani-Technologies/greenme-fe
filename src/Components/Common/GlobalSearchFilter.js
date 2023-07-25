@@ -230,7 +230,6 @@ const FilterBenchmarkAction = ({
           value={value || ""}
         />
       </div>
-
       <div>
         <select disable className="form-select">
           <option hidden selected>
@@ -282,6 +281,143 @@ const FilterBenchmarkAction = ({
           <option>Completed</option>
         </select>
       </div>
+    </div>
+  );
+};
+const FilterLeaderBoard = ({ item, selectedData }) => {
+  const navigate = useNavigate();
+  return (
+    <div className="d-flex align-items-center justify-content-between">
+      <div className="d-flex gap-3">
+        <Col
+          className="d-flex align-items-center border border-dark p-1 rounded"
+          style={{ height: "37px" }}
+        >
+          <i className="bx bx-search-alt search-icon"></i>
+          <input
+            className="border-0"
+            placeholder="Search by name"
+            type="text"
+          />
+        </Col>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Orgnaisation
+            </option>
+          </select>
+        </div>
+      </div>
+      <Col lg={6} className="d-flex align-items-center gap-3">
+        <Col lg={2} className="border border-gray rounded p-1">
+          <label className="m-0">Points</label>
+          <input className="w-100 p-0 border-bottom border-0" type="text" />
+        </Col>
+        <Col>
+          <select disable className="form-select">
+            <option hidden selected>
+              Points Type
+            </option>
+            <option>Total Points</option>
+            <option>Action points</option>
+            <option>Collaboration points</option>
+            <option>Discussion points</option>
+          </select>
+        </Col>
+        <Col>
+          <select disable className="form-select">
+            <option hidden selected>
+              Realtionship
+            </option>
+            <option>Greater Than (>)</option>
+            <option>Equal to (=)</option>
+            <option>Not Equal to (!)</option>
+            <option>Greater than or Equal to (>=)</option>
+          </select>
+        </Col>
+      </Col>
+      <div>
+        <Button
+          // href="/leaderboardtablecard"
+          onClick={() => {
+            navigate("/leaderboardtablecard", {
+              state: { data: selectedData },
+            });
+          }}
+          disabled={selectedData.length >= 2 ? false : true}
+        >
+          Compare
+        </Button>
+      </div>
+    </div>
+  );
+};
+const FilterUserAction = () => {
+  return (
+    <div className="d-flex justify-content-between">
+      <Col sm={3}>
+        <div className="search-box">
+          <Input
+            type="text"
+            className="form-control search"
+            placeholder="Search for..."
+          />
+          <i className="ri-search-line search-icon"></i>
+        </div>
+      </Col>
+      <Col
+        lg={6}
+        className="d-flex gap-2 w-50 align-items-center justify-content-end m-0"
+      >
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Category
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+        <div className="form-check form-switch form-switch-right form-switch-md">
+          <label htmlFor="form-grid-showcode" className="form-label text-muted">
+            Status:
+          </label>
+          <input
+            className="form-check-input code-switcher"
+            type="checkbox"
+            value="active"
+            defaultValue="Incomplete"
+            id="form-grid-showcode"
+          />
+        </div>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Potential
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              Cost
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+        <div>
+          <select disable className="form-select">
+            <option hidden selected>
+              TimeScale
+            </option>
+            <option>NO</option>
+            <option>I DON'T KNOW</option>
+          </select>
+        </div>
+      </Col>
     </div>
   );
 };
@@ -980,75 +1116,6 @@ const CustomersGlobalFilter = () => {
   );
 };
 
-const FilterLeaderBoard = ({ item, selectedData }) => {
-  const navigate = useNavigate();
-  return (
-    <div className="d-flex align-items-center justify-content-between">
-      <div className="d-flex gap-3">
-        <Col
-          className="d-flex align-items-center border border-dark p-1 rounded"
-          style={{ height: "37px" }}
-        >
-          <i className="bx bx-search-alt search-icon"></i>
-          <input
-            className="border-0"
-            placeholder="Search by name"
-            type="text"
-          />
-        </Col>
-        <div>
-          <select disable className="form-select">
-            <option hidden selected>
-              Orgnaisation
-            </option>
-          </select>
-        </div>
-      </div>
-      <Col lg={6} className="d-flex align-items-center gap-3">
-        <Col lg={2} className="border border-gray rounded p-1">
-          <label className="m-0">Points</label>
-          <input className="w-100 p-0 border-bottom border-0" type="text" />
-        </Col>
-        <Col>
-          <select disable className="form-select">
-            <option hidden selected>
-              Points Type
-            </option>
-            <option>Total Points</option>
-            <option>Action points</option>
-            <option>Collaboration points</option>
-            <option>Discussion points</option>
-          </select>
-        </Col>
-        <Col>
-          <select disable className="form-select">
-            <option hidden selected>
-              Realtionship
-            </option>
-            <option>Greater Than (>)</option>
-            <option>Equal to (=)</option>
-            <option>Not Equal to (!)</option>
-            <option>Greater than or Equal to (>=)</option>
-          </select>
-        </Col>
-      </Col>
-      <div>
-        <Button
-          // href="/leaderboardtablecard"
-          onClick={() => {
-            navigate("/leaderboardtablecard", {
-              state: { data: selectedData },
-            });
-          }}
-          disabled={selectedData?.length >= 2 ? false : true}
-        >
-          Compare
-        </Button>
-      </div>
-    </div>
-  );
-};
-
 const OrderGlobalFilter = () => {
   const [orderStatus, setorderStatus] = useState([]);
   const [orderPayement, setorderPayement] = useState(null);
@@ -1529,8 +1596,9 @@ export {
   LeadsGlobalFilter,
   FilterA,
   FilterAction,
+  FilterUserAction,
+  FilterLeaderBoard,
   AllQaFilters,
   FilterBenchmarkAction,
-  FilterLeaderBoard,
   FilterAdminBenchmark,
 };

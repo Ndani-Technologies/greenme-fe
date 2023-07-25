@@ -155,7 +155,7 @@ const crmSlice = createSlice({
     });
 
     builder.addCase(getLeads.rejected, (state, action) => {
-      state.error = action.payload.error || null;
+      state.error = action.payload?.error || null;
       state.isLeadCreated = false;
       state.isLeadsSuccess = false;
     });
